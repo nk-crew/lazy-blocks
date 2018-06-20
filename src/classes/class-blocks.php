@@ -102,16 +102,18 @@ class LazyBlocks_Blocks {
     private $defaults = array(
         'lazyblocks_controls' => array(),
 
-        'lazyblocks_slug' => '',
-        'lazyblocks_icon' => '',
+        'lazyblocks_slug'        => '',
+        'lazyblocks_icon'        => '',
         'lazyblocks_description' => '',
-        'lazyblocks_keywords' => '',
-        'lazyblocks_category' => 'common',
+        'lazyblocks_keywords'    => '',
+        'lazyblocks_category'    => 'common',
 
-        'lazyblocks_supports_multiple' => 'true',
+        'lazyblocks_supports_multiple'  => 'true',
         'lazyblocks_supports_classname' => 'true',
-        'lazyblocks_supports_anchor' => '',
-        'lazyblocks_supports_html' => '',
+        'lazyblocks_supports_anchor'    => '',
+        'lazyblocks_supports_html'      => '',
+
+        'lazyblocks_condition_post_types' => '',
     );
 
     /**
@@ -237,10 +239,21 @@ class LazyBlocks_Blocks {
      */
     public function add_controls_metabox() {
         ?>
+        <div class="lzb-metabox-header">
+            <div>Name</div>
+            <div>Type</div>
+            <div>Placement</div>
+            <div>Meta</div>
+        </div>
         <div class="lzb-metabox">
+            <div class="lzb-metabox-loading">
+                <?php
+                // Controls will be added using JavaScript.
+                echo esc_html__( 'Loading...', '@@text_domain' );
+                ?>
+            </div>
+        </div>
         <?php
-            // Controls will be added using JavaScript.
-            echo esc_html__( 'Loading...', '@@text_domain' );
         ?>
         </div>
         <?php

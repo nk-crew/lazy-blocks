@@ -84,16 +84,21 @@ jQuery(function ($) {
             <div class="lzb-metabox-control" data-control-id="control_#{ID}">
                 <div class="lzb-metabox">
                     <div class="lzb-metabox-label">
-                        <label for="${ controlNameTemplate }[label]">Label</label>
-                        <div class="lzb-metabox-control-expanded">
-                            <small>This is the name which will appear on the block edit control</small>
-                        </div>
-                        <div class="lzb-metabox-control-collapsed">
-                            <small data-contain-val="[id='${ controlNameTemplate }[type]']"></small>
-                        </div>
+                        <label data-contain-val="[id='${ controlNameTemplate }[label]']"></label>
+                        <small data-contain-val="[id='${ controlNameTemplate }[name]']"></small>
                     </div>
                     <div>
-                        <input class="lzb-input" id="${ controlNameTemplate }[label]" name="${ controlNameTemplate }[label]" type="text" value="#{label}">
+                        <div class="lzb-metabox-control-info">
+                            <div>
+                                <small data-contain-val="[id='${ controlNameTemplate }[type]']"></small>
+                            </div>
+                            <div>
+                                <small data-contain-val="[id='${ controlNameTemplate }[placement]']"></small>
+                            </div>
+                            <div>
+                                <small data-cond="[id='${ controlNameTemplate }[save_in_meta]" data-contain-val="[id='${ controlNameTemplate }[save_in_meta_name]']"></small>
+                            </div>
+                        </div>
                         <div class="lzb-metabox-control-actions">
                             <a href="#" class="lzb-metabox-control-action-expand">Expand</a>
                             <a href="#" class="lzb-metabox-control-action-remove">Delete</a>
@@ -102,6 +107,15 @@ jQuery(function ($) {
                 </div>
 
                 <div class="lzb-metabox-control-expanded">
+                    <div class="lzb-metabox">
+                        <div class="lzb-metabox-label">
+                            <label for="${ controlNameTemplate }[label]">Label</label>
+                            <small>This is the name which will appear on the block edit control</small>
+                        </div>
+                        <div>
+                            <input class="lzb-input" id="${ controlNameTemplate }[label]" name="${ controlNameTemplate }[label]" type="text" value="#{label}">
+                        </div>
+                    </div>
                     <div class="lzb-metabox">
                         <div class="lzb-metabox-label">
                             <label for="${ controlNameTemplate }[name]">Name</label>
@@ -344,20 +358,20 @@ jQuery(function ($) {
         $controls.on('click', '.lzb-metabox-control-action-expand', function (e) {
             e.preventDefault();
 
-            const $this = $(this);
-            const expanded = $this.data('expanded');
+            const $control = $(this).closest('[data-control-id]');
+            const expanded = $control.data('expanded');
 
             if ( expanded ) {
-                $this.closest('[data-control-id]').find('.lzb-metabox-control-expanded').hide();
-                $this.closest('[data-control-id]').find('.lzb-metabox-control-collapsed').show();
-                $this.text('Expand');
+                $control.find('.lzb-metabox-control-expanded').hide();
+                $control.find('.lzb-metabox-control-collapsed').show();
+                $control.find('.lzb-metabox-control-action-expand').text('Expand');
             } else {
-                $this.closest('[data-control-id]').find('.lzb-metabox-control-expanded').show();
-                $this.closest('[data-control-id]').find('.lzb-metabox-control-collapsed').hide();
-                $this.text('Collapse');
+                $control.find('.lzb-metabox-control-expanded').show();
+                $control.find('.lzb-metabox-control-collapsed').hide();
+                $control.find('.lzb-metabox-control-action-expand').text('Collapse');
             }
 
-            $this.data('expanded', !expanded);
+            $control.data('expanded', !expanded);
         });
 
         // slugify

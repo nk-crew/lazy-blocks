@@ -157,9 +157,45 @@
 
 
 // Controls.
-.lzb-metabox-controls {
-    margin-top: -6px;
+#lazyblocks_controls {
+    .lzb-metabox-loading {
+        margin-top: 20px;
+        margin-bottom: -5px;
+        padding-left: 8px;
+    }
+    .lzb-metabox-header {
+        position: relative;
+        display: flex;
+        padding: 15px 7px;
+        margin-top: -6px;
+        z-index: 1;
 
+        &::after {
+            content: "";
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: -16px;
+            right: -16px;
+            border-bottom: 1px solid #f1f1f1;
+            z-index: -2;
+        }
+
+        > div {
+            flex: 1;
+            font-weight: 600;
+
+            &:first-of-type {
+                margin-right: 20px;
+                padding-right: 20px;
+                min-width: 190px;
+                width: 190px;
+            }
+        }
+    }
+}
+.lzb-metabox-controls {
     [data-cond] {
         display: none;
     }
@@ -169,7 +205,7 @@
         padding-left: 7px;
         padding-top: 19px;
         padding-right: 7px;
-        padding-bottom: 3px;
+        padding-bottom: 1px;
         z-index: 1;
 
         &::before {
@@ -192,7 +228,7 @@
             bottom: 0;
             left: -16px;
             right: -16px;
-            border-bottom: 3px solid #f1f1f1;
+            border-bottom: 1px solid #f1f1f1;
             z-index: -2;
         }
 
@@ -209,6 +245,25 @@
                 min-width: 190px;
                 width: 190px;
 
+                small {
+                    margin-top: 5px;
+
+                    + small {
+                        margin-top: 10px;
+                    }
+                }
+            }
+            .lzb-metabox-control-info {
+                display: flex;
+                flex-wrap: wrap;
+
+                > div {
+                    flex: 1;
+                }
+            }
+
+            .lzb-metabox-label,
+            .lzb-metabox-control-info {
                 label {
                     display: block;
                     font-weight: 500;
@@ -216,11 +271,6 @@
                 small {
                     display: block;
                     color: #999;
-                    margin-top: 5px;
-
-                    + small {
-                        margin-top: 10px;
-                    }
                 }
             }
         }
@@ -232,12 +282,12 @@
         margin-top: 3px;
         margin-bottom: -13px;
         opacity: 0;
-        transition: .15s opacity;
+        transition: .1s opacity;
 
         a {
             color: #a1a1a1;
             opacity: .7;
-            transition: .15s opacity;
+            transition: .15s opacity ease-in-out;
 
             &:hover {
                 opacity: 1;
