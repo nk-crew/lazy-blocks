@@ -189,10 +189,6 @@ options.blocks.forEach(( item ) => {
                                 } );
                             } );
 
-                            console.log(choicesObject);
-
-                            console.log(attributes, control.name);
-
                             result.push((
                                 <SelectControl
                                     key={ control.name }
