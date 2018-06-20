@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<ruleset name="nK">
+    <description>nK Coding Standards</description>
+
+    <!-- Check all files in this directory and the directories below it. -->
+    <file>.</file>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<!-- Pass some flags to PHPCS:
+         p flag: Show progress of the run.
+         s flag: Show sniff codes in all reports.
+         v flag: Print verbose output.
+         n flag: Do not print warnings.
+    -->
+	<arg value="psvn" />
+
+    <!-- Include sniffs for PHP cross-version compatibility. -->
+    <rule ref="PHPCompatibility" />
+    <config name="testVersion" value="5.4-99.0" />
+
+    <!-- Show colors in console -->
+    <arg value="-colors" />
+
+	<!-- Only check the PHP files. JS files are checked separately with JSCS and JSHint. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Include the WordPress ruleset, with exclusions. -->
+	<rule ref="WordPress">
+		<!-- Don't ask to use string in text-domain -->
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />
+
+		<!-- Disallow tabs -->
+		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
+	</rule>
+
+	<!-- Disallow tabs -->
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+
+	<!-- Verify that no WP functions are used which are deprecated or have been removed.
+         The minimum version set here should be in line with the minimum WP version
+         as set in the "Requires at least" tag in the readme.txt file. -->
+	<rule ref="WordPress.WP.DeprecatedFunctions">
+		<properties>
+			<property name="minimum_supported_version" value="4.0" />
+		</properties>
+	</rule>
+
+	<!-- Prevent error about filename with Class
+         Disable theme specific exceptions -->
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="is_theme" value="false" />
+			<property name="strict_class_file_names" value="false" />
+		</properties>
+	</rule>
+
+	<!-- Disable some VIP errors -->
+	<rule ref="WordPress.VIP.RestrictedFunctions">
+		<properties>
+			<property name="exclude" value="user_meta, custom_role, term_exists, get_term_by" />
+		</properties>
+	</rule>
+	<rule ref="WordPress.VIP.SessionFunctionsUsage">
+		<properties>
+			<property name="exclude" value="session" />
+		</properties>
+	</rule>
+
+</ruleset>

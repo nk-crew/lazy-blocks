@@ -1,0 +1,127 @@
+{
+  "name": "lazyblocks",
+  "title": "LazyBlocks",
+  "description": "No hassle Gutenberg blocks WordPress developers",
+  "license": "GPL-2.0",
+  "author": "nK <https://nkdev.info>",
+  "scripts": {
+    "build": "gulp",
+    "watch": "gulp watch",
+    "production": "gulp production",
+    "php-lint": "composer run-script phpcs",
+    "php-lint-fix": "composer run-script phpcbf",
+    "css-lint": "stylelint --syntax scss \"src/**/*.scss\"",
+    "css-lint-fix": "stylelint --fix --syntax scss \"src/**/*.scss\"",
+    "js-lint": "eslint src/",
+    "js-lint-fix": "eslint --fix src/",
+    "lint": "npm-run-all php-lint css-lint js-lint",
+    "lint-fix": "npm-run-all php-lint-fix css-lint-fix js-lint-fix",
+    "update:packages": "npm i -g npm-check-updates && npm-check-updates -u && npm install",
+    "postinstall": "composer install",
+    "precommit": "npm run lint",
+    "prepush": "npm run lint"
+  },
+  "gulp_config": {
+    "variables": {
+      "dist": "dist",
+      "plugin_name": "lazyblocks",
+      "plugin_title": "LazyBlocks",
+      "plugin_version": "1.0.0"
+    },
+    "template_vars": [
+      {
+        "patterns": [
+          {
+            "match": "text_domain",
+            "replacement": "{plugin_name}"
+          },
+          {
+            "match": "plugin_version",
+            "replacement": "{plugin_version}"
+          },
+          {
+            "match": "plugin_name",
+            "replacement": "{plugin_name}"
+          },
+          {
+            "match": "plugin_title",
+            "replacement": "{plugin_title}"
+          }
+        ],
+        "from": "{dist}/{plugin_name}"
+      }
+    ],
+    "work_folders": [
+      {
+        "from": "src",
+        "to": "{dist}/{plugin_name}"
+      }
+    ],
+    "translate": [
+      {
+        "title": "{plugin_title}",
+        "name": "{plugin_name}",
+        "author": "nK <https://nkdev.info>",
+        "text_domain": "{plugin_name}",
+        "from": "{dist}/{plugin_name}"
+      }
+    ],
+    "production": [
+      {
+        "file_name": "{plugin_name}.zip",
+        "base": "{dist}",
+        "from": "{dist}/{plugin_name}/**/*",
+        "to": "{dist}"
+      }
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.3",
+    "del": "^2.2.2",
+    "eslint": "4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-wordpress": "2.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jest": "21.5.0",
+    "eslint-plugin-jsx-a11y": "6.0.2",
+    "eslint-plugin-react": "7.5.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-changed": "^2.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-line-ending-corrector": "^1.0.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-replace-task": "^0.11.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sort": "^2.0.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-vinyl-zip": "^2.0.0",
+    "gulp-wp-pot": "^2.0.6",
+    "gulp-zip": "^4.0.0",
+    "husky": "^0.14.3",
+    "json-file": "^0.1.0",
+    "merge-stream": "^1.0.1",
+    "npm-run-all": "^4.1.2",
+    "run-sequence": "^2.1.0",
+    "string-template": "^1.0.0",
+    "stylelint": "^8.4.0",
+    "stylelint-config-recommended-scss": "^3.0.0",
+    "stylelint-config-standard": "^18.0.0",
+    "stylelint-order": "^0.8.0",
+    "stylelint-scss": "^2.3.0",
+    "vinyl-named-with-path": "^1.0.0",
+    "webpack": "^3.10.0",
+    "webpack-stream": "^4.0.0"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "slugify": "^1.3.0"
+  }
+}

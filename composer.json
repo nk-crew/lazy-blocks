@@ -1,0 +1,19 @@
+{
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.2.x",
+        "wp-coding-standards/wpcs": "^0.14.0",
+        "wimg/php-compatibility": "@dev"
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=phpcs_nk ./src",
+        "phpcbf": "phpcbf --standard=phpcs_nk ./src",
+
+        "post-install-cmd": [
+            "@configure_phpcs_paths"
+        ],
+        "post-update-cmd": [
+            "@configure_phpcs_paths"
+        ],
+        "configure_phpcs_paths": "phpcs --config-set installed_paths ../../wp-coding-standards/wpcs/,../../wimg/php-compatibility,../../../"
+    }
+}
