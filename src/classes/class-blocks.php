@@ -1,6 +1,6 @@
 <?php
 /**
- * LazyBlocks post.
+ * LazyBlocks blocks.
  *
  * @package lazyblocks
  */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class LazyBlocks_Blocks {
     /**
-     * LazyBlocks_Settings constructor.
+     * LazyBlocks_Blocks constructor.
      */
     public function __construct() {
         add_action( 'init', array( $this, 'register_post_type' ) );
@@ -114,7 +114,7 @@ class LazyBlocks_Blocks {
         'lazyblocks_supports_classname' => 'true',
         'lazyblocks_supports_anchor'    => 'false',
         'lazyblocks_supports_html'      => 'false',
-        'lazyblocks_supports_hidden'    => 'false',
+        'lazyblocks_supports_inserter'  => 'true',
 
         'lazyblocks_condition_post_types' => '',
     );
@@ -167,7 +167,7 @@ class LazyBlocks_Blocks {
         $supports_classname = $this->get_meta_value( 'lazyblocks_supports_classname' );
         $supports_anchor = $this->get_meta_value( 'lazyblocks_supports_anchor' );
         $supports_html = $this->get_meta_value( 'lazyblocks_supports_html' );
-        $supports_hidden = $this->get_meta_value( 'lazyblocks_supports_hidden' );
+        $supports_inserter = $this->get_meta_value( 'lazyblocks_supports_inserter' );
 
         ?>
 
@@ -236,9 +236,9 @@ class LazyBlocks_Blocks {
             </label>
 
             <label>
-                <input type="hidden" name="lazyblocks_supports_hidden" id="lazyblocks_supports_hidden_hidden" value="false">
-                <input class="lzb-input" type="checkbox" name="lazyblocks_supports_hidden" id="lazyblocks_supports_hidden" value="true" <?php checked( $supports_hidden ); ?>>
-                <?php echo esc_html__( 'Hidden', '@@text_domain' ); ?>
+                <input type="hidden" name="lazyblocks_supports_inserter" id="lazyblocks_supports_inserter_hidden" value="false">
+                <input class="lzb-input" type="checkbox" name="lazyblocks_supports_inserter" id="lazyblocks_supports_inserter" value="true" <?php checked( $supports_inserter ); ?>>
+                <?php echo esc_html__( 'Show in Blocks Inserter', '@@text_domain' ); ?>
             </label>
         </div>
         <?php
@@ -250,10 +250,10 @@ class LazyBlocks_Blocks {
     public function add_controls_metabox() {
         ?>
         <div class="lzb-metabox-header">
-            <div>Name</div>
-            <div>Type</div>
-            <div>Placement</div>
-            <div>Meta</div>
+            <div><?php echo esc_html__( 'Name', '@@text_domain' ); ?></div>
+            <div><?php echo esc_html__( 'Type', '@@text_domain' ); ?></div>
+            <div><?php echo esc_html__( 'Placement', '@@text_domain' ); ?></div>
+            <div><?php echo esc_html__( 'Meta', '@@text_domain' ); ?></div>
         </div>
         <div class="lzb-metabox">
             <div class="lzb-metabox-loading">
@@ -270,7 +270,7 @@ class LazyBlocks_Blocks {
      * Add Condition metabox
      */
     public function add_condition_metabox() {
-        $post_types = $this->get_meta_value( 'lazyblocks_condition_post_types' );
+        $post_types = $this->get_meta_value( 'lazyblocks_condition_post_types' ) ? : array();
         $available_post_types = get_post_types( array(
             'show_ui' => true,
         ), 'object' );
@@ -447,12 +447,12 @@ class LazyBlocks_Blocks {
                         'anchor'          => $this->get_meta_value( 'lazyblocks_supports_anchor', $block->ID ),
                         'html'            => $this->get_meta_value( 'lazyblocks_supports_html', $block->ID ),
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
-                        'inserter'        => ! $this->get_meta_value( 'lazyblocks_supports_hidden', $block->ID ),
+                        'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
                     ),
                     // TODO: Will be deprecated in 3.3, use supports.multiple.
                     'useOnce'     => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                     'controls'    => $controls,
-                    'condition'   => (array) $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ),
+                    'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );
             }
         }
