@@ -104,6 +104,8 @@ class LazyBlocks_Templates {
                 ),
             )
         );
+
+        // for some reason object_type with custom post type don't work, so use 'post'.
         register_meta( 'post', 'lzb_template_data', array(
             'show_in_rest' => true,
             'single'       => true,
@@ -180,6 +182,7 @@ class LazyBlocks_Templates {
                     <?php
                     $blocks = lazyblocks()->get_blocks();
 
+                    // TODO: Add dynamic blocks list generating and not only for core blocks.
                     $core_blocks = array(
                         'core/paragraph' => 'Paragraph',
                         'core/image' => 'Image',

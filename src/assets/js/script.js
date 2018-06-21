@@ -113,6 +113,7 @@ options.blocks.forEach(( item ) => {
                 const control = item.controls[k];
 
                 if ( control.type && control.placement !== 'nowhere' && ( control.placement === 'both' || control.placement === placement ) ) {
+                    // TODO: additional controls - color, color palette, date-time, range slider
                     switch ( control.type ) {
                         case 'text':
                         case 'number':

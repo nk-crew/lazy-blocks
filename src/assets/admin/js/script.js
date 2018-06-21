@@ -1,5 +1,7 @@
 import slugify from 'slugify';
 
+// TODO: remove that shitty code and use React!
+
 jQuery(function ($) {
     const data = window.lazyblocksData;
 
@@ -650,6 +652,7 @@ jQuery(function ($) {
         });
 
         // add blocks to template.
+        // TODO: prevent to add it twice if the block has disabled 'multiple' support
         $list.on('change', '.lzb-templates-single-add-blocks', function(e) {
             e.preventDefault();
 
