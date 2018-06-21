@@ -97,6 +97,13 @@ class LazyBlocks {
     private $blocks;
 
     /**
+     * Templates class object.
+     *
+     * @var object
+     */
+    private $templates;
+
+    /**
      * LazyBlocks constructor.
      */
     public function __construct() {
@@ -127,6 +134,7 @@ class LazyBlocks {
         $this->include_dependencies();
 
         $this->blocks = new LazyBlocks_Blocks();
+        $this->templates = new LazyBlocks_Templates();
     }
 
     /**
@@ -175,6 +183,14 @@ class LazyBlocks {
             'manage_options',
             'post-new.php?post_type=lazyblocks'
         );
+
+        add_submenu_page(
+            'lazyblocks',
+            esc_html__( 'Templates', '@@text_domain' ),
+            esc_html__( 'Templates', '@@text_domain' ),
+            'manage_options',
+            'edit.php?post_type=lazyblocks_templates'
+        );
     }
 
     /**
@@ -207,6 +223,7 @@ class LazyBlocks {
      */
     private function include_dependencies() {
         require_once( $this->plugin_path . '/classes/class-blocks.php' );
+        require_once( $this->plugin_path . '/classes/class-templates.php' );
     }
 
     /**
@@ -223,7 +240,7 @@ class LazyBlocks {
         global $post;
 
         wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
-        wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery' ), '@@plugin_version', true );
+        wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery', 'wp-api' ), '@@plugin_version', true );
         wp_localize_script(
             'lazyblocks-admin', 'lazyblocksData', array(
                 'nonce'    => wp_create_nonce( 'ajax-nonce' ),
