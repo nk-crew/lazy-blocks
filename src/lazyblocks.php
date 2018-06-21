@@ -228,7 +228,7 @@ class LazyBlocks {
             'lazyblocks-admin', 'lazyblocksData', array(
                 'nonce'    => wp_create_nonce( 'ajax-nonce' ),
                 'url'      => admin_url( 'admin-ajax.php' ),
-                'controls' => get_post_meta( $post->ID, 'lazyblocks_controls', true ) ? : array(),
+                'controls' => isset( $post->ID ) ? (array) get_post_meta( $post->ID, 'lazyblocks_controls', true ) : array(),
             )
         );
     }

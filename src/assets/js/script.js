@@ -4,7 +4,7 @@ import classnames from 'classnames/dedupe';
 
 let options = window.lazyblocksGutenberg;
 if ( ! options || ! options.blocks || ! options.blocks.length ) {
-    options = { blocks: [] };
+    options = { post_type: 'post', blocks: [] };
 }
 
 const { __ } = wp.i18n;
@@ -452,6 +452,18 @@ options.blocks.forEach(( item ) => {
         }
     });
 
+    // conditionally show for specific post type.
+    if ( item.supports.inserter && item.condition.length ) {
+        let preventInsertion = true;
+        item.condition.forEach( ( val ) => {
+            if ( val === options.post_type ) {
+                preventInsertion = false;
+            }
+        } );
+        item.supports.inserter = !preventInsertion;
+    }
+
+    // register block.
     registerBlockType( item.slug, {
         title: item.title,
         description: item.description,

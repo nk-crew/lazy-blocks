@@ -97,6 +97,7 @@ jQuery(function ($) {
                             </div>
                             <div>
                                 <small data-cond="[id='${ controlNameTemplate }[save_in_meta]" data-contain-val="[id='${ controlNameTemplate }[save_in_meta_name]']"></small>
+                                <small data-cond="[id='${ controlNameTemplate }[save_in_meta] != 1">-</small>
                             </div>
                         </div>
                         <div class="lzb-metabox-control-actions">
