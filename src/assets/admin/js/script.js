@@ -374,12 +374,12 @@ jQuery(function ($) {
             const expanded = $control.data('expanded');
 
             if ( expanded ) {
-                $control.find('.lzb-metabox-control-expanded').hide();
-                $control.find('.lzb-metabox-control-collapsed').show();
+                $control.find('.lzb-metabox-control-expanded').stop().slideUp();
+                $control.find('.lzb-metabox-control-collapsed').stop().slideDown();
                 $control.find('.lzb-metabox-control-action-expand').text('Expand');
             } else {
-                $control.find('.lzb-metabox-control-expanded').show();
-                $control.find('.lzb-metabox-control-collapsed').hide();
+                $control.find('.lzb-metabox-control-expanded').stop().slideDown();
+                $control.find('.lzb-metabox-control-collapsed').stop().slideUp();
                 $control.find('.lzb-metabox-control-action-expand').text('Collapse');
             }
 
