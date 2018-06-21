@@ -65,6 +65,17 @@ jQuery(function ($) {
                 }
             }
         });
+        $('#lazyblocks_condition_post_types').selectize({
+            plugins: ['drag_drop', 'remove_button'],
+            delimiter: ',',
+            selectOnTab: true,
+            create: function(input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            }
+        });
         $('#lazyblocks_keywords-selectized').on('keypress', function(e) {
             if ( event.keyCode === 13 ) {
                 e.preventDefault();

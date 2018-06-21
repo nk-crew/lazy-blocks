@@ -94,6 +94,14 @@ class LazyBlocks_Blocks {
             'side',
             'default'
         );
+        add_meta_box(
+            'lazyblocks_condition',
+            esc_html__( 'Condition', '@@text_domain' ),
+            array( $this, 'add_condition_metabox' ),
+            'lazyblocks',
+            'side',
+            'default'
+        );
     }
 
     /**
@@ -277,8 +285,8 @@ class LazyBlocks_Blocks {
 
         ?>
         <div class="lzb-metabox">
-            <label for="lazyblocks_condition_post_types"><?php echo esc_html__( 'Post types', '@@text_domain' ); ?></label>
-            <select class="lzb-select" id="lazyblocks_condition_post_types" name="lazyblocks_condition_post_types[]" multiple placeholder="<?php echo esc_attr__( 'For all posts by default', '@@text_domain' ); ?>">
+            <label for="lazyblocks_condition_post_types"><?php echo esc_html__( 'Show in posts', '@@text_domain' ); ?></label>
+            <select class="lzb-select" id="lazyblocks_condition_post_types" name="lazyblocks_condition_post_types[]" multiple placeholder="<?php echo esc_attr__( 'In all posts by default', '@@text_domain' ); ?>">
                 <?php
                 foreach ( $available_post_types as $post ) {
                     if ( 'lazyblocks' !== $post->name && 'lazyblocks_templates' !== $post->name && 'attachment' !== $post->name ) {
