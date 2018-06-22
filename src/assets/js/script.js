@@ -234,7 +234,7 @@ options.blocks.forEach(( item ) => {
                                         }
                                         return '';
                                     } )() }
-                                    { !Object.keys( attributes[ control.name ] ).length ? (
+                                    { !attributes[ control.name ] || !Object.keys( attributes[ control.name ] ).length ? (
                                         <MediaPlaceholder
                                             key={ control.name }
                                             icon="format-image"
@@ -253,7 +253,7 @@ options.blocks.forEach(( item ) => {
                                             } }
                                         />
                                     ) : '' }
-                                    { Object.keys( attributes[ control.name ] ).length ? (
+                                    { attributes[ control.name ] && Object.keys( attributes[ control.name ] ).length ? (
                                         <Fragment>
                                             <div className="lzb-gutenberg-image" >
                                                 <DropZoneProvider>
@@ -305,7 +305,7 @@ options.blocks.forEach(( item ) => {
                                         }
                                         return '';
                                     } )() }
-                                    { !attributes[ control.name ].length ? (
+                                    { !attributes[ control.name ] || !attributes[ control.name ].length ? (
                                         <MediaPlaceholder
                                             key={ control.name }
                                             icon="format-gallery"
@@ -325,7 +325,7 @@ options.blocks.forEach(( item ) => {
                                             } }
                                         />
                                     ) : '' }
-                                    { attributes[ control.name ].length ? (
+                                    { attributes[ control.name ] && attributes[ control.name ].length ? (
                                         <MediaUpload
                                             onSelect={ (images) => {
                                                 this.onSelectImages( images, control );
@@ -477,14 +477,8 @@ options.blocks.forEach(( item ) => {
 
         edit: LazyBlock,
 
-        save( { attributes, className } ) {
-            className = classnames( 'lazyblock', className );
-
-            return (
-                <div className={ className } >
-                    Test
-                </div>
-            );
+        save() {
+            return null;
         },
     } );
 });
