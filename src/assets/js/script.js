@@ -180,21 +180,11 @@ options.blocks.forEach(( item ) => {
                             ));
                             break;
                         case 'select':
-                            let choicesObject = [];
-
-                            control.choices.split( '\n' ).forEach( ( val ) => {
-                                const split = val.split( ' : ' );
-                                choicesObject.push( {
-                                    value: split[0].replace( /\n/g, '' ),
-                                    label: ( split[1] || split[0] ).replace( /\n/g, '' ),
-                                } );
-                            } );
-
                             result.push((
                                 <SelectControl
                                     key={ control.name }
                                     label={ control.label }
-                                    options={ choicesObject }
+                                    options={ control.choices }
                                     value={ attributes[ control.name ] }
                                     onChange={ ( val ) => { this.onControlChange( val, control ) } }
                                 />
@@ -401,7 +391,6 @@ options.blocks.forEach(( item ) => {
                         <div className="lzb-content-controls">
                             { this.renderControls( 'content' ) }
                         </div>
-                        123
                     </div>
                 </Fragment>
             );

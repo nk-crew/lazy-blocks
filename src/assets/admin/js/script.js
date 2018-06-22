@@ -206,7 +206,8 @@ const controlTemplate = `
                         <small>value : Label</small>
                     </div>
                     <div>
-                        <textarea class="lzb-textarea" id="${ controlNameTemplate }[choices]" name="${ controlNameTemplate }[choices]" rows="6">#{choices}</textarea>
+                        <div class="lzb-choices-hidden-array" data-name="${ controlNameTemplate }[choices]"></div>
+                        <textarea class="lzb-textarea" id="${ controlNameTemplate }[choices]" rows="6">#{choices}</textarea>
                     </div>
                 </div>
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle">
@@ -275,6 +276,20 @@ function addControl( data ) {
     if ( data.ID ) {
         let newControl = controlTemplate;
 
+        // prepare choices to multiline string.
+        if ( data.choices && Array.isArray( data.choices ) ) {
+            let strChoices = '';
+            data.choices.forEach( ( choice ) => {
+                strChoices += strChoices ? '\n' : '';
+                if ( choice.value === choice.label ) {
+                    strChoices += `${ choice.value }`;
+                } else {
+                    strChoices += `${ choice.value } : ${ choice.label }`;
+                }
+            } );
+            data.choices = strChoices;
+        }
+
         // add template values.
         newControl = stringTemplate( newControl, data );
 
@@ -293,27 +308,6 @@ function removeControl( ID ) {
     $controls.find(`[data-control-id="${ ID }"]`).remove();
 }
 
-// condition.
-function updateConditionalFields() {
-    $controls.find('[data-cond]').hide().each(function() {
-        const $this = $(this);
-        const $listenTo = $($this.attr('data-cond'));
-        let result;
-
-        if ($listenTo.is('[type="radio"], [type="checkbox"]')) {
-            result = $listenTo.is(':checked');
-        } else if ($listenTo.is('textarea, select, input')) {
-            result = $listenTo.val();
-        }
-
-        if ( result ) {
-            $this.show();
-        } else {
-            $this.hide();
-        }
-    });
-}
-
 // contain values
 function updateContainValues() {
     $controls.find('[data-contain-val]').each(function() {
@@ -328,6 +322,33 @@ function updateContainValues() {
         }
 
         $this.html(result);
+    });
+}
+
+// update choices array (to save as array and not as multiline string)
+function updateChoicesArray() {
+    $controls.find('.lzb-choices-hidden-array').each(function () {
+        const $this = $(this);
+        const $textarea = $this.next('textarea');
+        const textareaVal = $textarea.val();
+        const name =  $this.attr('data-name');
+        let newInputs = '';
+
+        let k = 0;
+        textareaVal.split( '\n' ).forEach( ( val ) => {
+            const split = val.split( ' : ' );
+            const value = split[0].replace( /\n/g, '' );
+            const label = ( split[1] || split[0] ).replace( /\n/g, '' );
+
+            if ( value ) {
+                newInputs += `<input type="hidden" name="${ name }[${ k }][value]" value="${ value }">`;
+                newInputs += `<input type="hidden" name="${ name }[${ k }][label]" value="${ label }">`;
+
+                k++;
+            }
+        } );
+
+        $this.html(newInputs);
     });
 }
 
@@ -353,12 +374,12 @@ if ( $controls.length ) {
 
     // events.
 
-    // conditions and contain values
-    // updateConditionalFields();
+    // contain values and choices
     updateContainValues();
+    updateChoicesArray();
     $controls.on('change', 'input, select, textarea', function () {
-        // updateConditionalFields();
         updateContainValues();
+        updateChoicesArray();
     });
 
     // add control.
