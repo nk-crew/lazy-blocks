@@ -3,6 +3,7 @@ import slugify from 'slugify';
 // TODO: remove that shitty code and use React!
 
 const data = window.lazyblocksData;
+const $ = window.jQuery;
 
 // generate unique id.
 // thanks to https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
