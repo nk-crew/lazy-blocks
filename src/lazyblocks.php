@@ -239,13 +239,18 @@ class LazyBlocks {
     public function admin_enqueue_scripts() {
         global $post;
 
+        // TODO: temporary fix for https://github.com/WordPress/gutenberg/issues/7455 .
+        if ( function_exists( 'gutenberg_extend_wp_api_backbone_client' ) ) {
+            gutenberg_extend_wp_api_backbone_client();
+        }
+
         wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
         wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery', 'wp-api' ), '@@plugin_version', true );
         wp_localize_script(
             'lazyblocks-admin', 'lazyblocksData', array(
                 'nonce'    => wp_create_nonce( 'ajax-nonce' ),
                 'url'      => admin_url( 'admin-ajax.php' ),
-                'controls' => isset( $post->ID ) ? (array) get_post_meta( $post->ID, 'lazyblocks_controls', true ) : array(),
+                'controls' => isset( $post->ID ) ? get_post_meta( $post->ID, 'lazyblocks_controls', true ) ? : array() : array(),
             )
         );
     }

@@ -32,7 +32,7 @@ class LazyBlocks_Blocks {
         }
 
         // admin blocks page enqueue.
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_blocks_enqueue_scripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_blocks_enqueue_scripts' ), 9 );
     }
 
     /**
