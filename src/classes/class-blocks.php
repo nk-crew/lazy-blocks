@@ -74,10 +74,8 @@ class LazyBlocks_Blocks {
 
     /**
      * Add post format metaboxes.
-     *
-     * @param string $post_type post type.
      */
-    public function add_meta_boxes( $post_type ) {
+    public function add_meta_boxes() {
         add_meta_box(
             'lazyblocks_controls',
             esc_html__( 'Controls', '@@text_domain' ),
@@ -305,6 +303,10 @@ class LazyBlocks_Blocks {
      * Sanitize block slug name.
      * Keep only alpha and numbers.
      * Make it lowercase.
+     *
+     * @param string $slug - slug name.
+     *
+     * @return string
      */
     public function sanitize_slug( $slug ) {
         return strtolower( preg_replace( '/[^a-zA-Z0-9\-]+/', '', $slug ) );

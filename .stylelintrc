@@ -231,7 +231,7 @@
         "selector-max-class": 5,
         "selector-max-compound-selectors": 10,
         "selector-max-empty-lines": 1,
-        "selector-max-id": 0,
+        "selector-max-id": 1,
         "selector-max-specificity": null,
         "selector-max-universal": 2,
         "selector-no-vendor-prefix": true,

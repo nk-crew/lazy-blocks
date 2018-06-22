@@ -110,7 +110,9 @@
         }
 
         > input {
+            // stylelint-disable-next-line
             margin-bottom: 2px !important;
+            // stylelint-disable-next-line
             margin-left: 8px !important;
         }
 
@@ -148,10 +150,12 @@
 
 // Dashicons picker.
 .dashicon-picker-container {
+    // stylelint-disable-next-line
     width: 222px !important; // 2px - border
     border: 1px solid #e5e5e5;
     border-top: none;
-    box-shadow: 0 1px 1px rgba(0,0,0,.04) !important;
+    // stylelint-disable-next-line
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .04) !important;
     z-index: 2;
 }
 
@@ -159,9 +163,9 @@
 // Controls.
 #lazyblocks_controls {
     .lzb-metabox-loading {
+        padding-left: 8px;
         margin-top: 20px;
         margin-bottom: -5px;
-        padding-left: 8px;
     }
     .lzb-metabox-header {
         position: relative;
@@ -175,9 +179,9 @@
             position: absolute;
             display: block;
             top: 0;
+            right: -16px;
             bottom: 0;
             left: -16px;
-            right: -16px;
             border-bottom: 1px solid #f1f1f1;
             z-index: -2;
         }
@@ -187,10 +191,10 @@
             font-weight: 600;
 
             &:first-of-type {
-                margin-right: 20px;
-                padding-right: 20px;
-                min-width: 190px;
                 width: 190px;
+                min-width: 190px;
+                padding-right: 20px;
+                margin-right: 20px;
             }
         }
     }
@@ -202,10 +206,10 @@
 
     .lzb-metabox-control {
         position: relative;
-        padding-left: 7px;
         padding-top: 19px;
         padding-right: 7px;
         padding-bottom: 1px;
+        padding-left: 7px;
         z-index: 1;
 
         &::before {
@@ -216,8 +220,8 @@
             bottom: 0;
             left: -12px;
             width: 229px;
-            border-right: 1px solid #f1f1f1;
             background-color: rgba(0, 0, 0, .02);
+            border-right: 1px solid #f1f1f1;
             z-index: -1;
         }
         &::after {
@@ -225,9 +229,9 @@
             position: absolute;
             display: block;
             top: 0;
+            right: -16px;
             bottom: 0;
             left: -16px;
-            right: -16px;
             border-bottom: 1px solid #f1f1f1;
             z-index: -2;
         }
@@ -240,10 +244,10 @@
             }
 
             .lzb-metabox-label {
-                margin-right: 20px;
-                padding-right: 20px;
-                min-width: 190px;
                 width: 190px;
+                min-width: 190px;
+                padding-right: 20px;
+                margin-right: 20px;
 
                 small {
                     margin-top: 5px;
@@ -278,9 +282,9 @@
 
     // actions.
     .lzb-metabox-control-actions {
-        font-size: .8em;
         margin-top: 3px;
         margin-bottom: -13px;
+        font-size: .8em;
         opacity: 0;
         transition: .1s opacity;
 
@@ -294,8 +298,8 @@
             }
         }
         .lzb-metabox-control-action-remove {
-            color: #ea2c22;
             margin-left: 5px;
+            color: #ea2c22;
         }
     }
     .lzb-metabox-control-expanded {
@@ -318,11 +322,12 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    align-content: flex-start;
+    padding: 0;
+    // stylelint-disable-next-line
+    margin: 0 -5px !important;
     list-style-type: none;
     cursor: pointer;
-    padding: 0;
-    margin: 0 -5px !important;
+    align-content: flex-start;
 
     // fix flex items shrink.
     &::after {
@@ -387,11 +392,11 @@
         left: 0;
         width: 100%;
         height: 100%;
+        // stylelint-disable-next-line
+        font-family: "object-fit: cover; object-position: 50% 50%;";
         border-radius: 3px;
         object-fit: cover;
         object-position: 50% 50%;
-        // stylelint-disable-next-line
-        font-family: "object-fit: cover; object-position: 50% 50%;";
     }
     .lzb-gutenberg-image-item {
         display: block;
@@ -432,11 +437,11 @@
     display: flex;
     flex-wrap: wrap;
     min-width: 255px;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
-    background: #fff;
     padding: 15px;
     margin-top: 25px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
     z-index: 1;
 
     &::before {
@@ -447,8 +452,8 @@
         bottom: 0;
         left: -12px;
         width: 229px;
-        border-right: 1px solid #f1f1f1;
         background-color: rgba(0, 0, 0, .02);
+        border-right: 1px solid #f1f1f1;
         z-index: -1;
     }
     &::after {
@@ -456,9 +461,9 @@
         position: absolute;
         display: block;
         top: 0;
+        right: -16px;
         bottom: 0;
         left: -16px;
-        right: -16px;
         border-bottom: 1px solid #f1f1f1;
         z-index: -2;
     }
@@ -468,26 +473,26 @@
     }
 
     .lzb-metabox {
-         display: flex;
+        display: flex;
 
         > div {
             width: 100%;
         }
 
         .lzb-metabox-label {
-            margin-right: 20px;
-            padding-right: 20px;
-            min-width: 190px;
             width: 190px;
+            min-width: 190px;
+            padding-right: 20px;
+            margin-right: 20px;
             font-weight: 500;
         }
-     }
+    }
 
     // blocks list.
     .lzb-templates-single-blocks {
         display: inline-flex;
-        flex-wrap: wrap;
         flex-direction: column;
+        flex-wrap: wrap;
         margin: 0;
 
         &:empty {
@@ -497,18 +502,18 @@
         .lzb-templates-single-blocks-block {
             position: relative;
             padding: 6px 10px;
-            background-color: #e2e4e7;
-            color: #32373c;
-            border-radius: 3px;
             margin-bottom: 10px;
+            color: #32373c;
+            background-color: #e2e4e7;
+            border-radius: 3px;
 
             > span {
                 vertical-align: middle;
 
                 &:first-of-type {
-                    font-size: 15px;
                     width: 15px;
                     height: 15px;
+                    font-size: 15px;
                     line-height: 15px;
                     vertical-align: middle;
                 }
@@ -527,12 +532,12 @@
                 right: -5px;
                 width: 15px;
                 height: 15px;
-                opacity: 0;
-                cursor: pointer;
-                background-color: red;
-                border: none;
                 color: #fff;
+                cursor: pointer;
+                background-color: #ff3d27;
+                border: none;
                 border-radius: 50%;
+                opacity: 0;
                 transition: .15s opacity ease-in-out;
 
                 > span {
@@ -557,8 +562,8 @@
         }
 
         .lzb-templates-single-actions-remove {
-            font-size: 0.8em;
             margin-right: 10px;
+            font-size: .8em;
             color: #ccc;
 
             &:hover {
@@ -586,13 +591,13 @@
 
     label {
         display: inline-block;
-        font-weight: 500;
         margin-bottom: 5px;
+        font-weight: 500;
     }
 
     textarea {
         width: 100%;
-        min-height: 500px;
         min-width: 400px;
+        min-height: 500px;
     }
 }

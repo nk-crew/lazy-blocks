@@ -8,120 +8,119 @@ const $ = window.jQuery;
 // generate unique id.
 // thanks to https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 function getUID() {
-    return 'xxxyxx4xxx'.replace(/[xy]/g, function(c) {
-        let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
+    return 'xxxyxx4xxx'.replace( /[xy]/g, function( c ) {
+        // eslint-disable-next-line
+        let r = Math.random() * 16 | 0;
+        // eslint-disable-next-line
+        const v = c === 'x' ? r : ( r & 0x3 | 0x8 );
+        return v.toString( 16 );
+    } );
 }
 
 // add event to the .val() function.
 const originalVal = $.fn.val;
-$.fn.val = function(){
-    const result = originalVal.apply(this,arguments);
-    if(arguments.length > 0) {
-        $(this).trigger('lazyblocks-change');
+$.fn.val = function() {
+    const result = originalVal.apply( this, arguments );
+    if ( arguments.length > 0 ) {
+        $( this ).trigger( 'lazyblocks-change' );
     }
     return result;
 };
 
-function stringTemplate( string, data ) {
-    return string.replace( new RegExp( '#{(.+?)}', 'g' ), (match, contents) => {
-        if ( data[contents] ) {
-            return data[contents];
+function stringTemplate( string, templates ) {
+    return string.replace( new RegExp( '#{(.+?)}', 'g' ), ( match, contents ) => {
+        if ( templates[ contents ] ) {
+            return templates[ contents ];
 
             // find selected function.
             // #{type:selected?textarea}
         } else if ( new RegExp( '(.+?):selected\?(.+?)', 'g' ).test( contents ) ) {
-            if ( data[contents.split(':')[0]] === contents.split('?').pop() ) {
+            if ( templates[ contents.split( ':' )[ 0 ] ] === contents.split( '?' ).pop() ) {
                 return ' selected="selected"';
-            } else {
-                return '';
             }
+            return '';
 
             // find checked function.
             // #{type:checked?true}
         } else if ( new RegExp( '(.+?):checked\?(.+?)', 'g' ).test( contents ) ) {
-            if ( data[contents.split(':')[0]] === contents.split('?').pop() ) {
+            if ( templates[ contents.split( ':' )[ 0 ] ] === contents.split( '?' ).pop() ) {
                 return ' checked="checked"';
-            } else {
-                return '';
             }
+            return '';
         }
         return '';
-    } )
+    } );
 }
-
 
 /**
  * Blocks.
  */
 
 // preview for block icon option.
-$('.lzb-dashicons-picker > input').on('input lazyblocks-change', function () {
-    let className = $(this).val();
-    const $iconPreview = $(this).parent().find('.lzb-dashicons-picker-preview');
+$( '.lzb-dashicons-picker > input' ).on( 'input lazyblocks-change', function() {
+    let className = $( this ).val();
+    const $iconPreview = $( this ).parent().find( '.lzb-dashicons-picker-preview' );
 
     if ( className && $iconPreview.length ) {
-        if ( className.indexOf('dashicons') !== -1 ) {
+        if ( className.indexOf( 'dashicons' ) !== -1 ) {
             className = 'dashicons ' + className;
         }
-        $iconPreview.attr('class', 'lzb-dashicons-picker-preview ' + className);
+        $iconPreview.attr( 'class', 'lzb-dashicons-picker-preview ' + className );
     }
-}).trigger('lazyblocks-change');
+} ).trigger( 'lazyblocks-change' );
 
 // fix for dashicons picker position.
-$(document).on( 'click', '.lzb-dashicons-picker .dashicons-picker', function ( e ) {
-    const $iconContainer = $('.dashicon-picker-container');
-    const $iconPicker = $(e.target).closest('.lzb-dashicons-picker');
+$( document ).on( 'click', '.lzb-dashicons-picker .dashicons-picker', function( e ) {
+    const $iconContainer = $( '.dashicon-picker-container' );
+    const $iconPicker = $( e.target ).closest( '.lzb-dashicons-picker' );
 
-    $iconContainer.css({
+    $iconContainer.css( {
         top: $iconPicker.offset().top + $iconPicker.outerHeight(),
         left: $iconPicker.offset().left + $iconPicker.outerWidth() - $iconContainer.outerWidth(),
-    });
+    } );
 } );
 
 // prevent form submit.
-$('button.dashicons-picker').on('click', function (e) {
+$( 'button.dashicons-picker' ).on( 'click', function( e ) {
     e.preventDefault();
-});
+} );
 
 // add selectize tags.
 if ( typeof $.fn.selectize !== 'undefined' ) {
-    $('#lazyblocks_keywords').selectize({
-        plugins: ['drag_drop', 'remove_button'],
+    $( '#lazyblocks_keywords' ).selectize( {
+        plugins: [ 'drag_drop', 'remove_button' ],
         delimiter: ',',
         maxItems: 3,
         selectOnTab: true,
-        create: function(input) {
+        create: function( input ) {
             return {
                 value: input,
-                text: input
-            }
-        }
-    });
-    $('#lazyblocks_condition_post_types').selectize({
-        plugins: ['drag_drop', 'remove_button'],
+                text: input,
+            };
+        },
+    } );
+    $( '#lazyblocks_condition_post_types' ).selectize( {
+        plugins: [ 'drag_drop', 'remove_button' ],
         delimiter: ',',
         selectOnTab: true,
-        create: function(input) {
+        create: function( input ) {
             return {
                 value: input,
-                text: input
-            }
-        }
-    });
-    $('#lazyblocks_keywords-selectized').on('keypress', function(e) {
-        if ( event.keyCode === 13 ) {
+                text: input,
+            };
+        },
+    } );
+    $( '#lazyblocks_keywords-selectized' ).on( 'keypress', function( e ) {
+        if ( e.keyCode === 13 ) {
             e.preventDefault();
         }
-    });
+    } );
 }
-
 
 /**
  * Controls
  */
-const $controls = $('#lazyblocks_controls .lzb-metabox');
+const $controls = $( '#lazyblocks_controls .lzb-metabox' );
 
 // new control template.
 const controlNameTemplate = 'lazyblocks_controls[#{ID}]';
@@ -265,21 +264,21 @@ const controlTemplate = `
     `;
 
 // add control.
-function addControl( data ) {
-    if ( data.ID && data.ID === 'uniq' ) {
+function addControl( controlData ) {
+    if ( controlData.ID && controlData.ID === 'uniq' ) {
         let ID = getUID();
-        while ( $(`[data-control-id="control_${ ID }"]`).length ) {
+        while ( $( `[data-control-id="control_${ ID }"]` ).length ) {
             ID = getUID();
         }
-        data.ID = `control_${ ID }`;
+        controlData.ID = `control_${ ID }`;
     }
-    if ( data.ID ) {
+    if ( controlData.ID ) {
         let newControl = controlTemplate;
 
         // prepare choices to multiline string.
-        if ( data.choices && Array.isArray( data.choices ) ) {
+        if ( controlData.choices && Array.isArray( controlData.choices ) ) {
             let strChoices = '';
-            data.choices.forEach( ( choice ) => {
+            controlData.choices.forEach( ( choice ) => {
                 strChoices += strChoices ? '\n' : '';
                 if ( choice.value === choice.label ) {
                     strChoices += `${ choice.value }`;
@@ -287,58 +286,58 @@ function addControl( data ) {
                     strChoices += `${ choice.value } : ${ choice.label }`;
                 }
             } );
-            data.choices = strChoices;
+            controlData.choices = strChoices;
         }
 
         // add template values.
-        newControl = stringTemplate( newControl, data );
+        newControl = stringTemplate( newControl, controlData );
 
-        $controls.find('.lzb-metabox-controls').append( newControl );
+        $controls.find( '.lzb-metabox-controls' ).append( newControl );
 
         // expand.
-        $controls.find(`[data-control-id="control_${ data.ID }"] .lzb-metabox-control-action-expand`).click();
+        $controls.find( `[data-control-id="control_${ controlData.ID }"] .lzb-metabox-control-action-expand` ).click();
 
         // conditionize init.
-        $controls.find(`[data-control-id="control_${ data.ID }"]`).find('input, select, textarea').change();
+        $controls.find( `[data-control-id="control_${ controlData.ID }"]` ).find( 'input, select, textarea' ).change();
     }
 }
 
 // remove control.
 function removeControl( ID ) {
-    $controls.find(`[data-control-id="${ ID }"]`).remove();
+    $controls.find( `[data-control-id="${ ID }"]` ).remove();
 }
 
 // contain values
 function updateContainValues() {
-    $controls.find('[data-contain-val]').each(function() {
-        const $this = $(this);
-        const $listenTo = $($this.attr('data-contain-val'));
+    $controls.find( '[data-contain-val]' ).each( function() {
+        const $this = $( this );
+        const $listenTo = $( $this.attr( 'data-contain-val' ) );
         let result;
 
-        if ($listenTo.is('[type="radio"], [type="checkbox"]')) {
-            result = $listenTo.is(':checked') ? 'true' : 'false' ;
-        } else if ($listenTo.is('textarea, select, input')) {
+        if ( $listenTo.is( '[type="radio"], [type="checkbox"]' ) ) {
+            result = $listenTo.is( ':checked' ) ? 'true' : 'false';
+        } else if ( $listenTo.is( 'textarea, select, input' ) ) {
             result = $listenTo.val();
         }
 
-        $this.html(result);
-    });
+        $this.html( result );
+    } );
 }
 
 // update choices array (to save as array and not as multiline string)
 function updateChoicesArray() {
-    $controls.find('.lzb-choices-hidden-array').each(function () {
-        const $this = $(this);
-        const $textarea = $this.next('textarea');
+    $controls.find( '.lzb-choices-hidden-array' ).each( function() {
+        const $this = $( this );
+        const $textarea = $this.next( 'textarea' );
         const textareaVal = $textarea.val();
-        const name =  $this.attr('data-name');
+        const name = $this.attr( 'data-name' );
         let newInputs = '';
 
         let k = 0;
         textareaVal.split( '\n' ).forEach( ( val ) => {
             const split = val.split( ' : ' );
-            const value = split[0].replace( /\n/g, '' );
-            const label = ( split[1] || split[0] ).replace( /\n/g, '' );
+            const value = split[ 0 ].replace( /\n/g, '' );
+            const label = ( split[ 1 ] || split[ 0 ] ).replace( /\n/g, '' );
 
             if ( value ) {
                 newInputs += `<input type="hidden" name="${ name }[${ k }][value]" value="${ value }">`;
@@ -348,8 +347,8 @@ function updateChoicesArray() {
             }
         } );
 
-        $this.html(newInputs);
-    });
+        $this.html( newInputs );
+    } );
 }
 
 if ( $controls.length ) {
@@ -365,69 +364,69 @@ if ( $controls.length ) {
             <button class="button button-primary button-large">+ Add Control</button>
         </div>
     `;
-    $controls.html(startingTemplate);
+    $controls.html( startingTemplate );
 
     // add existing controls.
-    Object.keys(data.controls).map((key) => {
+    Object.keys( data.controls ).map( ( key ) => {
         addControl( Object.assign( { ID: key }, data.controls[ key ] ) );
-    });
+    } );
 
     // events.
 
     // contain values and choices
     updateContainValues();
     updateChoicesArray();
-    $controls.on('change', 'input, select, textarea', function () {
+    $controls.on( 'change', 'input, select, textarea', function() {
         updateContainValues();
         updateChoicesArray();
-    });
+    } );
 
     // add control.
-    $controls.on('click', '.lzb-metabox-add-control button', function (e) {
+    $controls.on( 'click', '.lzb-metabox-add-control button', function( e ) {
         e.preventDefault();
 
-        addControl({
+        addControl( {
             ID: 'uniq',
-        });
-    });
+        } );
+    } );
 
     // remove control
-    $controls.on('click', '.lzb-metabox-control-action-remove', function (e) {
+    $controls.on( 'click', '.lzb-metabox-control-action-remove', function( e ) {
         e.preventDefault();
 
-        removeControl($(this).closest('[data-control-id]').attr('data-control-id'));
-    });
+        removeControl( $( this ).closest( '[data-control-id]' ).attr( 'data-control-id' ) );
+    } );
 
     // expand collapsed options.
-    $controls.on('click', '.lzb-metabox-control-action-expand', function (e) {
+    $controls.on( 'click', '.lzb-metabox-control-action-expand', function( e ) {
         e.preventDefault();
 
-        const $control = $(this).closest('[data-control-id]');
-        const expanded = $control.data('expanded');
+        const $control = $( this ).closest( '[data-control-id]' );
+        const expanded = $control.data( 'expanded' );
 
         if ( expanded ) {
-            $control.find('.lzb-metabox-control-expanded').stop().slideUp();
-            $control.find('.lzb-metabox-control-collapsed').stop().slideDown();
-            $control.find('.lzb-metabox-control-action-expand').text('Expand');
+            $control.find( '.lzb-metabox-control-expanded' ).stop().slideUp();
+            $control.find( '.lzb-metabox-control-collapsed' ).stop().slideDown();
+            $control.find( '.lzb-metabox-control-action-expand' ).text( 'Expand' );
         } else {
-            $control.find('.lzb-metabox-control-expanded').stop().slideDown();
-            $control.find('.lzb-metabox-control-collapsed').stop().slideUp();
-            $control.find('.lzb-metabox-control-action-expand').text('Collapse');
+            $control.find( '.lzb-metabox-control-expanded' ).stop().slideDown();
+            $control.find( '.lzb-metabox-control-collapsed' ).stop().slideUp();
+            $control.find( '.lzb-metabox-control-action-expand' ).text( 'Collapse' );
         }
 
-        $control.data('expanded', !expanded);
-    });
+        $control.data( 'expanded', ! expanded );
+    } );
 
     // slugify
-    $controls.on('blur', '.lzb-metabox input', function (e) {
+    $controls.on( 'blur', '.lzb-metabox input', function( e ) {
         e.preventDefault();
-        const $this = $(this);
-        const name = $this.attr('name');
+        const $this = $( this );
+        const name = $this.attr( 'name' );
         let $nameInput = false;
 
         // add slug if don't exists.
-        if ( /\[label]$/.test(name) ) {
-            $nameInput = $(`[name="${ name.replace( /\[label]$/, '[name]' ) }"]`);
+        if ( /\[label]$/.test( name ) ) {
+            $nameInput = $( `[name="${ name.replace( /\[label]$/, '[name]' ) }"]` );
 
             if ( $nameInput.val() ) {
                 $nameInput = false;
@@ -437,65 +436,64 @@ if ( $controls.length ) {
         }
 
         // slugify name control after user changed it.
-        if ( /\[name]$/.test(name) ) {
+        if ( /\[name]$/.test( name ) ) {
             $nameInput = $this;
         }
 
         if ( $nameInput && $nameInput.length ) {
             $nameInput.val( slugify( $nameInput.val(), {
                 replacement: '_',
-                lower: true
+                lower: true,
             } ) );
         }
-    });
+    } );
 }
-
 
 /**
  * Templates
  */
 if ( wp.api ) {
-    wp.api.loadPromise.done(function () {
-        if (!wp.api.models.Lazyblocks_templates) {
+    wp.api.loadPromise.done( function() {
+        if ( ! wp.api.models.Lazyblocks_templates ) {
             return;
         }
 
-        const $buttons = $('.lzb-templates-buttons');
-        const $list = $('.lzb-templates-list');
-        const $availableBlocks = $('.lzb-templates-blocks');
-        let blocksList = {};
-        let blocksListCategorized = {};
+        const $buttons = $( '.lzb-templates-buttons' );
+        const $list = $( '.lzb-templates-list' );
+        const $availableBlocks = $( '.lzb-templates-blocks' );
+        const blocksList = {};
+        const blocksListCategorized = {};
         let blocksSelectOptions = '';
 
         // prepare blocks list.
-        $availableBlocks.children('div').each(function () {
-            const $block = $(this);
-            const name = $block.attr('data-block-name');
-            const cat = name.split('/')[0];
+        $availableBlocks.children( 'div' ).each( function() {
+            const $block = $( this );
+            const name = $block.attr( 'data-block-name' );
+            const cat = name.split( '/' )[ 0 ];
 
-            if (!blocksListCategorized[cat]) {
-                blocksListCategorized[cat] = [];
+            if ( ! blocksListCategorized[ cat ] ) {
+                blocksListCategorized[ cat ] = [];
             }
 
-            blocksList[name] = {
+            blocksList[ name ] = {
                 name: name,
-                title: $block.attr('data-block-title'),
-                icon: $block.attr('data-block-icon'),
-                useOnce: $block.attr('data-block-use-once'),
+                title: $block.attr( 'data-block-title' ),
+                icon: $block.attr( 'data-block-icon' ),
+                useOnce: $block.attr( 'data-block-use-once' ),
             };
-            blocksListCategorized[cat][name] = blocksList[name];
-        });
+            blocksListCategorized[ cat ][ name ] = blocksList[ name ];
+        } );
 
         // prepare blocks list for Select.
-        Object.keys(blocksListCategorized).forEach((cat) => {
+        Object.keys( blocksListCategorized ).forEach( ( cat ) => {
             blocksSelectOptions += `<optgroup label="${ cat }">`;
-            Object.keys(blocksListCategorized[cat]).forEach((k) => {
-                const block = blocksListCategorized[cat][k];
+            Object.keys( blocksListCategorized[ cat ] ).forEach( ( k ) => {
+                const block = blocksListCategorized[ cat ][ k ];
 
                 blocksSelectOptions += `<option value="${ block.name }">${ block.title }</option>`;
-            });
-            blocksSelectOptions += `</optgroup>`;
-        });
+            } );
+            blocksSelectOptions += '</optgroup>';
+        } );
 
         const singleTemplate = `
         <div class="lzb-templates-single" data-template-id="#{ID}" data-template-post-type="#{post_type}" data-template-post-label="#{post_label}">
@@ -544,152 +542,153 @@ if ( wp.api ) {
     `;
 
         // add template to the page.
-        function addTemplate(data, type = 'append') {
-            $list[type](stringTemplate(singleTemplate, data));
-            $buttons.find('[data-post-type="' + data['post_type'] + '"]').attr('disabled', 'disabled');
+        function addTemplate( templates, type = 'append' ) {
+            $list[ type ]( stringTemplate( singleTemplate, templates ) );
+            $buttons.find( '[data-post-type="' + templates[ 'post_type' ] + '"]' ).attr( 'disabled', 'disabled' );
         }
 
         // fetch all templates.
-        const templates = new wp.api.collections.Lazyblocks_templates({data: {per_page: 999}});
-        templates.fetch().done(function (data) {
-            $list.html('');
+        const templates = new wp.api.collections.Lazyblocks_templates( { data: { per_page: 999 } } );
+        templates.fetch().done( function( templatesData ) {
+            $list.html( '' );
 
-            data.forEach((item) => {
+            templatesData.forEach( ( item ) => {
                 let meta;
                 try {
-                    meta = JSON.parse(decodeURI(item.meta.lzb_template_data));
-                } catch (e) {
+                    meta = JSON.parse( decodeURI( item.meta.lzb_template_data ) );
+                } catch ( e ) {
                     meta = {};
                 }
                 let blocksString = '';
 
-                meta.blocks.forEach((val) => {
-                    blocksString += stringTemplate(blockTemplate, val);
-                });
+                meta.blocks.forEach( ( val ) => {
+                    blocksString += stringTemplate( blockTemplate, val );
+                } );
 
-                addTemplate({
+                addTemplate( {
                     ID: item.id,
                     post_type: meta.post_type || 'post',
                     post_label: meta.post_label || meta.post_type || 'post',
                     blocks: blocksString,
                     template_lock: meta.template_lock || '',
                     blocks_list: blocksSelectOptions,
-                });
-            });
-        });
+                } );
+            } );
+        } );
 
         // add new template.
-        $buttons.on('click', 'button', function (e) {
+        $buttons.on( 'click', 'button', function( e ) {
             e.preventDefault();
 
-            const $this = $(this);
+            const $this = $( this );
 
-            $this.attr('disabled', 'disabled');
+            $this.attr( 'disabled', 'disabled' );
 
-            const post = new wp.api.models.Lazyblocks_templates({
-                title: $(this).attr('data-post-label'),
+            const post = new wp.api.models.Lazyblocks_templates( {
+                title: $( this ).attr( 'data-post-label' ),
                 status: 'publish',
                 meta: {
-                    lzb_template_data: encodeURI(JSON.stringify({
-                        post_type: $this.attr('data-post-type'),
-                        post_label: $this.attr('data-post-label'),
+                    lzb_template_data: encodeURI( JSON.stringify( {
+                        post_type: $this.attr( 'data-post-type' ),
+                        post_label: $this.attr( 'data-post-label' ),
                         template_lock: '',
                         blocks: [],
-                    })),
-                }
-            });
-            post.save().done(function (data) {
-                if (data && data.id) {
-                    addTemplate({
-                        ID: data.id,
-                        post_type: $this.attr('data-post-type'),
-                        post_label: $this.attr('data-post-label'),
+                    } ) ),
+                },
+            } );
+            post.save().done( function( postData ) {
+                if ( postData && postData.id ) {
+                    addTemplate( {
+                        ID: postData.id,
+                        post_type: $this.attr( 'data-post-type' ),
+                        post_label: $this.attr( 'data-post-label' ),
                         blocks: '',
                         template_lock: '',
                         blocks_list: blocksSelectOptions,
-                    }, 'prepend');
+                    }, 'prepend' );
                 } else {
-                    $this.removeAttr('disabled');
+                    $this.removeAttr( 'disabled' );
                 }
-            });
-        });
+            } );
+        } );
 
         // update template.
-        $list.on('click', '.lzb-templates-single-actions-save', function (e) {
+        $list.on( 'click', '.lzb-templates-single-actions-save', function( e ) {
             e.preventDefault();
-            const $this = $(this);
-            const $template = $(this).closest('[data-template-id]');
+            const $this = $( this );
+            const $template = $( this ).closest( '[data-template-id]' );
             const blocks = [];
 
-            $template.find('.lzb-templates-single-blocks .lzb-templates-single-blocks-block').each(function () {
-                blocks.push({
-                    name: $(this).attr('data-block-name'),
-                    title: $(this).attr('data-block-title'),
-                    icon: $(this).attr('data-block-icon'),
-                });
-            });
+            $template.find( '.lzb-templates-single-blocks .lzb-templates-single-blocks-block' ).each( function() {
+                blocks.push( {
+                    name: $( this ).attr( 'data-block-name' ),
+                    title: $( this ).attr( 'data-block-title' ),
+                    icon: $( this ).attr( 'data-block-icon' ),
+                } );
+            } );
 
-            const post = new wp.api.models.Lazyblocks_templates({
-                id: $template.attr('data-template-id'),
+            const post = new wp.api.models.Lazyblocks_templates( {
+                id: $template.attr( 'data-template-id' ),
                 meta: {
-                    lzb_template_data: encodeURI(JSON.stringify({
-                        post_type: $template.attr('data-template-post-type'),
-                        post_label: $template.attr('data-template-post-label'),
-                        template_lock: $template.find('[name="template_lock"]').val() || '',
+                    lzb_template_data: encodeURI( JSON.stringify( {
+                        post_type: $template.attr( 'data-template-post-type' ),
+                        post_label: $template.attr( 'data-template-post-label' ),
+                        template_lock: $template.find( '[name="template_lock"]' ).val() || '',
                         blocks: blocks,
-                    })),
-                }
-            });
+                    } ) ),
+                },
+            } );
 
-            $this.attr('disabled', 'disabled');
-            post.save().done(function () {
-                setTimeout(() => {
-                    $this.removeAttr('disabled');
-                }, 500);
-            });
-        });
+            $this.attr( 'disabled', 'disabled' );
+            post.save().done( function() {
+                setTimeout( () => {
+                    $this.removeAttr( 'disabled' );
+                }, 500 );
+            } );
+        } );
 
         // remove template.
-        $list.on('click', '.lzb-templates-single-actions-remove', function (e) {
+        $list.on( 'click', '.lzb-templates-single-actions-remove', function( e ) {
             e.preventDefault();
-            const $template = $(this).closest('[data-template-id]');
-            const post = new wp.api.models.Lazyblocks_templates({
-                id: $template.attr('data-template-id')
-            });
+            const $template = $( this ).closest( '[data-template-id]' );
+            const post = new wp.api.models.Lazyblocks_templates( {
+                id: $template.attr( 'data-template-id' ),
+            } );
 
             $template.hide();
-            post.destroy({force: true}).done(function (data) {
-                if (data && data.deleted) {
-                    $buttons.find('[data-post-type="' + $template.attr('data-template-post-type') + '"]').removeAttr('disabled');
+            post.destroy( { force: true } ).done( function( postData ) {
+                if ( postData && postData.deleted ) {
+                    $buttons.find( '[data-post-type="' + $template.attr( 'data-template-post-type' ) + '"]' ).removeAttr( 'disabled' );
                     $template.remove();
                 } else {
-                    console.log(data);
+                    // eslint-disable-next-line no-console
+                    console.log( postData );
                     $template.show();
                 }
-            });
-        });
+            } );
+        } );
 
         // add blocks to template.
         // TODO: prevent to add it twice if the block has disabled 'multiple' support
-        $list.on('change', '.lzb-templates-single-add-blocks', function (e) {
+        $list.on( 'change', '.lzb-templates-single-add-blocks', function( e ) {
             e.preventDefault();
 
-            const $this = $(this);
+            const $this = $( this );
             const blockSlug = $this.val();
-            const $template = $this.closest('[data-template-id]');
+            const $template = $this.closest( '[data-template-id]' );
 
-            if (blocksList[blockSlug]) {
-                $template.find('.lzb-templates-single-blocks').append(stringTemplate(blockTemplate, blocksList[blockSlug]));
+            if ( blocksList[ blockSlug ] ) {
+                $template.find( '.lzb-templates-single-blocks' ).append( stringTemplate( blockTemplate, blocksList[ blockSlug ] ) );
             }
 
-            $this.val('');
-        });
+            $this.val( '' );
+        } );
 
         // remove blocks from template.
-        $list.on('click', '.lzb-templates-single-blocks-block-remove', function (e) {
+        $list.on( 'click', '.lzb-templates-single-blocks-block-remove', function( e ) {
             e.preventDefault();
 
-            $(this).closest('.lzb-templates-single-blocks-block').remove();
-        });
-    });
+            $( this ).closest( '.lzb-templates-single-blocks-block' ).remove();
+        } );
+    } );
 }
