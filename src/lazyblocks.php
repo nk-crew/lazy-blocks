@@ -274,7 +274,7 @@ add_action( 'plugins_loaded', 'lazyblocks' );
  *
  * @return array|mixed|object
  */
-function lzb_get_meta( $name, $id = null ) {
+function get_lzb_meta( $name, $id = null ) {
     $fix_meta_value = false;
     $default = null;
 
