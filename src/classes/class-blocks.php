@@ -416,9 +416,32 @@ class LazyBlocks_Blocks {
     private $blocks = null;
 
     /**
-     * Get all blocks array.
+     * Blocks list added by user using add_blocks method.
+     *
+     * @var null
      */
-    public function get_blocks() {
+    private $user_blocks = null;
+
+    /**
+     * Add block.
+     *
+     * @param array $data - block data.
+     */
+    public function add_block( $data ) {
+        if ( null === $this->user_blocks ) {
+            $this->user_blocks = array();
+        }
+        $this->user_blocks[] = $data;
+    }
+
+    /**
+     * Get all blocks array.
+     *
+     * @param bool $db_only - get blocks from database only.
+     *
+     * @return array|null
+     */
+    public function get_blocks( $db_only = false ) {
         // fetch blocks.
         if ( null === $this->blocks ) {
             $this->blocks = array();
@@ -439,7 +462,11 @@ class LazyBlocks_Blocks {
                 $icon = str_replace( 'dashicons-', 'dashicons dashicons-', $icon );
 
                 $keywords = esc_attr( $this->get_meta_value( 'lazyblocks_keywords', $block->ID ) );
-                $keywords = explode( ',', $keywords );
+                if ( $keywords ) {
+                    $keywords = explode( ',', $keywords );
+                } else {
+                    $keywords = array();
+                }
                 $controls = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
 
                 $this->blocks[] = array(
@@ -461,6 +488,10 @@ class LazyBlocks_Blocks {
                     'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );
             }
+        }
+
+        if ( ! $db_only && $this->user_blocks ) {
+            return array_merge( $this->blocks, $this->user_blocks );
         }
 
         return $this->blocks;

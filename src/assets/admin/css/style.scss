@@ -567,3 +567,32 @@
         }
     }
 }
+
+
+/**
+ * Tools
+ */
+.lzb-export-textarea {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -6px;
+    margin-bottom: -12px;
+
+    > div {
+        flex: 1 1 auto;
+        padding: 0 6px;
+        padding-bottom: 12px;
+    }
+
+    label {
+        display: inline-block;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 500px;
+        min-width: 400px;
+    }
+}

@@ -27,22 +27,81 @@ class LazyBlocks_Templates {
     }
 
     /**
+     * Templates list.
+     *
+     * @var array|null
+     */
+    private $templates = null;
+
+    /**
+     * Templates list added by user using add_template method.
+     *
+     * @var null
+     */
+    private $user_templates = null;
+
+    /**
+     * Add template.
+     *
+     * @param array $data - block data.
+     */
+    public function add_template( $data ) {
+        if ( null === $this->user_templates ) {
+            $this->user_templates = array();
+        }
+        $this->user_templates[] = $data;
+    }
+
+    /**
+     * Get all templates array.
+     *
+     * @param bool $db_only - get templates from database only.
+     *
+     * @return array|null
+     */
+    public function get_templates( $db_only = false ) {
+        // fetch templates.
+        if ( null === $this->templates ) {
+            $this->templates = array();
+
+            // get all lazyblocks_templates post types.
+            // Don't use WP_Query on the admin side https://core.trac.wordpress.org/ticket/18408 .
+            $all_templates = get_posts(
+                array(
+                    'post_type'      => 'lazyblocks_templates',
+                    // phpcs:ignore
+                    'posts_per_page' => -1,
+                    'showposts'      => -1,
+                    'paged'          => -1,
+                )
+            );
+            foreach ( $all_templates as $template ) {
+                $data = (array) json_decode( urldecode( get_post_meta( $template->ID, 'lzb_template_data', true ) ), true );
+
+                $this->templates[] = array(
+                    'id'    => $template->ID,
+                    'title' => $template->post_title,
+                    'data'  => $data,
+                );
+            }
+        }
+
+        if ( ! $db_only && $this->user_templates ) {
+            return array_merge( $this->templates, $this->user_templates );
+        }
+
+        return $this->templates;
+    }
+
+    /**
      * Add templates to posts.
      */
     public function add_template_to_posts() {
-        // get all templates types.
-        // Don't use WP_Query on the admin side https://core.trac.wordpress.org/ticket/18408 .
-        $all_templates = get_posts(
-            array(
-                'post_type'      => 'lazyblocks_templates',
-                // phpcs:ignore
-                'posts_per_page' => -1,
-                'showposts'      => -1,
-                'paged'          => -1,
-            )
-        );
+        // get all templates.
+        $all_templates = $this->get_templates();
+
         foreach ( $all_templates as $template ) {
-            $data = (array) json_decode( urldecode( get_post_meta( $template->ID, 'lzb_template_data', true ) ), true );
+            $data = $template['data'];
 
             if ( ! empty( $data ) ) {
                 $post_type_object = get_post_type_object( $data['post_type'] );

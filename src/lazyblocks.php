@@ -135,6 +135,7 @@ class LazyBlocks {
 
         $this->blocks = new LazyBlocks_Blocks();
         $this->templates = new LazyBlocks_Templates();
+        $this->tools = new LazyBlocks_Tools();
     }
 
     /**
@@ -224,13 +225,43 @@ class LazyBlocks {
     private function include_dependencies() {
         require_once( $this->plugin_path . '/classes/class-blocks.php' );
         require_once( $this->plugin_path . '/classes/class-templates.php' );
+        require_once( $this->plugin_path . '/classes/class-tools.php' );
     }
 
     /**
      * Get lazyblocks array.
+     *
+     * @param bool $db_only - get blocks from database only.
      */
-    public function get_blocks() {
-        return $this->blocks->get_blocks();
+    public function get_blocks( $db_only = false ) {
+        return $this->blocks->get_blocks( $db_only );
+    }
+
+    /**
+     * Get lazyblocks templates array.
+     *
+     * @param bool $db_only - get templates from database only.
+     */
+    public function get_templates( $db_only = false ) {
+        return $this->templates->get_templates( $db_only );
+    }
+
+    /**
+     * Add lazyblocks block.
+     *
+     * @param array $data - block data.
+     */
+    public function add_block( $data ) {
+        return $this->blocks->add_block( $data );
+    }
+
+    /**
+     * Add lazyblocks template.
+     *
+     * @param array $data - template data.
+     */
+    public function add_template( $data ) {
+        return $this->templates->add_template( $data );
     }
 
     /**
