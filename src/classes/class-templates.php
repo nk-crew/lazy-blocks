@@ -59,6 +59,7 @@ class LazyBlocks_Templates {
 
                 if ( ! empty( $blocks ) ) {
                     $post_type_object->template = $blocks;
+                    add_post_type_support( $data['post_type'], 'custom-fields' );
                 }
 
                 if ( isset( $data['template_lock'] ) && $data['template_lock'] ) {
