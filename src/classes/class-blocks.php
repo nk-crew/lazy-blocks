@@ -28,7 +28,7 @@ class LazyBlocks_Blocks {
 
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
-            add_action( 'admin_enqueue_scripts', array( $this, 'register_block' ) );
+            add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
         }
 
         // admin blocks page enqueue.
@@ -457,8 +457,6 @@ class LazyBlocks_Blocks {
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
                     ),
-                    // TODO: Will be deprecated in 3.3, use supports.multiple.
-                    'useOnce'     => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                     'controls'    => $controls,
                     'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );

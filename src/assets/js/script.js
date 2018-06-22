@@ -472,7 +472,6 @@ options.blocks.forEach(( item ) => {
         category: item.category,
         keywords: item.keywords,
         supports: item.supports,
-        useOnce: item.useOnce,
 
         attributes: attributes,
 

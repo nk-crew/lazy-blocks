@@ -220,7 +220,7 @@ class LazyBlocks_Templates {
                         <div
                             data-block-id="<?php echo esc_attr( $block['id'] ); ?>"
                             data-block-name="<?php echo esc_attr( $block['slug'] ); ?>"
-                            data-block-use-once="<?php echo esc_attr( $block['useOnce'] ? 'true' : 'false' ); ?>"
+                            data-block-use-once="<?php echo esc_attr( $block['supports']['multiple'] ? 'false' : 'true' ); ?>"
                             data-block-title="<?php echo esc_attr( $block['title'] ); ?>"
                             data-block-icon="<?php echo esc_attr( $block['icon'] ); ?>"
                         ></div>
