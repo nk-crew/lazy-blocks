@@ -1,3 +1,4 @@
+import Handlebars from 'handlebars';
 
 // External Dependencies.
 import classnames from 'classnames/dedupe';
@@ -40,6 +41,16 @@ const {
 
 // each registered block.
 options.blocks.forEach( ( item ) => {
+    // prepare Handlebars templates.
+    let handlebarsEditorHtml = false;
+    let handlebarsFrontendHtml = false;
+    if ( item.code && item.code.editor_html ) {
+        handlebarsEditorHtml = Handlebars.compile( item.code.editor_html );
+    }
+    if ( item.code && item.code.frontend_html ) {
+        handlebarsFrontendHtml = Handlebars.compile( item.code.frontend_html );
+    }
+
     class LazyBlock extends Component {
         constructor() {
             super( ...arguments );
@@ -406,6 +417,15 @@ options.blocks.forEach( ( item ) => {
                         <div className="lzb-content-controls">
                             { this.renderControls( 'content' ) }
                         </div>
+                        { handlebarsEditorHtml ? (
+                            <div
+                                dangerouslySetInnerHTML={ {
+                                    __html: handlebarsEditorHtml( {
+                                        controls: this.props.attributes,
+                                    } ),
+                                } }
+                            />
+                        ) : '' }
                     </div>
                 </Fragment>
             );
@@ -481,7 +501,19 @@ options.blocks.forEach( ( item ) => {
 
         edit: LazyBlock,
 
-        save() {
+        save( props ) {
+            if ( handlebarsFrontendHtml ) {
+                return (
+                    <div
+                        className={ props.className || '' }
+                        dangerouslySetInnerHTML={ {
+                            __html: handlebarsFrontendHtml( {
+                                controls: props.attributes,
+                            } ),
+                        } }
+                    />
+                );
+            }
             return null;
         },
     } );

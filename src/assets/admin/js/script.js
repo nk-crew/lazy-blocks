@@ -117,6 +117,51 @@ if ( typeof $.fn.selectize !== 'undefined' ) {
     } );
 }
 
+// Tabs
+$( document ).on( 'click', '.lzb-metabox-tabs .lzb-metabox-tabs-btn', function( e ) {
+    e.preventDefault();
+
+    const $btn = $( this );
+    const $tabs = $btn.closest( '.lzb-metabox-tabs' );
+
+    $btn.addClass( 'lzb-metabox-tabs-btn-active' )
+        .siblings().removeClass( 'lzb-metabox-tabs-btn-active' );
+
+    $tabs.find( '.lzb-metabox-tabs-content-item' )
+        .removeClass( 'lzb-metabox-tabs-content-item-active' )
+        .eq( $btn.index() )
+        .addClass( 'lzb-metabox-tabs-content-item-active' );
+} );
+
+// CodeMirror
+$( () => {
+    if ( wp.codeEditor ) {
+        const $editorHTML = $( '#lazyblocks_code_editor_html' );
+        const $editorCSS = $( '#lazyblocks_code_editor_css' );
+        const $frontendHTML = $( '#lazyblocks_code_frontend_html' );
+        const $frontendCSS = $( '#lazyblocks_code_frontend_css' );
+
+        const HTMLparams = Object.assign( {}, wp.codeEditor.defaultSettings );
+        const CSSparams = Object.assign( {}, wp.codeEditor.defaultSettings );
+
+        HTMLparams.codemirror.mode = 'htmlmixed';
+        CSSparams.codemirror.mode = 'css';
+
+        if ( $editorHTML.length ) {
+            wp.codeEditor.initialize( $editorHTML[ 0 ], HTMLparams );
+        }
+        if ( $editorCSS.length ) {
+            wp.codeEditor.initialize( $editorCSS[ 0 ], CSSparams );
+        }
+        if ( $frontendHTML.length ) {
+            wp.codeEditor.initialize( $frontendHTML[ 0 ], HTMLparams );
+        }
+        if ( $frontendCSS.length ) {
+            wp.codeEditor.initialize( $frontendCSS[ 0 ], CSSparams );
+        }
+    }
+} );
+
 /**
  * Controls
  */

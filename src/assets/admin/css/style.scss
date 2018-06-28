@@ -148,6 +148,50 @@
     }
 }
 
+// Tabs.
+.lzb-metabox-tabs {
+    position: relative;
+
+    .lzb-metabox-tabs-buttons {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .lzb-metabox-tabs-btn {
+        padding: 10px 16px;
+        margin-bottom: -1px;
+        font-weight: 500;
+        color: inherit;
+        text-decoration: none;
+        border: 1px solid transparent;
+        border-bottom: none;
+        box-shadow: none;
+        opacity: .4;
+        transition: .15s opacity, .15s background-color, .15s border-color;
+
+        &:hover {
+            opacity: .8;
+        }
+    }
+    .lzb-metabox-tabs-btn-active {
+        background-color: #fff;
+        border-color: #e5e5e5;
+        opacity: 1;
+    }
+    .lzb-metabox-tabs-content {
+        border: 1px solid #e5e5e5;
+    }
+    .lzb-metabox-tabs-content-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+    }
+    .lzb-metabox-tabs-content-item-active {
+        position: static;
+        visibility: visible;
+    }
+}
+
 // Dashicons picker.
 .dashicon-picker-container {
     // stylelint-disable-next-line

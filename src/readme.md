@@ -1,7 +1,7 @@
 === LazyBlocks - Gutenberg Blocks Editor ===
 Contributors: nko
 Tags: gutenberg, blocks, editor, meta, fields
-Requires at least: 4.8.0
+Requires at least: 4.9.0
 Tested up to: 4.9
 Stable tag: @@plugin_version
 License: GPLv2 or later

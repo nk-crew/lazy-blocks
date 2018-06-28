@@ -85,6 +85,14 @@ class LazyBlocks_Blocks {
             'default'
         );
         add_meta_box(
+            'lazyblocks_code',
+            esc_html__( 'Code', '@@text_domain' ),
+            array( $this, 'add_code_metabox' ),
+            'lazyblocks',
+            'normal',
+            'default'
+        );
+        add_meta_box(
             'lazyblocks_settings',
             esc_html__( 'Settings', '@@text_domain' ),
             array( $this, 'add_settings_metabox' ),
@@ -115,6 +123,11 @@ class LazyBlocks_Blocks {
         'lazyblocks_description' => '',
         'lazyblocks_keywords'    => '',
         'lazyblocks_category'    => 'common',
+
+        'lazyblocks_code_editor_html'   => '',
+        'lazyblocks_code_editor_css'    => '',
+        'lazyblocks_code_frontend_html' => '',
+        'lazyblocks_code_frontend_css'  => '',
 
         'lazyblocks_supports_multiple'  => 'true',
         'lazyblocks_supports_classname' => 'true',
@@ -273,6 +286,84 @@ class LazyBlocks_Blocks {
     }
 
     /**
+     * Add Code metabox
+     */
+    public function add_code_metabox() {
+        wp_enqueue_code_editor( array() );
+
+        $editor_html = $this->get_meta_value( 'lazyblocks_code_editor_html' ) ? : '';
+        $frontend_html = $this->get_meta_value( 'lazyblocks_code_frontend_html' ) ? : '';
+
+        /*
+            $editor_css = $this->get_meta_value( 'lazyblocks_code_editor_css' ) ? : '';
+            $frontend_css = $this->get_meta_value( 'lazyblocks_code_frontend_css' ) ? : '';
+         */
+
+        ?>
+        <div class="lzb-metabox-tabs">
+            <div class="lzb-metabox-tabs-buttons">
+                <a href="#" class="lzb-metabox-tabs-btn lzb-metabox-tabs-btn-active">
+                    <?php echo esc_html__( 'Editor HTML', '@@text_domain' ); ?>
+                </a>
+                <a href="#" class="lzb-metabox-tabs-btn">
+                    <?php echo esc_html__( 'Frontend HTML', '@@text_domain' ); ?>
+                </a>
+                <?php
+
+                /*
+                    <a href="#" class="lzb-metabox-tabs-btn">
+                        <?php echo esc_html__( 'Editor CSS', '@@text_domain' ); ?>
+                    </a>
+                    <a href="#" class="lzb-metabox-tabs-btn">
+                        <?php echo esc_html__( 'Frontend CSS', '@@text_domain' ); ?>
+                    </a>.
+                 */
+                ?>
+            </div>
+            <div class="lzb-metabox-tabs-content">
+                <div class="lzb-metabox-tabs-content-item lzb-metabox-tabs-content-item-active">
+                    <div class="lzb-metabox">
+                        <textarea class="lzb-textarea" id="lazyblocks_code_editor_html" name="lazyblocks_code_editor_html"><?php echo esc_textarea( $editor_html ); ?></textarea>
+                    </div>
+                </div>
+                <div class="lzb-metabox-tabs-content-item">
+                    <div class="lzb-metabox">
+                        <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
+                    </div>
+                </div>
+                <?php
+
+                /*
+                    <div class="lzb-metabox-tabs-content-item">
+                        <div class="lzb-metabox">
+                            <textarea class="lzb-textarea" id="lazyblocks_code_editor_css" name="lazyblocks_code_editor_css"><?php echo esc_textarea( $editor_css ); ?></textarea>
+                        </div>
+                    </div>
+                    <div class="lzb-metabox-tabs-content-item">
+                        <div class="lzb-metabox">
+                            <textarea class="lzb-textarea" id="lazyblocks_code_frontend_css" name="lazyblocks_code_frontend_css"><?php echo esc_textarea( $frontend_css ); ?></textarea>
+                        </div>
+                    </div>
+                 */
+                ?>
+            </div>
+        </div>
+        <div class="lzb-metabox">
+            <br>
+            <p class="description">
+                <?php echo esc_html__( 'Note 1: if you use blocks as Metaboxes, you may leave these code editors blank.', '@@text_domain' ); ?>
+            </p>
+            <p class="description">
+                <?php echo wp_kses_post( __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name <strong>my_control</strong>, you can print it <strong>{{controls.my_control}}</strong>.', '@@text_domain' ) ); ?>
+            </p>
+            <p class="description">
+                <?php echo wp_kses_post( __( 'Note 3: yep, I know that Gutenberg based on React, but c\'mon... converting a string with JSX to React components is much more complicated than simple text replacements (Handlebars).', '@@text_domain' ) ); ?>
+            </p>
+        </div>
+        <?php
+    }
+
+    /**
      * Add Condition metabox
      */
     public function add_condition_metabox() {
@@ -359,13 +450,23 @@ class LazyBlocks_Blocks {
             $new_meta_value = '';
 
             if ( isset( $_POST[ $meta ] ) ) {
-                /* Get the posted data and sanitize it for use as an HTML class. */
-                $new_meta_value = sanitize_text_field( wp_unslash( $_POST[ $meta ] ) );
+                // editors.
+                if (
+                    'lazyblocks_code_editor_html' === $meta ||
+                    'lazyblocks_code_editor_css' === $meta ||
+                    'lazyblocks_code_frontend_html' === $meta ||
+                    'lazyblocks_code_frontend_css' === $meta
+                ) {
+                    $new_meta_value = wp_kses_post( wp_unslash( $_POST[ $meta ] ) );
+                } else {
+                    // Get the posted data and sanitize it for use as an HTML class.
+                    $new_meta_value = sanitize_text_field( wp_unslash( $_POST[ $meta ] ) );
 
-                if ( 'Array' === $new_meta_value ) {
-                    // phpcs:disable
-                    $new_meta_value = $this->sanitize_array( wp_unslash( $_POST[ $meta ] ) );
-                    // phpcs:enable
+                    if ( 'Array' === $new_meta_value ) {
+                        // phpcs:disable
+                        $new_meta_value = $this->sanitize_array( wp_unslash( $_POST[ $meta ] ) );
+                        // phpcs:enable
+                    }
                 }
             }
 
@@ -487,6 +588,12 @@ class LazyBlocks_Blocks {
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
                     ),
                     'controls'    => $controls,
+                    'code'        => array(
+                        'editor_html'   => $this->get_meta_value( 'lazyblocks_code_editor_html', $block->ID ),
+                        'editor_css'    => $this->get_meta_value( 'lazyblocks_code_editor_css', $block->ID ),
+                        'frontend_html' => $this->get_meta_value( 'lazyblocks_code_frontend_html', $block->ID ),
+                        'frontend_css'  => $this->get_meta_value( 'lazyblocks_code_frontend_css', $block->ID ),
+                    ),
                     'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );
             }

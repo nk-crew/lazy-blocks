@@ -91,6 +91,7 @@
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.5.1",
     "eslint-plugin-wordpress": "^0.1.0",
+    "fs": "0.0.1-security",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.1.0",
     "gulp-changed": "^2.0.0",
@@ -124,6 +125,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "handlebars": "^4.0.11",
     "slugify": "^1.3.0"
   }
 }

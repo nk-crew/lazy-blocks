@@ -80,10 +80,15 @@ gulp.task('build_js', function () {
                         {
                             test: /.js$/,
                             loader: 'babel-loader',
-                            exclude: /node_modules/
-                        }
-                    ]
-                }
+                            exclude: /node_modules/,
+                        },
+                    ],
+                },
+                resolve: {
+                    alias: {
+                        handlebars: 'handlebars/dist/handlebars.min.js',
+                    },
+                },
             }))
             // .pipe($.changed(itemData.to))
             .pipe($.uglify({
