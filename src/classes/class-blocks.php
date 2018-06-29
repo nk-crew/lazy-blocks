@@ -661,9 +661,9 @@ class LazyBlocks_Blocks {
         // enqueue block js.
         wp_enqueue_script(
             'lazyblocks-gutenberg',
-            lazyblocks()->plugin_url . 'assets/js/script.min.js',
+            lazyblocks()->plugin_url . 'assets/js/index.min.js',
             array( 'wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
-            filemtime( lazyblocks()->plugin_path . 'assets/js/script.min.js' )
+            filemtime( lazyblocks()->plugin_path . 'assets/js/index.min.js' )
         );
 
         // additional data for block js.
@@ -688,6 +688,8 @@ class LazyBlocks_Blocks {
             wp_enqueue_script( 'selectize', lazyblocks()->plugin_url . 'vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), '0.12.4', true );
 
             wp_enqueue_script( 'conditionize', lazyblocks()->plugin_url . 'vendor/conditionize/conditionize.js', array( 'jquery' ), '', true );
+
+            wp_enqueue_script( 'sortablejs', lazyblocks()->plugin_url . 'vendor/sortablejs/Sortable.min.js', array( 'jquery' ), '', true );
         }
     }
 }

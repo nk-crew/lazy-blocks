@@ -170,8 +170,11 @@ const $controls = $( '#lazyblocks_controls .lzb-metabox' );
 // new control template.
 const controlNameTemplate = 'lazyblocks_controls[#{ID}]';
 const controlTemplate = `
-        <div class="lzb-metabox-control" data-control-id="control_#{ID}">
+        <div class="lzb-metabox-control" data-control-id="#{ID}" data-control-name="${ controlNameTemplate }" data-control-type="#{type}">
             <div class="lzb-metabox">
+                <input class="lzb-input" id="${ controlNameTemplate }[sort]" name="${ controlNameTemplate }[sort]" type="hidden" value="#{sort}">
+                <input class="lzb-input" id="${ controlNameTemplate }[child_of]" name="${ controlNameTemplate }[child_of]" type="hidden" value="#{child_of}">
+
                 <div class="lzb-metabox-label">
                     <label data-contain-val="[id='${ controlNameTemplate }[label]']"></label>
                     <small data-contain-val="[id='${ controlNameTemplate }[name]']"></small>
@@ -181,14 +184,15 @@ const controlTemplate = `
                         <div>
                             <small data-contain-val="[id='${ controlNameTemplate }[type]']"></small>
                         </div>
-                        <div>
+                        <div class="lzb-metabox-control-hide-from-repeater">
                             <small data-contain-val="[id='${ controlNameTemplate }[placement]']"></small>
                         </div>
-                        <div>
+                        <div class="lzb-metabox-control-hide-from-repeater">
                             <small data-cond="[id='${ controlNameTemplate }[save_in_meta]" data-contain-val="[id='${ controlNameTemplate }[save_in_meta_name]']"></small>
                             <small data-cond="[id='${ controlNameTemplate }[save_in_meta] != 1">-</small>
                         </div>
                     </div>
+                    <div class="lzb-metabox lzb-metabox-container" data-cond="[id='${ controlNameTemplate }[type]'] == repeater"></div>
                     <div class="lzb-metabox-control-actions">
                         <a href="#" class="lzb-metabox-control-action-expand">Expand</a>
                         <a href="#" class="lzb-metabox-control-action-remove">Delete</a>
@@ -239,6 +243,9 @@ const controlTemplate = `
                                 <option value="checkbox" #{type:selected?checkbox}>Checkbox</option>
                                 <option value="toggle" #{type:selected?toggle}>Toggle</option>
                             </optgroup>
+                            <optgroup label="Layout" class="lzb-metabox-control-hide-from-repeater">
+                                <option value="repeater" #{type:selected?repeater}>Repeater</option>
+                            </optgroup>
                         </select>
                     </div>
                 </div>
@@ -254,7 +261,7 @@ const controlTemplate = `
                         <textarea class="lzb-textarea" id="${ controlNameTemplate }[choices]" rows="6">#{choices}</textarea>
                     </div>
                 </div>
-                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle">
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[default]">Default value</label>
                         <small>Appears when inserting a new block</small>
@@ -275,7 +282,7 @@ const controlTemplate = `
                         </label>
                     </div>
                 </div>
-                <div class="lzb-metabox">
+                <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[placement]">Placement</label>
                     </div>
@@ -288,7 +295,7 @@ const controlTemplate = `
                         </select>
                     </div>
                 </div>
-                <div class="lzb-metabox">
+                <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[save_in_meta]">Save in Meta</label>
                     </div>
@@ -308,22 +315,62 @@ const controlTemplate = `
         </div>
     `;
 
+// init sortablejs.
+function initControlsSortable() {
+    if ( ! window.Sortable ) {
+        return;
+    }
+
+    $controls.find( '.lzb-metabox-controls, .lzb-metabox-container' ).each( function() {
+        new window.Sortable( this, {
+            group: 'lzb-controls',
+            draggable: '.lzb-metabox-control',
+            filter: '.lzb-input, .lzb-textarea, .lzb-select',
+            preventOnFilter: false,
+            animation: 150,
+            onSort: function() {
+                let i = 1;
+                $controls.find( '.lzb-metabox-controls [data-control-name]' ).each( function() {
+                    const $control = $( this );
+                    const controlName = $control.attr( 'data-control-name' );
+
+                    // Update sort variable.
+                    $control.find( `[name="${ controlName }[sort]"]` ).val( i++ );
+
+                    // Update child_of variable.
+                    const $parent = $control.closest( '[data-control-id]' ).parents( '[data-control-id]:eq(0)' );
+                    const parentId = $parent.length ? $parent.attr( 'data-control-id' ) : '';
+
+                    $control.find( `[name="${ controlName }[child_of]"]` ).val( parentId );
+                } );
+            },
+        } );
+    } );
+}
+
 // add control.
 function addControl( controlData ) {
-    if ( controlData.ID && controlData.ID === 'uniq' ) {
-        let ID = getUID();
+    let {
+        ID,
+        choices,
+    } = controlData;
+
+    const childOf = controlData.child_of;
+
+    if ( ID && ID === 'uniq' ) {
+        ID = getUID();
         while ( $( `[data-control-id="control_${ ID }"]` ).length ) {
             ID = getUID();
         }
-        controlData.ID = `control_${ ID }`;
+        ID = `control_${ ID }`;
     }
-    if ( controlData.ID ) {
+    if ( ID ) {
         let newControl = controlTemplate;
 
         // prepare choices to multiline string.
-        if ( controlData.choices && Array.isArray( controlData.choices ) ) {
+        if ( choices && Array.isArray( choices ) ) {
             let strChoices = '';
-            controlData.choices.forEach( ( choice ) => {
+            choices.forEach( ( choice ) => {
                 strChoices += strChoices ? '\n' : '';
                 if ( choice.value === choice.label ) {
                     strChoices += `${ choice.value }`;
@@ -331,19 +378,27 @@ function addControl( controlData ) {
                     strChoices += `${ choice.value } : ${ choice.label }`;
                 }
             } );
-            controlData.choices = strChoices;
+            choices = strChoices;
         }
 
         // add template values.
         newControl = stringTemplate( newControl, controlData );
 
-        $controls.find( '.lzb-metabox-controls' ).append( newControl );
+        // append new control.
+        let $appendTo;
+        if ( childOf ) {
+            $appendTo = $controls.find( `[data-control-id="${ childOf }"] .lzb-metabox-container:eq(0)` );
+        }
+        if ( ! $appendTo ) {
+            $appendTo = $controls.find( '.lzb-metabox-controls' );
+        }
+        $appendTo.append( newControl );
 
         // expand.
-        $controls.find( `[data-control-id="control_${ controlData.ID }"] .lzb-metabox-control-action-expand` ).click();
+        $controls.find( `[data-control-id="${ ID }"] .lzb-metabox-control-action-expand` ).click();
 
         // conditionize init.
-        $controls.find( `[data-control-id="control_${ controlData.ID }"]` ).find( 'input, select, textarea' ).change();
+        $controls.find( `[data-control-id="${ ID }"]` ).find( 'input, select, textarea' ).change();
     }
 }
 
@@ -413,7 +468,15 @@ if ( $controls.length ) {
 
     // add existing controls.
     Object.keys( data.controls ).map( ( key ) => {
-        addControl( Object.assign( { ID: key }, data.controls[ key ] ) );
+        if ( ! data.controls[ key ].child_of ) {
+            addControl( Object.assign( { ID: key }, data.controls[ key ] ) );
+        }
+    } );
+    // inner blocks
+    Object.keys( data.controls ).map( ( key ) => {
+        if ( data.controls[ key ].child_of ) {
+            addControl( Object.assign( { ID: key }, data.controls[ key ] ) );
+        }
     } );
 
     // events.
@@ -433,13 +496,16 @@ if ( $controls.length ) {
         addControl( {
             ID: 'uniq',
         } );
+        initControlsSortable();
     } );
+    initControlsSortable();
 
     // remove control
     $controls.on( 'click', '.lzb-metabox-control-action-remove', function( e ) {
         e.preventDefault();
 
         removeControl( $( this ).closest( '[data-control-id]' ).attr( 'data-control-id' ) );
+        initControlsSortable();
     } );
 
     // expand collapsed options.
@@ -447,16 +513,22 @@ if ( $controls.length ) {
         e.preventDefault();
 
         const $control = $( this ).closest( '[data-control-id]' );
+        const ID = $control.attr( 'data-control-id' );
         const expanded = $control.data( 'expanded' );
 
+        // prevent expanding child controls.
+        function expandFilter() {
+            return $( this ).closest( '[data-control-id]' ).attr( 'data-control-id' ) === ID;
+        }
+
         if ( expanded ) {
-            $control.find( '.lzb-metabox-control-expanded' ).stop().slideUp();
-            $control.find( '.lzb-metabox-control-collapsed' ).stop().slideDown();
-            $control.find( '.lzb-metabox-control-action-expand' ).text( 'Expand' );
+            $control.find( '.lzb-metabox-control-expanded' ).filter( expandFilter ).stop().slideUp();
+            $control.find( '.lzb-metabox-control-collapsed' ).filter( expandFilter ).stop().slideDown();
+            $control.find( '.lzb-metabox-control-action-expand' ).filter( expandFilter ).text( 'Expand' );
         } else {
-            $control.find( '.lzb-metabox-control-expanded' ).stop().slideDown();
-            $control.find( '.lzb-metabox-control-collapsed' ).stop().slideUp();
-            $control.find( '.lzb-metabox-control-action-expand' ).text( 'Collapse' );
+            $control.find( '.lzb-metabox-control-expanded' ).filter( expandFilter ).stop().slideDown();
+            $control.find( '.lzb-metabox-control-collapsed' ).filter( expandFilter ).stop().slideUp();
+            $control.find( '.lzb-metabox-control-action-expand' ).filter( expandFilter ).text( 'Collapse' );
         }
 
         $control.data( 'expanded', ! expanded );

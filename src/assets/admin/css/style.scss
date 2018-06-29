@@ -256,6 +256,12 @@
         padding-left: 7px;
         z-index: 1;
 
+        &.sortable-ghost {
+            &::before {
+                background-color: rgba(226, 228, 231, .6);
+            }
+        }
+
         &::before {
             content: "";
             position: absolute;
@@ -349,8 +355,35 @@
     .lzb-metabox-control-expanded {
         display: none;
     }
-    .lzb-metabox-control:hover .lzb-metabox-control-actions {
+    .lzb-metabox-control:hover > .lzb-metabox > div > .lzb-metabox-control-actions {
         opacity: 1;
+    }
+
+    // repeater.
+    .lzb-metabox-container {
+        position: relative;
+        flex-direction: column;
+        min-height: 40px;
+        padding: 0 12px;
+        margin-top: 10px;
+        overflow: hidden;
+        border: 1px solid #f1f1f1;
+
+        &:empty {
+            border: 1px dashed #e2e4e7;
+        }
+        &:empty::after {
+            content: "Drag controls here";
+            position: absolute;
+            display: block;
+            top: 50%;
+            left: 50%;
+            color: #999;
+            transform: translateY(-50%) translateX(-50%);
+        }
+    }
+    [data-control-type="repeater"] .lzb-metabox-control-hide-from-repeater {
+        display: none;
     }
 }
 .lzb-metabox-add-control {
@@ -458,6 +491,94 @@
     &:hover .lzb-gutenberg-gallery-item,
     &:hover .lzb-gutenberg-image-item {
         opacity: .6;
+    }
+}
+
+// repeater
+.lzb-gutenberg-repeater {
+    padding: 18px 20px;
+    background-color: #fbfbfb;
+    border: 1px solid #eaeaea;
+
+    .lzb-gutenberg-repeater-item {
+        position: relative;
+
+        > div {
+            margin-right: 15px;
+            margin-left: 15px;
+        }
+
+        .lzb-gutenberg-repeater-btn-remove {
+            position: absolute;
+            display: block;
+            top: -7px;
+            right: -7px;
+            width: 17px;
+            height: 17px;
+            padding: 0;
+            font-size: .8em;
+            line-height: .8em;
+            color: #fff;
+            cursor: pointer;
+            background-color: #ea2c22;
+            border: none;
+            border-radius: 50%;
+            opacity: 0;
+            transition: .2s opacity;
+            transform: none;
+
+            > .dashicons {
+                width: 17px;
+                height: 17px;
+                font-size: 1em;
+                line-height: 17px;
+            }
+        }
+        &:hover .lzb-gutenberg-repeater-btn-remove {
+            opacity: 1;
+        }
+    }
+
+    .lzb-gutenberg-repeater-items .lzb-gutenberg-repeater-btn {
+        position: relative;
+        width: 100%;
+        padding: 5px 15px;
+        margin-bottom: 15px;
+        text-align: left;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #eaeaea;
+
+        > .lzb-gutenberg-repeater-btn-arrow {
+            position: absolute;
+            display: block;
+            top: 50%;
+            right: 10px;
+            height: .8em;
+            font-size: .8em;
+            line-height: .8em;
+            transition: .2s transform;
+            transform: translateY(-50%);
+        }
+
+        &.lzb-gutenberg-repeater-btn-active > .lzb-gutenberg-repeater-btn-arrow {
+            transform: translateY(-50%) rotate(90deg);
+        }
+    }
+
+    > button {
+        display: block;
+        margin-left: auto;
+    }
+
+    .lzb-inspector-controls & {
+        padding: 13px;
+
+        .lzb-gutenberg-repeater-item > div {
+            padding-top: 0;
+            margin-right: 0;
+            margin-left: 0;
+        }
     }
 }
 
