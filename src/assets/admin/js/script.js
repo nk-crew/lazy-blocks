@@ -350,7 +350,7 @@ function initControlsSortable() {
 
 // add control.
 function addControl( controlData ) {
-    let {
+    const {
         ID,
         choices,
     } = controlData;
@@ -358,11 +358,11 @@ function addControl( controlData ) {
     const childOf = controlData.child_of;
 
     if ( ID && ID === 'uniq' ) {
-        ID = getUID();
+        controlData.ID = getUID();
         while ( $( `[data-control-id="control_${ ID }"]` ).length ) {
-            ID = getUID();
+            controlData.ID = getUID();
         }
-        ID = `control_${ ID }`;
+        controlData.ID = `control_${ controlData.ID }`;
     }
     if ( ID ) {
         let newControl = controlTemplate;
@@ -378,7 +378,7 @@ function addControl( controlData ) {
                     strChoices += `${ choice.value } : ${ choice.label }`;
                 }
             } );
-            choices = strChoices;
+            controlData.choices = strChoices;
         }
 
         // add template values.
