@@ -1,4 +1,25 @@
 import Handlebars from 'handlebars';
+Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = true ) => {
+    if ( str && len && str.length > len ) {
+        var new_str = str.substr( 0, len + 1 );
+
+        while ( new_str.length ) {
+            var ch = new_str.substr( -1 );
+            new_str = new_str.substr( 0, -1 );
+
+            if (ch === ' ') {
+                break;
+            }
+        }
+
+        if ( new_str === '' ) {
+            new_str = str.substr( 0, len );
+        }
+
+        return new Handlebars.SafeString( new_str + ( ellipsis ? '...' : '' ) );
+    }
+    return str;
+} );
 
 // External Dependencies.
 import classnames from 'classnames/dedupe';
