@@ -364,7 +364,7 @@ function addControl( controlData ) {
         }
         controlData.ID = `control_${ controlData.ID }`;
     }
-    if ( ID ) {
+    if ( controlData.ID ) {
         let newControl = controlTemplate;
 
         // prepare choices to multiline string.
@@ -395,10 +395,10 @@ function addControl( controlData ) {
         $appendTo.append( newControl );
 
         // expand.
-        $controls.find( `[data-control-id="${ ID }"] .lzb-metabox-control-action-expand` ).click();
+        $controls.find( `[data-control-id="${ controlData.ID }"] .lzb-metabox-control-action-expand` ).click();
 
         // conditionize init.
-        $controls.find( `[data-control-id="${ ID }"]` ).find( 'input, select, textarea' ).change();
+        $controls.find( `[data-control-id="${ controlData.ID }"]` ).find( 'input, select, textarea' ).change();
     }
 }
 
