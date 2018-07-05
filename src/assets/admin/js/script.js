@@ -99,6 +99,17 @@ if ( typeof $.fn.selectize !== 'undefined' ) {
             };
         },
     } );
+    $( '#lazyblocks_supports_align' ).selectize( {
+        plugins: [ 'drag_drop', 'remove_button' ],
+        delimiter: ',',
+        selectOnTab: true,
+        create: function( input ) {
+            return {
+                value: input,
+                text: input,
+            };
+        },
+    } );
     $( '#lazyblocks_condition_post_types' ).selectize( {
         plugins: [ 'drag_drop', 'remove_button' ],
         delimiter: ',',

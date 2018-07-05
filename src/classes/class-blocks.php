@@ -134,6 +134,7 @@ class LazyBlocks_Blocks {
         'lazyblocks_supports_anchor'    => 'false',
         'lazyblocks_supports_html'      => 'false',
         'lazyblocks_supports_inserter'  => 'true',
+        'lazyblocks_supports_align'     => array( 'wide', 'full' ),
 
         'lazyblocks_condition_post_types' => '',
     );
@@ -184,6 +185,7 @@ class LazyBlocks_Blocks {
 
         $supports_multiple = $this->get_meta_value( 'lazyblocks_supports_multiple' );
         $supports_classname = $this->get_meta_value( 'lazyblocks_supports_classname' );
+        $supports_align = (array) $this->get_meta_value( 'lazyblocks_supports_align' );
         $supports_anchor = $this->get_meta_value( 'lazyblocks_supports_anchor' );
         $supports_html = $this->get_meta_value( 'lazyblocks_supports_html' );
         $supports_inserter = $this->get_meta_value( 'lazyblocks_supports_inserter' );
@@ -259,6 +261,19 @@ class LazyBlocks_Blocks {
                 <input class="lzb-input" type="checkbox" name="lazyblocks_supports_inserter" id="lazyblocks_supports_inserter" value="true" <?php checked( $supports_inserter ); ?>>
                 <?php echo esc_html__( 'Show in Blocks Inserter', '@@text_domain' ); ?>
             </label>
+
+            <div class="lzb-metabox">
+                <label for="lazyblocks_supports_align"><?php echo esc_html__( 'Align', '@@text_domain' ); ?></label>
+                <select class="lzb-select" id="lazyblocks_supports_align" name="lazyblocks_supports_align[]" multiple>
+                    <?php
+                    foreach ( array( 'wide', 'full', 'left', 'center', 'right' ) as $align ) {
+                        ?>
+                        <option value="<?php echo esc_html( $align ); ?>" <?php echo selected( in_array( $align, $supports_align ) ); ?>><?php echo esc_html( $align ); ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
+            </div>
         </div>
         <?php
     }
@@ -583,6 +598,7 @@ class LazyBlocks_Blocks {
                     'supports'    => array(
                         'customClassName' => $this->get_meta_value( 'lazyblocks_supports_classname', $block->ID ),
                         'anchor'          => $this->get_meta_value( 'lazyblocks_supports_anchor', $block->ID ),
+                        'align'           => (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID ),
                         'html'            => $this->get_meta_value( 'lazyblocks_supports_html', $block->ID ),
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
