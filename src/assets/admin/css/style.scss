@@ -382,7 +382,7 @@
             transform: translateY(-50%) translateX(-50%);
         }
     }
-    [data-control-type="repeater"] .lzb-metabox-control-hide-from-repeater {
+    [data-control-type="repeater"] > .lzb-metabox .lzb-metabox-control-hide-from-repeater {
         display: none;
     }
 }
