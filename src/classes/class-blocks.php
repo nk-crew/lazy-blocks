@@ -615,11 +615,23 @@ class LazyBlocks_Blocks {
             }
         }
 
+        $result = $this->blocks;
+
         if ( ! $db_only && $this->user_blocks ) {
-            return array_merge( $this->blocks, $this->user_blocks );
+            $result = array_merge( $result, $this->user_blocks );
         }
 
-        return $this->blocks;
+        // unique only.
+        $unique_result = array();
+        $slug_array = array();
+        foreach ( $result as $item ) {
+            if ( ! in_array( $item['slug'], $slug_array ) ) {
+                $slug_array[] = $item['slug'];
+                $unique_result[] = $item;
+            }
+        }
+
+        return $unique_result;
     }
 
     /**
