@@ -9,14 +9,24 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+
 /**
  * LazyBlocks_Blocks class. Class to work with LazyBlocks CPT.
  */
 class LazyBlocks_Blocks {
     /**
+     * Handlebars engine.
+     *
+     * @var null|object
+     */
+    private $handlebars = null;
+
+    /**
      * LazyBlocks_Blocks constructor.
      */
     public function __construct() {
+        $this->prepare_handlebars();
+
         add_action( 'init', array( $this, 'register_post_type' ) );
 
         // add general metaboxes.
@@ -29,10 +39,47 @@ class LazyBlocks_Blocks {
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
             add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
+            add_action( 'init', array( $this, 'register_block_render' ) );
         }
 
         // admin blocks page enqueue.
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_blocks_enqueue_scripts' ), 9 );
+    }
+
+    /**
+     * Handlebars php.
+     */
+    public function prepare_handlebars() {
+        require_once lazyblocks()->plugin_path . 'vendor/Handlebars/Autoloader.php';
+
+        Handlebars\Autoloader::register();
+
+        $this->handlebars = new Handlebars\Handlebars();
+
+        $this->handlebars->registerHelper( 'truncate', function( $str, $len, $ellipsis = 'true' ) {
+            if ( $str && $len && mb_strlen( $str ) > $len ) {
+                $new_str = mb_substr( $str, 0, $len + 1 );
+                $count = mb_strlen( $new_str );
+
+                while ( $count > 0 ) {
+                    $ch = mb_substr( $new_str, -1 );
+                    $new_str = mb_substr( $new_str, 0, -1 );
+
+                    $count--;
+
+                    if ( ' ' === $ch ) {
+                        break;
+                    }
+                }
+
+                if ( '' === $new_str ) {
+                    $new_str = mb_substr( $str, 0, $len );
+                }
+
+                return new \Handlebars\SafeString( $new_str . ( 'true' === $ellipsis ? '...' : '' ) );
+            }
+            return $str;
+        } );
     }
 
     /**
@@ -701,6 +748,111 @@ class LazyBlocks_Blocks {
                 'blocks'    => $blocks,
             )
         );
+    }
+
+    /**
+     * Prepare attributes.
+     * The same function placed in block JSX file.
+     *
+     * @param array          $controls - controls list.
+     * @param string|boolean $child_of - childOf control name.
+     * @param array          $block - block data.
+     *
+     * @return array.
+     */
+    public function prepare_block_attributes( $controls, $child_of = '', $block ) {
+        $attributes = array();
+
+        foreach ( $controls as $k => $control ) {
+            if ( $control['child_of'] === $child_of ) {
+                $type       = 'string';
+                $default_val = $control['default'];
+
+                if ( $control['type'] ) {
+                    switch ( $control['type'] ) {
+                        case 'number':
+                            $type = 'number';
+                            break;
+                        case 'checkbox':
+                        case 'toggle':
+                            $type        = 'boolean';
+                            $default_val = 'true' === $control['checked'];
+                            break;
+                        case 'repeater':
+                            $default_val  = array();
+                            $inner_blocks = $this->prepare_block_attributes( $controls, $k, $block );
+
+                            foreach ( $inner_blocks as $n => $inner_block ) {
+                                $default_val[ $n ] = $inner_blocks[ $n ]['default'];
+                            }
+
+                            $default_val = urlencode( json_encode( array( $default_val ) ) );
+                            break;
+                    }
+                }
+
+                $attributes[ $control['name'] ] = array(
+                    'default' => $default_val,
+                    'type'    => $type,
+                );
+
+                if ( 'true' === $control['save_in_meta'] && $control['save_in_meta_name'] ) {
+                    $attributes[ $control['name'] ]['source'] = 'meta';
+                    $attributes[ $control['name'] ]['meta']   = $control['save_in_meta_name'];
+                }
+            }
+        }
+
+        // add attribute with code html to frontend render.
+        if ( isset( $block['code'] ) && isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
+            $attributes['lazyblock_code_frontend_html'] = array(
+                'type'    => 'string',
+                'default' => $block['code']['frontend_html'],
+            );
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Register block custom frontend render if exists.
+     */
+    public function register_block_render() {
+        $blocks = $this->get_blocks();
+
+        foreach ( $blocks as $block ) {
+            if ( isset( $block['code'] ) && isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
+                register_block_type( $block['slug'], array(
+                    'attributes'      => $this->prepare_block_attributes( $block['controls'], '', $block ),
+                    'render_callback' => array( $this, 'render_frontend_html' ),
+                ) );
+            }
+        }
+    }
+
+    /**
+     * Render block custom frontend HTML.
+     *
+     * @param array $attributes The block attributes.
+     *
+     * @return string Returns the post content with latest posts added.
+     */
+    public function render_frontend_html( $attributes ) {
+        $check_array = '%5B%7B%22';
+        $result = '';
+
+        // prepare decoded arrays to actual arrays.
+        foreach ( $attributes as $k => $attr ) {
+            if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array ) {
+                $attributes[ $k ] = json_decode( urldecode( $attr ), true );
+            }
+        }
+
+        if ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
+            $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], array( 'controls' => $attributes ) );
+        }
+
+        return $result;
     }
 
     /**

@@ -1,22 +1,22 @@
 import Handlebars from 'handlebars';
-Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = true ) => {
+Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = 'true' ) => {
     if ( str && len && str.length > len ) {
-        var new_str = str.substr( 0, len + 1 );
+        let newStr = str.substr( 0, len + 1 );
 
-        while ( new_str.length ) {
-            var ch = new_str.substr( -1 );
-            new_str = new_str.substr( 0, -1 );
+        while ( newStr.length ) {
+            const ch = newStr.substr( -1 );
+            newStr = newStr.substr( 0, -1 );
 
-            if (ch === ' ') {
+            if ( ch === ' ' ) {
                 break;
             }
         }
 
-        if ( new_str === '' ) {
-            new_str = str.substr( 0, len );
+        if ( newStr === '' ) {
+            newStr = str.substr( 0, len );
         }
 
-        return new Handlebars.SafeString( new_str + ( ellipsis ? '...' : '' ) );
+        return new Handlebars.SafeString( newStr + ( 'true' === ellipsis ? '...' : '' ) );
     }
     return str;
 } );
@@ -59,6 +59,7 @@ const {
 
 /**
  * Prepare attributes.
+ * The same function placed in block PHP file.
  *
  * @param {Object} controls - controls object.
  * @param {String|Boolean} childOf - childOf control name.
@@ -456,35 +457,6 @@ options.blocks.forEach( ( item ) => {
         }
     }
 
-    class LazyBlockSave extends Component {
-        constructor() {
-            super( ...arguments );
-            this.getControlValue = getControlValue.bind( this );
-        }
-        render() {
-            if ( handlebarsFrontendHtml ) {
-                const attsForRender = {};
-                Object.keys( item.controls ).forEach( ( k ) => {
-                    if ( ! item.controls[ k ].child_of ) {
-                        attsForRender[ item.controls[ k ].name ] = this.getControlValue( item.controls[ k ] );
-                    }
-                } );
-
-                return (
-                    <div
-                        className={ this.props.className || '' }
-                        dangerouslySetInnerHTML={ {
-                            __html: handlebarsFrontendHtml( {
-                                controls: attsForRender,
-                            } ),
-                        } }
-                    />
-                );
-            }
-            return null;
-        }
-    }
-
     // conditionally show for specific post type.
     if ( item.supports.inserter && item.condition.length ) {
         let preventInsertion = true;
@@ -509,6 +481,9 @@ options.blocks.forEach( ( item ) => {
 
         edit: LazyBlock,
 
-        save: LazyBlockSave,
+        save() {
+            // render in PHP.
+            return null;
+        },
     } );
 } );
