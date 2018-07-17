@@ -365,10 +365,10 @@ class LazyBlocks_Blocks {
         <div class="lzb-metabox-tabs">
             <div class="lzb-metabox-tabs-buttons">
                 <a href="#" class="lzb-metabox-tabs-btn lzb-metabox-tabs-btn-active">
-                    <?php echo esc_html__( 'Editor HTML', '@@text_domain' ); ?>
+                    <?php echo esc_html__( 'Frontend HTML', '@@text_domain' ); ?>
                 </a>
                 <a href="#" class="lzb-metabox-tabs-btn">
-                    <?php echo esc_html__( 'Frontend HTML', '@@text_domain' ); ?>
+                    <?php echo esc_html__( 'Editor HTML', '@@text_domain' ); ?>
                 </a>
                 <?php
 
@@ -385,12 +385,12 @@ class LazyBlocks_Blocks {
             <div class="lzb-metabox-tabs-content">
                 <div class="lzb-metabox-tabs-content-item lzb-metabox-tabs-content-item-active">
                     <div class="lzb-metabox">
-                        <textarea class="lzb-textarea" id="lazyblocks_code_editor_html" name="lazyblocks_code_editor_html"><?php echo esc_textarea( $editor_html ); ?></textarea>
+                        <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
                     </div>
                 </div>
                 <div class="lzb-metabox-tabs-content-item">
                     <div class="lzb-metabox">
-                        <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
+                        <textarea class="lzb-textarea" id="lazyblocks_code_editor_html" name="lazyblocks_code_editor_html"><?php echo esc_textarea( $editor_html ); ?></textarea>
                     </div>
                 </div>
                 <?php
