@@ -764,9 +764,9 @@ class LazyBlocks_Blocks {
         $attributes = array();
 
         foreach ( $controls as $k => $control ) {
-            if ( $control['child_of'] === $child_of ) {
-                $type       = 'string';
-                $default_val = $control['default'];
+            if ( isset( $control['child_of'] ) && $control['child_of'] === $child_of ) {
+                $type        = 'string';
+                $default_val = isset( $control['default'] ) ? $control['default'] : null;
 
                 if ( $control['type'] ) {
                     switch ( $control['type'] ) {
@@ -792,9 +792,11 @@ class LazyBlocks_Blocks {
                 }
 
                 $attributes[ $control['name'] ] = array(
-                    'default' => $default_val,
                     'type'    => $type,
                 );
+                if ( null !== $default_val ) {
+                    $attributes[ $control['name'] ]['default'] = $default_val;
+                }
 
                 if ( 'true' === $control['save_in_meta'] && $control['save_in_meta_name'] ) {
                     $attributes[ $control['name'] ]['source'] = 'meta';
@@ -811,22 +813,42 @@ class LazyBlocks_Blocks {
             );
         }
 
+        // reserved attributes.
+        $attributes['className'] = array(
+            'type'    => 'string',
+            'default' => '',
+        );
+        $attributes['align'] = array(
+            'type'    => 'string',
+            'default' => '',
+        );
+        $attributes['anchor'] = array(
+            'type'      => 'string',
+            'source'    => 'attribute',
+            'attribute' => 'id',
+            'selector'  => '*',
+            'default'   => '',
+        );
+
         return $attributes;
     }
 
     /**
-     * Register block custom frontend render if exists.
+     * Register block attributes and custom frontend render callback if exists.
      */
     public function register_block_render() {
         $blocks = $this->get_blocks();
 
         foreach ( $blocks as $block ) {
+            $data = array(
+                'attributes'      => $this->prepare_block_attributes( $block['controls'], '', $block ),
+            );
+
             if ( isset( $block['code'] ) && isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
-                register_block_type( $block['slug'], array(
-                    'attributes'      => $this->prepare_block_attributes( $block['controls'], '', $block ),
-                    'render_callback' => array( $this, 'render_frontend_html' ),
-                ) );
+                $data['render_callback'] = array( $this, 'render_frontend_html' );
             }
+
+            register_block_type( $block['slug'], $data );
         }
     }
 
@@ -850,6 +872,24 @@ class LazyBlocks_Blocks {
 
         if ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
             $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], array( 'controls' => $attributes ) );
+        }
+
+        // add wrapper.
+        if ( $attributes['className'] || $attributes['align'] || $attributes['anchor'] ) {
+            $html_atts = '';
+
+            if ( $attributes['align'] ) {
+                $attributes['className'] .= ' align' . $attributes['align'];
+            }
+
+            if ( $attributes['className'] ) {
+                $html_atts .= ' class="' . esc_attr( $attributes['className'] ) . '"';
+            }
+            if ( $attributes['anchor'] ) {
+                $html_atts .= ' id="' . esc_attr( $attributes['anchor'] ) . '"';
+            }
+
+            $result = '<div' . $html_atts . '>' . $result . '</div>';
         }
 
         return $result;

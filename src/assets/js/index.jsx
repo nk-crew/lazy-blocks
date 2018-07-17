@@ -57,70 +57,12 @@ const {
     registerBlockType,
 } = wp.blocks;
 
-/**
- * Prepare attributes.
- * The same function placed in block PHP file.
- *
- * @param {Object} controls - controls object.
- * @param {String|Boolean} childOf - childOf control name.
- * @returns {Object} attributes.
- */
-function prepareBlockAttributes( controls, childOf = '' ) {
-    const attributes = {};
-
-    Object.keys( controls ).forEach( ( k ) => {
-        const control = controls[ k ];
-
-        if ( control.child_of === childOf ) {
-            let type = 'string';
-            let defaultVal = control.default;
-
-            if ( control.type ) {
-                switch ( control.type ) {
-                case 'number':
-                    type = 'number';
-                    break;
-                case 'checkbox':
-                case 'toggle':
-                    type = 'boolean';
-                    defaultVal = control.checked === 'true';
-                    break;
-                case 'repeater':
-                    defaultVal = {};
-                    const innerBlocks = prepareBlockAttributes( controls, k );
-                    Object.keys( innerBlocks ).forEach( ( n ) => {
-                        defaultVal[ n ] = innerBlocks[ n ].default;
-                    } );
-                    defaultVal = encodeURI( JSON.stringify( [ defaultVal ] ) );
-                    break;
-                }
-            }
-
-            attributes[ control.name ] = {
-                default: defaultVal,
-                type,
-            };
-
-            if ( control.save_in_meta === 'true' && control.save_in_meta_name ) {
-                attributes[ control.name ].source = 'meta';
-                attributes[ control.name ].meta = control.save_in_meta_name;
-            }
-        }
-    } );
-
-    return attributes;
-}
-
 // each registered block.
 options.blocks.forEach( ( item ) => {
     // prepare Handlebars templates.
     let handlebarsEditorHtml = false;
-    let handlebarsFrontendHtml = false;
     if ( item.code && item.code.editor_html ) {
         handlebarsEditorHtml = Handlebars.compile( item.code.editor_html );
-    }
-    if ( item.code && item.code.frontend_html ) {
-        handlebarsFrontendHtml = Handlebars.compile( item.code.frontend_html );
     }
 
     function getControlValue( control, childIndex ) {
@@ -476,8 +418,6 @@ options.blocks.forEach( ( item ) => {
         category: item.category,
         keywords: item.keywords,
         supports: item.supports,
-
-        attributes: prepareBlockAttributes( item.controls ),
 
         edit: LazyBlock,
 
