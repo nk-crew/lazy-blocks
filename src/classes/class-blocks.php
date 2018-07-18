@@ -416,7 +416,7 @@ class LazyBlocks_Blocks {
                 <?php echo esc_html__( 'Note 1: if you use blocks as Metaboxes, you may leave these code editors blank.', '@@text_domain' ); ?>
             </p>
             <p class="description">
-                <?php echo wp_kses_post( __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name <strong>my_control</strong>, you can print it <strong>{{controls.my_control}}</strong>.', '@@text_domain' ) ); ?>
+                <?php echo wp_kses_post( __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name <strong>my_control</strong>, you can print it <strong>{{my_control}}</strong>.', '@@text_domain' ) ); ?>
             </p>
             <p class="description">
                 <?php echo wp_kses_post( __( 'Note 3: yep, I know that Gutenberg based on React, but c\'mon... converting a string with JSX to React components is much more complicated than simple text replacements (Handlebars).', '@@text_domain' ) ); ?>
@@ -841,7 +841,7 @@ class LazyBlocks_Blocks {
 
         foreach ( $blocks as $block ) {
             $data = array(
-                'attributes'      => $this->prepare_block_attributes( $block['controls'], '', $block ),
+                'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
             );
 
             if ( isset( $block['code'] ) && isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
@@ -871,7 +871,7 @@ class LazyBlocks_Blocks {
         }
 
         if ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
-            $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], array( 'controls' => $attributes ) );
+            $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], $attributes );
         }
 
         // add wrapper.

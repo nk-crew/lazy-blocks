@@ -387,9 +387,7 @@ options.blocks.forEach( ( item ) => {
                         { handlebarsEditorHtml ? (
                             <div
                                 dangerouslySetInnerHTML={ {
-                                    __html: handlebarsEditorHtml( {
-                                        controls: attsForRender,
-                                    } ),
+                                    __html: handlebarsEditorHtml( attsForRender ),
                                 } }
                             />
                         ) : '' }
