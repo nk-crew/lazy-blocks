@@ -1,25 +1,4 @@
-import Handlebars from 'handlebars';
-Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = 'true' ) => {
-    if ( str && len && str.length > len ) {
-        let newStr = str.substr( 0, len + 1 );
-
-        while ( newStr.length ) {
-            const ch = newStr.substr( -1 );
-            newStr = newStr.substr( 0, -1 );
-
-            if ( ch === ' ' ) {
-                break;
-            }
-        }
-
-        if ( newStr === '' ) {
-            newStr = str.substr( 0, len );
-        }
-
-        return new Handlebars.SafeString( newStr + ( 'true' === ellipsis ? '...' : '' ) );
-    }
-    return str;
-} );
+import Handlebars from './handlebars.jsx';
 
 // External Dependencies.
 import classnames from 'classnames/dedupe';

@@ -56,6 +56,8 @@ class LazyBlocks_Blocks {
 
         $this->handlebars = new Handlebars\Handlebars();
 
+        // truncate
+        // {{#truncate 'string' 2 'true' }}.
         $this->handlebars->registerHelper( 'truncate', function( $str, $len, $ellipsis = 'true' ) {
             if ( $str && $len && mb_strlen( $str ) > $len ) {
                 $new_str = mb_substr( $str, 0, $len + 1 );
@@ -79,6 +81,86 @@ class LazyBlocks_Blocks {
                 return new \Handlebars\SafeString( $new_str . ( 'true' === $ellipsis ? '...' : '' ) );
             }
             return $str;
+        } );
+
+        // compare.
+        // {{#compare 1 '===' 2 }} Show if true {{/compare}}
+        // slightly changed https://gist.github.com/doginthehat/1890659.
+        $this->handlebars->registerHelper( 'compare', function( $lvalue, $operator, $rvalue = null, $options = null ) {
+            if ( null === $rvalue ) {
+                return $options['inverse']();
+            }
+
+            if ( null === $options ) {
+                $options = $rvalue;
+                $rvalue = $operator;
+                $operator = '===';
+            }
+
+            $result = false;
+
+            switch ( $operator ) {
+                case '==':
+                    $result = $lvalue == $rvalue;
+                    break;
+                case '===':
+                    $result = $lvalue === $rvalue;
+                    break;
+                case '!=':
+                    $result = $lvalue != $rvalue;
+                    break;
+                case '!==':
+                    $result = $lvalue !== $rvalue;
+                    break;
+                case '<':
+                    $result = $lvalue < $rvalue;
+                    break;
+                case '>':
+                    $result = $lvalue > $rvalue;
+                    break;
+                case '<=':
+                    $result = $lvalue <= $rvalue;
+                    break;
+                case '>=':
+                    $result = $lvalue >= $rvalue;
+                    break;
+                case 'typeof':
+                    $result = gettype( $lvalue ) === $rvalue;
+                    break;
+            }
+
+            if ( $result ) {
+                return $options['fn']();
+            }
+
+            return $options['inverse']();
+        } );
+
+        // math.
+        // {{#math 1 '+' 2 }}
+        // https://stackoverflow.com/questions/33059203/error-missing-helper-in-handlebars-js/46317662#46317662.
+        $this->handlebars->registerHelper( 'math', function( $lvalue, $operator, $rvalue ) {
+            $result = '';
+
+            switch ( $operator ) {
+                case '+':
+                    $result = $lvalue + $rvalue;
+                    break;
+                case '-':
+                    $result = $lvalue - $rvalue;
+                    break;
+                case '*':
+                    $result = $lvalue * $rvalue;
+                    break;
+                case '/':
+                    $result = $lvalue / $rvalue;
+                    break;
+                case '%':
+                    $result = $lvalue % $rvalue;
+                    break;
+            }
+
+            return $result;
         } );
     }
 
