@@ -601,7 +601,8 @@ class LazyBlocks_Blocks {
                     'lazyblocks_code_frontend_html' === $meta ||
                     'lazyblocks_code_frontend_css' === $meta
                 ) {
-                    $new_meta_value = wp_kses_post( wp_unslash( $_POST[ $meta ] ) );
+                    // phpcs:ignore
+                    $new_meta_value = wp_unslash( $_POST[ $meta ] );
                 } else {
                     // Get the posted data and sanitize it for use as an HTML class.
                     $new_meta_value = sanitize_text_field( wp_unslash( $_POST[ $meta ] ) );
