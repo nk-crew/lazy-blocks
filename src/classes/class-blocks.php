@@ -162,6 +162,12 @@ class LazyBlocks_Blocks {
 
             return $result;
         } );
+
+        // do_shortcode.
+        // {{#do_shortcode '[my_shortcode]'}}.
+        $this->handlebars->registerHelper( 'do_shortcode', function( $val ) {
+            return do_shortcode( $val );
+        } );
     }
 
     /**
