@@ -1,10 +1,13 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
-    withInstanceId,
     BaseControl,
     Button,
 } = wp.components;
+
+const {
+    withInstanceId,
+} = wp.compose;
 
 class RepeaterControl extends Component {
     constructor() {

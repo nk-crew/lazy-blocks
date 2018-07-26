@@ -1,6 +1,6 @@
 # LazyBlocks - Gutenberg Blocks Editor #
 * Contributors: nko
-Tags: gutenberg, blocks, editor, meta, fields
+* Tags: gutenberg, blocks, editor, meta, fields
 * Requires at least: 4.9.0
 * Tested up to: 4.9
 * Requires PHP: 5.4
@@ -16,6 +16,8 @@ Gutenberg blocks visual editor.
 
 
 ## Installation ##
+
+You need to install the [Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) to use LazyBlocks. Eventually, Gutenberg (the block editor) will be merged into WordPress and you won’t need the plugin.
 
 #### Automatic installation ####
 

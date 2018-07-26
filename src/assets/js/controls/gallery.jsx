@@ -1,12 +1,15 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
-    withInstanceId,
     BaseControl,
     Button,
     DropZoneProvider,
     DropZone,
 } = wp.components;
+
+const {
+    withInstanceId,
+} = wp.compose;
 
 const {
     MediaPlaceholder,
