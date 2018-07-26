@@ -580,7 +580,7 @@ if ( $controls.length ) {
 /**
  * Templates
  */
-if ( wp.api ) {
+if ( wp.api && $( 'body.post-type-lazyblocks_templates ' ).length ) {
     wp.api.loadPromise.done( function() {
         if ( ! wp.api.models.Lazyblocks_templates ) {
             return;
@@ -624,50 +624,50 @@ if ( wp.api ) {
         } );
 
         const singleTemplate = `
-        <div class="lzb-templates-single" data-template-id="#{ID}" data-template-post-type="#{post_type}" data-template-post-label="#{post_label}">
-            <div class="lzb-metabox">
-                <div class="lzb-metabox-label">
-                    <label>#{post_label}</label>
+            <div class="lzb-templates-single" data-template-id="#{ID}" data-template-post-type="#{post_type}" data-template-post-label="#{post_label}">
+                <div class="lzb-metabox">
+                    <div class="lzb-metabox-label">
+                        <label>#{post_label}</label>
+                    </div>
                 </div>
+                <div class="lzb-metabox">
+                    <div class="lzb-metabox-label">
+                        <label>Template Lock</label>
+                    </div>
+                    <div>
+                        <select class="lzb-select" name="template_lock">
+                            <option value="">None</option>
+                            <option value="all" #{template_lock:selected?all}>Prevent all operations</option>
+                            <option value="insert" #{template_lock:selected?insert}>Prevent inserting new blocks, but allows moving existing ones</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="lzb-metabox">
+                    <div class="lzb-metabox-label">
+                        <label>Blocks</label>
+                    </div>
+                    <div>
+                        <ul class="lzb-templates-single-blocks">#{blocks}</ul>
+                        <select class="lzb-select lzb-templates-single-add-blocks">
+                            <option value="" selected="selected" disabled="disabled">+ Add block</option>
+                            #{blocks_list}
+                        </select>
+                    </div>
+                </div>
+                <ul class="lzb-templates-single-actions">
+                    <a href="#" class="lzb-templates-single-actions-remove">Remove</a>
+                    <button class="button button-primary button-small lzb-templates-single-actions-save">Save Template</button>
+                </ul>
             </div>
-            <div class="lzb-metabox">
-                <div class="lzb-metabox-label">
-                    <label>Template Lock</label>
-                </div>
-                <div>
-                    <select class="lzb-select" name="template_lock">
-                        <option value="">None</option>
-                        <option value="all" #{template_lock:selected?all}>Prevent all operations</option>
-                        <option value="insert" #{template_lock:selected?insert}>Prevent inserting new blocks, but allows moving existing ones</option>
-                    </select>
-                </div>
-            </div>
-            <div class="lzb-metabox">
-                <div class="lzb-metabox-label">
-                    <label>Blocks</label>
-                </div>
-                <div>
-                    <ul class="lzb-templates-single-blocks">#{blocks}</ul>
-                    <select class="lzb-select lzb-templates-single-add-blocks">
-                        <option value="" selected="selected" disabled="disabled">+ Add block</option>
-                        #{blocks_list}
-                    </select>
-                </div>
-            </div>
-            <ul class="lzb-templates-single-actions">
-                <a href="#" class="lzb-templates-single-actions-remove">Remove</a>
-                <button class="button button-primary button-small lzb-templates-single-actions-save">Save Template</button>
-            </ul>
-        </div>
-    `;
+        `;
 
         const blockTemplate = `
-        <div class="lzb-templates-single-blocks-block" data-block-name="#{name}" data-block-title="#{title}" data-block-icon="#{icon}">
-            <span class="#{icon}"></span>
-            <span>#{title} <small>[#{name}]</small></span>
-            <button class="lzb-templates-single-blocks-block-remove"><span class="dashicons dashicons-no-alt"></span></button>
-        </div>
-    `;
+            <div class="lzb-templates-single-blocks-block" data-block-name="#{name}" data-block-title="#{title}" data-block-icon="#{icon}">
+                <span class="#{icon}"></span>
+                <span>#{title} <small>[#{name}]</small></span>
+                <button class="lzb-templates-single-blocks-block-remove"><span class="dashicons dashicons-no-alt"></span></button>
+            </div>
+        `;
 
         // add template to the page.
         function addTemplate( templates, type = 'append' ) {
