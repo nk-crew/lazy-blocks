@@ -635,13 +635,6 @@ class LazyBlocks_Blocks {
                 if ( ! $new_meta_value ) {
                     $new_meta_value = 'no-slug';
                 }
-
-                // generate unique slug.
-                // $try_find_slug = 0;
-                // $saved_username = $wp_username;
-                // while ( ( username_exists( $wp_username ) ) && $try_find_slug++ < 5 ) {
-                // $wp_username = $saved_username . '_' . mt_rand();
-                // }.
             }
 
             /* Get the meta value of the custom field key. */
