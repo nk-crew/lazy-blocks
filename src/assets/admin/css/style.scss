@@ -393,6 +393,50 @@
 
 
 // Gutenberg editor.
+.lazyblock {
+    position: relative;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    z-index: 1;
+
+    &::before {
+        content: "";
+        position: absolute;
+        display: block;
+        top: -14px;
+        right: -28px;
+        bottom: -14px;
+        left: -28px;
+        pointer-events: none;
+        background-color: #fbfbfb;
+        border-radius: 5px;
+        box-shadow: 0 0 0 1px rgba(145, 151, 162, .15);
+        z-index: -1;
+
+        @media (min-width: 600px) {
+            right: -28px;
+            left: -28px;
+        }
+    }
+
+    .lzb-content-title {
+        display: flex;
+        align-items: center;
+        padding-bottom: 1.3em;
+        margin-bottom: 1.5em;
+        border-bottom: 1px solid rgba(145, 151, 162, .15);
+
+        span {
+            font-weight: 600;
+        }
+
+        .dashicons {
+            margin-right: 9px;
+            opacity: .8;
+        }
+    }
+}
+
 // Gallery and Image controls
 .lzb-gutenberg-gallery,
 .lzb-gutenberg-image {

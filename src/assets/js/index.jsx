@@ -360,6 +360,12 @@ options.blocks.forEach( ( item ) => {
                         </div>
                     </InspectorControls>
                     <div className={ className }>
+                        <div className="lzb-content-title">
+                            { item.icon ? (
+                                <span className={ item.icon } />
+                            ) : '' }
+                            <span>{ item.title }</span>
+                        </div>
                         <div className="lzb-content-controls">
                             { this.renderControls( 'content' ) }
                         </div>
