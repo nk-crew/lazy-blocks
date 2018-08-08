@@ -1,6 +1,6 @@
-# LazyBlocks - Gutenberg Blocks Editor #
+# Lazy Blocks - Gutenberg Blocks Constructor #
 * Contributors: nko
-* Tags: gutenberg, blocks, editor, meta, fields
+* Tags: gutenberg, blocks, custom, meta, fields
 * Requires at least: 4.9.0
 * Tested up to: 4.9
 * Requires PHP: 5.4
@@ -8,12 +8,37 @@
 * License: GPLv2 or later
 * License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Gutenberg blocks visual editor.
-
+Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.
 
 ## Description ##
 
+**Lazy Blocks** is a tool for creating Gutenberg blocks without coding it.
 
+Create **Meta** fields or **Blocks** with output code. Add fields using drag & drop visual editor.
+
+Create posts templates, comb (any post type).
+
+#### Features: ####
+
+* Create blocks with output
+* Create blocks for meta custom fields
+* Handlebars used for blocks output
+* Export to PHP
+* Show controls in block content / inspector
+* Controls available:
+    * Repeater
+    * Text
+    * Textarea
+    * Number
+    * URL
+    * Email
+    * Password
+    * Image
+    * Gallery
+    * Code Editor
+    * Select
+    * Checkbox
+    * Toggle
 
 ## Installation ##
 
@@ -29,15 +54,11 @@ In the search field type LazyBlocks and click Search Plugins. Once you’ve foun
 
 The manual installation method involves downloading our LazyBlocks plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
-
-
 ## Screenshots ##
 
-1. Settings 1
-2. Settings 2
-3. Settings 3
-
-
+1. Blocks constructor
+2. Posts templates
+3. Block in Gutenberg editor
 
 ## Changelog ##
 
