@@ -810,3 +810,12 @@
         min-height: 500px;
     }
 }
+
+
+/**
+ * Hide unused metaboxes from admin pages.
+ */
+.post-type-lazyblocks #slugdiv,
+.post-type-lazyblocks #postcustom {
+    display: none;
+}
