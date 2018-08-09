@@ -1,6 +1,6 @@
 {
-  "name": "lazyblocks",
-  "title": "LazyBlocks",
+  "name": "lazy-blocks",
+  "title": "Lazy Blocks",
   "description": "No hassle Gutenberg blocks for WordPress developers",
   "license": "GPL-2.0",
   "author": "nK <https://nkdev.info>",
@@ -24,8 +24,8 @@
   "gulp_config": {
     "variables": {
       "dist": "dist",
-      "plugin_name": "lazyblocks",
-      "plugin_title": "LazyBlocks",
+      "plugin_name": "lazy-blocks",
+      "plugin_title": "Lazy Blocks",
       "plugin_version": "1.0.0"
     },
     "template_vars": [
