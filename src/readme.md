@@ -12,15 +12,15 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
 
 ## Description ##
 
-**Lazy Blocks** is a tool for creating Gutenberg blocks without coding it.
+**Lazy Blocks** is a tool for creating Gutenberg blocks without coding.
 
 Create **Meta** fields or **Blocks** with output code. Add fields using drag & drop visual editor.
 
-Create posts templates, comb (any post type).
+Create posts templates with predefined blocks (any post type).
 
 #### Features: ####
 
-* Create blocks with output
+* Create blocks with output code
 * Create blocks for meta custom fields
 * Handlebars used for blocks output
 * Export to PHP
