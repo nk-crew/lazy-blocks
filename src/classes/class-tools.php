@@ -25,7 +25,7 @@ class LazyBlocks_Tools {
      */
     public function admin_menu() {
         add_submenu_page(
-            'lazyblocks',
+            'edit.php?post_type=lazyblocks',
             esc_html__( 'Tools', '@@text_domain' ),
             esc_html__( 'Tools', '@@text_domain' ),
             'manage_options',

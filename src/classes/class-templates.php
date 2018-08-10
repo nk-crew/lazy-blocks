@@ -144,7 +144,7 @@ class LazyBlocks_Templates {
                 'show_ui'      => true,
 
                 // adding to custom menu manually.
-                'show_in_menu' => false,
+                'show_in_menu' => 'edit.php?post_type=lazyblocks',
                 'show_in_rest' => true,
                 'capabilities' => array(
                     'edit_post'          => 'edit_lazyblock',

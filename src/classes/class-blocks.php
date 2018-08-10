@@ -186,8 +186,11 @@ class LazyBlocks_Blocks {
                 'show_ui'      => true,
 
                 // adding to custom menu manually.
-                'show_in_menu' => false,
+                'show_in_menu' => true,
+                'show_in_admin_bar' => true,
                 'show_in_rest' => true,
+                'menu_icon'    => 'dashicons-editor-table',
+                'menu_position' => 80,
                 'capabilities' => array(
                     'edit_post' => 'edit_lazyblock',
                     'edit_posts' => 'edit_lazyblocks',

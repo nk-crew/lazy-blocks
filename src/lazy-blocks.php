@@ -149,74 +149,7 @@ class LazyBlocks {
      * Set the main plugin handlers: Envato Sign Action, Save Cookie redirect.
      */
     public function add_actions() {
-        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-        add_filter( 'parent_file', array( $this, 'admin_menu_highlight_items' ) );
-
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-    }
-
-    /**
-     * Admin menu.
-     */
-    public function admin_menu() {
-        add_menu_page(
-            esc_html__( 'Lazy Blocks', '@@text_domain' ),
-            esc_html__( 'Lazy Blocks', '@@text_domain' ),
-            'manage_options',
-            'lazyblocks',
-            null,
-            'dashicons-editor-table',
-            80
-        );
-
-        add_submenu_page(
-            'lazyblocks',
-            esc_html__( 'Blocks', '@@text_domain' ),
-            esc_html__( 'Blocks', '@@text_domain' ),
-            'manage_options',
-            'edit.php?post_type=lazyblocks'
-        );
-
-        add_submenu_page(
-            'lazyblocks',
-            esc_html__( 'Add New', '@@text_domain' ),
-            esc_html__( 'Add New', '@@text_domain' ),
-            'manage_options',
-            'post-new.php?post_type=lazyblocks'
-        );
-
-        add_submenu_page(
-            'lazyblocks',
-            esc_html__( 'Templates', '@@text_domain' ),
-            esc_html__( 'Templates', '@@text_domain' ),
-            'manage_options',
-            'edit.php?post_type=lazyblocks_templates'
-        );
-    }
-
-    /**
-     * Highlighting portfolio custom menu items.
-     *
-     * @param string $parent_file - parent file.
-     *
-     * @return string $parent_file
-     */
-    public function admin_menu_highlight_items( $parent_file ) {
-        global $current_screen, $submenu_file, $submenu;
-
-        // Highlight menus.
-        switch ( $current_screen->post_type ) {
-            case 'lazyblocks':
-                $parent_file = 'lazyblocks';
-                break;
-        }
-
-        // Remove 'LazyBlocks' sub menu item.
-        if ( isset( $submenu['lazyblocks'] ) ) {
-            unset( $submenu['lazyblocks'][0] );
-        }
-
-        return $parent_file;
     }
 
     /**
