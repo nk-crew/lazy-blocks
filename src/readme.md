@@ -62,8 +62,9 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
-= 1.0.1 =
-* changed admin menu method (simplified). Probably fix for https://wordpress.org/support/topic/permission-error-when-accessing-plugins-admin-pages/
+= 1.0.2 =
+* changed admin menu method (simplified)
+* fixed capabilities bug https://wordpress.org/support/topic/permission-error-when-accessing-plugins-admin-pages/
 
 = 1.0.0 =
 * Initial Release

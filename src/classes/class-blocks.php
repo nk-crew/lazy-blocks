@@ -29,6 +29,9 @@ class LazyBlocks_Blocks {
 
         add_action( 'init', array( $this, 'register_post_type' ) );
 
+        // custom post roles.
+        add_action( 'admin_init', array( $this, 'add_role_caps' ) );
+
         // add general metaboxes.
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 1 );
         add_action( 'save_post', array( $this, 'save_meta_boxes' ), 10, 2 );
@@ -208,6 +211,33 @@ class LazyBlocks_Blocks {
                 ),
             )
         );
+    }
+
+    /**
+     * Add Roles
+     */
+    public function add_role_caps() {
+        global $wp_roles;
+
+        if ( isset( $wp_roles ) ) {
+            $wp_roles->add_cap( 'administrator', 'edit_lazyblock' );
+            $wp_roles->add_cap( 'administrator', 'edit_lazyblocks' );
+            $wp_roles->add_cap( 'administrator', 'edit_other_lazyblocks' );
+            $wp_roles->add_cap( 'administrator', 'publish_lazyblocks' );
+            $wp_roles->add_cap( 'administrator', 'read_lazyblock' );
+            $wp_roles->add_cap( 'administrator', 'read_private_lazyblocks' );
+            $wp_roles->add_cap( 'administrator', 'delete_lazyblocks' );
+            $wp_roles->add_cap( 'administrator', 'delete_lazyblock' );
+
+            $wp_roles->add_cap( 'editor', 'read_lazyblock' );
+            $wp_roles->add_cap( 'editor', 'read_private_lazyblocks' );
+
+            $wp_roles->add_cap( 'author', 'read_lazyblock' );
+            $wp_roles->add_cap( 'author', 'read_private_lazyblocks' );
+
+            $wp_roles->add_cap( 'contributor', 'read_lazyblock' );
+            $wp_roles->add_cap( 'contributor', 'read_private_lazyblocks' );
+        }
     }
 
     /**
