@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:  Lazy Blocks
- * Description:  No hassle Gutenberg blocks WordPress developers
+ * Description:  Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.
  * Version:      @@plugin_version
  * Author:       nK
  * Author URI:   https://nkdev.info/
