@@ -69,6 +69,12 @@ Handlebars.registerHelper( 'compare', ( lvalue, operator, rvalue, options ) => {
     case '>=':
         result = lvalue >= rvalue;
         break;
+    case '&&':
+        result = lvalue && rvalue;
+        break;
+    case '||':
+        result = lvalue || rvalue;
+        break;
     case 'typeof':
         result = typeof lvalue === rvalue;
         break;

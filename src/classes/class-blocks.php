@@ -127,6 +127,12 @@ class LazyBlocks_Blocks {
                 case '>=':
                     $result = $lvalue >= $rvalue;
                     break;
+                case '&&':
+                    $result = $lvalue && $rvalue;
+                    break;
+                case '||':
+                    $result = $lvalue || $rvalue;
+                    break;
                 case 'typeof':
                     $result = gettype( $lvalue ) === $rvalue;
                     break;
