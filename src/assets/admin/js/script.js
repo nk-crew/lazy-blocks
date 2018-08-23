@@ -87,6 +87,9 @@ $( 'button.dashicons-picker' ).on( 'click', function( e ) {
 
 // add selectize tags.
 if ( typeof $.fn.selectize !== 'undefined' ) {
+    $( '#lazyblocks_category' ).selectize( {
+        create: true,
+    } );
     $( '#lazyblocks_keywords' ).selectize( {
         plugins: [ 'drag_drop', 'remove_button' ],
         delimiter: ',',

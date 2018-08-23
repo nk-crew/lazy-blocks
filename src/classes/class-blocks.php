@@ -41,6 +41,9 @@ class LazyBlocks_Blocks {
 
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
+            // add custom block categories.
+            add_filter( 'block_categories', array( $this, 'block_categories' ) );
+
             add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
             add_action( 'init', array( $this, 'register_block_render' ) );
         }
@@ -385,11 +388,34 @@ class LazyBlocks_Blocks {
         <div class="lzb-metabox">
             <label for="lazyblocks_category"><?php echo esc_html__( 'Category', '@@text_domain' ); ?></label>
             <select class="lzb-select" name="lazyblocks_category" id="lazyblocks_category">
-                <option value="common" <?php selected( $category, 'common' ); ?>><?php echo esc_html__( 'Common', '@@text_domain' ); ?></option>
-                <option value="embed" <?php selected( $category, 'embed' ); ?>><?php echo esc_html__( 'Embed', '@@text_domain' ); ?></option>
-                <option value="formatting" <?php selected( $category, 'formatting' ); ?>><?php echo esc_html__( 'Formatting', '@@text_domain' ); ?></option>
-                <option value="layout" <?php selected( $category, 'layout' ); ?>><?php echo esc_html__( 'Layout', '@@text_domain' ); ?></option>
-                <option value="widgets" <?php selected( $category, 'widgets' ); ?>><?php echo esc_html__( 'Widgets', '@@text_domain' ); ?></option>
+                <?php
+                $available_categories = array(
+                    'common'     => esc_html__( 'Common', '@@text_domain' ),
+                    'widgets'    => esc_html__( 'Widgets', '@@text_domain' ),
+                    'layout'     => esc_html__( 'Layout', '@@text_domain' ),
+                    'formatting' => esc_html__( 'Formatting', '@@text_domain' ),
+                    'embed'      => esc_html__( 'Embed', '@@text_domain' ),
+                );
+
+                // parse categories from blocks.
+                $blocks = $this->get_blocks();
+                foreach ( $blocks as $block ) {
+                    if (
+                        ! isset( $available_categories[ $block['category'] ] ) &&
+                        ! isset( $new_categories[ $block['category'] ] ) &&
+                        ! in_array( $block['category'], $available_categories ) &&
+                        isset( $block['category_label'] )
+                    ) {
+                        $available_categories[ $block['category'] ] = $block['category_label'];
+                    }
+                }
+
+                foreach ( $available_categories as $cat => $label ) {
+                    ?>
+                    <option value="<?php echo esc_html( $cat ); ?>" <?php echo selected( $cat === $category || $label === $category ); ?>><?php echo esc_html( $label ); ?></option>
+                    <?php
+                }
+                ?>
             </select>
         </div>
 
@@ -756,14 +782,15 @@ class LazyBlocks_Blocks {
                 $controls = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
 
                 $this->blocks[] = array(
-                    'id'          => $block->ID,
-                    'title'       => $block->post_title,
-                    'icon'        => $icon,
-                    'keywords'    => $keywords,
-                    'slug'        => 'lazyblock/' . esc_html( $this->get_meta_value( 'lazyblocks_slug', $block->ID ) ),
-                    'description' => esc_html( $this->get_meta_value( 'lazyblocks_description', $block->ID ) ),
-                    'category'    => esc_html( $this->get_meta_value( 'lazyblocks_category', $block->ID ) ),
-                    'supports'    => array(
+                    'id'             => $block->ID,
+                    'title'          => $block->post_title,
+                    'icon'           => $icon,
+                    'keywords'       => $keywords,
+                    'slug'           => 'lazyblock/' . esc_html( $this->get_meta_value( 'lazyblocks_slug', $block->ID ) ),
+                    'description'    => esc_html( $this->get_meta_value( 'lazyblocks_description', $block->ID ) ),
+                    'category'       => $this->sanitize_slug( esc_html( $this->get_meta_value( 'lazyblocks_category', $block->ID ) ) ),
+                    'category_label' => esc_html( $this->get_meta_value( 'lazyblocks_category', $block->ID ) ),
+                    'supports'       => array(
                         'customClassName' => $this->get_meta_value( 'lazyblocks_supports_classname', $block->ID ),
                         'anchor'          => $this->get_meta_value( 'lazyblocks_supports_anchor', $block->ID ),
                         'align'           => (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID ),
@@ -771,8 +798,8 @@ class LazyBlocks_Blocks {
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
                     ),
-                    'controls'    => $controls,
-                    'code'        => array(
+                    'controls'      => $controls,
+                    'code'          => array(
                         'editor_html'   => $this->get_meta_value( 'lazyblocks_code_editor_html', $block->ID ),
                         'editor_css'    => $this->get_meta_value( 'lazyblocks_code_editor_css', $block->ID ),
                         'frontend_html' => $this->get_meta_value( 'lazyblocks_code_frontend_html', $block->ID ),
@@ -800,6 +827,46 @@ class LazyBlocks_Blocks {
         }
 
         return $unique_result;
+    }
+
+    /**
+     * Register custom categories for blocks
+     *
+     * @param array $categories - available categories.
+     * @return array
+     */
+    public function block_categories( $categories ) {
+        $blocks = $this->get_blocks();
+        $default_categories = array(
+            'common',
+            'embed',
+            'formatting',
+            'layout',
+            'widgets',
+        );
+        $new_categories = array();
+
+        foreach ( $blocks as $block ) {
+            if (
+                ! isset( $default_categories[ $block['category'] ] ) &&
+                ! isset( $new_categories[ $block['category'] ] ) &&
+                ! in_array( $block['category'], $default_categories ) &&
+                isset( $block['category_label'] )
+            ) {
+                $new_categories[ $block['category'] ] = $block['category_label'];
+            }
+        }
+
+        if ( ! empty( $new_categories ) ) {
+            foreach ( $new_categories as $slug => $category ) {
+                $categories[] = array(
+                    'slug'  => $slug,
+                    'title' => $category,
+                );
+            }
+        }
+
+        return $categories;
     }
 
     /**
