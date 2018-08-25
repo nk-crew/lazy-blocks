@@ -1049,11 +1049,12 @@ class LazyBlocks_Blocks {
      */
     public function render_frontend_html( $attributes ) {
         $check_array = '%5B%7B%22';
+        $check_array_alt = '%7B%22';
         $result = '';
 
         // prepare decoded arrays to actual arrays.
         foreach ( $attributes as $k => $attr ) {
-            if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array ) {
+            if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array || substr( $attr, 0, strlen( $check_array_alt ) ) === $check_array_alt ) {
                 $attributes[ $k ] = json_decode( urldecode( $attr ), true );
             }
         }
