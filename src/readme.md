@@ -63,9 +63,17 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.0.3 =
+
+* added support for custom categories [https://wordpress.org/support/topic/frontend-html/](https://wordpress.org/support/topic/frontend-html/)
+* improved **do_shortcode** handlebars helper to work with attributes. Read here how to use - [https://lazyblocks.com/docs/documentation/examples/shortcode-gutenberg/](https://lazyblocks.com/docs/documentation/examples/shortcode-gutenberg/)
+* fixed image field data conversion to array
+
 = 1.0.2 =
+
 * changed admin menu method (simplified)
-* fixed capabilities bug https://wordpress.org/support/topic/permission-error-when-accessing-plugins-admin-pages/
+* fixed capabilities bug [https://wordpress.org/support/topic/permission-error-when-accessing-plugins-admin-pages/](https://wordpress.org/support/topic/permission-error-when-accessing-plugins-admin-pages/)
 
 = 1.0.0 =
+
 * Initial Release
