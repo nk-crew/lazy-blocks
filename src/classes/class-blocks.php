@@ -176,9 +176,33 @@ class LazyBlocks_Blocks {
         } );
 
         // do_shortcode.
-        // {{#do_shortcode '[my_shortcode]'}}.
-        $this->handlebars->registerHelper( 'do_shortcode', function( $val ) {
-            return do_shortcode( $val );
+        // {{#do_shortcode 'my_shortcode'}}.
+        $this->handlebars->registerHelper( 'do_shortcode', function( $shortcode_name, $attributes ) {
+            $result = '[' . $shortcode_name;
+
+            // prepare attributes.
+            if ( isset( $attributes ) && ! empty( $attributes ) ) {
+                foreach ( $attributes as $name => $val ) {
+                    if (
+                        'content' === $name
+                        || 'lazyblock_code_frontend_html' === $name
+                        || 'lazyblock_code_backend_html' === $name
+                    ) {
+                        continue;
+                    }
+
+                    $result .= ' ' . esc_attr( $name ) . '="' . esc_attr( $val ) . '"';
+                }
+
+                // content.
+                if ( isset( $attributes['content'] ) ) {
+                    $result .= ']' . $attributes['content'] . '[/' . $shortcode_name;
+                }
+            }
+
+            $result .= ']';
+
+            return do_shortcode( $result );
         } );
     }
 
