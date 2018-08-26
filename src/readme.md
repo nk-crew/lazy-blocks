@@ -17,7 +17,7 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
 #### Links ####
 
 * [Site](https://lazyblocks.com/)
-* [Documentation](https://lazyblocks.com/docs/documentation/)
+* [Documentation](https://lazyblocks.com/docs/documentation/getting-started/)
 
 #### Features ####
 
