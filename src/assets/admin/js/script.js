@@ -659,7 +659,7 @@ if ( wp.api && $( 'body.post-type-lazyblocks_templates ' ).length ) {
                 </div>
                 <ul class="lzb-templates-single-actions">
                     <a href="#" class="lzb-templates-single-actions-remove">Remove</a>
-                    <button class="button button-primary button-small lzb-templates-single-actions-save">Save Template</button>
+                    <button class="button button-primary lzb-templates-single-actions-save">Save Template</button>
                 </ul>
             </div>
         `;
