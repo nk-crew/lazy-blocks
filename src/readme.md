@@ -12,13 +12,14 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
 
 ## Description ##
 
-**Lazy Blocks** is a tool for creating Gutenberg blocks without coding.
+**Lazy Blocks** is a Gutenberg blocks visual constructor for WordPress developers. You can create custom **meta fields** as well as **blocks** with output HTML. Add editor controls to your blocks using **drag & drop** visual constructor. Create **post templates** with predefined blocks (any post type).
 
-Create **Meta** fields or **Blocks** with output code. Add fields using drag & drop visual editor.
+#### Links ####
 
-Create posts templates with predefined blocks (any post type).
+* [Site](https://lazyblocks.com/)
+* [Documentation](https://lazyblocks.com/docs/documentation/)
 
-#### Features: ####
+#### Features ####
 
 * Create blocks with output code
 * Create blocks for meta custom fields
