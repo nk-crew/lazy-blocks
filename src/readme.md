@@ -63,6 +63,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.0.4 =
+
+* fixed catchable fatal error when use do_shortcode Handlebars helper
+
 = 1.0.3 =
 
 * added support for custom categories [https://wordpress.org/support/topic/frontend-html/](https://wordpress.org/support/topic/frontend-html/)
