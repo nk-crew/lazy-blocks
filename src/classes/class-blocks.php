@@ -191,6 +191,18 @@ class LazyBlocks_Blocks {
                         continue;
                     }
 
+                    if (
+                        ! is_numeric( $val )
+                        && ! is_string( $val )
+                        && ! is_bool( $val )
+                    ) {
+                        continue;
+                    }
+
+                    if ( is_bool( $val ) ) {
+                        $val = $val ? '1' : '0';
+                    }
+
                     $result .= ' ' . esc_attr( $name ) . '="' . esc_attr( $val ) . '"';
                 }
 
