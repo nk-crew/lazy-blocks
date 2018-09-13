@@ -24,6 +24,9 @@ class LazyBlocks_Templates {
 
         // show blank state for portfolio list page.
         add_action( 'manage_posts_extra_tablenav', array( $this, 'change_admin_list_table' ) );
+
+        // enqueue Gutenberg on templates screen.
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 9 );
     }
 
     /**
@@ -238,68 +241,6 @@ class LazyBlocks_Templates {
                     }
                     ?>
                 </div>
-                <div class="lzb-templates-blocks">
-                    <?php
-                    $blocks = lazyblocks()->get_blocks();
-
-                    // TODO: Add dynamic blocks list generating and not only for core blocks.
-                    $core_blocks = array(
-                        'core/paragraph' => 'Paragraph',
-                        'core/image' => 'Image',
-                        'core/heading' => 'Heading',
-                        'core/gallery' => 'Gallery',
-                        'core/list' => 'List',
-                        'core/quote' => 'Quote',
-
-                        'core/shortcode' => 'Shortcode',
-                        'core/audio' => 'Audio',
-                        'core/button' => 'Button',
-                        'core/categories' => 'Categories',
-                        'core/code' => 'Code',
-                        'core/columns' => 'Columns',
-                        'core/coverImage' => 'Cover Image',
-                        'core/embed' => 'Embed',
-                        'core/freeform' => 'Freeform',
-                        'core/html' => 'HTML',
-                        'core/latestPosts' => 'Latest Posts',
-                        'core/more' => 'More',
-                        'core/nextpage' => 'Next Page',
-                        'core/preformatted' => 'Preformatted',
-                        'core/pullquote' => 'Pullquote',
-                        'core/separator' => 'Separator',
-                        'core/spacer' => 'Spacer',
-                        'core/subhead' => 'Subhead',
-                        'core/table' => 'Table',
-                        'core/textColumns' => 'Text Columns',
-                        'core/verse' => 'Verse',
-                        'core/video' => 'Video',
-                    );
-
-                    foreach ( $blocks as $block ) {
-                        ?>
-                        <div
-                            data-block-id="<?php echo esc_attr( $block['id'] ); ?>"
-                            data-block-name="<?php echo esc_attr( $block['slug'] ); ?>"
-                            data-block-use-once="<?php echo esc_attr( $block['supports']['multiple'] ? 'false' : 'true' ); ?>"
-                            data-block-title="<?php echo esc_attr( $block['title'] ); ?>"
-                            data-block-icon="<?php echo esc_attr( $block['icon'] ); ?>"
-                        ></div>
-                        <?php
-                    }
-
-                    foreach ( $core_blocks as $slug => $block ) {
-                        ?>
-                        <div
-                            data-block-id=""
-                            data-block-name="<?php echo esc_attr( $slug ); ?>"
-                            data-block-use-once="false"
-                            data-block-title="<?php echo esc_attr( $block ); ?>"
-                            data-block-icon=""
-                        ></div>
-                        <?php
-                    }
-                    ?>
-                </div>
             <?php
             endif;
             ?>
@@ -316,6 +257,28 @@ class LazyBlocks_Templates {
                 }
             </style>
             <?php
+        }
+    }
+
+    /**
+     * Enqueue Gutenberg scripts to work with registered blocks on Templates page.
+     */
+    public function admin_enqueue_scripts() {
+        global $post;
+        global $post_type;
+
+        if ( function_exists( 'get_block_categories' ) && in_array( $post_type, array( 'lazyblocks_templates' ) ) ) {
+            // enqueue Gutenberg lib to work with all registered blocks.
+            wp_enqueue_script( 'wp-dom-ready' );
+            wp_enqueue_script( 'wp-block-library' );
+            wp_enqueue_script( 'wp-editor' );
+            wp_add_inline_script(
+                'wp-blocks',
+                sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $post ) ) ),
+                'after'
+            );
+
+            do_action( 'enqueue_block_editor_assets' );
         }
     }
 }

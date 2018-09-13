@@ -710,26 +710,45 @@
 
         .lzb-templates-single-blocks-block {
             position: relative;
-            padding: 6px 10px;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 14px;
             color: #32373c;
-            background-color: #e2e4e7;
-            border-radius: 3px;
+            border: 1px solid #e8e8e8;
+            border-radius: 2px;
 
-            > span {
-                vertical-align: middle;
+            &:hover {
+                background-color: #f9f9f9;
+            }
 
-                &:first-of-type {
-                    width: 15px;
-                    height: 15px;
-                    font-size: 15px;
-                    line-height: 15px;
-                    vertical-align: middle;
+            &.lzb-templates-single-blocks-undefined {
+                border-color: #dcabab;
+
+                &:hover {
+                    background-color: #fff5f5;
+                }
+
+                svg {
+                    color: #ec2727;
                 }
             }
 
             small {
+                margin-left: 5px;
                 color: #999;
+            }
+
+            .lzb-templates-single-blocks-block-icon {
+                width: 35px;
+                font-size: 15px;
+                line-height: 15px;
+                vertical-align: middle;
+
+                svg {
+                    max-width: 20px;
+                    max-height: 20px;
+                }
             }
 
             .lzb-templates-single-blocks-block-remove {
