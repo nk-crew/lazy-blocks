@@ -606,30 +606,38 @@ function workWithTemplates() {
 
     // prepare blocks list.
     availableBlocks.forEach( ( block ) => {
-        if ( ! blocksListCategorized[ block.category ] ) {
-            blocksListCategorized[ block.category ] = [];
+        if (
+            // prevent adding blocks with parent option (fe Grid Column).
+            ! ( block.parent && block.parent.length ) &&
+
+            // prevent showing blocks with disabled inserter.
+            ! ( block.supports && typeof block.supports.inserter !== 'undefined' && ! block.supports.inserter )
+        ) {
+            if ( ! blocksListCategorized[ block.category ] ) {
+                blocksListCategorized[ block.category ] = [];
+            }
+
+            let icon = block.icon.src ? block.icon.src : block.icon;
+
+            // Prepare icon.
+            if ( typeof icon === 'function' ) {
+                icon = wp.element.renderToString( icon() );
+            } else if ( typeof icon === 'object' ) {
+                icon = wp.element.renderToString( icon );
+            } else if ( typeof icon === 'string' ) {
+                icon = wp.element.createElement( wp.components.Dashicon, { icon: icon } );
+                icon = wp.element.renderToString( icon );
+            }
+
+            blocksList[ block.name ] = {
+                name: block.name,
+                title: block.title,
+                icon: icon,
+                useOnce: block.supports && typeof block.supports.multiple !== 'undefined' ? block.supports.multiple : true,
+            };
+
+            blocksListCategorized[ block.category ][ block.name ] = blocksList[ block.name ];
         }
-
-        let icon = block.icon.src ? block.icon.src : block.icon;
-
-        // Prepare icon.
-        if ( typeof icon === 'function' ) {
-            icon = wp.element.renderToString( icon() );
-        } else if ( typeof icon === 'object' ) {
-            icon = wp.element.renderToString( icon );
-        } else if ( typeof icon === 'string' ) {
-            icon = wp.element.createElement( wp.components.Dashicon, { icon: icon } );
-            icon = wp.element.renderToString( icon );
-        }
-
-        blocksList[ block.name ] = {
-            name: block.name,
-            title: block.title,
-            icon: icon,
-            useOnce: block.supports && typeof block.supports.multiple !== 'undefined' ? block.supports.multiple : true,
-        };
-
-        blocksListCategorized[ block.category ][ block.name ] = blocksList[ block.name ];
     } );
 
     // prepare blocks list for Select.
@@ -668,8 +676,7 @@ function workWithTemplates() {
                 </div>
                 <div>
                     <ul class="lzb-templates-single-blocks">#{blocks}</ul>
-                    <select class="lzb-select lzb-templates-single-add-blocks">
-                        <option value="" selected="selected" disabled="disabled">+ Add block</option>
+                    <select class="lzb-select lzb-templates-single-add-blocks" placeholder="+ Add block">
                         #{blocks_list}
                     </select>
                 </div>
@@ -693,6 +700,43 @@ function workWithTemplates() {
     function addTemplate( templates, type = 'append' ) {
         $list[ type ]( stringTemplate( singleTemplate, templates ) );
         $buttons.find( '[data-post-type="' + templates[ 'post_type' ] + '"]' ).attr( 'disabled', 'disabled' );
+    }
+
+    function initSelectize() {
+        if ( typeof $.fn.selectize !== 'undefined' ) {
+            $( '.lzb-select' ).each( function() {
+                const $select = $( this );
+                const placeholder = $select.attr( 'placeholder' );
+                const clearOnChange = $select.hasClass( 'lzb-templates-single-add-blocks' );
+
+                $select.selectize( {
+                    allowEmptyOption: ! placeholder,
+                    placeholder: placeholder,
+                    searchField: [ 'text', 'optgroup' ],
+                    onChange() {
+                        if ( clearOnChange ) {
+                            setTimeout( () => {
+                                $select[ 0 ].selectize.clear();
+                            }, 20 );
+                        }
+                    },
+                    onInitialize() {
+                        if ( placeholder ) {
+                            $select[ 0 ].selectize.clear();
+                        }
+                    },
+                    render: {
+                        option: function( item, escape ) {
+                            let icon = '';
+                            if ( blocksList[ item.value ] ) {
+                                icon = blocksList[ item.value ].icon;
+                            }
+                            return `<div><span class="selectize-svg-icon">${ icon }</span>${ escape( item.text ) }</div>`;
+                        },
+                    },
+                } );
+            } );
+        }
     }
 
     // fetch all templates.
@@ -729,6 +773,7 @@ function workWithTemplates() {
                 template_lock: meta.template_lock || '',
                 blocks_list: blocksSelectOptions,
             } );
+            initSelectize();
         } );
     } );
 
@@ -762,6 +807,7 @@ function workWithTemplates() {
                     template_lock: '',
                     blocks_list: blocksSelectOptions,
                 }, 'prepend' );
+                initSelectize();
             } else {
                 $this.removeAttr( 'disabled' );
             }

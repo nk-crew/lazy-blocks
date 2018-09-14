@@ -267,7 +267,7 @@ class LazyBlocks_Templates {
         global $post;
         global $post_type;
 
-        if ( function_exists( 'get_block_categories' ) && in_array( $post_type, array( 'lazyblocks_templates' ) ) ) {
+        if ( function_exists( 'get_block_categories' ) && 'lazyblocks_templates' === $post_type ) {
             // enqueue Gutenberg lib to work with all registered blocks.
             wp_enqueue_script( 'wp-dom-ready' );
             wp_enqueue_script( 'wp-block-library' );

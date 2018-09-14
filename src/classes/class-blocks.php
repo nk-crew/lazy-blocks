@@ -47,9 +47,6 @@ class LazyBlocks_Blocks {
             add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
             add_action( 'init', array( $this, 'register_block_render' ) );
         }
-
-        // admin blocks page enqueue.
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_blocks_enqueue_scripts' ), 9 );
     }
 
     /**
@@ -1118,23 +1115,5 @@ class LazyBlocks_Blocks {
         }
 
         return $result;
-    }
-
-    /**
-     * Add assets on admin blocks page.
-     */
-    public function admin_blocks_enqueue_scripts() {
-        global $post_type;
-        if ( 'lazyblocks' == $post_type ) {
-            wp_enqueue_style( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/css/dashicons-picker.css', array( 'dashicons' ), '1.0', false );
-            wp_enqueue_script( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/js/dashicons-picker.js', array( 'jquery' ), '1.1', true );
-
-            wp_enqueue_style( 'selectize', lazyblocks()->plugin_url . 'vendor/selectize/css/selectize.css', array( 'dashicons' ), '0.12.4', false );
-            wp_enqueue_script( 'selectize', lazyblocks()->plugin_url . 'vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), '0.12.4', true );
-
-            wp_enqueue_script( 'conditionize', lazyblocks()->plugin_url . 'vendor/conditionize/conditionize.js', array( 'jquery' ), '', true );
-
-            wp_enqueue_script( 'sortablejs', lazyblocks()->plugin_url . 'vendor/sortablejs/Sortable.min.js', array( 'jquery' ), '', true );
-        }
     }
 }
