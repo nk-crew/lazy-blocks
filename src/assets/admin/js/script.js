@@ -598,6 +598,9 @@ function workWithTemplates() {
     const categoriesList = {};
     let blocksSelectOptions = '';
 
+    // prepare lazyblocks category to appear in the start of the list.
+    blocksListCategorized.lazyblocks = [];
+
     // prepare categories list.
     availableCategories.forEach( ( cat ) => {
         categoriesList[ cat.slug ] = cat.title;
@@ -611,7 +614,11 @@ function workWithTemplates() {
             ! ( block.parent && block.parent.length ) &&
 
             // prevent showing blocks with disabled inserter.
-            ! ( block.supports && typeof block.supports.inserter !== 'undefined' && ! block.supports.inserter )
+            // allow only lazyblocks free block.
+            ! (
+                block.name !== 'lazyblock-core/free' &&
+                ( block.supports && typeof block.supports.inserter !== 'undefined' && ! block.supports.inserter )
+            )
         ) {
             if ( ! blocksListCategorized[ block.category ] ) {
                 blocksListCategorized[ block.category ] = [];

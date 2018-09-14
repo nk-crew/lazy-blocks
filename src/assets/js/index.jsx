@@ -4,6 +4,7 @@ import Handlebars from './handlebars.jsx';
 import classnames from 'classnames/dedupe';
 
 // Internal Dependencies
+require( './blocks/free.jsx' );
 import ImageControl from './controls/image.jsx';
 import GalleryControl from './controls/gallery.jsx';
 import RepeaterControl from './controls/repeater.jsx';

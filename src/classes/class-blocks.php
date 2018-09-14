@@ -879,6 +879,13 @@ class LazyBlocks_Blocks {
         );
         $new_categories = array();
 
+        // lazyblocks core category.
+        $categories[] = array(
+            'slug'  => 'lazyblocks',
+            'title' => esc_html__( 'Lazy Blocks', '@@text_domain' ),
+        );
+
+        // custom user categories.
         foreach ( $blocks as $block ) {
             if (
                 ! isset( $default_categories[ $block['category'] ] ) &&
