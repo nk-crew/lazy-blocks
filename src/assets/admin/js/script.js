@@ -263,6 +263,9 @@ const controlTemplate = `
                                 <option value="checkbox" #{type:selected?checkbox}>Checkbox</option>
                                 <option value="toggle" #{type:selected?toggle}>Toggle</option>
                             </optgroup>
+                            <optgroup label="Advanced">
+                                <option value="color" #{type:selected?color}>Color Picker</option>
+                            </optgroup>
                             <optgroup label="Layout" class="lzb-metabox-control-hide-from-repeater">
                                 <option value="repeater" #{type:selected?repeater}>Repeater</option>
                             </optgroup>

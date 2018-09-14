@@ -28,9 +28,11 @@ const {
     RangeControl,
     CodeEditor,
     SelectControl,
+    ColorIndicator,
 } = wp.components;
 
 const {
+    ColorPalette,
     InspectorControls,
 } = wp.editor;
 
@@ -316,6 +318,27 @@ options.blocks.forEach( ( item ) => {
                                     this.onSelectImages( val, control, childIndex );
                                 } }
                             />
+                        ) );
+                        break;
+                    case 'color':
+                        result.push( (
+                            <BaseControl
+                                key={ control.name }
+                                label={ (
+                                    <Fragment>
+                                        { control.label }
+                                        <ColorIndicator colorValue={ this.getControlValue( control, childIndex ) } />
+                                    </Fragment>
+                                ) }
+                                className="lzb-gutenberg-color"
+                            >
+                                <ColorPalette
+                                    value={ this.getControlValue( control, childIndex ) }
+                                    onChange={ ( val ) => {
+                                        this.onControlChange( val, control, childIndex );
+                                    } }
+                                />
+                            </BaseControl>
                         ) );
                         break;
                     case 'repeater':

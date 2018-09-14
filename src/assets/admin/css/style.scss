@@ -432,6 +432,14 @@
     }
 }
 
+// Color Picker control
+.lzb-gutenberg-color {
+    .components-base-control__label {
+        display: flex;
+        align-items: center;
+    }
+}
+
 // Gallery and Image controls
 .lzb-gutenberg-gallery,
 .lzb-gutenberg-image {
