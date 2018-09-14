@@ -204,16 +204,6 @@ class LazyBlocks {
         global $post;
         global $post_type;
 
-        wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
-        wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery', 'wp-api' ), '@@plugin_version', true );
-        wp_localize_script(
-            'lazyblocks-admin', 'lazyblocksData', array(
-                'nonce'    => wp_create_nonce( 'ajax-nonce' ),
-                'url'      => admin_url( 'admin-ajax.php' ),
-                'controls' => isset( $post->ID ) ? get_post_meta( $post->ID, 'lazyblocks_controls', true ) ? : array() : array(),
-            )
-        );
-
         if ( 'lazyblocks' === $post_type || 'lazyblocks_templates' === $post_type ) {
             wp_enqueue_style( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/css/dashicons-picker.css', array( 'dashicons' ), '1.0', false );
             wp_enqueue_script( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/js/dashicons-picker.js', array( 'jquery' ), '1.1', true );
@@ -225,6 +215,16 @@ class LazyBlocks {
 
             wp_enqueue_script( 'sortablejs', lazyblocks()->plugin_url . 'vendor/sortablejs/Sortable.min.js', array( 'jquery' ), '', true );
         }
+
+        wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
+        wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery', 'wp-api' ), '@@plugin_version', true );
+        wp_localize_script(
+            'lazyblocks-admin', 'lazyblocksData', array(
+                'nonce'    => wp_create_nonce( 'ajax-nonce' ),
+                'url'      => admin_url( 'admin-ajax.php' ),
+                'controls' => isset( $post->ID ) ? get_post_meta( $post->ID, 'lazyblocks_controls', true ) ? : array() : array(),
+            )
+        );
     }
 }
 
