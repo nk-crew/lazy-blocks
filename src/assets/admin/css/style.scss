@@ -440,6 +440,47 @@
     }
 }
 
+// URL picker
+.lzb-gutenberg-url {
+    position: relative;
+
+    .editor-url-input input[type="text"] {
+        &,
+        .editor-block-list__block & {
+            padding: 6px 9px;
+            padding-left: 30px;
+            border: 1px solid #8d96a0;
+            border-radius: 4px;
+            box-shadow: 0 0 0 transparent;
+            transition: box-shadow .1s linear;
+
+            &:focus {
+                color: #191e23;
+                border-color: #00a0d2;
+                outline: 2px solid transparent;
+                outline-offset: -2px;
+                box-shadow: 0 0 0 1px #00a0d2;
+            }
+        }
+    }
+
+    > svg,
+    > button {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+    > svg {
+        left: 7px;
+    }
+    > button {
+        right: 0;
+        left: auto;
+        padding: 5px;
+    }
+}
+
 // Gallery and Image controls
 .lzb-gutenberg-gallery,
 .lzb-gutenberg-image {

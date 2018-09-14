@@ -29,9 +29,12 @@ const {
     CodeEditor,
     SelectControl,
     ColorIndicator,
+    Dashicon,
+    IconButton,
 } = wp.components;
 
 const {
+	URLInput,
     ColorPalette,
     InspectorControls,
 } = wp.editor;
@@ -172,7 +175,6 @@ options.blocks.forEach( ( item ) => {
                     switch ( control.type ) {
                     case 'text':
                     case 'number':
-                    case 'url':
                     case 'email':
                     case 'password':
                         result.push( (
@@ -202,6 +204,27 @@ options.blocks.forEach( ( item ) => {
                                     this.onControlChange( val, control, childIndex );
                                 } }
                             />
+                        ) );
+                        break;
+                    case 'url':
+                        result.push( (
+                            <BaseControl
+                                key={ control.name }
+                                label={ control.label }
+                            >
+                                <form
+                                    className="lzb-gutenberg-url"
+                                    onSubmit={ ( event ) => event.preventDefault() }>
+                                    <URLInput
+                                        value={ this.getControlValue( control, childIndex ) }
+                                        onChange={ ( val ) => {
+                                            this.onControlChange( val, control, childIndex );
+                                        } }
+                                    />
+                                    <Dashicon icon="admin-links" />
+                                    <IconButton icon="editor-break" label="Apply" type="submit" />
+                                </form>
+                            </BaseControl>
                         ) );
                         break;
                     case 'textarea':
