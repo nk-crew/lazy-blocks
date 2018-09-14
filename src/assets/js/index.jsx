@@ -25,6 +25,7 @@ const {
     TextareaControl,
     ToggleControl,
     CheckboxControl,
+    RangeControl,
     CodeEditor,
     SelectControl,
 } = wp.components;
@@ -166,7 +167,6 @@ options.blocks.forEach( ( item ) => {
                     ) ||
                     ( childOf && control.child_of === childOf )
                 ) {
-                    // TODO: additional controls - color, color palette, date-time, range slider
                     switch ( control.type ) {
                     case 'text':
                     case 'number':
@@ -178,6 +178,23 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 type={ control.type }
+                                min={ control.min }
+                                max={ control.max }
+                                step={ control.step }
+                                value={ this.getControlValue( control, childIndex ) }
+                                onChange={ ( val ) => {
+                                    this.onControlChange( val, control, childIndex );
+                                } }
+                            />
+                        ) );
+                        break;
+                    case 'range':
+                        result.push( (
+                            <RangeControl
+                                label={ control.label }
+                                min={ control.min }
+                                max={ control.max }
+                                step={ control.step }
                                 value={ this.getControlValue( control, childIndex ) }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );

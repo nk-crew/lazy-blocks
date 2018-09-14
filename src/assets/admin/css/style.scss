@@ -61,6 +61,19 @@
         }
     }
 
+    // input group.
+    .lzb-metabox-input-group {
+        display: flex;
+
+        > input {
+            flex: 1;
+            width: auto;
+            max-width: 100px;
+            height: 28px;
+            margin-left: -1px;
+        }
+    }
+
     // dashicons picker.
     .lzb-dashicons-picker {
         display: flex;

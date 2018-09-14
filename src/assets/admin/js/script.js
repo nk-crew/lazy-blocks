@@ -248,6 +248,7 @@ const controlTemplate = `
                                 <option value="text" #{type:selected?text}>Text</option>
                                 <option value="textarea" #{type:selected?textarea}>Text Area</option>
                                 <option value="number" #{type:selected?number}>Number</option>
+                                <option value="range" #{type:selected?range}>Range</option>
                                 <option value="url" #{type:selected?url}>URL</option>
                                 <option value="email" #{type:selected?email}>Email</option>
                                 <option value="password" #{type:selected?password}>Password</option>
@@ -268,9 +269,10 @@ const controlTemplate = `
                         </select>
                     </div>
                 </div>
+
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select">
                     <div class="lzb-metabox-label">
-                        <label for="${ controlNameTemplate }[default]">Choices</label>
+                        <label for="${ controlNameTemplate }[choices]">Choices</label>
                         <small>Enter each choice on a new line.</small>
                         <small>For more control, you may specify both a value and label like this:</small>
                         <small>value : Label</small>
@@ -280,6 +282,18 @@ const controlTemplate = `
                         <textarea class="lzb-textarea" id="${ controlNameTemplate }[choices]" rows="6">#{choices}</textarea>
                     </div>
                 </div>
+
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == number || [id='${ controlNameTemplate }[type]'] == range">
+                    <div class="lzb-metabox-label">
+                        <label for="${ controlNameTemplate }[min]">Min, Max, Step</label>
+                    </div>
+                    <div class="lzb-metabox-input-group">
+                        <input class="lzb-input" id="${ controlNameTemplate }[min]" name="${ controlNameTemplate }[min]" type="number" value="#{min}" placeholder="Min" step="#{step}">
+                        <input class="lzb-input" id="${ controlNameTemplate }[max]" name="${ controlNameTemplate }[max]" type="number" value="#{max}" placeholder="Max" step="#{step}">
+                        <input class="lzb-input" id="${ controlNameTemplate }[step]" name="${ controlNameTemplate }[step]" type="text" value="#{step}" placeholder="Step">
+                    </div>
+                </div>
+
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[default]">Default value</label>
@@ -289,6 +303,7 @@ const controlTemplate = `
                         <input class="lzb-input" id="${ controlNameTemplate }[default]" name="${ controlNameTemplate }[default]" type="text" value="#{default}">
                     </div>
                 </div>
+
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == checkbox || [id='${ controlNameTemplate }[type]'] == toggle">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[default]">Checked</label>
@@ -301,6 +316,7 @@ const controlTemplate = `
                         </label>
                     </div>
                 </div>
+
                 <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[placement]">Placement</label>
@@ -314,6 +330,7 @@ const controlTemplate = `
                         </select>
                     </div>
                 </div>
+
                 <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[save_in_meta]">Save in Meta</label>
