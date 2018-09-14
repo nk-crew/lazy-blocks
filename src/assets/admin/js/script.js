@@ -207,6 +207,11 @@ const controlTemplate = `
                         </div>
                     </div>
                     <div class="lzb-metabox lzb-metabox-container" data-cond="[id='${ controlNameTemplate }[type]'] == repeater"></div>
+                    <div class="lzb-metabox lzb-metabox-container-add" data-cond="[id='${ controlNameTemplate }[type]'] == repeater">
+                        <div class="lzb-metabox-add-control">
+                            <button class="button button-secondary">+ Add Control</button>
+                        </div>
+                    </div>
                     <div class="lzb-metabox-control-actions">
                         <a href="#" class="lzb-metabox-control-action-expand">Expand</a>
                         <a href="#" class="lzb-metabox-control-action-remove">Delete</a>
@@ -507,8 +512,11 @@ if ( $controls.length ) {
     $controls.on( 'click', '.lzb-metabox-add-control button', function( e ) {
         e.preventDefault();
 
+        const childOf = $( this ).closest( '[data-control-id]' ).attr( 'data-control-id' );
+
         addControl( {
             ID: 'uniq',
+            child_of: childOf || '',
         } );
         initControlsSortable();
     } );
