@@ -328,23 +328,29 @@ class LazyBlocks_Blocks {
     private $defaults = array(
         'lazyblocks_controls' => array(),
 
-        'lazyblocks_slug'        => '',
-        'lazyblocks_icon'        => '',
-        'lazyblocks_description' => '',
-        'lazyblocks_keywords'    => '',
-        'lazyblocks_category'    => 'common',
+        'lazyblocks_slug'                 => '',
+        'lazyblocks_icon'                 => '',
+        'lazyblocks_description'          => '',
+        'lazyblocks_keywords'             => '',
+        'lazyblocks_category'             => 'common',
 
-        'lazyblocks_code_editor_html'   => '',
-        'lazyblocks_code_editor_css'    => '',
-        'lazyblocks_code_frontend_html' => '',
-        'lazyblocks_code_frontend_css'  => '',
+        'lazyblocks_code_editor_html'     => '',
+        'lazyblocks_code_editor_css'      => '',
+        'lazyblocks_code_frontend_html'   => '',
+        'lazyblocks_code_frontend_css'    => '',
 
-        'lazyblocks_supports_multiple'  => 'true',
-        'lazyblocks_supports_classname' => 'true',
-        'lazyblocks_supports_anchor'    => 'false',
-        'lazyblocks_supports_html'      => 'false',
-        'lazyblocks_supports_inserter'  => 'true',
-        'lazyblocks_supports_align'     => array( 'wide', 'full' ),
+        'lazyblocks_supports_multiple'    => 'true',
+        'lazyblocks_supports_classname'   => 'true',
+        'lazyblocks_supports_anchor'      => 'false',
+        'lazyblocks_supports_html'        => 'false',
+        'lazyblocks_supports_inserter'    => 'true',
+        'lazyblocks_supports_align'       => array( 'wide', 'full' ),
+
+        /*
+            TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
+            'lazyblocks_supports_ghostkit_indents' => 'false',
+            'lazyblocks_supports_ghostkit_display' => 'false',
+         */
 
         'lazyblocks_condition_post_types' => '',
     );
@@ -399,6 +405,12 @@ class LazyBlocks_Blocks {
         $supports_anchor = $this->get_meta_value( 'lazyblocks_supports_anchor' );
         $supports_html = $this->get_meta_value( 'lazyblocks_supports_html' );
         $supports_inserter = $this->get_meta_value( 'lazyblocks_supports_inserter' );
+
+        /*
+            TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
+            $supports_ghostkit_indents = $this->get_meta_value( 'lazyblocks_supports_ghostkit_indents' );
+            $supports_ghostkit_display = $this->get_meta_value( 'lazyblocks_supports_ghostkit_display' );
+        */
 
         ?>
 
@@ -494,21 +506,40 @@ class LazyBlocks_Blocks {
                 <input class="lzb-input" type="checkbox" name="lazyblocks_supports_inserter" id="lazyblocks_supports_inserter" value="true" <?php checked( $supports_inserter ); ?>>
                 <?php echo esc_html__( 'Show in Blocks Inserter', '@@text_domain' ); ?>
             </label>
-
-            <div class="lzb-metabox">
-                <label for="lazyblocks_supports_align"><?php echo esc_html__( 'Align', '@@text_domain' ); ?></label>
-                <select class="lzb-select" id="lazyblocks_supports_align" name="lazyblocks_supports_align[]" multiple>
-                    <?php
-                    foreach ( array( 'wide', 'full', 'left', 'center', 'right' ) as $align ) {
-                        ?>
-                        <option value="<?php echo esc_html( $align ); ?>" <?php echo selected( in_array( $align, $supports_align ) ); ?>><?php echo esc_html( $align ); ?></option>
-                        <?php
-                    }
-                    ?>
-                </select>
-            </div>
         </div>
+
+        <div class="lzb-metabox">
+            <label for="lazyblocks_supports_align"><?php echo esc_html__( 'Align', '@@text_domain' ); ?></label>
+            <select class="lzb-select" id="lazyblocks_supports_align" name="lazyblocks_supports_align[]" multiple>
+                <?php
+                foreach ( array( 'wide', 'full', 'left', 'center', 'right' ) as $align ) {
+                    ?>
+                    <option value="<?php echo esc_html( $align ); ?>" <?php echo selected( in_array( $align, $supports_align ) ); ?>><?php echo esc_html( $align ); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+
         <?php
+
+        /*
+        // TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
+        <div class="lzb-metabox">
+            <label><?php echo esc_html__( 'GhostKit Extensions', '@@text_domain' ); ?></label>
+            <label>
+                <input type="hidden" name="lazyblocks_supports_ghostkit_indents" id="lazyblocks_supports_ghostkit_indents_hidden" value="false">
+                <input class="lzb-input" type="checkbox" name="lazyblocks_supports_ghostkit_indents" id="lazyblocks_supports_ghostkit_indents" value="true" <?php checked( $supports_ghostkit_indents ); ?>>
+                <?php echo esc_html__( 'Indents (paddings, margins)', '@@text_domain' ); ?>
+            </label>
+            <label>
+                <input type="hidden" name="lazyblocks_supports_ghostkit_display" id="lazyblocks_supports_ghostkit_display_hidden" value="false">
+                <input class="lzb-input" type="checkbox" name="lazyblocks_supports_ghostkit_display" id="lazyblocks_supports_ghostkit_display" value="true" <?php checked( $supports_ghostkit_display ); ?>>
+                <?php echo esc_html__( 'Display (show/hide block on different devices)', '@@text_domain' ); ?>
+            </label>
+            <p><em><?php echo esc_html__( 'Required GhostKit plugin active.', '@@text_domain' ); ?></em></p>
+        </div>
+        */
     }
 
     /**
@@ -830,6 +861,12 @@ class LazyBlocks_Blocks {
                         'html'            => $this->get_meta_value( 'lazyblocks_supports_html', $block->ID ),
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
+
+                        /*
+                            TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
+                            'ghostkitIndents' => $this->get_meta_value( 'lazyblocks_supports_ghostkit_indents', $block->ID ),
+                            'ghostkitDisplay' => $this->get_meta_value( 'lazyblocks_supports_ghostkit_display', $block->ID ),
+                        */
                     ),
                     'controls'      => $controls,
                     'code'          => array(
