@@ -34,7 +34,7 @@ const {
 } = wp.components;
 
 const {
-	URLInput,
+    URLInput,
     ColorPalette,
     InspectorControls,
 } = wp.editor;
@@ -195,6 +195,7 @@ options.blocks.forEach( ( item ) => {
                     case 'range':
                         result.push( (
                             <RangeControl
+                                key={ control.name }
                                 label={ control.label }
                                 min={ control.min }
                                 max={ control.max }
