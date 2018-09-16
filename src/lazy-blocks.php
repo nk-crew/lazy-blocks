@@ -203,6 +203,7 @@ class LazyBlocks {
     public function admin_enqueue_scripts() {
         global $post;
         global $post_type;
+        global $wp_locale;
 
         if ( 'lazyblocks' === $post_type || 'lazyblocks_templates' === $post_type ) {
             wp_enqueue_style( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/css/dashicons-picker.css', array( 'dashicons' ), '1.0', false );
@@ -215,6 +216,20 @@ class LazyBlocks {
 
             wp_enqueue_script( 'sortablejs', lazyblocks()->plugin_url . 'vendor/sortablejs/Sortable.min.js', array( 'jquery' ), '', true );
         }
+
+        wp_enqueue_script( 'date_i18n', lazyblocks()->plugin_url . 'vendor/date_i18n/date_i18n.js', array(), '1.0.0', true );
+
+        $month_names = array_map( array( &$wp_locale, 'get_month' ), range( 1, 12 ) );
+        $month_names_short = array_map( array( &$wp_locale, 'get_month_abbrev' ), $month_names );
+        $day_names = array_map( array( &$wp_locale, 'get_weekday' ), range( 0, 6 ) );
+        $day_names_short = array_map( array( &$wp_locale, 'get_weekday_abbrev' ), $day_names );
+
+        wp_localize_script( 'date_i18n', 'DATE_I18N', array(
+            'month_names' => $month_names,
+            'month_names_short' => $month_names_short,
+            'day_names' => $day_names,
+            'day_names_short' => $day_names_short,
+        ) );
 
         wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
         wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery', 'wp-api' ), '@@plugin_version', true );

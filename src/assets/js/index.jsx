@@ -31,6 +31,8 @@ const {
     ColorIndicator,
     Dashicon,
     IconButton,
+    DatePicker,
+    TimePicker,
 } = wp.components;
 
 const {
@@ -42,6 +44,10 @@ const {
 const {
     registerBlockType,
 } = wp.blocks;
+
+const {
+    getSettings,
+} = wp.date;
 
 // each registered block.
 options.blocks.forEach( ( item ) => {
@@ -362,6 +368,44 @@ options.blocks.forEach( ( item ) => {
                                         this.onControlChange( val, control, childIndex );
                                     } }
                                 />
+                            </BaseControl>
+                        ) );
+                        break;
+                    case 'date_time':
+                        const settings = getSettings();
+
+                        // To know if the current timezone is a 12 hour time with look for "a" in the time format.
+                        // We also make sure this a is not escaped by a "/".
+                        const is12HourTime = /a(?!\\)/i.test(
+                            settings.formats.time
+                                .toLowerCase() // Test only the lower case a
+                                .replace( /\\\\/g, '' ) // Replace "//" with empty strings
+                                .split( '' ).reverse().join( '' ) // Reverse the string and test for "a" not followed by a slash
+                        );
+
+                        result.push( (
+                            <BaseControl
+                                key={ control.name }
+                                label={ control.label }
+                            >
+                                { /date/.test( control.date_time_picker ) ? (
+                                    <DatePicker
+                                        currentDate={ this.getControlValue( control, childIndex ) }
+                                        onChange={ ( val ) => {
+                                            this.onControlChange( val, control, childIndex );
+                                        } }
+                                        locale={ settings.l10n.locale }
+                                    />
+                                ) : '' }
+                                { /time/.test( control.date_time_picker ) ? (
+                                    <TimePicker
+                                        currentTime={ this.getControlValue( control, childIndex ) }
+                                        onChange={ ( val ) => {
+                                            this.onControlChange( val, control, childIndex );
+                                        } }
+                                        is12Hour={ is12HourTime }
+                                    />
+                                ) : '' }
                             </BaseControl>
                         ) );
                         break;

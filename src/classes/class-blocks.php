@@ -60,7 +60,7 @@ class LazyBlocks_Blocks {
         $this->handlebars = new Handlebars\Handlebars();
 
         // truncate
-        // {{#truncate 'string' 2 'true' }}.
+        // {{truncate 'string' 2 'true' }}.
         $this->handlebars->registerHelper( 'truncate', function( $str, $len, $ellipsis = 'true' ) {
             if ( $str && $len && mb_strlen( $str ) > $len ) {
                 $new_str = mb_substr( $str, 0, $len + 1 );
@@ -146,7 +146,7 @@ class LazyBlocks_Blocks {
         } );
 
         // math.
-        // {{#math 1 '+' 2 }}
+        // {{math 1 '+' 2 }}
         // https://stackoverflow.com/questions/33059203/error-missing-helper-in-handlebars-js/46317662#46317662.
         $this->handlebars->registerHelper( 'math', function( $lvalue, $operator, $rvalue ) {
             $result = '';
@@ -212,6 +212,12 @@ class LazyBlocks_Blocks {
             $result .= ']';
 
             return do_shortcode( $result );
+        } );
+
+        // date_i18n.
+        // {{date_i18n 'F j, Y H:i' '2018-09-16 15:35'}}.
+        $this->handlebars->registerHelper( 'date_i18n', function( $format, $time ) {
+            return date_i18n( $format, strtotime( $time ) );
         } );
     }
 

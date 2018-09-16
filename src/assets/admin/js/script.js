@@ -32,16 +32,16 @@ function stringTemplate( string, templates ) {
         if ( templates[ contents ] ) {
             return templates[ contents ];
 
-            // find selected function.
-            // #{type:selected?textarea}
+        // find selected function.
+        // #{type:selected?textarea}
         } else if ( new RegExp( '(.+?):selected\?(.+?)', 'g' ).test( contents ) ) {
             if ( templates[ contents.split( ':' )[ 0 ] ] === contents.split( '?' ).pop() ) {
                 return ' selected="selected"';
             }
             return '';
 
-            // find checked function.
-            // #{type:checked?true}
+        // find checked function.
+        // #{type:checked?true}
         } else if ( new RegExp( '(.+?):checked\?(.+?)', 'g' ).test( contents ) ) {
             if ( templates[ contents.split( ':' )[ 0 ] ] === contents.split( '?' ).pop() ) {
                 return ' checked="checked"';
@@ -265,6 +265,7 @@ const controlTemplate = `
                             </optgroup>
                             <optgroup label="Advanced">
                                 <option value="color" #{type:selected?color}>Color Picker</option>
+                                <option value="date_time" #{type:selected?date_time}>Date Time Picker</option>
                             </optgroup>
                             <optgroup label="Layout" class="lzb-metabox-control-hide-from-repeater">
                                 <option value="repeater" #{type:selected?repeater}>Repeater</option>
@@ -294,6 +295,19 @@ const controlTemplate = `
                         <input class="lzb-input" id="${ controlNameTemplate }[min]" name="${ controlNameTemplate }[min]" type="number" value="#{min}" placeholder="Min" step="#{step}">
                         <input class="lzb-input" id="${ controlNameTemplate }[max]" name="${ controlNameTemplate }[max]" type="number" value="#{max}" placeholder="Max" step="#{step}">
                         <input class="lzb-input" id="${ controlNameTemplate }[step]" name="${ controlNameTemplate }[step]" type="text" value="#{step}" placeholder="Step">
+                    </div>
+                </div>
+
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == date_time">
+                    <div class="lzb-metabox-label">
+                        <label for="${ controlNameTemplate }[date_time_picker]">Picker</label>
+                    </div>
+                    <div>
+                        <select class="lzb-select" name="${ controlNameTemplate }[date_time_picker]" id="${ controlNameTemplate }[date_time_picker]">
+                            <option value="date_time" #{type:selected?date_time}>Date + Time</option>
+                            <option value="date" #{type:selected?date}>Date</option>
+                            <option value="time" #{type:selected?time}>Time</option>
+                        </select>
                     </div>
                 </div>
 
