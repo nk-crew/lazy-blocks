@@ -64,6 +64,18 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.1.0 =
+
+* added possibility to use all registered blocks in posts templates
+* added selector with search and block icons to easily find and add blocks to templates
+* added Free Content block to use in templates when template locked
+* added + button inside Repeater block
+* added Range control
+* added Color Picker control
+* added Date Time Picker control
+* added Documentation link in admin menu
+* improved URL control to search for available posts in blog
+
 = 1.0.4 =
 
 * fixed catchable fatal error when use do_shortcode Handlebars helper
