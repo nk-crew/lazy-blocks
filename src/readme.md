@@ -32,6 +32,7 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
     * Text
     * Textarea
     * Number
+    * Range
     * URL
     * Email
     * Password
@@ -41,6 +42,8 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
     * Select
     * Checkbox
     * Toggle
+    * Color Picker
+    * Date Time
 
 ## Installation ##
 
