@@ -136,6 +136,8 @@ class LazyBlocks {
         $this->blocks = new LazyBlocks_Blocks();
         $this->templates = new LazyBlocks_Templates();
         $this->tools = new LazyBlocks_Tools();
+
+        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     }
 
     /**
@@ -195,6 +197,20 @@ class LazyBlocks {
      */
     public function add_template( $data ) {
         return $this->templates->add_template( $data );
+    }
+
+    /**
+     * Admin menu.
+     */
+    public function admin_menu() {
+        // Documentation menu link.
+        add_submenu_page(
+            'edit.php?post_type=lazyblocks',
+            esc_html__( 'Documentation', '@@text_domain' ),
+            esc_html__( 'Documentation', '@@text_domain' ),
+            'manage_options',
+            'https://lazyblocks.com/documentation/getting-started/'
+        );
     }
 
     /**
