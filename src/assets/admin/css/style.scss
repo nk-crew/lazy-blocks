@@ -409,6 +409,7 @@
 .lazyblock {
     display: block;
     padding: 15px;
+    background-color: #fff;
     box-shadow: 0 0 0 1px #e6e6e6;
 
     .lzb-content-title {
@@ -579,6 +580,32 @@
     &:hover .lzb-gutenberg-gallery-item,
     &:hover .lzb-gutenberg-image-item {
         opacity: .6;
+    }
+}
+
+// Rich Text control
+.lzb-gutenberg-rich-text {
+    .editor-rich-text__inline-toolbar {
+        position: relative;
+        justify-content: flex-start;
+        top: 0;
+
+        .editor-format-toolbar,
+        .editor-format-toolbar > .components-toolbar {
+            width: 100%;
+        }
+        .editor-format-toolbar > .components-toolbar {
+            border-bottom: 0;
+        }
+    }
+    .editor-rich-text__tinymce {
+        padding: 10px 15px;
+        background-color: #fff;
+        border: 1px solid #e2e4e7;
+
+        p:last-of-type {
+            margin-bottom: 0;
+        }
     }
 }
 

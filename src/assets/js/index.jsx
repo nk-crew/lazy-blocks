@@ -39,6 +39,7 @@ const {
     URLInput,
     ColorPalette,
     InspectorControls,
+    RichText,
 } = wp.editor;
 
 const {
@@ -246,34 +247,26 @@ options.blocks.forEach( ( item ) => {
                             />
                         ) );
                         break;
-                    case 'content_editor':
-                        // TODO: Editor for content.
-                        // result.push((
-                        //     <RichText
-                        //         key={ control.name }
-                        //         label={ control.label }
-                        //         value={ attributes[ control.name ] }
-                        //         onChange={ ( val ) => { this.onControlChange( val, control ) } }
-                        //     />
-                        // ));
-                        // break;
-                        // save:
-                        // return <RichText.Content value={ attributes[ control.name ] } />;
-                        // fall through
-                    case 'wysiwyg_editor':
-                        // TODO: Wysiwyg editor for content.
-                        // result.push((
-                        //     <RichText
-                        //         key={ control.name }
-                        //         label={ control.label }
-                        //         content={ attributes[ control.name ] }
-                        //         onChange={ ( val ) => { this.onControlChange( val, control ) } }
-                        //     />
-                        // ));
-                        // break;
-                        // save:
-                        // return <RawHTML>{ attributes[ control.name ] }</RawHTML>;
-                        // fall through
+                    case 'rich_text':
+                        result.push( (
+                            <BaseControl
+                                key={ control.name }
+                                label={ control.label }
+                                className="lzb-gutenberg-rich-text"
+                            >
+                                <RichText
+                                    value={ this.getControlValue( control, childIndex ) }
+                                    format="string"
+                                    multiline={ control.multiline === 'true' ? 'p' : false }
+                                    inlineToolbar={ true }
+                                    isSelected={ true }
+                                    onChange={ ( val ) => {
+                                        this.onControlChange( val, control, childIndex );
+                                    } }
+                                />
+                            </BaseControl>
+                        ) );
+                        break;
                     case 'code_editor':
                         result.push( (
                             <BaseControl

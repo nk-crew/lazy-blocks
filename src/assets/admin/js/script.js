@@ -220,6 +220,7 @@ const controlTemplate = `
             </div>
 
             <div class="lzb-metabox-control-expanded">
+                <!-- Label -->
                 <div class="lzb-metabox">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[label]">Label</label>
@@ -229,6 +230,8 @@ const controlTemplate = `
                         <input class="lzb-input" id="${ controlNameTemplate }[label]" name="${ controlNameTemplate }[label]" type="text" value="#{label}">
                     </div>
                 </div>
+
+                <!-- Name -->
                 <div class="lzb-metabox">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[name]">Name</label>
@@ -238,6 +241,8 @@ const controlTemplate = `
                         <input class="lzb-input" id="${ controlNameTemplate }[name]" name="${ controlNameTemplate }[name]" type="text" value="#{name}">
                     </div>
                 </div>
+
+                <!-- Type -->
                 <div class="lzb-metabox">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[type]">Type</label>
@@ -256,6 +261,7 @@ const controlTemplate = `
                             <optgroup label="Content">
                                 <option value="image" #{type:selected?image}>Image</option>
                                 <option value="gallery" #{type:selected?gallery}>Gallery</option>
+                                <option value="rich_text" #{type:selected?rich_text}>Rich Text (WYSIWYG)</option>
                                 <option value="code_editor" #{type:selected?code_editor}>Code Editor</option>
                             </optgroup>
                             <optgroup label="Choice">
@@ -274,6 +280,7 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Choices for Select control -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[choices]">Choices</label>
@@ -287,6 +294,7 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Min, Max, Step for Number and Range controls -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == number || [id='${ controlNameTemplate }[type]'] == range">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[min]">Min, Max, Step</label>
@@ -298,6 +306,7 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Picker type for Date Time Picker control -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == date_time">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[date_time_picker]">Picker</label>
@@ -311,6 +320,19 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Multiline for Rich Text control -->
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == rich_text">
+                    <div class="lzb-metabox-label"></div>
+                    <div>
+                        <label>
+                            <input type="hidden" name="${ controlNameTemplate }[multiline]" id="${ controlNameTemplate }[multiline]_hidden" value="false">
+                            <input class="lzb-input" type="checkbox" name="${ controlNameTemplate }[multiline]" id="${ controlNameTemplate }[multiline]" value="true" #{multiline:checked?true}>
+                            Multiline
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Default value -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[default]">Default value</label>
@@ -321,9 +343,10 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Checked for Checkbox and Toggle controls -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == checkbox || [id='${ controlNameTemplate }[type]'] == toggle">
                     <div class="lzb-metabox-label">
-                        <label for="${ controlNameTemplate }[default]">Checked</label>
+                        <label for="${ controlNameTemplate }[checked]">Checked</label>
                     </div>
                     <div>
                         <label>
@@ -334,6 +357,7 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Placement -->
                 <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[placement]">Placement</label>
@@ -348,6 +372,7 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Meta -->
                 <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[save_in_meta]">Save in Meta</label>
