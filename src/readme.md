@@ -67,6 +67,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.1.1 =
+
+* added RichText control
+
 = 1.1.0 =
 
 * added possibility to use all registered blocks in posts templates
