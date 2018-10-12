@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 
 // truncate
-// {{truncate 'string' 2 'true' }}
+// {{truncate 'string' 2 'true'}}
 Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = 'true' ) => {
     if ( str && len && str.length > len ) {
         let newStr = str.substr( 0, len + 1 );
@@ -25,7 +25,7 @@ Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = 'true' ) => {
 } );
 
 // compare.
-// {{#compare 1 '===' 2 }} Show if true {{/compare}}
+// {{#compare 1 '===' 2}} Show if true {{/compare}}
 // slightly changed https://gist.github.com/doginthehat/1890659
 Handlebars.registerHelper( 'compare', ( lvalue, operator, rvalue, options ) => {
     if ( arguments.length < 3 ) {
@@ -92,7 +92,7 @@ Handlebars.registerHelper( 'compare', ( lvalue, operator, rvalue, options ) => {
 } );
 
 // math
-// {{math 1 '+' 2 }}
+// {{math 1 '+' 2}}
 // https://stackoverflow.com/questions/33059203/error-missing-helper-in-handlebars-js/46317662#46317662
 Handlebars.registerHelper( 'math', ( lvalue, operator, rvalue ) => {
     lvalue = parseFloat( lvalue );

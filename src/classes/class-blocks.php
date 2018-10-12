@@ -60,7 +60,7 @@ class LazyBlocks_Blocks {
         $this->handlebars = new Handlebars\Handlebars();
 
         // truncate
-        // {{truncate 'string' 2 'true' }}.
+        // {{truncate 'string' 2 'true'}}.
         $this->handlebars->registerHelper( 'truncate', function( $str, $len, $ellipsis = 'true' ) {
             if ( $str && $len && mb_strlen( $str ) > $len ) {
                 $new_str = mb_substr( $str, 0, $len + 1 );
@@ -87,7 +87,7 @@ class LazyBlocks_Blocks {
         } );
 
         // compare.
-        // {{#compare 1 '===' 2 }} Show if true {{/compare}}
+        // {{#compare 1 '===' 2}} Show if true {{/compare}}
         // slightly changed https://gist.github.com/doginthehat/1890659.
         $this->handlebars->registerHelper( 'compare', function( $lvalue, $operator, $rvalue = null, $options = null ) {
             if ( null === $rvalue ) {
@@ -146,7 +146,7 @@ class LazyBlocks_Blocks {
         } );
 
         // math.
-        // {{math 1 '+' 2 }}
+        // {{math 1 '+' 2}}
         // https://stackoverflow.com/questions/33059203/error-missing-helper-in-handlebars-js/46317662#46317662.
         $this->handlebars->registerHelper( 'math', function( $lvalue, $operator, $rvalue ) {
             $result = '';
@@ -173,7 +173,7 @@ class LazyBlocks_Blocks {
         } );
 
         // do_shortcode.
-        // {{#do_shortcode 'my_shortcode'}}.
+        // {{{do_shortcode 'my_shortcode' this}}}.
         $this->handlebars->registerHelper( 'do_shortcode', function( $shortcode_name, $attributes ) {
             $result = '[' . $shortcode_name;
 
