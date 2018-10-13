@@ -228,6 +228,7 @@ options.blocks.forEach( ( item ) => {
                                         onChange={ ( val ) => {
                                             this.onControlChange( val, control, childIndex );
                                         } }
+                                        autoFocus={ false }
                                     />
                                     <Dashicon icon="admin-links" />
                                     <IconButton icon="editor-break" label="Apply" type="submit" />
