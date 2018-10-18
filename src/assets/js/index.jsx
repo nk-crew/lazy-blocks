@@ -117,6 +117,11 @@ options.blocks.forEach( ( item ) => {
                 name = control.name;
             }
 
+            // convert string in number type.
+            if ( 'number' === control.type ) {
+                val = parseFloat( val );
+            }
+
             const result = {};
             result[ name ] = val;
 
