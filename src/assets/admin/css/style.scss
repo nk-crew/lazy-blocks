@@ -448,6 +448,7 @@
     .editor-url-input input[type="text"] {
         &,
         .editor-block-list__block & {
+            width: 100%;
             padding: 6px 9px;
             padding-left: 30px;
             border: 1px solid #8d96a0;
