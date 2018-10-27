@@ -40,6 +40,7 @@ const {
     ColorPalette,
     InspectorControls,
     RichText,
+    InnerBlocks,
 } = wp.editor;
 
 const {
@@ -288,6 +289,16 @@ options.blocks.forEach( ( item ) => {
                             </BaseControl>
                         ) );
                         break;
+                    case 'inner_blocks':
+                        result.push( (
+                            <BaseControl
+                                key={ control.name }
+                                label={ control.label }
+                            >
+                                <InnerBlocks />
+                            </BaseControl>
+                        ) );
+                        break;
                     case 'select':
                         result.push( (
                             <SelectControl
@@ -517,8 +528,16 @@ options.blocks.forEach( ( item ) => {
         edit: LazyBlock,
 
         save() {
-            // render in PHP.
-            return null;
+            let result = null;
+
+            // Return inner blocks content to use it in PHP render.
+            Object.keys( item.controls ).forEach( ( k ) => {
+                if ( 'inner_blocks' === item.controls[ k ].type ) {
+                    result = <InnerBlocks.Content />;
+                }
+            } );
+
+            return result;
         },
     } );
 } );

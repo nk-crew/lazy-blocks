@@ -263,6 +263,7 @@ const controlTemplate = `
                                 <option value="gallery" #{type:selected?gallery}>Gallery</option>
                                 <option value="rich_text" #{type:selected?rich_text}>Rich Text (WYSIWYG)</option>
                                 <option value="code_editor" #{type:selected?code_editor}>Code Editor</option>
+                                <option value="inner_blocks" class="lzb-metabox-control-hide-from-repeater" #{type:selected?inner_blocks}>Inner Blocks</option>
                             </optgroup>
                             <optgroup label="Choice">
                                 <option value="select" #{type:selected?select}>Select</option>
@@ -333,7 +334,7 @@ const controlTemplate = `
                 </div>
 
                 <!-- Default value -->
-                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle && [id='${ controlNameTemplate }[type]'] != repeater">
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != image && [id='${ controlNameTemplate }[type]'] != gallery && [id='${ controlNameTemplate }[type]'] != code_editor && [id='${ controlNameTemplate }[type]'] != inner_blocks && [id='${ controlNameTemplate }[type]'] != checkbox && [id='${ controlNameTemplate }[type]'] != toggle && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[default]">Default value</label>
                         <small>Appears when inserting a new block</small>
@@ -401,7 +402,13 @@ function initControlsSortable() {
 
     $controls.find( '.lzb-metabox-controls, .lzb-metabox-container' ).each( function() {
         new window.Sortable( this, {
-            group: 'lzb-controls',
+            group: {
+                name: 'lzb-controls',
+                put: function( to, from, item ) {
+                    // prevent adding inner blocks inside repeater.
+                    return 'inner_blocks' !== $( item ).attr( 'data-control-type' );
+                },
+            },
             draggable: '.lzb-metabox-control',
             filter: '.lzb-input, .lzb-textarea, .lzb-select',
             preventOnFilter: false,
@@ -421,8 +428,32 @@ function initControlsSortable() {
 
                     $control.find( `[name="${ controlName }[child_of]"]` ).val( parentId );
                 } );
+                prepareInnerBlocks();
             },
         } );
+    } );
+}
+
+// prepare inner blocks control.
+function prepareInnerBlocks() {
+    const $selects = $controls.find( '.lzb-select' ).filter( function() {
+        return /^lazyblocks_controls(.*)\[type\]$/.test( $( this ).attr( 'name' ) );
+    } );
+    const innerBlocksControlExist = $selects.filter( function() {
+        return 'inner_blocks' === $( this ).val();
+    } ).length;
+
+    $selects.each( function() {
+        const $this = $( this );
+        const isInnerBlock = 'inner_blocks' === $this.val();
+
+        if ( ! isInnerBlock ) {
+            if ( innerBlocksControlExist ) {
+                $this.find( 'option[value="inner_blocks"]' ).attr( 'disabled', 'disabled' );
+            } else {
+                $this.find( 'option[value="inner_blocks"]' ).removeAttr( 'disabled' );
+            }
+        }
     } );
 }
 
@@ -565,6 +596,7 @@ if ( $controls.length ) {
     $controls.on( 'change', 'input, select, textarea', function() {
         updateContainValues();
         updateChoicesArray();
+        prepareInnerBlocks();
     } );
 
     // add control.
@@ -577,8 +609,10 @@ if ( $controls.length ) {
             ID: 'uniq',
             child_of: childOf || '',
         } );
+        prepareInnerBlocks();
         initControlsSortable();
     } );
+    prepareInnerBlocks();
     initControlsSortable();
 
     // remove control
@@ -586,6 +620,7 @@ if ( $controls.length ) {
         e.preventDefault();
 
         removeControl( $( this ).closest( '[data-control-id]' ).attr( 'data-control-id' ) );
+        prepareInnerBlocks();
         initControlsSortable();
     } );
 

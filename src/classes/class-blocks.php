@@ -1050,6 +1050,12 @@ class LazyBlocks_Blocks {
                             $type        = 'boolean';
                             $default_val = 'true' === $control['checked'];
                             break;
+                        case 'inner_blocks':
+                            $type        = 'string';
+
+                            // this value will be detected in render callback and added inner blocks content.
+                            $default_val = '@@lazy_blocks_inner_blocks';
+                            break;
                         case 'repeater':
                             $default_val  = array();
                             $inner_blocks = $this->prepare_block_attributes( $controls, $k, $block );
@@ -1144,19 +1150,25 @@ class LazyBlocks_Blocks {
     /**
      * Render block custom frontend HTML.
      *
-     * @param array $attributes The block attributes.
+     * @param array  $attributes The block attributes.
+     * @param string $content The block content.
      *
      * @return string Returns the post content with latest posts added.
      */
-    public function render_frontend_html( $attributes ) {
+    public function render_frontend_html( $attributes, $content = null ) {
         $check_array = '%5B%7B%22';
         $check_array_alt = '%7B%22';
         $result = '';
 
-        // prepare decoded arrays to actual arrays.
         foreach ( $attributes as $k => $attr ) {
+            // prepare decoded arrays to actual arrays.
             if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array || substr( $attr, 0, strlen( $check_array_alt ) ) === $check_array_alt ) {
                 $attributes[ $k ] = json_decode( urldecode( $attr ), true );
+            }
+
+            // prepare content attribute.
+            if ( '@@lazy_blocks_inner_blocks' === $attr ) {
+                $attributes[ $k ] = $content ? : '';
             }
         }
 
