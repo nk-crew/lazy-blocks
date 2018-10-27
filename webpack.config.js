@@ -1,52 +1,57 @@
-const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
+const md5 = require( 'md5' );
 
-module.exports = {
-    module: {
-        loaders: [
-            {
-                test: /(\.jsx)$/,
-                loader: 'babel-loader',
-            }, {
-                test: /\.scss$/,
-                use: [
-                    {
-                        loader: 'style-loader', // creates style nodes from JS strings
-                    }, {
-                        loader: 'css-loader', // translates CSS into CommonJS
-                    }, {
-                        loader: 'sass-loader', // compiles Sass to CSS
-                    },
-                ],
-            }, {
-                test: /\.svg$/,
-                use: [
-                    {
-                        loader: 'svg-url-loader',
-                        options: {
-                            noquotes: true,
+module.exports = function( isDev = false ) {
+    return {
+        mode: isDev ? 'development' : 'production',
+        module: {
+            rules: [
+                {
+                    test: /(\.jsx)$/,
+                    loader: 'babel-loader',
+                }, {
+                    test: /\.scss$/,
+                    use: [
+                        {
+                            loader: 'style-loader', // creates style nodes from JS strings
+                        }, {
+                            loader: 'css-loader', // translates CSS into CommonJS
+                            options: {
+                                url: false,
+                            },
+                        }, {
+                            loader: 'sass-loader', // compiles Sass to CSS
                         },
-                    },
-                    'svgo-loader',
-                ],
-            },
-        ],
-    },
-    resolve: {
-        alias: {
-            handlebars: 'handlebars/dist/handlebars.min.js',
-        },
-    },
-    externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-    },
-    plugins: [
-        new UglifyJsPlugin( {
-            uglifyOptions: {
-                output: {
-                    comments: /^!/,
+                    ],
+                }, {
+                    test: /\.svg$/,
+                    use: ( { resource } ) => ( {
+                        loader: '@svgr/webpack',
+                        options: {
+                            svgoConfig: {
+                                plugins: [
+                                    {
+                                        removeViewBox: false,
+                                    },
+                                    {
+                                        cleanupIDs: {
+                                            prefix: `lazyblocks-${ md5( resource ) }-`,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    } ),
                 },
+            ],
+        },
+        resolve: {
+            alias: {
+                handlebars: 'handlebars/dist/handlebars.min.js',
             },
-        } ),
-    ],
+        },
+        externals: {
+            react: 'React',
+            'react-dom': 'ReactDOM',
+        },
+    };
 };
