@@ -611,58 +611,15 @@
 }
 
 // repeater
-.lzb-gutenberg-repeater {
-    .lzb-gutenberg-repeater-item {
-        position: relative;
+.lzb-gutenberg-repeater-item {
+    position: relative;
 
-        > div {
-            margin-right: 15px;
-            margin-left: 15px;
-        }
-
-        .lzb-gutenberg-repeater-btn-remove {
-            position: absolute;
-            display: block;
-            top: -7px;
-            right: -7px;
-            width: 17px;
-            height: 17px;
-            padding: 0;
-            font-size: .8em;
-            line-height: .8em;
-            color: #fff;
-            cursor: pointer;
-            background-color: #ea2c22;
-            border: none;
-            border-radius: 50%;
-            opacity: 0;
-            transition: .2s opacity;
-            transform: none;
-
-            > .dashicons {
-                width: 17px;
-                height: 17px;
-                font-size: 1em;
-                line-height: 17px;
-            }
-        }
-        &:hover .lzb-gutenberg-repeater-btn-remove {
-            opacity: 1;
-        }
-
-        .lzb-gutenberg-repeater-item-content {
-            padding: 15px;
-            margin-right: 0;
-            margin-left: 0;
-            border-right: 1px solid #eaeaea;
-            border-left: 1px solid #eaeaea;
-        }
+    > div {
+        margin-right: 15px;
+        margin-left: 15px;
     }
 
-    .lzb-gutenberg-repeater-items {
-        margin-bottom: 15px;
-    }
-    .lzb-gutenberg-repeater-items .lzb-gutenberg-repeater-btn {
+    .lzb-gutenberg-repeater-btn {
         position: relative;
         width: 100%;
         padding: 10px 15px;
@@ -683,32 +640,95 @@
             transition: .2s transform;
             transform: translateY(-50%);
         }
-
         &.lzb-gutenberg-repeater-btn-active > .lzb-gutenberg-repeater-btn-arrow {
             transform: translateY(-50%) rotate(90deg);
         }
     }
 
-    > button {
+    .lzb-gutenberg-repeater-btn-remove {
+        position: absolute;
         display: block;
-        margin-left: auto;
+        top: -7px;
+        right: -7px;
+        width: 17px;
+        height: 17px;
+        padding: 0;
+        font-size: .8em;
+        line-height: .8em;
+        color: #fff;
+        cursor: pointer;
+        background-color: #ea2c22;
+        border: none;
+        border-radius: 50%;
+        opacity: 0;
+        transition: .2s opacity;
+        transform: none;
+
+        > .dashicons {
+            width: 17px;
+            height: 17px;
+            font-size: 1em;
+            line-height: 17px;
+        }
+    }
+    &:hover .lzb-gutenberg-repeater-btn-remove {
+        opacity: 1;
     }
 
-    .lzb-inspector-controls & {
-        padding: 13px;
+    .lzb-gutenberg-repeater-btn-drag {
+        position: absolute;
+        display: flex;
+        top: 50%;
+        right: 35px;
+        margin: 0;
+        cursor: move;
+        opacity: 0;
+        transition: .2s opacity;
+        transform: translateY(-50%);
+        will-change: opacity;
+    }
+    &:hover .lzb-gutenberg-repeater-btn-drag {
+        opacity: .1;
+    }
+    .lzb-gutenberg-repeater-btn-drag:hover {
+        opacity: .5;
+    }
 
-        &.lzb-gutenberg-repeater {
-            padding-right: 0;
-            padding-left: 0;
-        }
-        .lzb-gutenberg-repeater-item {
-            padding-top: 0;
-            margin-right: 0;
-            margin-left: 0;
-        }
-        .lzb-gutenberg-repeater-item-content > .components-panel__body {
-            margin-top: -15px;
-        }
+    .lzb-gutenberg-repeater-item-content {
+        padding: 15px;
+        margin-right: 0;
+        margin-left: 0;
+        border-right: 1px solid #eaeaea;
+        border-left: 1px solid #eaeaea;
+    }
+
+    &.lzb-gutenberg-repeater-sortable {
+        z-index: 100;
+    }
+    &.lzb-gutenberg-repeater-sortable .lzb-gutenberg-repeater-item-content {
+        visibility: hidden;
+    }
+}
+.lzb-gutenberg-repeater-items {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+.lzb-gutenberg-repeater > button {
+    display: block;
+    margin-left: auto;
+}
+.lzb-inspector-controls {
+    .lzb-gutenberg-repeater {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .lzb-gutenberg-repeater-item {
+        padding-top: 0;
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .lzb-gutenberg-repeater-item-content > .components-panel__body:first-child {
+        margin-top: -15px;
     }
 }
 

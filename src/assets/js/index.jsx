@@ -1,7 +1,7 @@
-import Handlebars from './handlebars.jsx';
-
 // External Dependencies.
+import Handlebars from './handlebars.jsx';
 import classnames from 'classnames/dedupe';
+import { arrayMove } from 'react-sortable-hoc';
 
 // Internal Dependencies
 require( './blocks/free.jsx' );
@@ -430,6 +430,10 @@ options.blocks.forEach( ( item ) => {
                                 addRow={ () => {
                                     val.push( {} );
                                     this.onControlChange( val, control, childIndex );
+                                } }
+                                resortRow={ ( oldIndex, newIndex ) => {
+                                    const newVal = arrayMove( val, oldIndex, newIndex );
+                                    this.onControlChange( newVal, control, childIndex );
                                 } }
                             />
                         ) );

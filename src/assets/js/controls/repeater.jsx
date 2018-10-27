@@ -1,3 +1,5 @@
+import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
@@ -8,6 +10,42 @@ const {
 const {
     withInstanceId,
 } = wp.compose;
+
+const DragHandle = SortableHandle( () => (
+    <div
+        className="lzb-gutenberg-repeater-btn-drag"
+        onClick={ ( e ) => {
+            e.stopPropagation();
+        } }
+        role="button"
+    >
+        <span className="dashicons dashicons-menu"></span>
+    </div>
+) );
+
+const SortableItem = SortableElement( ( data ) =>
+    <div className="lzb-gutenberg-repeater-item">
+        <button
+            className={ 'lzb-gutenberg-repeater-btn' + ( data.active ? ' lzb-gutenberg-repeater-btn-active' : '' ) }
+            onClick={ data.onToggle }
+        >
+            { data.title }
+            <DragHandle />
+            <span className="lzb-gutenberg-repeater-btn-arrow dashicons dashicons-arrow-right-alt2" />
+        </button>
+        <button className="lzb-gutenberg-repeater-btn-remove" onClick={ data.onRemove }><span className="dashicons dashicons-no-alt" /></button>
+        { data.active ? data.renderContent() : '' }
+    </div>
+);
+const SortableList = SortableContainer( ( { items } ) => {
+    return (
+        <div className="lzb-gutenberg-repeater-items">
+            { items.map( ( value, index ) => (
+                <SortableItem key={ `repeater-item-${ index }` } index={ index } { ...value } />
+            ) ) }
+        </div>
+    );
+} );
 
 class RepeaterControl extends Component {
     constructor() {
@@ -24,50 +62,53 @@ class RepeaterControl extends Component {
             renderRow = () => {},
             addRow = () => {},
             removeRow = () => {},
+            resortRow = () => {},
         } = this.props;
 
         const items = [];
         for ( let i = 0; i < count; i++ ) {
             const active = this.state.activeItem === i;
 
-            items.push(
-                <div className="lzb-gutenberg-repeater-item" key={ i }>
-                    <button
-                        className={ 'lzb-gutenberg-repeater-btn' + ( active ? ' lzb-gutenberg-repeater-btn-active' : '' ) }
-                        onClick={ ( e ) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if ( this.state.activeItem === i ) {
-                                this.setState( { activeItem: -1 } );
-                            } else {
-                                this.setState( { activeItem: i } );
-                            }
-                        } }
-                    >
-                        { `Row ${ i + 1 }` }
-                        <span className="lzb-gutenberg-repeater-btn-arrow dashicons dashicons-arrow-right-alt2" />
-                    </button>
-                    <button className="lzb-gutenberg-repeater-btn-remove" onClick={ ( e ) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        removeRow( i );
-                    } }><span className="dashicons dashicons-no-alt" /></button>
-                    { active ? (
+            items.push( {
+                title: `Row ${ i + 1 }`,
+                active: active,
+                onToggle: ( e ) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    this.setState( { activeItem: active ? -1 : i } );
+                },
+                onRemove: ( e ) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    removeRow( i );
+                },
+                renderContent: () => {
+                    return (
                         <div className="lzb-gutenberg-repeater-item-content">
                             { renderRow( i ) }
                         </div>
-                    ) : '' }
-                </div>
-            );
+                    );
+                },
+            } );
         }
 
         return (
             <BaseControl label={ label }>
                 <div className="lzb-gutenberg-repeater">
                     { items.length && items.length > 0 ? (
-                        <div className="lzb-gutenberg-repeater-items">
-                            { items }
-                        </div>
+                        <SortableList
+                            items={ items }
+                            onSortEnd={ ( { oldIndex, newIndex } ) => {
+                                resortRow( oldIndex, newIndex );
+
+                                if ( this.state.activeItem > -1 ) {
+                                    this.setState( { activeItem: newIndex } );
+                                }
+                            } }
+                            useDragHandle={ true }
+                            helperClass={ 'lzb-gutenberg-repeater-sortable' }
+                        />
                     ) : '' }
                     <Button
                         isDefault={ true }
