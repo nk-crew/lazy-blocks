@@ -52,7 +52,11 @@ class RepeaterControl extends Component {
                         e.stopPropagation();
                         removeRow( i );
                     } }><span className="dashicons dashicons-no-alt" /></button>
-                    { active ? renderRow( i ) : '' }
+                    { active ? (
+                        <div className="lzb-gutenberg-repeater-item-content">
+                            { renderRow( i ) }
+                        </div>
+                    ) : '' }
                 </div>
             );
         }

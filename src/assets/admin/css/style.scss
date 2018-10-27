@@ -612,10 +612,6 @@
 
 // repeater
 .lzb-gutenberg-repeater {
-    padding: 18px 20px;
-    background-color: #fbfbfb;
-    border: 1px solid #eaeaea;
-
     .lzb-gutenberg-repeater-item {
         position: relative;
 
@@ -653,13 +649,24 @@
         &:hover .lzb-gutenberg-repeater-btn-remove {
             opacity: 1;
         }
+
+        .lzb-gutenberg-repeater-item-content {
+            padding: 15px;
+            margin-right: 0;
+            margin-left: 0;
+            border-right: 1px solid #eaeaea;
+            border-left: 1px solid #eaeaea;
+        }
     }
 
+    .lzb-gutenberg-repeater-items {
+        margin-bottom: 15px;
+    }
     .lzb-gutenberg-repeater-items .lzb-gutenberg-repeater-btn {
         position: relative;
         width: 100%;
-        padding: 5px 15px;
-        margin-bottom: 15px;
+        padding: 10px 15px;
+        margin-bottom: -1px;
         text-align: left;
         cursor: pointer;
         background-color: #fff;
@@ -690,10 +697,17 @@
     .lzb-inspector-controls & {
         padding: 13px;
 
-        .lzb-gutenberg-repeater-item > div {
+        &.lzb-gutenberg-repeater {
+            padding-right: 0;
+            padding-left: 0;
+        }
+        .lzb-gutenberg-repeater-item {
             padding-top: 0;
             margin-right: 0;
             margin-left: 0;
+        }
+        .lzb-gutenberg-repeater-item-content > .components-panel__body {
+            margin-top: -15px;
         }
     }
 }
