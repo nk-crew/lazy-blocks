@@ -64,12 +64,14 @@
     // input group.
     .lzb-metabox-input-group {
         display: flex;
+        flex-wrap: wrap;
 
         > input {
             flex: 1;
             width: auto;
             max-width: 100px;
             height: 28px;
+            margin-top: -1px;
             margin-left: -1px;
         }
     }
