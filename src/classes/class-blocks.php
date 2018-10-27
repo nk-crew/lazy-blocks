@@ -334,23 +334,24 @@ class LazyBlocks_Blocks {
     private $defaults = array(
         'lazyblocks_controls' => array(),
 
-        'lazyblocks_slug'                 => '',
-        'lazyblocks_icon'                 => '',
-        'lazyblocks_description'          => '',
-        'lazyblocks_keywords'             => '',
-        'lazyblocks_category'             => 'common',
+        'lazyblocks_slug'                   => '',
+        'lazyblocks_icon'                   => '',
+        'lazyblocks_description'            => '',
+        'lazyblocks_keywords'               => '',
+        'lazyblocks_category'               => 'common',
 
-        'lazyblocks_code_editor_html'     => '',
-        'lazyblocks_code_editor_css'      => '',
-        'lazyblocks_code_frontend_html'   => '',
-        'lazyblocks_code_frontend_css'    => '',
+        'lazyblocks_code_editor_html'       => '',
+        'lazyblocks_code_editor_css'        => '',
+        'lazyblocks_code_frontend_html'     => '',
+        'lazyblocks_code_frontend_css'      => '',
+        'lazyblocks_code_frontend_callback' => '',
 
-        'lazyblocks_supports_multiple'    => 'true',
-        'lazyblocks_supports_classname'   => 'true',
-        'lazyblocks_supports_anchor'      => 'false',
-        'lazyblocks_supports_html'        => 'false',
-        'lazyblocks_supports_inserter'    => 'true',
-        'lazyblocks_supports_align'       => array( 'wide', 'full' ),
+        'lazyblocks_supports_multiple'      => 'true',
+        'lazyblocks_supports_classname'     => 'true',
+        'lazyblocks_supports_anchor'        => 'false',
+        'lazyblocks_supports_html'          => 'false',
+        'lazyblocks_supports_inserter'      => 'true',
+        'lazyblocks_supports_align'         => array( 'wide', 'full' ),
 
         /*
             TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
@@ -1076,12 +1077,19 @@ class LazyBlocks_Blocks {
             }
         }
 
-        // add attribute with code html to frontend render.
-        if ( isset( $block['code'] ) && isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
-            $attributes['lazyblock_code_frontend_html'] = array(
-                'type'    => 'string',
-                'default' => $block['code']['frontend_html'],
-            );
+        // add attribute with code html for frontend render.
+        if ( isset( $block['code'] ) ) {
+            if ( isset( $block['code']['frontend_callback'] ) && ! empty( $block['code']['frontend_callback'] ) && is_callable( $block['code']['frontend_callback'] ) ) {
+                $attributes['lazyblock_code_frontend_callback'] = array(
+                    'type'    => 'string',
+                    'default' => $block['code']['frontend_callback'],
+                );
+            } elseif ( isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
+                $attributes['lazyblock_code_frontend_html'] = array(
+                    'type'    => 'string',
+                    'default' => $block['code']['frontend_html'],
+                );
+            }
         }
 
         // reserved attributes.
@@ -1115,7 +1123,17 @@ class LazyBlocks_Blocks {
                 'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
             );
 
-            if ( isset( $block['code'] ) && isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
+            if (
+                isset( $block['code'] ) &&
+                ( (
+                    isset( $block['code']['frontend_html'] ) &&
+                    ! empty( $block['code']['frontend_html'] )
+                ) || (
+                    isset( $block['code']['frontend_callback'] ) &&
+                    ! empty( $block['code']['frontend_callback'] ) &&
+                    is_callable( $block['code']['frontend_callback'] )
+                ) )
+            ) {
                 $data['render_callback'] = array( $this, 'render_frontend_html' );
             }
 
@@ -1142,7 +1160,12 @@ class LazyBlocks_Blocks {
             }
         }
 
-        if ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
+        if ( isset( $attributes['lazyblock_code_frontend_callback'] ) && is_callable( $attributes['lazyblock_code_frontend_callback'] ) ) {
+            ob_start();
+            call_user_func( $attributes['lazyblock_code_frontend_callback'], $attributes );
+            $result = ob_get_contents();
+            ob_end_clean();
+        } elseif ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
             $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], $attributes );
         }
 
