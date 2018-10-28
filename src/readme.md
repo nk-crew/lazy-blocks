@@ -38,7 +38,9 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
     * Password
     * Image
     * Gallery
+    * Rich Text (WYSIWYG)
     * Code Editor
+    * Inner Blocks
     * Select
     * Checkbox
     * Toggle
@@ -66,6 +68,16 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 3. Block in Gutenberg editor
 
 ## Changelog ##
+
+= 1.2.0 =
+
+* added Inner Blocks control
+* added support for custom frontend render function (use PHP instead of Handlebars) [https://lazyblocks.com/documentation/blocks-code/php/](https://lazyblocks.com/documentation/blocks-code/php/)
+* added possibility to resort Repeater rows
+* changed Repeater control styles
+* disabled autofocus in URL control
+* fixed URL input width
+* fixed Number control value save
 
 = 1.1.1 =
 
