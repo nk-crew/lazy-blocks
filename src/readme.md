@@ -69,6 +69,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.2.1 =
+
+* fixed controls errors in Gutenberg 4.2.0 (Gallery, Image, Code Editor)
+
 = 1.2.0 =
 
 * added Inner Blocks control
