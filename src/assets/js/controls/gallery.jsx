@@ -14,8 +14,10 @@ const {
 const {
     MediaPlaceholder,
     MediaUpload,
-    editorMediaUpload,
+    mediaUpload,
 } = wp.editor;
+
+const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 class GalleryControl extends Component {
     render() {
@@ -38,7 +40,7 @@ class GalleryControl extends Component {
                             onChange( images );
                         } }
                         accept="image/*"
-                        type="image"
+                        allowedTypes={ ALLOWED_MEDIA_TYPES }
                         disableMaxUploadErrorMessages
                         multiple
                         onError={ ( e ) => {
@@ -66,8 +68,8 @@ class GalleryControl extends Component {
                                     <DropZone
                                         onFilesDrop={ ( files ) => {
                                             const currentImages = value || [];
-                                            editorMediaUpload( {
-                                                allowedType: 'image',
+                                            mediaUpload( {
+                                                allowedTypes: ALLOWED_MEDIA_TYPES,
                                                 filesList: files,
                                                 onFileChange: ( images ) => {
                                                     onChange( currentImages.concat( images ) );

@@ -13,8 +13,10 @@ const {
 
 const {
     MediaPlaceholder,
-    editorMediaUpload,
+    mediaUpload,
 } = wp.editor;
+
+const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 class ImageControl extends Component {
     render() {
@@ -37,7 +39,7 @@ class ImageControl extends Component {
                             onChange( image );
                         } }
                         accept="image/*"
-                        type="image"
+                        allowedTypes={ ALLOWED_MEDIA_TYPES }
                         disableMaxUploadErrorMessages
                         onError={ ( e ) => {
                             // eslint-disable-next-line no-console
@@ -51,8 +53,8 @@ class ImageControl extends Component {
                             <DropZoneProvider>
                                 <DropZone
                                     onFilesDrop={ ( files ) => {
-                                        editorMediaUpload( {
-                                            allowedType: 'image',
+                                        mediaUpload( {
+                                            allowedTypes: ALLOWED_MEDIA_TYPES,
                                             filesList: files,
                                             onFileChange: ( image ) => {
                                                 onChange( image );

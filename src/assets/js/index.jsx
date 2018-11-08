@@ -26,7 +26,6 @@ const {
     ToggleControl,
     CheckboxControl,
     RangeControl,
-    CodeEditor,
     SelectControl,
     ColorIndicator,
     Dashicon,
@@ -41,6 +40,7 @@ const {
     InspectorControls,
     RichText,
     InnerBlocks,
+    PlainText,
 } = wp.editor;
 
 const {
@@ -279,8 +279,9 @@ options.blocks.forEach( ( item ) => {
                             <BaseControl
                                 key={ control.name }
                                 label={ control.label }
+                                className="wp-block-html"
                             >
-                                <CodeEditor
+                                <PlainText
                                     value={ this.getControlValue( control, childIndex ) }
                                     onChange={ ( val ) => {
                                         this.onControlChange( val, control, childIndex );
