@@ -188,6 +188,10 @@ class LazyBlocks_Blocks {
                         continue;
                     }
 
+                    if ( is_array( $val ) ) {
+                        $val = json_encode( $val );
+                    }
+
                     if (
                         ! is_numeric( $val )
                         && ! is_string( $val )
