@@ -69,6 +69,11 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.2.2 =
+
+* fixed templates loading in Gutenberg 4.5
+* fixed do_shortcode work with Image control value
+
 = 1.2.1 =
 
 * fixed controls errors in Gutenberg 4.2.0 (Gallery, Image, Code Editor)
