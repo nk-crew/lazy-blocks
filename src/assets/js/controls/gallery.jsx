@@ -3,7 +3,6 @@ const { Component } = wp.element;
 const {
     BaseControl,
     Button,
-    DropZoneProvider,
     DropZone,
 } = wp.components;
 
@@ -29,42 +28,42 @@ class GalleryControl extends Component {
 
         return (
             <BaseControl label={ label }>
-                { ! value || ! Object.keys( value ).length ? (
-                    <MediaPlaceholder
-                        icon="format-gallery"
-                        labels={ {
-                            title: label,
-                            name: __( 'images' ),
-                        } }
-                        onSelect={ ( images ) => {
-                            onChange( images );
-                        } }
-                        accept="image/*"
-                        allowedTypes={ ALLOWED_MEDIA_TYPES }
-                        disableMaxUploadErrorMessages
-                        multiple
-                        onError={ ( e ) => {
-                            // eslint-disable-next-line no-console
-                            console.log( e );
-                        } }
-                    />
-                ) : '' }
-                { value && Object.keys( value ).length ? (
-                    <MediaUpload
-                        onSelect={ ( images ) => {
-                            onChange( images );
-                        } }
-                        type="image"
-                        multiple
-                        gallery
-                        value={ value.map( ( img ) => img.id ) }
-                        render={ ( { open } ) => (
-                            <div
-                                className="lzb-gutenberg-gallery"
-                                onKeyPress={ open }
-                                role="presentation"
-                            >
-                                <DropZoneProvider>
+                <div className="lzb-gutenberg-gallery-wrap">
+                    { ! value || ! Object.keys( value ).length ? (
+                        <MediaPlaceholder
+                            icon="format-gallery"
+                            labels={ {
+                                title: label,
+                                name: __( 'images' ),
+                            } }
+                            onSelect={ ( images ) => {
+                                onChange( images );
+                            } }
+                            accept="image/*"
+                            allowedTypes={ ALLOWED_MEDIA_TYPES }
+                            disableMaxUploadErrorMessages
+                            multiple
+                            onError={ ( e ) => {
+                                // eslint-disable-next-line no-console
+                                console.log( e );
+                            } }
+                        />
+                    ) : '' }
+                    { value && Object.keys( value ).length ? (
+                        <MediaUpload
+                            onSelect={ ( images ) => {
+                                onChange( images );
+                            } }
+                            allowedTypes={ ALLOWED_MEDIA_TYPES }
+                            multiple
+                            gallery
+                            value={ value.map( ( img ) => img.id ) }
+                            render={ ( { open } ) => (
+                                <div
+                                    className="lzb-gutenberg-gallery"
+                                    onClick={ open }
+                                    role="presentation"
+                                >
                                     <DropZone
                                         onFilesDrop={ ( files ) => {
                                             const currentImages = value || [];
@@ -82,18 +81,18 @@ class GalleryControl extends Component {
                                         } }
                                     />
                                     <div className="lzb-gutenberg-gallery-button">
-                                        <Button isDefault={ true }>Edit Gallery</Button>
+                                        <Button isDefault={ true }>{ __( 'Edit Gallery' ) }</Button>
                                     </div>
                                     { value.map( ( img ) => (
                                         <div className="lzb-gutenberg-gallery-item" key={ img.id || img.url }>
                                             <img src={ img.url } alt={ img.alt } />
                                         </div>
                                     ) ) }
-                                </DropZoneProvider>
-                            </div>
-                        ) }
-                    />
-                ) : '' }
+                                </div>
+                            ) }
+                        />
+                    ) : '' }
+                </div>
             </BaseControl>
         );
     }

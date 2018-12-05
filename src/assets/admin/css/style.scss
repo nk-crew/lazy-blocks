@@ -486,6 +486,10 @@
 }
 
 // Gallery and Image controls
+.lzb-gutenberg-gallery-wrap,
+.lzb-gutenberg-image-wrap {
+    position: relative;
+}
 .lzb-gutenberg-gallery,
 .lzb-gutenberg-image {
     position: relative;

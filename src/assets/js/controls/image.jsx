@@ -3,7 +3,6 @@ const { Component, Fragment } = wp.element;
 const {
     BaseControl,
     Button,
-    DropZoneProvider,
     DropZone,
 } = wp.components;
 
@@ -28,61 +27,59 @@ class ImageControl extends Component {
 
         return (
             <BaseControl label={ label }>
-                { ! value || ! Object.keys( value ).length ? (
-                    <MediaPlaceholder
-                        icon="format-image"
-                        labels={ {
-                            title: label,
-                            name: __( 'image' ),
-                        } }
-                        onSelect={ ( image ) => {
-                            onChange( image );
-                        } }
-                        accept="image/*"
-                        allowedTypes={ ALLOWED_MEDIA_TYPES }
-                        disableMaxUploadErrorMessages
-                        onError={ ( e ) => {
-                            // eslint-disable-next-line no-console
-                            console.log( e );
-                        } }
-                    />
-                ) : '' }
-                { value && Object.keys( value ).length ? (
-                    <Fragment>
-                        <div className="lzb-gutenberg-image" >
-                            <DropZoneProvider>
-                                <DropZone
-                                    onFilesDrop={ ( files ) => {
-                                        mediaUpload( {
-                                            allowedTypes: ALLOWED_MEDIA_TYPES,
-                                            filesList: files,
-                                            onFileChange: ( image ) => {
-                                                onChange( image );
-                                            },
-                                            onError( e ) {
-                                                // eslint-disable-next-line no-console
-                                                console.log( e );
-                                            },
-                                        } );
+                <div className="lzb-gutenberg-image-wrap">
+                    { ! value || ! Object.keys( value ).length ? (
+                        <MediaPlaceholder
+                            icon="format-image"
+                            labels={ {
+                                title: label,
+                                name: __( 'image' ),
+                            } }
+                            onSelect={ ( image ) => {
+                                onChange( image );
+                            } }
+                            accept="image/*"
+                            allowedTypes={ ALLOWED_MEDIA_TYPES }
+                            disableMaxUploadErrorMessages
+                            onError={ ( e ) => {
+                                // eslint-disable-next-line no-console
+                                console.log( e );
+                            } }
+                        />
+                    ) : '' }
+                    { value && Object.keys( value ).length ? (
+                        <div className="lzb-gutenberg-image">
+                            <DropZone
+                                onFilesDrop={ ( files ) => {
+                                    mediaUpload( {
+                                        allowedTypes: ALLOWED_MEDIA_TYPES,
+                                        filesList: files,
+                                        onFileChange: ( image ) => {
+                                            onChange( image );
+                                        },
+                                        onError( e ) {
+                                            // eslint-disable-next-line no-console
+                                            console.log( e );
+                                        },
+                                    } );
+                                } }
+                            />
+                            <div className="lzb-gutenberg-image-button">
+                                <Button
+                                    isDefault={ true }
+                                    onClick={ () => {
+                                        onChange( '' );
                                     } }
-                                />
-                                <div className="lzb-gutenberg-image-button">
-                                    <Button
-                                        isDefault={ true }
-                                        onClick={ () => {
-                                            onChange( '' );
-                                        } }
-                                    >
-                                        Remove Image
-                                    </Button>
-                                </div>
-                                <div className="lzb-gutenberg-image-item" key={ value.id || value.url }>
-                                    <img src={ value.url } alt={ value.alt } />
-                                </div>
-                            </DropZoneProvider>
+                                >
+                                    Remove Image
+                                </Button>
+                            </div>
+                            <div className="lzb-gutenberg-image-item" key={ value.id || value.url }>
+                                <img src={ value.url } alt={ value.alt } />
+                            </div>
                         </div>
-                    </Fragment>
-                ) : '' }
+                    ) : '' }
+                </div>
             </BaseControl>
         );
     }
