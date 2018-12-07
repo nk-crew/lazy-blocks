@@ -245,6 +245,7 @@
         position: relative;
         display: flex;
         padding: 15px 7px;
+        padding-right: 40px;
         margin-top: -6px;
         z-index: 1;
 
@@ -308,15 +309,19 @@
             }
         }
 
-        > .lzb-metabox::after {
-            content: "";
-            position: absolute;
-            display: block;
-            right: -19px;
-            bottom: 0;
-            left: -19px;
-            border-bottom: 1px solid #f1f1f1;
-            z-index: -2;
+        > .lzb-metabox {
+            padding-right: 40px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                display: block;
+                right: -19px;
+                bottom: 0;
+                left: -19px;
+                border-bottom: 1px solid #f1f1f1;
+                z-index: -2;
+            }
         }
 
         .lzb-metabox {
@@ -361,6 +366,29 @@
                     color: #999;
                 }
             }
+        }
+
+        // Handle
+        .lzb-metabox .lzb-metabox-control-handle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            text-align: right;
+            cursor: grab;
+            opacity: 0;
+            transition: .2s opacity;
+        }
+        .lzb-metabox:hover > .lzb-metabox-control-handle {
+            opacity: .3;
+        }
+        .sortable-ghost > .lzb-metabox > .lzb-metabox-control-handle,
+        .lzb-metabox .lzb-metabox-control-handle:hover {
+            opacity: .7;
+        }
+        .lzb-metabox-container .lzb-metabox-control-handle {
+            text-align: center;
         }
     }
 
@@ -439,6 +467,7 @@
         min-height: 40px;
         padding: 0 12px;
         margin-top: 10px;
+        margin-right: -40px;
         overflow: hidden;
         border: 1px solid #f1f1f1;
 

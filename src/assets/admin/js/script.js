@@ -189,6 +189,8 @@ const controlTemplate = `
                 <input class="lzb-input" id="${ controlNameTemplate }[sort]" name="${ controlNameTemplate }[sort]" type="hidden" value="#{sort}">
                 <input class="lzb-input" id="${ controlNameTemplate }[child_of]" name="${ controlNameTemplate }[child_of]" type="hidden" value="#{child_of}">
 
+                <div class="lzb-metabox-control-handle"><span class="dashicons dashicons-menu"></span></div>
+
                 <div class="lzb-metabox-label">
                     <label data-contain-val="[id='${ controlNameTemplate }[label]']" class="lzb-metabox-control-action-expand"></label>
                     <small data-contain-val="[id='${ controlNameTemplate }[name]']"></small>
@@ -445,6 +447,7 @@ function initControlsSortable() {
             },
             draggable: '.lzb-metabox-control',
             filter: '.lzb-input, .lzb-textarea, .lzb-select',
+            handle: '.lzb-metabox-control-handle',
             preventOnFilter: false,
             animation: 150,
             onSort: function() {
