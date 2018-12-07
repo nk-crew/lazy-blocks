@@ -403,6 +403,8 @@ class LazyBlocks_Blocks {
      * Add Settings metabox
      */
     public function add_settings_metabox() {
+        global $post;
+
         wp_nonce_field( basename( __FILE__ ), 'lazyblocks_metabox_nonce' );
         $slug = $this->get_meta_value( 'lazyblocks_slug' );
         $icon = $this->get_meta_value( 'lazyblocks_icon' );
@@ -445,13 +447,21 @@ class LazyBlocks_Blocks {
             <label for="lazyblocks_category"><?php echo esc_html__( 'Category', '@@text_domain' ); ?></label>
             <select class="lzb-select" name="lazyblocks_category" id="lazyblocks_category">
                 <?php
-                $available_categories = array(
-                    'common'     => esc_html__( 'Common', '@@text_domain' ),
-                    'widgets'    => esc_html__( 'Widgets', '@@text_domain' ),
-                    'layout'     => esc_html__( 'Layout', '@@text_domain' ),
-                    'formatting' => esc_html__( 'Formatting', '@@text_domain' ),
-                    'embed'      => esc_html__( 'Embed', '@@text_domain' ),
-                );
+                $gutenberg_categories = array();
+                if ( function_exists( 'get_block_categories' ) ) {
+                    $gutenberg_categories = get_block_categories( $post );
+                } else if ( function_exists( 'gutenberg_get_block_categories' ) ) {
+                    $gutenberg_categories = gutenberg_get_block_categories( $post );
+                }
+
+                $available_categories = array();
+                foreach ( $gutenberg_categories as $cat ) {
+                    // don't add blocks in reusable category.
+                    if ( 'reusable' === $cat['slug'] ) {
+                        continue;
+                    }
+                    $available_categories[ $cat['slug'] ] = $cat['title'];
+                }
 
                 // parse categories from blocks.
                 $blocks = $this->get_blocks();
@@ -934,6 +944,7 @@ class LazyBlocks_Blocks {
             'formatting',
             'layout',
             'widgets',
+            'reusable',
         );
         $new_categories = array();
 
