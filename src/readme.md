@@ -69,6 +69,20 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.3.0 =
+
+* added filter for output frontend PHP of blocks ([read in documentation](https://lazyblocks.com/documentation/blocks-code/php/))
+* added Allow Null option to Select control
+* added Help option in controls
+* added Placeholder option in controls
+* added all existing categories in block categories selector
+* fixed gallery control editable images
+* fixed dropzone position in image and gallery controls
+* fixed custom category title changing to slug
+* fixed automatic fill of control name in constructor
+* fixed date control error in WP 5.0
+* minor changes
+
 = 1.2.2 =
 
 * fixed templates loading in Gutenberg 4.5
