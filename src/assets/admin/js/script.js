@@ -378,8 +378,8 @@ const controlTemplate = `
                     </div>
                     <div>
                         <select class="lzb-select" name="${ controlNameTemplate }[placement]" id="${ controlNameTemplate }[placement]">
-                            <option value="inspector" #{placement:selected?inspector}>Inspector</option>
                             <option value="content" #{placement:selected?content}>Content</option>
+                            <option value="inspector" #{placement:selected?inspector}>Inspector</option>
                             <option value="both" #{placement:selected?both}>Both</option>
                             <option value="nowhere" #{placement:selected?nowhere}>Nowhere</option>
                         </select>
