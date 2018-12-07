@@ -286,37 +286,40 @@
         padding-left: 7px;
         z-index: 1;
 
-        &.sortable-ghost {
-            &::before {
-                background-color: rgba(226, 228, 231, .6);
-            }
-        }
-
-        &::before {
-            content: "";
-            position: absolute;
-            display: block;
-            top: 0;
-            bottom: 0;
-            left: -12px;
-            width: 229px;
-            background-color: rgba(0, 0, 0, .02);
-            border-right: 1px solid #f1f1f1;
-            z-index: -1;
-        }
         &::after {
             content: "";
             position: absolute;
             display: block;
             top: 0;
-            right: -16px;
+            right: -12px;
+            bottom: 1px;
+            left: -12px;
+            border-bottom: 1px solid #f1f1f1;
+            z-index: -2;
+        }
+
+        &.sortable-ghost {
+            &::after {
+                background-color: rgba(226, 228, 231, .6);
+            }
+            .lzb-metabox-control-expanded {
+                display: none !important; // stylelint-disable-line
+            }
+        }
+
+        > .lzb-metabox::after {
+            content: "";
+            position: absolute;
+            display: block;
+            right: -19px;
             bottom: 0;
-            left: -16px;
+            left: -19px;
             border-bottom: 1px solid #f1f1f1;
             z-index: -2;
         }
 
         .lzb-metabox {
+            position: relative;
             display: flex;
 
             > div {
@@ -383,7 +386,46 @@
         }
     }
     .lzb-metabox-control-expanded {
+        position: relative;
         display: none;
+        padding-top: 9px;
+        padding-right: 19px;
+        padding-bottom: 9px;
+        padding-left: 19px;
+        margin-right: -19px;
+        margin-left: -19px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 229px;
+            background-color: rgba(0, 0, 0, .02);
+            border-right: 1px solid #f1f1f1;
+            z-index: -1;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            right: -19px;
+            left: -19px;
+            margin-top: -19px;
+        }
+
+        > .lzb-metabox::after {
+            content: "";
+            position: absolute;
+            display: block;
+            right: -19px;
+            bottom: 9px;
+            left: -19px;
+            border-bottom: 1px solid #f9f9f9;
+            z-index: -2;
+        }
     }
     .lzb-metabox-control:hover > .lzb-metabox > div > .lzb-metabox-control-actions {
         opacity: 1;
