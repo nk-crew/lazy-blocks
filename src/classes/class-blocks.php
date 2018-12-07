@@ -406,6 +406,9 @@ class LazyBlocks_Blocks {
         global $post;
 
         wp_nonce_field( basename( __FILE__ ), 'lazyblocks_metabox_nonce' );
+
+        $blocks = $this->get_blocks();
+
         $slug = $this->get_meta_value( 'lazyblocks_slug' );
         $icon = $this->get_meta_value( 'lazyblocks_icon' );
         $description = $this->get_meta_value( 'lazyblocks_description' );
@@ -454,31 +457,23 @@ class LazyBlocks_Blocks {
                     $gutenberg_categories = gutenberg_get_block_categories( $post );
                 }
 
-                $available_categories = array();
+                $custom_categories = $this->get_blocks_categories();
+
                 foreach ( $gutenberg_categories as $cat ) {
                     // don't add blocks in reusable category.
                     if ( 'reusable' === $cat['slug'] ) {
                         continue;
                     }
-                    $available_categories[ $cat['slug'] ] = $cat['title'];
-                }
 
-                // parse categories from blocks.
-                $blocks = $this->get_blocks();
-                foreach ( $blocks as $block ) {
-                    if (
-                        ! isset( $available_categories[ $block['category'] ] ) &&
-                        ! isset( $new_categories[ $block['category'] ] ) &&
-                        ! in_array( $block['category'], $available_categories ) &&
-                        isset( $block['category_label'] )
-                    ) {
-                        $available_categories[ $block['category'] ] = $block['category_label'];
+                    // custom categories saved without slug in the DB, so we need to get it separatelly.
+                    // fix for https://github.com/nk-o/lazy-blocks/issues/17.
+                    $slug = $cat['slug'];
+                    if ( isset( $custom_categories[ $slug ] ) ) {
+                        $slug = $custom_categories[ $slug ];
                     }
-                }
 
-                foreach ( $available_categories as $cat => $label ) {
                     ?>
-                    <option value="<?php echo esc_html( $cat ); ?>" <?php echo selected( $cat === $category || $label === $category ); ?>><?php echo esc_html( $label ); ?></option>
+                    <option value="<?php echo esc_html( $slug ); ?>" <?php selected( $slug, $category ); ?>><?php echo esc_html( $cat['title'] ); ?></option>
                     <?php
                 }
                 ?>
@@ -931,13 +926,14 @@ class LazyBlocks_Blocks {
     }
 
     /**
-     * Register custom categories for blocks
+     * Get all custom blocks categories array.
      *
-     * @param array $categories - available categories.
-     * @return array
+     * @param bool $db_only - get blocks from database only.
+     *
+     * @return array|null
      */
-    public function block_categories( $categories ) {
-        $blocks = $this->get_blocks();
+    public function get_blocks_categories( $db_only = false ) {
+        $blocks = $this->get_blocks( $db_only );
         $default_categories = array(
             'common',
             'embed',
@@ -946,26 +942,37 @@ class LazyBlocks_Blocks {
             'widgets',
             'reusable',
         );
-        $new_categories = array();
 
+        $custom_categories = array();
+
+        foreach ( $blocks as $block ) {
+            if (
+                ! isset( $default_categories[ $block['category'] ] ) &&
+                ! isset( $custom_categories[ $block['category'] ] ) &&
+                ! in_array( $block['category'], $default_categories ) &&
+                isset( $block['category_label'] )
+            ) {
+                $custom_categories[ $block['category'] ] = $block['category_label'];
+            }
+        }
+
+        return $custom_categories;
+    }
+
+    /**
+     * Register custom categories for blocks
+     *
+     * @param array $categories - available categories.
+     * @return array
+     */
+    public function block_categories( $categories ) {
         // lazyblocks core category.
         $categories[] = array(
             'slug'  => 'lazyblocks',
             'title' => esc_html__( 'Lazy Blocks', '@@text_domain' ),
         );
 
-        // custom user categories.
-        foreach ( $blocks as $block ) {
-            if (
-                ! isset( $default_categories[ $block['category'] ] ) &&
-                ! isset( $new_categories[ $block['category'] ] ) &&
-                ! in_array( $block['category'], $default_categories ) &&
-                isset( $block['category_label'] )
-            ) {
-                $new_categories[ $block['category'] ] = $block['category_label'];
-            }
-        }
-
+        $new_categories = $this->get_blocks_categories();
         if ( ! empty( $new_categories ) ) {
             foreach ( $new_categories as $slug => $category ) {
                 $categories[] = array(
