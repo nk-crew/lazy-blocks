@@ -1005,7 +1005,7 @@ class LazyBlocks_Blocks {
         wp_enqueue_style(
             'lazyblocks-gutenberg',
             lazyblocks()->plugin_url . 'assets/css/style.min.css',
-            array( 'wp-blocks' ),
+            array(),
             filemtime( lazyblocks()->plugin_path . 'assets/css/style.min.css' )
         );
 
