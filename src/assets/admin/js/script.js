@@ -371,6 +371,16 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Placeholder for text controls -->
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == text || [id='${ controlNameTemplate }[type]'] == textarea || [id='${ controlNameTemplate }[type]'] == number || [id='${ controlNameTemplate }[type]'] == email || [id='${ controlNameTemplate }[type]'] == password">
+                    <div class="lzb-metabox-label">
+                        <label for="${ controlNameTemplate }[placeholder]">Placeholder</label>
+                    </div>
+                    <div>
+                        <input class="lzb-input" id="${ controlNameTemplate }[placeholder]" name="${ controlNameTemplate }[placeholder]" type="text" value="#{placeholder}">
+                    </div>
+                </div>
+
                 <!-- Help text -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != inner_blocks && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">

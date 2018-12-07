@@ -197,6 +197,7 @@ options.blocks.forEach( ( item ) => {
                                 max={ control.max }
                                 step={ control.step }
                                 help={ control.help }
+                                placeholder={ control.placeholder }
                                 value={ this.getControlValue( control, childIndex ) }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
@@ -250,6 +251,7 @@ options.blocks.forEach( ( item ) => {
                                 label={ control.label }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
+                                placeholder={ control.placeholder }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
                                 } }
