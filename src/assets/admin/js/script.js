@@ -404,7 +404,7 @@ const controlTemplate = `
                             <option value="content" #{placement:selected?content}>Content</option>
                             <option value="inspector" #{placement:selected?inspector}>Inspector</option>
                             <option value="both" #{placement:selected?both}>Both</option>
-                            <option value="nowhere" #{placement:selected?nowhere}>Nowhere</option>
+                            <option value="nowhere" #{placement:selected?nowhere}>Hidden</option>
                         </select>
                     </div>
                 </div>
