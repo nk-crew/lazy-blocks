@@ -32,6 +32,10 @@ class LazyBlocks_Blocks {
         // custom post roles.
         add_action( 'admin_init', array( $this, 'add_role_caps' ) );
 
+        // additional columns in blocks list table.
+        add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'add_lazyblocks_columns' ) );
+        add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_lazyblocks_columns' ), 10, 2 );
+
         // add general metaboxes.
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 1 );
         add_action( 'save_post', array( $this, 'save_meta_boxes' ), 10, 2 );
@@ -289,6 +293,63 @@ class LazyBlocks_Blocks {
 
             $wp_roles->add_cap( 'contributor', 'read_lazyblock' );
             $wp_roles->add_cap( 'contributor', 'read_private_lazyblocks' );
+        }
+    }
+
+    /**
+     * Add featured image in lazyblocks list
+     *
+     * @param array $columns columns of the table.
+     *
+     * @return array
+     */
+    public function add_lazyblocks_columns( $columns = array() ) {
+        $column_meta = array(
+            'lazyblocks_post_icon' => esc_html__( 'Icon', '@@text_domain' ),
+            'lazyblocks_post_category' => esc_html__( 'Category', '@@text_domain' ),
+        );
+
+        // insert before last column.
+        $last_pos = count( $columns );
+        $columns = array_slice( $columns, $last_pos - 2, 1, true ) + $column_meta + array_slice( $columns, $last_pos - 1, null, true );
+
+        return $columns;
+    }
+
+    /**
+     * Add thumb to the column
+     *
+     * @param bool $column_name column name.
+     */
+    public function manage_lazyblocks_columns( $column_name = false ) {
+        global $post;
+
+        if ( 'lazyblocks_post_icon' === $column_name ) {
+            $icon = $this->get_meta_value( 'lazyblocks_icon' );
+            if ( $icon ) {
+                echo '<span class="dashicons ' . esc_attr( $icon ) . '"></span>';
+            }
+        }
+
+        if ( 'lazyblocks_post_category' === $column_name ) {
+            $category = $this->get_meta_value( 'lazyblocks_category' );
+            if ( $category ) {
+                $gutenberg_categories = array();
+                if ( function_exists( 'get_block_categories' ) ) {
+                    $gutenberg_categories = get_block_categories( $post );
+                } else if ( function_exists( 'gutenberg_get_block_categories' ) ) {
+                    $gutenberg_categories = gutenberg_get_block_categories( $post );
+                }
+
+                foreach ( $gutenberg_categories as $cat ) {
+                    if ( $cat['slug'] === $category ) {
+                        $category = $cat['title'];
+                        break;
+                    }
+                }
+
+                echo esc_html( $category );
+            }
         }
     }
 
