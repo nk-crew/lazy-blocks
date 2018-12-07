@@ -207,6 +207,21 @@
     }
 }
 
+// Code settings.
+#lazyblocks_code {
+    .lzb-metabox .CodeMirror {
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .lzb-metabox-tabs-content-item > .lzb-metabox {
+        padding-bottom: 0;
+
+        + p {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+    }
+}
+
 // Dashicons picker.
 .dashicon-picker-container {
     // stylelint-disable-next-line

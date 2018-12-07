@@ -620,6 +620,12 @@ class LazyBlocks_Blocks {
                     <div class="lzb-metabox">
                         <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
                     </div>
+                    <p>
+                        <?php
+                        // translators: %1$s - documentation link.
+                        echo wp_kses_post( sprintf( __( 'You can use PHP to output block <a href="%1$s">%1$s</a>', '@@text_domain' ), 'https://lazyblocks.com/documentation/blocks-code/php/' ) );
+                        ?>
+                    </p>
                 </div>
                 <div class="lzb-metabox-tabs-content-item">
                     <div class="lzb-metabox">
@@ -1115,6 +1121,12 @@ class LazyBlocks_Blocks {
             }
         }
 
+        // add attribute with frontend callback filter.
+        $attributes['lazyblock_code_frontend_callback_filter'] = array(
+            'type'    => 'string',
+            'default' => $block['slug'] . '/frontend_callback',
+        );
+
         // add attribute with code html for frontend render.
         if ( isset( $block['code'] ) ) {
             if ( isset( $block['code']['frontend_callback'] ) && ! empty( $block['code']['frontend_callback'] ) && is_callable( $block['code']['frontend_callback'] ) ) {
@@ -1204,13 +1216,21 @@ class LazyBlocks_Blocks {
             }
         }
 
-        if ( isset( $attributes['lazyblock_code_frontend_callback'] ) && is_callable( $attributes['lazyblock_code_frontend_callback'] ) ) {
-            ob_start();
-            call_user_func( $attributes['lazyblock_code_frontend_callback'], $attributes );
-            $result = ob_get_contents();
-            ob_end_clean();
-        } elseif ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
-            $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], $attributes );
+        // apply filter for custom output callback.
+        if ( isset( $attributes['lazyblock_code_frontend_callback_filter'] ) ) {
+            $result = apply_filters( $attributes['lazyblock_code_frontend_callback_filter'], '', $attributes );
+        }
+
+        // custom callback and handlebars html.
+        if ( ! $result ) {
+            if ( isset( $attributes['lazyblock_code_frontend_callback'] ) && is_callable( $attributes['lazyblock_code_frontend_callback'] ) ) {
+                ob_start();
+                call_user_func( $attributes['lazyblock_code_frontend_callback'], $attributes );
+                $result = ob_get_contents();
+                ob_end_clean();
+            } elseif ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
+                $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], $attributes );
+            }
         }
 
         // add wrapper.
