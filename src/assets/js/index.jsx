@@ -47,9 +47,7 @@ const {
     registerBlockType,
 } = wp.blocks;
 
-const {
-    getSettings,
-} = wp.date;
+const getSettings = wp.date.__experimentalGetSettings;
 
 // each registered block.
 options.blocks.forEach( ( item ) => {
