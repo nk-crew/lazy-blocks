@@ -190,7 +190,7 @@ const controlTemplate = `
                 <input class="lzb-input" id="${ controlNameTemplate }[child_of]" name="${ controlNameTemplate }[child_of]" type="hidden" value="#{child_of}">
 
                 <div class="lzb-metabox-label">
-                    <label data-contain-val="[id='${ controlNameTemplate }[label]']"></label>
+                    <label data-contain-val="[id='${ controlNameTemplate }[label]']" class="lzb-metabox-control-action-expand"></label>
                     <small data-contain-val="[id='${ controlNameTemplate }[name]']"></small>
                 </div>
                 <div>
@@ -213,7 +213,7 @@ const controlTemplate = `
                         </div>
                     </div>
                     <div class="lzb-metabox-control-actions">
-                        <a href="#" class="lzb-metabox-control-action-expand">Expand</a>
+                        <a href="#" class="lzb-metabox-control-action-expand lzb-metabox-control-action-expand-change-text">Expand</a>
                         <a href="#" class="lzb-metabox-control-action-remove">Delete</a>
                     </div>
                 </div>
@@ -517,7 +517,7 @@ function addControl( controlData ) {
         $appendTo.append( newControl );
 
         // expand.
-        $controls.find( `[data-control-id="${ controlData.ID }"] .lzb-metabox-control-action-expand` ).click();
+        $controls.find( `[data-control-id="${ controlData.ID }"] .lzb-metabox-control-action-expand:eq(0)` ).click();
 
         // conditionize init.
         $controls.find( `[data-control-id="${ controlData.ID }"]` ).find( 'input, select, textarea' ).change();
@@ -651,13 +651,13 @@ if ( $controls.length ) {
         }
 
         if ( expanded ) {
-            $control.find( '.lzb-metabox-control-expanded' ).filter( expandFilter ).stop().slideUp();
-            $control.find( '.lzb-metabox-control-collapsed' ).filter( expandFilter ).stop().slideDown();
-            $control.find( '.lzb-metabox-control-action-expand' ).filter( expandFilter ).text( 'Expand' );
+            $control.find( '.lzb-metabox-control-expanded' ).filter( expandFilter ).stop().slideUp( 200 );
+            $control.find( '.lzb-metabox-control-collapsed' ).filter( expandFilter ).stop().slideDown( 200 );
+            $control.find( '.lzb-metabox-control-action-expand-change-text' ).filter( expandFilter ).text( 'Expand' );
         } else {
-            $control.find( '.lzb-metabox-control-expanded' ).filter( expandFilter ).stop().slideDown();
-            $control.find( '.lzb-metabox-control-collapsed' ).filter( expandFilter ).stop().slideUp();
-            $control.find( '.lzb-metabox-control-action-expand' ).filter( expandFilter ).text( 'Collapse' );
+            $control.find( '.lzb-metabox-control-expanded' ).filter( expandFilter ).stop().slideDown( 200 );
+            $control.find( '.lzb-metabox-control-collapsed' ).filter( expandFilter ).stop().slideUp( 200 );
+            $control.find( '.lzb-metabox-control-action-expand-change-text' ).filter( expandFilter ).text( 'Collapse' );
         }
 
         $control.data( 'expanded', ! expanded );
