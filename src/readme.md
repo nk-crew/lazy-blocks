@@ -2,7 +2,7 @@
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
 * Requires at least: 4.9.0
-* Tested up to: 4.9
+* Tested up to: 5.0
 * Requires PHP: 5.4
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -49,7 +49,7 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
 
 ## Installation ##
 
-You need to install the [Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) to use LazyBlocks. Eventually, Gutenberg (the block editor) will be merged into WordPress and you won’t need the plugin.
+Make sure you use WordPress 5.0.x. As alternative you need to install the [Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) to use Lazy Blocks.
 
 #### Automatic installation ####
 
