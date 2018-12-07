@@ -467,15 +467,20 @@
 // Gutenberg editor.
 .lazyblock {
     display: block;
-    padding: 15px;
+    padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 0 1px #e6e6e6;
 
     .lzb-content-title {
         display: flex;
         align-items: center;
+        padding: 20px;
+        padding-top: 0;
         padding-bottom: 15px;
-        margin-bottom: 15px;
+        margin-top: -5px;
+        margin-right: -20px;
+        margin-bottom: 20px;
+        margin-left: -20px;
         font-size: .8em;
         border-bottom: 1px solid #e6e6e6;
 
@@ -489,6 +494,16 @@
             font-size: 1.2em;
             opacity: .8;
         }
+    }
+
+    .lzb-content-controls > div + div {
+        margin-top: 15px;
+    }
+
+    .components-base-control__help {
+        margin-bottom: 8px;
+        font-size: 1em;
+        opacity: .6;
     }
 }
 

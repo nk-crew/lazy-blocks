@@ -23,11 +23,15 @@ class GalleryControl extends Component {
         const {
             label,
             value,
+            help,
             onChange = () => {},
         } = this.props;
 
         return (
-            <BaseControl label={ label }>
+            <BaseControl
+                label={ label }
+                help={ help }
+            >
                 <div className="lzb-gutenberg-gallery-wrap">
                     { ! value || ! Object.keys( value ).length ? (
                         <MediaPlaceholder

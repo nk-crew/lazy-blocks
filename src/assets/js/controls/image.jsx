@@ -22,11 +22,15 @@ class ImageControl extends Component {
         const {
             label,
             value,
+            help,
             onChange = () => {},
         } = this.props;
 
         return (
-            <BaseControl label={ label }>
+            <BaseControl
+                label={ label }
+                help={ help }
+            >
                 <div className="lzb-gutenberg-image-wrap">
                     { ! value || ! Object.keys( value ).length ? (
                         <MediaPlaceholder

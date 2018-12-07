@@ -196,6 +196,7 @@ options.blocks.forEach( ( item ) => {
                                 min={ control.min }
                                 max={ control.max }
                                 step={ control.step }
+                                help={ control.help }
                                 value={ this.getControlValue( control, childIndex ) }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
@@ -211,6 +212,7 @@ options.blocks.forEach( ( item ) => {
                                 min={ control.min }
                                 max={ control.max }
                                 step={ control.step }
+                                help={ control.help }
                                 value={ this.getControlValue( control, childIndex ) }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
@@ -223,6 +225,7 @@ options.blocks.forEach( ( item ) => {
                             <BaseControl
                                 key={ control.name }
                                 label={ control.label }
+                                help={ control.help }
                             >
                                 <form
                                     className="lzb-gutenberg-url"
@@ -246,6 +249,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 value={ this.getControlValue( control, childIndex ) }
+                                help={ control.help }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
                                 } }
@@ -257,6 +261,7 @@ options.blocks.forEach( ( item ) => {
                             <BaseControl
                                 key={ control.name }
                                 label={ control.label }
+                                help={ control.help }
                                 className="lzb-gutenberg-rich-text"
                             >
                                 <RichText
@@ -277,6 +282,7 @@ options.blocks.forEach( ( item ) => {
                             <BaseControl
                                 key={ control.name }
                                 label={ control.label }
+                                help={ control.help }
                                 className="wp-block-html"
                             >
                                 <PlainText
@@ -305,6 +311,7 @@ options.blocks.forEach( ( item ) => {
                                 label={ control.label }
                                 options={ control.choices }
                                 value={ this.getControlValue( control, childIndex ) }
+                                help={ control.help }
                                 onChange={ ( val ) => {
                                     if ( control.allow_null && 'true' === control.allow_null && 'null' === val ) {
                                         val = null;
@@ -320,6 +327,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 checked={ !! this.getControlValue( control, childIndex ) }
+                                help={ control.help }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
                                 } }
@@ -332,6 +340,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 checked={ !! this.getControlValue( control, childIndex ) }
+                                help={ control.help }
                                 onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
                                 } }
@@ -344,6 +353,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 value={ this.getControlValue( control, childIndex ) }
+                                help={ control.help }
                                 onChange={ ( val ) => {
                                     this.onSelectImage( val, control, childIndex );
                                 } }
@@ -356,6 +366,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 value={ this.getControlValue( control, childIndex ) }
+                                help={ control.help }
                                 onChange={ ( val ) => {
                                     this.onSelectImages( val, control, childIndex );
                                 } }
@@ -372,6 +383,7 @@ options.blocks.forEach( ( item ) => {
                                         <ColorIndicator colorValue={ this.getControlValue( control, childIndex ) } />
                                     </Fragment>
                                 ) }
+                                help={ control.help }
                                 className="lzb-gutenberg-color"
                             >
                                 <ColorPalette
@@ -399,6 +411,7 @@ options.blocks.forEach( ( item ) => {
                             <BaseControl
                                 key={ control.name }
                                 label={ control.label }
+                                help={ control.help }
                             >
                                 { /date/.test( control.date_time_picker ) ? (
                                     <DatePicker

@@ -371,6 +371,17 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Help text -->
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] != inner_blocks && [id='${ controlNameTemplate }[type]'] != repeater">
+                    <div class="lzb-metabox-label">
+                        <label for="${ controlNameTemplate }[help]">Help text</label>
+                        <small>Instructions under control</small>
+                    </div>
+                    <div>
+                        <textarea class="lzb-textarea" id="${ controlNameTemplate }[help]" name="${ controlNameTemplate }[help]" rows="6">#{help}</textarea>
+                    </div>
+                </div>
+
                 <!-- Placement -->
                 <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
                     <div class="lzb-metabox-label">

@@ -778,7 +778,7 @@ class LazyBlocks_Blocks {
             if ( is_array( $value ) ) {
                 $value = $this->sanitize_array( $value );
             } else {
-                if ( 'choices' === $key ) {
+                if ( 'choices' === $key || 'help' === $key ) {
                     $value = sanitize_textarea_field( $value );
                 } else {
                     $value = sanitize_text_field( $value );
