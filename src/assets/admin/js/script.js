@@ -677,7 +677,7 @@ if ( $controls.length ) {
             if ( $nameInput.val() ) {
                 $nameInput = false;
             } else {
-                $nameInput.val( $this.val() );
+                $nameInput.val( $this.val() ).change();
             }
         }
 
@@ -690,7 +690,7 @@ if ( $controls.length ) {
             $nameInput.val( slugify( $nameInput.val(), {
                 replacement: '_',
                 lower: true,
-            } ) );
+            } ) ).change();
         }
     } );
 }
