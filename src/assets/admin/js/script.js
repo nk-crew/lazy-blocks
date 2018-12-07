@@ -281,7 +281,7 @@ const controlTemplate = `
                     </div>
                 </div>
 
-                <!-- Choices for Select control -->
+                <!-- Choices & Allow Null for Select control -->
                 <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[choices]">Choices</label>
@@ -292,6 +292,19 @@ const controlTemplate = `
                     <div>
                         <div class="lzb-choices-hidden-array" data-name="${ controlNameTemplate }[choices]"></div>
                         <textarea class="lzb-textarea" id="${ controlNameTemplate }[choices]" rows="6">#{choices}</textarea>
+                    </div>
+                </div>
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select">
+                    <div class="lzb-metabox-label">
+                        <label for="${ controlNameTemplate }[allow_null]">Allow Null</label>
+                        <small>Will be added option that allow you to reset selected option value to null</small>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="hidden" name="${ controlNameTemplate }[allow_null]" id="${ controlNameTemplate }[allow_null]_hidden" value="false">
+                            <input class="lzb-input" type="checkbox" name="${ controlNameTemplate }[allow_null]" id="${ controlNameTemplate }[allow_null]" value="true" #{allow_null:checked?true}>
+                            Yes
+                        </label>
                     </div>
                 </div>
 

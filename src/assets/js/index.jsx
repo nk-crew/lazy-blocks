@@ -308,6 +308,9 @@ options.blocks.forEach( ( item ) => {
                                 options={ control.choices }
                                 value={ this.getControlValue( control, childIndex ) }
                                 onChange={ ( val ) => {
+                                    if ( control.allow_null && 'true' === control.allow_null && 'null' === val ) {
+                                        val = null;
+                                    }
                                     this.onControlChange( val, control, childIndex );
                                 } }
                             />

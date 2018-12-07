@@ -856,6 +856,16 @@ class LazyBlocks_Blocks {
                 }
                 $controls = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
 
+                // prepare controls.
+                foreach ( $controls as $k => $control ) {
+                    if ( 'select' === $control['type'] && isset( $control['allow_null'] ) && 'true' === $control['allow_null'] ) {
+                        array_unshift( $controls[ $k ]['choices'], array(
+                            'value' => 'null',
+                            'label' => esc_html__( '-- Select --', '@@text_domain' ),
+                        ) );
+                    }
+                }
+
                 $this->blocks[] = array(
                     'id'             => $block->ID,
                     'title'          => $block->post_title,
