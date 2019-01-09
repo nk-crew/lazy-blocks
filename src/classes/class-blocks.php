@@ -188,6 +188,8 @@ class LazyBlocks_Blocks {
                         'content' === $name
                         || 'lazyblock_code_frontend_html' === $name
                         || 'lazyblock_code_backend_html' === $name
+                        || 'data' === $name
+                        || 'hash' === $name
                     ) {
                         continue;
                     }
