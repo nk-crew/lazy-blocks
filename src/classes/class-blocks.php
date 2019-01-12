@@ -1144,7 +1144,9 @@ class LazyBlocks_Blocks {
                 if ( $control['type'] ) {
                     switch ( $control['type'] ) {
                         case 'number':
+                        case 'range':
                             $type = 'number';
+                            $default_val = (float) $default_val;
                             break;
                         case 'checkbox':
                         case 'toggle':

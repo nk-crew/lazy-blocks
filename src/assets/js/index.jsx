@@ -117,7 +117,7 @@ options.blocks.forEach( ( item ) => {
             }
 
             // convert string in number type.
-            if ( 'number' === control.type ) {
+            if ( 'number' === control.type || 'range' === control.type ) {
                 val = parseFloat( val );
             }
 
