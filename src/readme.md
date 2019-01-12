@@ -69,6 +69,13 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.3.1 =
+
+* added unique `blockId` attribute to each lazy block
+* simplified enqueue in admin templates page
+* fixed do_shortcode wrong attributes output (reserved `data` and `hash` attributes)
+* fixed Range control saving value
+
 = 1.3.0 =
 
 * added filter for output frontend PHP of blocks ([read in documentation](https://lazyblocks.com/documentation/blocks-code/php/))
