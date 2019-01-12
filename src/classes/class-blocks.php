@@ -1223,6 +1223,10 @@ class LazyBlocks_Blocks {
             'selector'  => '*',
             'default'   => '',
         );
+        $attributes['blockId'] = array(
+            'type'    => 'string',
+            'default' => '',
+        );
 
         return $attributes;
     }

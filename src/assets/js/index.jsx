@@ -4,7 +4,9 @@ import classnames from 'classnames/dedupe';
 import { arrayMove } from 'react-sortable-hoc';
 
 // Internal Dependencies
-require( './blocks/free.jsx' );
+import './blocks/free.jsx';
+import './extensions/block-id.jsx';
+
 import ImageControl from './controls/image.jsx';
 import GalleryControl from './controls/gallery.jsx';
 import RepeaterControl from './controls/repeater.jsx';
@@ -490,6 +492,17 @@ options.blocks.forEach( ( item ) => {
                         attsForRender[ item.controls[ k ].name ] = this.getControlValue( item.controls[ k ] );
                     }
                 } );
+
+                // reserved attributes.
+                const reservedAttributes = [
+                    'className',
+                    'align',
+                    'anchor',
+                    'blockId',
+                ];
+                reservedAttributes.forEach( ( attr ) => {
+                    attsForRender[ attr ] = this.props.attributes[ attr ];
+                } );
             }
 
             return (
@@ -541,6 +554,8 @@ options.blocks.forEach( ( item ) => {
         category: item.category,
         keywords: item.keywords,
         supports: item.supports,
+
+        lazyblock: true,
 
         edit: LazyBlock,
 
