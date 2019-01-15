@@ -27,7 +27,7 @@ Handlebars.registerHelper( 'truncate', ( str, len, ellipsis = 'true' ) => {
 // compare.
 // {{#compare 1 '===' 2}} Show if true {{/compare}}
 // slightly changed https://gist.github.com/doginthehat/1890659
-Handlebars.registerHelper( 'compare', ( lvalue, operator, rvalue, options ) => {
+Handlebars.registerHelper( 'compare', function( lvalue, operator, rvalue, options ) {
     if ( arguments.length < 3 ) {
         // eslint-disable-next-line
         console.error( 'Handlerbars Helper \'compare\' needs 2 parameters' );
