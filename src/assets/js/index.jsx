@@ -273,7 +273,6 @@ options.blocks.forEach( ( item ) => {
                                     format="string"
                                     multiline={ control.multiline === 'true' ? 'p' : false }
                                     inlineToolbar={ true }
-                                    isSelected={ true }
                                     onChange={ ( val ) => {
                                         this.onControlChange( val, control, childIndex );
                                     } }
