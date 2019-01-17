@@ -111,7 +111,7 @@ class RepeaterControl extends Component {
                             helperClass={ 'lzb-gutenberg-repeater-sortable' }
                         />
                     ) : '' }
-                    <div>
+                    <div class="lzb-gutenberg-repeater-options">
                       <ToggleControl
                         label={ __( 'Toggle all rows' ) }
                         checked={ this.state.activeItem === -2 ? true : false }
