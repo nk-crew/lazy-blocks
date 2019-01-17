@@ -5,6 +5,7 @@ const { Component } = wp.element;
 const {
     BaseControl,
     Button,
+    ToggleControl
 } = wp.components;
 
 const {
@@ -67,7 +68,7 @@ class RepeaterControl extends Component {
 
         const items = [];
         for ( let i = 0; i < count; i++ ) {
-            const active = this.state.activeItem === i;
+            const active = this.state.activeItem === -2 || this.state.activeItem === i;
 
             items.push( {
                 title: `Row ${ i + 1 }`,
@@ -110,14 +111,23 @@ class RepeaterControl extends Component {
                             helperClass={ 'lzb-gutenberg-repeater-sortable' }
                         />
                     ) : '' }
-                    <Button
-                        isDefault={ true }
-                        onClick={ () => {
-                            addRow();
+                    <div>
+                      <ToggleControl
+                        label={ __( 'Toggle all rows' ) }
+                        checked={ this.state.activeItem === -2 ? true : false }
+                        onChange={ () => {
+                          this.setState( { activeItem: this.state.activeItem === -2 ? -1 : -2 } );
                         } }
-                    >
-                        { __( '+ Add Row' ) }
-                    </Button>
+                        />
+                        <Button
+                            isDefault={ true }
+                            onClick={ () => {
+                                addRow();
+                            } }
+                        >
+                            { __( '+ Add Row' ) }
+                        </Button>
+                    </div>
                 </div>
             </BaseControl>
         );
