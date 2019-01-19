@@ -821,9 +821,10 @@
     margin-bottom: 15px;
     border-bottom: 1px solid #eaeaea;
 }
-.lzb-gutenberg-repeater > button {
-    display: block;
-    margin-left: auto;
+.lzb-gutenberg-repeater-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .lzb-inspector-controls {
     .lzb-gutenberg-repeater {
