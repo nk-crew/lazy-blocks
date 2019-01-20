@@ -92,11 +92,33 @@ options.blocks.forEach( ( item ) => {
     class LazyBlock extends Component {
         constructor() {
             super( ...arguments );
+
+            this.generateUniqueClass = this.generateUniqueClass.bind( this );
             this.getControlValue = getControlValue.bind( this );
             this.onControlChange = this.onControlChange.bind( this );
             this.onSelectImages = this.onSelectImages.bind( this );
             this.onSelectImage = this.onSelectImage.bind( this );
             this.renderControls = this.renderControls.bind( this );
+        }
+
+        componentDidMount() {
+            this.generateUniqueClass();
+        }
+        componentDidUpdate() {
+            this.generateUniqueClass();
+        }
+
+        generateUniqueClass() {
+            const {
+                blockId,
+                blockUniqueClass,
+            } = this.props.attributes;
+
+            if ( blockId && ! blockUniqueClass ) {
+                this.props.setAttributes( {
+                    blockUniqueClass: `${ this.props.name.replace( '/', '-' ) }-${ blockId }`,
+                } );
+            }
         }
 
         onControlChange( val, control, childIndex ) {
@@ -480,9 +502,15 @@ options.blocks.forEach( ( item ) => {
         }
 
         render() {
-            let { className = '' } = this.props;
+            let {
+                className = '',
+            } = this.props;
 
-            className = classnames( 'lazyblock', className );
+            const {
+                blockUniqueClass = '',
+            } = this.props.attributes;
+
+            className = classnames( 'lazyblock', blockUniqueClass, className );
 
             const attsForRender = {};
             if ( handlebarsEditorHtml ) {
@@ -498,6 +526,7 @@ options.blocks.forEach( ( item ) => {
                     'align',
                     'anchor',
                     'blockId',
+                    'blockUniqueClass',
                 ];
                 reservedAttributes.forEach( ( attr ) => {
                     attsForRender[ attr ] = this.props.attributes[ attr ];

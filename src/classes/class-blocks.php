@@ -1234,6 +1234,10 @@ class LazyBlocks_Blocks {
             'type'    => 'string',
             'default' => '',
         );
+        $attributes['blockUniqueClass'] = array(
+            'type'    => 'string',
+            'default' => '',
+        );
 
         return $attributes;
     }
