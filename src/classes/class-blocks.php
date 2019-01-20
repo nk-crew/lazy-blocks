@@ -554,37 +554,44 @@ class LazyBlocks_Blocks {
         </div>
 
         <div class="lzb-metabox">
-            <label><?php echo esc_html__( 'Supports', '@@text_domain' ); ?></label>
+            <label><?php echo esc_html__( 'Additional settings', '@@text_domain' ); ?></label>
 
             <label>
                 <input type="hidden" name="lazyblocks_supports_multiple" id="lazyblocks_supports_multiple_hidden" value="false">
                 <input class="lzb-input" type="checkbox" name="lazyblocks_supports_multiple" id="lazyblocks_supports_multiple" value="true" <?php checked( $supports_multiple ); ?>>
                 <?php echo esc_html__( 'Multiple', '@@text_domain' ); ?>
             </label>
+            <p class="description"><?php echo esc_html__( 'Allow use block multiple times on the page.', '@@text_domain' ); ?></p>
 
             <label>
                 <input type="hidden" name="lazyblocks_supports_classname" id="lazyblocks_supports_classname_hidden" value="false">
                 <input class="lzb-input" type="checkbox" name="lazyblocks_supports_classname" id="lazyblocks_supports_classname" value="true" <?php checked( $supports_classname ); ?>>
                 <?php echo esc_html__( 'Class Name', '@@text_domain' ); ?>
             </label>
+            <p class="description"><?php echo esc_html__( 'Additional field to add custom class name.', '@@text_domain' ); ?></p>
 
             <label>
                 <input type="hidden" name="lazyblocks_supports_anchor" id="lazyblocks_supports_anchor_hidden" value="false">
                 <input class="lzb-input" type="checkbox" name="lazyblocks_supports_anchor" id="lazyblocks_supports_anchor" value="true" <?php checked( $supports_anchor ); ?>>
                 <?php echo esc_html__( 'Anchor', '@@text_domain' ); ?>
             </label>
-
-            <label>
-                <input type="hidden" name="lazyblocks_supports_html" id="lazyblocks_supports_html_hidden" value="false">
-                <input class="lzb-input" type="checkbox" name="lazyblocks_supports_html" id="lazyblocks_supports_html" value="true" <?php checked( $supports_html ); ?>>
-                <?php echo esc_html__( 'HTML', '@@text_domain' ); ?>
-            </label>
+            <p class="description"><?php echo esc_html__( 'Additional field to add block ID attribute.', '@@text_domain' ); ?></p>
 
             <label>
                 <input type="hidden" name="lazyblocks_supports_inserter" id="lazyblocks_supports_inserter_hidden" value="false">
                 <input class="lzb-input" type="checkbox" name="lazyblocks_supports_inserter" id="lazyblocks_supports_inserter" value="true" <?php checked( $supports_inserter ); ?>>
-                <?php echo esc_html__( 'Show in Blocks Inserter', '@@text_domain' ); ?>
+                <?php echo esc_html__( 'Inserter', '@@text_domain' ); ?>
             </label>
+            <p class="description"><?php echo esc_html__( 'Show block in blocks inserter.', '@@text_domain' ); ?></p>
+
+            <div class="disabled">
+                <label>
+                    <input type="hidden" name="lazyblocks_supports_html" id="lazyblocks_supports_html_hidden" value="false">
+                    <input class="lzb-input" type="checkbox" name="lazyblocks_supports_html" id="lazyblocks_supports_html" value="true" <?php checked( $supports_html ); ?>>
+                    <?php echo esc_html__( 'HTML', '@@text_domain' ); ?>
+                </label>
+                <p class="description"><?php echo esc_html__( 'Allow convert block to HTML.', '@@text_domain' ); ?></p>
+            </div>
         </div>
 
         <div class="lzb-metabox">

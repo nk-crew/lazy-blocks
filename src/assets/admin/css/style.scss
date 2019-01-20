@@ -6,6 +6,15 @@
 .lzb-metabox {
     padding-bottom: 19px;
 
+    .description {
+        margin-bottom: 10px;
+    }
+
+    .disabled {
+        pointer-events: none;
+        opacity: .5;
+    }
+
     > label {
         display: block;
         margin-top: 0;
