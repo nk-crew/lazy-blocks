@@ -719,6 +719,30 @@ if ( $controls.length ) {
     } );
 }
 
+// add block slug if input is empty and user clicked on publish.
+const $titleInput = $( '[name="post_title"]' );
+const $slugInput = $( '#lazyblocks_slug' );
+$( document ).on( 'click', '#publish', function( e ) {
+    let slugVal = $slugInput.val();
+    if ( ! $slugInput.val() && $titleInput.val() ) {
+        slugVal = slugify( $titleInput.val(), {
+            replacement: '-',
+            lower: true,
+            remove: /^[0-9-]/g,
+        } );
+        $slugInput.val( slugVal ).change();
+    }
+
+    // slug validation
+    if ( ! /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test( `lazyblock/${ slugVal }` ) ) {
+        e.preventDefault();
+
+        if ( ! $slugInput.parent().next( '.notice' ).length ) {
+            $slugInput.parent().after( `<div class="notice error"><p>${ 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block' }</p></div>` );
+        }
+    }
+} );
+
 /**
  * Templates
  */
