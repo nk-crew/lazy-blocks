@@ -35,7 +35,7 @@ const usedIds = {};
  *
  * @return {string} Wrapped component.
  */
-const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit, a, b, c ) => {
+const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
     class newEdit extends Component {
         constructor() {
             super( ...arguments );
