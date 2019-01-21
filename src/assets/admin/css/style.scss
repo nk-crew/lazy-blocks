@@ -1106,9 +1106,35 @@
 
 
 /**
- * Hide unused metaboxes from admin pages.
+ * Admin pages.
  */
-.post-type-lazyblocks #slugdiv,
-.post-type-lazyblocks #postcustom {
-    display: none;
+.post-type-lazyblocks {
+    // Hide unused metaboxes.
+    #slugdiv,
+    #postcustom {
+        display: none;
+    }
+
+    .column-lazyblocks_post_icon {
+        width: 30px;
+        text-align: center;
+    }
+
+    .lzb-admin-block-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+
+        .dashicons {
+            width: auto;
+            height: 1em;
+            font-size: 1em;
+        }
+    }
 }

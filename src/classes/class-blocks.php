@@ -306,14 +306,19 @@ class LazyBlocks_Blocks {
      * @return array
      */
     public function add_lazyblocks_columns( $columns = array() ) {
-        $column_meta = array(
-            'lazyblocks_post_icon' => esc_html__( 'Icon', '@@text_domain' ),
-            'lazyblocks_post_category' => esc_html__( 'Category', '@@text_domain' ),
+        $columns = array_merge(
+            // insert after checkbox.
+            array_slice( $columns, 0, 1 ),
+            array(
+                'lazyblocks_post_icon' => esc_html__( 'Icon', '@@text_domain' ),
+            ),
+            // insert after title.
+            array_slice( $columns, 1, 1 ),
+            array(
+                'lazyblocks_post_category' => esc_html__( 'Category', '@@text_domain' ),
+            ),
+            array_slice( $columns, 1 )
         );
-
-        // insert before last column.
-        $last_pos = count( $columns );
-        $columns = array_slice( $columns, $last_pos - 2, 1, true ) + $column_meta + array_slice( $columns, $last_pos - 1, null, true );
 
         return $columns;
     }
@@ -329,7 +334,7 @@ class LazyBlocks_Blocks {
         if ( 'lazyblocks_post_icon' === $column_name ) {
             $icon = $this->get_meta_value( 'lazyblocks_icon' );
             if ( $icon ) {
-                echo '<span class="dashicons ' . esc_attr( $icon ) . '"></span>';
+                echo '<span class="lzb-admin-block-icon"><span class="dashicons ' . esc_attr( $icon ) . '"></span></span>';
             }
         }
 
