@@ -1371,8 +1371,14 @@ class LazyBlocks_Blocks {
         }
 
         // add wrapper.
-        if ( 'frontend' === $context && ( $attributes['className'] || $attributes['align'] || $attributes['anchor'] ) ) {
+        if ( 'frontend' === $context ) {
             $html_atts = '';
+
+            $attributes['className'] .= ' wp-block-' . str_replace( '/', '-', $attributes['lazyblock']['slug'] );
+
+            if ( $attributes['blockUniqueClass'] ) {
+                $attributes['className'] .= ' ' . $attributes['blockUniqueClass'];
+            }
 
             if ( $attributes['align'] ) {
                 $attributes['className'] .= ' align' . $attributes['align'];
