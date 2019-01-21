@@ -69,6 +69,21 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.4.0 =
+
+* added support for blocks PHP preview rendering in Editor
+* added toggle button in Repeater control to toggle all rows
+* added block slug validation and automatic creation in constructor
+* added descriptions to additional block fields in constructor
+* added new attribute `blockUniqueClass` that will adds automatically on each Lazy block
+* added title on Image and Gallery attributes object
+* changed Editor rendering to AJAX also for Handlebars templates
+* changed output for lazy blocks - always added wrapper with block class
+
+= 1.3.2 =
+
+* added unique `blockUniqueClass` attribute to each lazy block attributes and in editor wrapper
+
 = 1.3.1 =
 
 * added unique `blockId` attribute to each lazy block
