@@ -157,6 +157,7 @@ options.blocks.forEach( ( item ) => {
             const result = images.map( ( image ) => {
                 return {
                     alt: image.alt || '',
+                    title: image.title || '',
                     caption: image.caption || '',
                     id: image.id || '',
                     link: image.link || '',
@@ -170,6 +171,7 @@ options.blocks.forEach( ( item ) => {
         onSelectImage( image, control, childIndex ) {
             const result = image ? {
                 alt: image.alt || '',
+                title: image.title || '',
                 caption: image.caption || '',
                 id: image.id || '',
                 link: image.link || '',
