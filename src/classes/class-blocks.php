@@ -408,10 +408,11 @@ class LazyBlocks_Blocks {
         'lazyblocks_category'               => 'common',
 
         'lazyblocks_code_editor_html'       => '',
+        'lazyblocks_code_editor_callback'   => '',
         'lazyblocks_code_editor_css'        => '',
         'lazyblocks_code_frontend_html'     => '',
-        'lazyblocks_code_frontend_css'      => '',
         'lazyblocks_code_frontend_callback' => '',
+        'lazyblocks_code_frontend_css'      => '',
 
         'lazyblocks_supports_multiple'      => 'true',
         'lazyblocks_supports_classname'     => 'true',
@@ -651,6 +652,29 @@ class LazyBlocks_Blocks {
     }
 
     /**
+     * Print editor notes
+     */
+    private function print_editor_notes() {
+        ?>
+        <div class="lzb-metabox">
+            <p>
+                <?php
+                // translators: %1$s - documentation link.
+                echo wp_kses_post( sprintf( __( 'You can use PHP to output block <a href="%1$s">%1$s</a>', '@@text_domain' ), 'https://lazyblocks.com/documentation/blocks-code/php/' ) );
+                ?>
+            </p>
+            <hr>
+            <p class="description">
+                <?php echo esc_html__( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.', '@@text_domain' ); ?>
+            </p>
+            <p class="description">
+                <?php echo wp_kses_post( __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name <strong>my_control</strong>, you can print it <strong>{{my_control}}</strong>.', '@@text_domain' ) ); ?>
+            </p>
+        </div>
+        <?php
+    }
+
+    /**
      * Add Code metabox
      */
     public function add_code_metabox() {
@@ -658,6 +682,7 @@ class LazyBlocks_Blocks {
 
         $editor_html = $this->get_meta_value( 'lazyblocks_code_editor_html' ) ? : '';
         $frontend_html = $this->get_meta_value( 'lazyblocks_code_frontend_html' ) ? : '';
+        $block_slug = 'lazyblock/' . $this->get_meta_value( 'lazyblocks_slug' );
 
         /*
             $editor_css = $this->get_meta_value( 'lazyblocks_code_editor_css' ) ? : '';
@@ -687,20 +712,34 @@ class LazyBlocks_Blocks {
             </div>
             <div class="lzb-metabox-tabs-content">
                 <div class="lzb-metabox-tabs-content-item lzb-metabox-tabs-content-item-active">
-                    <div class="lzb-metabox">
-                        <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
-                    </div>
-                    <p>
-                        <?php
-                        // translators: %1$s - documentation link.
-                        echo wp_kses_post( sprintf( __( 'You can use PHP to output block <a href="%1$s">%1$s</a>', '@@text_domain' ), 'https://lazyblocks.com/documentation/blocks-code/php/' ) );
-                        ?>
-                    </p>
+                    <?php if ( has_filter( $block_slug . '/frontend_callback' ) ) : ?>
+                        <p>
+                            <?php
+                            // translators: %1$s - filter name.
+                            echo wp_kses_post( sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/frontend_callback</code>' ) );
+                            ?>
+                        </p>
+                    <?php else : ?>
+                        <div class="lzb-metabox">
+                            <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
+                        </div>
+                        <?php $this->print_editor_notes(); ?>
+                    <?php endif; ?>
                 </div>
                 <div class="lzb-metabox-tabs-content-item">
-                    <div class="lzb-metabox">
-                        <textarea class="lzb-textarea" id="lazyblocks_code_editor_html" name="lazyblocks_code_editor_html"><?php echo esc_textarea( $editor_html ); ?></textarea>
-                    </div>
+                    <?php if ( has_filter( $block_slug . '/editor_callback' ) ) : ?>
+                        <p>
+                            <?php
+                            // translators: %1$s - filter name.
+                            echo wp_kses_post( sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/editor_callback</code>' ) );
+                            ?>
+                        </p>
+                    <?php else : ?>
+                        <div class="lzb-metabox">
+                            <textarea class="lzb-textarea" id="lazyblocks_code_editor_html" name="lazyblocks_code_editor_html"><?php echo esc_textarea( $editor_html ); ?></textarea>
+                        </div>
+                        <?php $this->print_editor_notes(); ?>
+                    <?php endif; ?>
                 </div>
                 <?php
 
@@ -718,18 +757,6 @@ class LazyBlocks_Blocks {
                  */
                 ?>
             </div>
-        </div>
-        <div class="lzb-metabox">
-            <br>
-            <p class="description">
-                <?php echo esc_html__( 'Note 1: if you use blocks as Metaboxes, you may leave these code editors blank.', '@@text_domain' ); ?>
-            </p>
-            <p class="description">
-                <?php echo wp_kses_post( __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name <strong>my_control</strong>, you can print it <strong>{{my_control}}</strong>.', '@@text_domain' ) ); ?>
-            </p>
-            <p class="description">
-                <?php echo wp_kses_post( __( 'Note 3: yep, I know that Gutenberg based on React, but c\'mon... converting a string with JSX to React components is much more complicated than simple text replacements (Handlebars).', '@@text_domain' ) ); ?>
-            </p>
         </div>
         <?php
     }
@@ -972,10 +999,12 @@ class LazyBlocks_Blocks {
                     ),
                     'controls'      => $controls,
                     'code'          => array(
-                        'editor_html'   => $this->get_meta_value( 'lazyblocks_code_editor_html', $block->ID ),
-                        'editor_css'    => $this->get_meta_value( 'lazyblocks_code_editor_css', $block->ID ),
-                        'frontend_html' => $this->get_meta_value( 'lazyblocks_code_frontend_html', $block->ID ),
-                        'frontend_css'  => $this->get_meta_value( 'lazyblocks_code_frontend_css', $block->ID ),
+                        'editor_html'       => $this->get_meta_value( 'lazyblocks_code_editor_html', $block->ID ),
+                        'editor_callback'   => '',
+                        'editor_css'        => $this->get_meta_value( 'lazyblocks_code_editor_css', $block->ID ),
+                        'frontend_html'     => $this->get_meta_value( 'lazyblocks_code_frontend_html', $block->ID ),
+                        'frontend_callback' => '',
+                        'frontend_css'      => $this->get_meta_value( 'lazyblocks_code_frontend_css', $block->ID ),
                     ),
                     'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );
@@ -999,6 +1028,26 @@ class LazyBlocks_Blocks {
         }
 
         return $unique_result;
+    }
+
+    /**
+     * Get specific block data by name.
+     *
+     * @param string $name - block name.
+     * @param bool   $db_only - get blocks from database only.
+     *
+     * @return array|null
+     */
+    public function get_block( $name, $db_only = false ) {
+        $blocks = $this->get_blocks( $db_only );
+
+        foreach ( $blocks as $block ) {
+            if ( $name === $block['slug'] ) {
+                return $block;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1193,28 +1242,13 @@ class LazyBlocks_Blocks {
             }
         }
 
-        // add attribute with frontend callback filter.
-        $attributes['lazyblock_code_frontend_callback_filter'] = array(
-            'type'    => 'string',
-            'default' => $block['slug'] . '/frontend_callback',
-        );
-
-        // add attribute with code html for frontend render.
-        if ( isset( $block['code'] ) ) {
-            if ( isset( $block['code']['frontend_callback'] ) && ! empty( $block['code']['frontend_callback'] ) && is_callable( $block['code']['frontend_callback'] ) ) {
-                $attributes['lazyblock_code_frontend_callback'] = array(
-                    'type'    => 'string',
-                    'default' => $block['code']['frontend_callback'],
-                );
-            } elseif ( isset( $block['code']['frontend_html'] ) && ! empty( $block['code']['frontend_html'] ) ) {
-                $attributes['lazyblock_code_frontend_html'] = array(
-                    'type'    => 'string',
-                    'default' => $block['code']['frontend_html'],
-                );
-            }
-        }
-
         // reserved attributes.
+        $attributes['lazyblock'] = array(
+            'type'    => 'object',
+            'default' => array(
+                'slug' => $block['slug'],
+            ),
+        );
         $attributes['className'] = array(
             'type'    => 'string',
             'default' => '',
@@ -1243,29 +1277,45 @@ class LazyBlocks_Blocks {
     }
 
     /**
+     * Prepare block to registration.
+     *
+     * @param array  $block - block data.
+     * @param string $context - block context [frontend, editor].
+     *
+     * @return array registration data
+     */
+    public function prepare_block_to_registration( $block, $context = 'frontend' ) {
+        $data = array(
+            'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
+        );
+
+        $context = 'editor' === $context ? 'editor' : 'frontend';
+
+        if (
+            isset( $block['code'] ) &&
+            ( (
+                isset( $block['code'][ $context . '_html' ] ) &&
+                ! empty( $block['code'][ $context . '_html' ] )
+            ) || (
+                isset( $block['code'][ $context . '_callback' ] ) &&
+                ! empty( $block['code'][ $context . '_callback' ] ) &&
+                is_callable( $block['code'][ $context . '_callback' ] )
+            ) )
+        ) {
+            $data['render_callback'] = array( $this, 'render_callback' );
+        }
+
+        return $data;
+    }
+
+    /**
      * Register block attributes and custom frontend render callback if exists.
      */
     public function register_block_render() {
         $blocks = $this->get_blocks();
 
         foreach ( $blocks as $block ) {
-            $data = array(
-                'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
-            );
-
-            if (
-                isset( $block['code'] ) &&
-                ( (
-                    isset( $block['code']['frontend_html'] ) &&
-                    ! empty( $block['code']['frontend_html'] )
-                ) || (
-                    isset( $block['code']['frontend_callback'] ) &&
-                    ! empty( $block['code']['frontend_callback'] ) &&
-                    is_callable( $block['code']['frontend_callback'] )
-                ) )
-            ) {
-                $data['render_callback'] = array( $this, 'render_frontend_html' );
-            }
+            $data = $this->prepare_block_to_registration( $block );
 
             register_block_type( $block['slug'], $data );
         }
@@ -1276,18 +1326,27 @@ class LazyBlocks_Blocks {
      *
      * @param array  $attributes The block attributes.
      * @param string $content The block content.
+     * @param string $context - block context [frontend, editor].
      *
      * @return string Returns the post content with latest posts added.
      */
-    public function render_frontend_html( $attributes, $content = null ) {
+    public function render_callback( $attributes, $content = null, $context = 'frontend' ) {
+        if ( ! isset( $attributes['lazyblock'] ) || ! isset( $attributes['lazyblock']['slug'] ) ) {
+            return '';
+        }
+
         $check_array = '%5B%7B%22';
         $check_array_alt = '%7B%22';
+        $block = $this->get_block( $attributes['lazyblock']['slug'] );
+        $context = 'editor' === $context ? 'editor' : 'frontend';
         $result = '';
 
         foreach ( $attributes as $k => $attr ) {
             // prepare decoded arrays to actual arrays.
-            if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array || substr( $attr, 0, strlen( $check_array_alt ) ) === $check_array_alt ) {
-                $attributes[ $k ] = json_decode( urldecode( $attr ), true );
+            if ( is_string( $attr ) ) {
+                if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array || substr( $attr, 0, strlen( $check_array_alt ) ) === $check_array_alt ) {
+                    $attributes[ $k ] = json_decode( urldecode( $attr ), true );
+                }
             }
 
             // prepare content attribute.
@@ -1297,24 +1356,22 @@ class LazyBlocks_Blocks {
         }
 
         // apply filter for custom output callback.
-        if ( isset( $attributes['lazyblock_code_frontend_callback_filter'] ) ) {
-            $result = apply_filters( $attributes['lazyblock_code_frontend_callback_filter'], '', $attributes );
-        }
+        $result = apply_filters( $block['slug'] . '/' . $context . '_callback', '', $attributes );
 
         // custom callback and handlebars html.
-        if ( ! $result ) {
-            if ( isset( $attributes['lazyblock_code_frontend_callback'] ) && is_callable( $attributes['lazyblock_code_frontend_callback'] ) ) {
+        if ( ! $result && isset( $block['code'] ) ) {
+            if ( isset( $block['code'][ $context . '_callback' ] ) && ! empty( $block['code'][ $context . '_callback' ] ) && is_callable( $block['code'][ $context . '_callback' ] ) ) {
                 ob_start();
-                call_user_func( $attributes['lazyblock_code_frontend_callback'], $attributes );
+                call_user_func( $block['code'][ $context . '_callback' ], $attributes );
                 $result = ob_get_contents();
                 ob_end_clean();
-            } elseif ( isset( $attributes['lazyblock_code_frontend_html'] ) && null !== $this->handlebars ) {
-                $result = $this->handlebars->render( $attributes['lazyblock_code_frontend_html'], $attributes );
+            } else if ( isset( $block['code'][ $context . '_html' ] ) && ! empty( $block['code'][ $context . '_html' ] ) ) {
+                $result = $this->handlebars->render( $block['code'][ $context . '_html' ], $attributes );
             }
         }
 
         // add wrapper.
-        if ( $attributes['className'] || $attributes['align'] || $attributes['anchor'] ) {
+        if ( 'frontend' === $context && ( $attributes['className'] || $attributes['align'] || $attributes['anchor'] ) ) {
             $html_atts = '';
 
             if ( $attributes['align'] ) {

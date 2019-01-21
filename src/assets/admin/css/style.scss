@@ -208,7 +208,19 @@
         position: absolute;
         top: 0;
         left: 0;
+        padding: 15px;
         visibility: hidden;
+
+        .CodeMirror {
+            margin: -15px;
+            margin-bottom: 0;
+        }
+
+        hr {
+            margin-right: -15px;
+            margin-bottom: 15px;
+            margin-left: -15px;
+        }
     }
     .lzb-metabox-tabs-content-item-active {
         position: static;
@@ -223,11 +235,6 @@
     }
     .lzb-metabox-tabs-content-item > .lzb-metabox {
         padding-bottom: 0;
-
-        + p {
-            padding-right: 10px;
-            padding-left: 10px;
-        }
     }
 }
 
@@ -544,6 +551,14 @@
         font-size: 1em;
         opacity: .6;
     }
+
+    .lzb-preview-server {
+        .components-spinner {
+            position: absolute;
+            top: 16px;
+            right: 10px;
+        }
+    }
 }
 
 // Color Picker control
@@ -834,6 +849,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .components-toggle-control .components-form-toggle {
+        margin-right: 0;
+    }
 }
 .lzb-inspector-controls {
     .lzb-gutenberg-repeater {

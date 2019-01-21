@@ -1,5 +1,4 @@
 // External Dependencies.
-import Handlebars from './handlebars.jsx';
 import classnames from 'classnames/dedupe';
 import { arrayMove } from 'react-sortable-hoc';
 
@@ -10,6 +9,7 @@ import './extensions/block-id.jsx';
 import ImageControl from './controls/image.jsx';
 import GalleryControl from './controls/gallery.jsx';
 import RepeaterControl from './controls/repeater.jsx';
+import PreviewServerCallback from './blocks/preview-server-callback.jsx';
 
 let options = window.lazyblocksGutenberg;
 if ( ! options || ! options.blocks || ! options.blocks.length ) {
@@ -53,12 +53,6 @@ const getSettings = wp.date.__experimentalGetSettings;
 
 // each registered block.
 options.blocks.forEach( ( item ) => {
-    // prepare Handlebars templates.
-    let handlebarsEditorHtml = false;
-    if ( item.code && item.code.editor_html ) {
-        handlebarsEditorHtml = Handlebars.compile( item.code.editor_html );
-    }
-
     function getControlValue( control, childIndex ) {
         const {
             attributes,
@@ -513,25 +507,26 @@ options.blocks.forEach( ( item ) => {
             className = classnames( 'lazyblock', blockUniqueClass, className );
 
             const attsForRender = {};
-            if ( handlebarsEditorHtml ) {
-                Object.keys( item.controls ).forEach( ( k ) => {
-                    if ( ! item.controls[ k ].child_of ) {
-                        attsForRender[ item.controls[ k ].name ] = this.getControlValue( item.controls[ k ] );
-                    }
-                } );
 
-                // reserved attributes.
-                const reservedAttributes = [
-                    'className',
-                    'align',
-                    'anchor',
-                    'blockId',
-                    'blockUniqueClass',
-                ];
-                reservedAttributes.forEach( ( attr ) => {
-                    attsForRender[ attr ] = this.props.attributes[ attr ];
-                } );
-            }
+            // prepare data for preview.
+            Object.keys( item.controls ).forEach( ( k ) => {
+                if ( ! item.controls[ k ].child_of ) {
+                    attsForRender[ item.controls[ k ].name ] = this.getControlValue( item.controls[ k ] );
+                }
+            } );
+
+            // reserved attributes.
+            const reservedAttributes = [
+                'lazyblock',
+                'className',
+                'align',
+                'anchor',
+                'blockId',
+                'blockUniqueClass',
+            ];
+            reservedAttributes.forEach( ( attr ) => {
+                attsForRender[ attr ] = this.props.attributes[ attr ];
+            } );
 
             return (
                 <Fragment>
@@ -550,13 +545,10 @@ options.blocks.forEach( ( item ) => {
                         <div className="lzb-content-controls">
                             { this.renderControls( 'content' ) }
                         </div>
-                        { handlebarsEditorHtml ? (
-                            <div
-                                dangerouslySetInnerHTML={ {
-                                    __html: handlebarsEditorHtml( attsForRender ),
-                                } }
-                            />
-                        ) : '' }
+                        <PreviewServerCallback
+                            block={ item.slug }
+                            attributes={ attsForRender }
+                        />
                     </div>
                 </Fragment>
             );

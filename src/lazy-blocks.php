@@ -161,24 +161,21 @@ class LazyBlocks {
         require_once( $this->plugin_path . '/classes/class-blocks.php' );
         require_once( $this->plugin_path . '/classes/class-templates.php' );
         require_once( $this->plugin_path . '/classes/class-tools.php' );
+        require_once( $this->plugin_path . '/classes/class-rest.php' );
     }
 
     /**
-     * Get lazyblocks array.
-     *
-     * @param bool $db_only - get blocks from database only.
+     * Get lazyblocks object.
      */
-    public function get_blocks( $db_only = false ) {
-        return $this->blocks->get_blocks( $db_only );
+    public function blocks() {
+        return $this->blocks;
     }
 
     /**
-     * Get lazyblocks templates array.
-     *
-     * @param bool $db_only - get templates from database only.
+     * Get lazyblocks templates object.
      */
-    public function get_templates( $db_only = false ) {
-        return $this->templates->get_templates( $db_only );
+    public function templates() {
+        return $this->templates;
     }
 
     /**
@@ -187,7 +184,7 @@ class LazyBlocks {
      * @param array $data - block data.
      */
     public function add_block( $data ) {
-        return $this->blocks->add_block( $data );
+        return $this->blocks()->add_block( $data );
     }
 
     /**
@@ -196,7 +193,7 @@ class LazyBlocks {
      * @param array $data - template data.
      */
     public function add_template( $data ) {
-        return $this->templates->add_template( $data );
+        return $this->templates()->add_template( $data );
     }
 
     /**
@@ -286,7 +283,7 @@ function get_lzb_meta( $name, $id = null ) {
         $id = $post->ID;
     }
 
-    $blocks = lazyblocks()->get_blocks();
+    $blocks = lazyblocks()->blocks()->get_blocks();
     foreach ( $blocks as $block ) {
         if ( isset( $block['controls'] ) && is_array( $block['controls'] ) ) {
             foreach ( $block['controls'] as $control ) {

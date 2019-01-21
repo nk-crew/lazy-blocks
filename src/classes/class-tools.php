@@ -38,8 +38,8 @@ class LazyBlocks_Tools {
      * Tools page
      */
     public function render_tools_page() {
-        $blocks = lazyblocks()->get_blocks( true );
-        $templates = lazyblocks()->get_templates( true );
+        $blocks = lazyblocks()->blocks()->get_blocks( true );
+        $templates = lazyblocks()->templates()->get_templates( true );
         $blocks_string = '';
         $templates_string = '';
 
