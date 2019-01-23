@@ -229,6 +229,9 @@ class LazyBlocks_Blocks {
         $this->handlebars->registerHelper( 'date_i18n', function( $format, $time ) {
             return date_i18n( $format, strtotime( $time ) );
         } );
+
+        // custom action for extending default helpers by 3rd-party.
+        do_action( 'lzb_handlebars_object', $this->handlebars );
     }
 
     /**
