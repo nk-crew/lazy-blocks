@@ -727,6 +727,8 @@ class LazyBlocks_Blocks {
                             echo wp_kses_post( sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/frontend_callback</code>' ) );
                             ?>
                         </p>
+                        <?php /* Output hidden Frontend HTML data to prevent losing it after save */ ?>
+                        <textarea class="lzb-textarea" name="lazyblocks_code_frontend_html" style="display: none;"><?php echo esc_textarea( $frontend_html ); ?></textarea>
                     <?php else : ?>
                         <div class="lzb-metabox">
                             <textarea class="lzb-textarea" id="lazyblocks_code_frontend_html" name="lazyblocks_code_frontend_html"><?php echo esc_textarea( $frontend_html ); ?></textarea>
@@ -742,6 +744,8 @@ class LazyBlocks_Blocks {
                             echo wp_kses_post( sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/editor_callback</code>' ) );
                             ?>
                         </p>
+                        <?php /* Output hidden Editor HTML data to prevent losing it after save */ ?>
+                        <textarea class="lzb-textarea" name="lazyblocks_code_editor_html" style="display: none;"><?php echo esc_textarea( $editor_html ); ?></textarea>
                     <?php else : ?>
                         <div class="lzb-metabox">
                             <textarea class="lzb-textarea" id="lazyblocks_code_editor_html" name="lazyblocks_code_editor_html"><?php echo esc_textarea( $editor_html ); ?></textarea>
