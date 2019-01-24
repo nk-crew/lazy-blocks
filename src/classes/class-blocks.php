@@ -1285,45 +1285,16 @@ class LazyBlocks_Blocks {
     }
 
     /**
-     * Prepare block to registration.
-     *
-     * @param array  $block - block data.
-     * @param string $context - block context [frontend, editor].
-     *
-     * @return array registration data
-     */
-    public function prepare_block_to_registration( $block, $context = 'frontend' ) {
-        $data = array(
-            'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
-        );
-
-        $context = 'editor' === $context ? 'editor' : 'frontend';
-
-        if (
-            isset( $block['code'] ) &&
-            ( (
-                isset( $block['code'][ $context . '_html' ] ) &&
-                ! empty( $block['code'][ $context . '_html' ] )
-            ) || (
-                isset( $block['code'][ $context . '_callback' ] ) &&
-                ! empty( $block['code'][ $context . '_callback' ] ) &&
-                is_callable( $block['code'][ $context . '_callback' ] )
-            ) )
-        ) {
-            $data['render_callback'] = array( $this, 'render_callback' );
-        }
-
-        return $data;
-    }
-
-    /**
      * Register block attributes and custom frontend render callback if exists.
      */
     public function register_block_render() {
         $blocks = $this->get_blocks();
 
         foreach ( $blocks as $block ) {
-            $data = $this->prepare_block_to_registration( $block );
+            $data = array(
+                'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
+                'render_callback' => array( $this, 'render_callback' ),
+            );
 
             register_block_type( $block['slug'], $data );
         }
@@ -1379,7 +1350,7 @@ class LazyBlocks_Blocks {
         }
 
         // add wrapper.
-        if ( 'frontend' === $context ) {
+        if ( $result && 'frontend' === $context ) {
             $html_atts = '';
 
             $attributes['className'] .= ' wp-block-' . str_replace( '/', '-', $attributes['lazyblock']['slug'] );
