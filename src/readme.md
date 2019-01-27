@@ -69,6 +69,15 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.4.1 =
+
+* added action to add Handlebars custom helpers (info in documentation)
+* added filter to disable frontend block wrapper of the block (info in documentation)
+* improved columns in admin list of lazy blocks
+* extended list of symbols that need to be removed from the block slug
+* fixed PHP output for frontend if HTML output is empty
+* fixed losing Frontend & Editor output data when added output PHP filters
+
 = 1.4.0 =
 
 * added support for blocks PHP preview rendering in Editor
