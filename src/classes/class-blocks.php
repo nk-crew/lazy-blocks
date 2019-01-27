@@ -1354,7 +1354,8 @@ class LazyBlocks_Blocks {
         }
 
         // add wrapper.
-        if ( $result && 'frontend' === $context ) {
+        $allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $result && 'frontend' === $context, $attributes );
+        if ( $allow_wrapper ) {
             $html_atts = '';
 
             $attributes['className'] .= ' wp-block-' . str_replace( '/', '-', $attributes['lazyblock']['slug'] );
