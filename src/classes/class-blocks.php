@@ -1369,6 +1369,7 @@ class LazyBlocks_Blocks {
             }
 
             if ( $attributes['className'] ) {
+                $attributes['className'] = trim( $attributes['className'] );
                 $html_atts .= ' class="' . esc_attr( $attributes['className'] ) . '"';
             }
             if ( $attributes['anchor'] ) {
