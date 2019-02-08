@@ -894,7 +894,6 @@
     background: #fff;
     border: 1px solid #e5e5e5;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
-    z-index: 1;
 
     &::before {
         content: "";
@@ -906,18 +905,6 @@
         width: 229px;
         background-color: rgba(0, 0, 0, .02);
         border-right: 1px solid #f1f1f1;
-        z-index: -1;
-    }
-    &::after {
-        content: "";
-        position: absolute;
-        display: block;
-        top: 0;
-        right: -16px;
-        bottom: 0;
-        left: -16px;
-        border-bottom: 1px solid #f1f1f1;
-        z-index: -2;
     }
 
     > * {
@@ -937,6 +924,7 @@
             padding-right: 20px;
             margin-right: 20px;
             font-weight: 500;
+            z-index: 1;
         }
     }
 

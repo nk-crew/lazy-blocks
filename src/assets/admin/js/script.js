@@ -874,8 +874,8 @@ function workWithTemplates() {
 
     function initSelectize() {
         if ( typeof $.fn.selectize !== 'undefined' ) {
-            $( '.lzb-select' ).each( function() {
-                const $select = $( this );
+            $( '.lzb-select:not(.lzb-select-ready)' ).each( function() {
+                const $select = $( this ).addClass( 'lzb-select-ready' );
                 const placeholder = $select.attr( 'placeholder' );
                 const clearOnChange = $select.hasClass( 'lzb-templates-single-add-blocks' );
 
@@ -1062,14 +1062,12 @@ function workWithTemplates() {
     } );
 }
 
-if ( wp.domReady && wp.api && wp.blocks && $( 'body.post-type-lazyblocks_templates' ).length ) {
-    wp.domReady( () => {
-        wp.api.loadPromise.done( function() {
-            if ( ! wp.api.models.Lazyblocks_templates ) {
-                return;
-            }
+jQuery( () => {
+    wp.api.loadPromise.done( function() {
+        if ( ! wp.api.models.Lazyblocks_templates ) {
+            return;
+        }
 
-            workWithTemplates();
-        } );
+        workWithTemplates();
     } );
-}
+} );
