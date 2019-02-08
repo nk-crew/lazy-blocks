@@ -1138,6 +1138,7 @@ class LazyBlocks_Blocks {
                     if ( isset( $control['type'] ) ) {
                         switch ( $control['type'] ) {
                             case 'number':
+                            case 'range':
                                 $type = 'number';
                                 break;
                             case 'checkbox':
