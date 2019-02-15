@@ -747,6 +747,10 @@ $( document ).on( 'click', '#publish', function( e ) {
  * Templates
  */
 function workWithTemplates() {
+    if ( ! wp.api || ! wp.blocks || ! $( 'body.post-type-lazyblocks_templates' ).length ) {
+        return;
+    }
+
     // register core Gutenberg blocks.
     if ( wp.blockLibrary && wp.blockLibrary.registerCoreBlocks ) {
         wp.blockLibrary.registerCoreBlocks();
