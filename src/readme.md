@@ -69,6 +69,15 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.4.2 =
+
+* added `lzb_handlebars_object` action inside `init`
+* trim class attribute value on frontend output
+* fixed loading Templates admin page and select initialization when more then 1 template added
+* fixed Range control with Save in Meta option
+* fixed JS error on all admin pages
+* fixed Handlebars PHP 7.3 error
+
 = 1.4.1 =
 
 * added action to add Handlebars custom helpers (info in documentation)
