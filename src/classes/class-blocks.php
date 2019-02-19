@@ -25,7 +25,7 @@ class LazyBlocks_Blocks {
      * LazyBlocks_Blocks constructor.
      */
     public function __construct() {
-        $this->prepare_handlebars();
+        add_action( 'init', array( $this, 'prepare_handlebars' ) );
 
         add_action( 'init', array( $this, 'register_post_type' ) );
 
