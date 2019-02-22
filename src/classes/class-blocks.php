@@ -407,7 +407,7 @@ class LazyBlocks_Blocks {
      * @var array
      */
     private $defaults = array(
-        'lazyblocks_controls' => array(),
+        'lazyblocks_controls'               => array(),
 
         'lazyblocks_slug'                   => '',
         'lazyblocks_icon'                   => '',
@@ -871,12 +871,12 @@ class LazyBlocks_Blocks {
                     $new_meta_value = wp_unslash( $_POST[ $meta ] );
                 } else {
                     // Get the posted data and sanitize it for use as an HTML class.
-                    $new_meta_value = sanitize_text_field( wp_unslash( $_POST[ $meta ] ) );
-
-                    if ( 'Array' === $new_meta_value ) {
+                    if ( is_array( $_POST[ $meta ] ) ) {
                         // phpcs:disable
                         $new_meta_value = $this->sanitize_array( wp_unslash( $_POST[ $meta ] ) );
                         // phpcs:enable
+                    } else {
+                        $new_meta_value = sanitize_text_field( wp_unslash( $_POST[ $meta ] ) );
                     }
                 }
             }
