@@ -2,7 +2,7 @@
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
 * Requires at least: 4.9.0
-* Tested up to: 5.0
+* Tested up to: 5.1
 * Requires PHP: 5.4
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -68,6 +68,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 3. Block in Gutenberg editor
 
 ## Changelog ##
+
+= 1.4.3 =
+
+* fixed controls save when updating Lazy Blocks post in WordPress 5.1
 
 = 1.4.2 =
 
