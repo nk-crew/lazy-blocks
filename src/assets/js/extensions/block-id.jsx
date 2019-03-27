@@ -40,17 +40,31 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
         constructor() {
             super( ...arguments );
 
+            const {
+                attributes,
+                clientId,
+            } = this.props;
+
+            // fix duplicated classes after block clone.
+            if ( clientId && attributes.blockId && typeof usedIds[ attributes.blockId ] === 'undefined' ) {
+                usedIds[ attributes.blockId ] = clientId;
+            }
+
             this.maybeCreateBlockId = this.maybeCreateBlockId.bind( this );
         }
 
         componentDidMount() {
-            if ( ! this.props.blockSettings.lazyblock ) {
-                return;
-            }
+            this.maybeCreateBlockId();
+        }
+        componentDidUpdate() {
             this.maybeCreateBlockId();
         }
 
         maybeCreateBlockId() {
+            if ( ! this.props.blockSettings.lazyblock ) {
+                return;
+            }
+
             const {
                 setAttributes,
                 attributes,
@@ -61,16 +75,7 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
                 blockId,
             } = attributes;
 
-            if (
-                clientId &&
-                typeof blockId !== 'undefined' &&
-                (
-                    ! blockId ||
-                    (
-                        blockId && typeof usedIds[ blockId ] !== 'undefined'
-                    )
-                )
-            ) {
+            if ( ! blockId || usedIds[ blockId ] !== clientId ) {
                 let newBlockId = '';
 
                 // check if ID already exist.
@@ -85,8 +90,11 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
                 }
 
                 if ( newBlockId !== blockId ) {
+                    const newClass = `${ this.props.name.replace( '/', '-' ) }-${ newBlockId }`;
+
                     setAttributes( {
                         blockId: newBlockId,
+                        blockUniqueClass: newClass,
                     } );
                 }
             }
