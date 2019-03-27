@@ -1112,10 +1112,21 @@ class LazyBlocks_Blocks {
         $new_categories = $this->get_blocks_categories();
         if ( ! empty( $new_categories ) ) {
             foreach ( $new_categories as $slug => $category ) {
-                $categories[] = array(
-                    'slug'  => $slug,
-                    'title' => $category,
-                );
+                // no duplicates.
+                $allow = true;
+
+                foreach ( $categories as $existing_cat ) {
+                    if ( isset( $existing_cat['slug'] ) && $slug === $existing_cat['slug'] ) {
+                        $allow = false;
+                    }
+                }
+
+                if ( $allow ) {
+                    $categories[] = array(
+                        'slug'  => $slug,
+                        'title' => $category,
+                    );
+                }
             }
         }
 
