@@ -729,7 +729,7 @@ $( document ).on( 'click', '#publish', function( e ) {
         slugVal = slugify( $titleInput.val(), {
             replacement: '-',
             lower: true,
-            remove: /^[0-9-*+~.\$(_)#&\|'"!:;@/\\]/g,
+            remove: /[^\w\s$0-9-*+~.\$(_)#&\|'"!:;@/\\]/g,
         } );
         $slugInput.val( slugVal ).change();
     }
