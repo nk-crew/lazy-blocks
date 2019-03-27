@@ -43,7 +43,7 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
         // Get Lazy Block Editor Preview.
         register_rest_route(
             $namespace, '/block-render/', array(
-                'methods'             => WP_REST_Server::READABLE,
+                'methods'             => WP_REST_Server::EDITABLE,
                 'callback'            => array( $this, 'get_block' ),
                 'permission_callback' => array( $this, 'get_block_permission' ),
             )

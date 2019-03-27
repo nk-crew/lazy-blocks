@@ -17,16 +17,6 @@ const {
 } = wp.element;
 const { __, sprintf } = wp.i18n;
 const { apiFetch } = wp;
-const { addQueryArgs } = wp.url;
-
-export function rendererPath( block, attributes = null, urlQueryArgs = {} ) {
-    return addQueryArgs( 'lazy-blocks/v1/block-render', {
-        context: 'editor',
-        name: block,
-        ...( null !== attributes ? { attributes } : {} ),
-        ...urlQueryArgs,
-    } );
-}
 
 /**
  * Block Editor custom PHP preview.
@@ -71,11 +61,18 @@ export class PreviewServerCallback extends Component {
         }
         const { block, attributes = null, urlQueryArgs = {} } = props;
 
-        const path = rendererPath( block, attributes, urlQueryArgs );
-
         // Store the latest fetch request so that when we process it, we can
         // check if it is the current request, to avoid race conditions on slow networks.
-        const fetchRequest = this.currentFetchRequest = apiFetch( { path } )
+        const fetchRequest = this.currentFetchRequest = apiFetch( {
+            path: 'lazy-blocks/v1/block-render',
+            method: 'POST',
+            data: {
+                context: 'editor',
+                name: block,
+                ...( null !== attributes ? { attributes } : {} ),
+                ...urlQueryArgs,
+            },
+        } )
             .then( ( response ) => {
                 if ( this.isStillMounted && fetchRequest === this.currentFetchRequest ) {
                     if ( response && response.success ) {
