@@ -269,6 +269,7 @@ const controlTemplate = `
                             </optgroup>
                             <optgroup label="Choice">
                                 <option value="select" #{type:selected?select}>Select</option>
+                                <option value="radio" #{type:selected?radio}>Radio</option>
                                 <option value="checkbox" #{type:selected?checkbox}>Checkbox</option>
                                 <option value="toggle" #{type:selected?toggle}>Toggle</option>
                             </optgroup>
@@ -284,7 +285,7 @@ const controlTemplate = `
                 </div>
 
                 <!-- Choices & Allow Null for Select control -->
-                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select">
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select || [id='${ controlNameTemplate }[type]'] == radio">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[choices]">Choices</label>
                         <small>Enter each choice on a new line.</small>
@@ -296,7 +297,7 @@ const controlTemplate = `
                         <textarea class="lzb-textarea" id="${ controlNameTemplate }[choices]" rows="6">#{choices}</textarea>
                     </div>
                 </div>
-                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select">
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[type]'] == select || [id='${ controlNameTemplate }[type]'] == radio">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[allow_null]">Allow Null</label>
                         <small>Will be added option that allow you to reset selected option value to null</small>

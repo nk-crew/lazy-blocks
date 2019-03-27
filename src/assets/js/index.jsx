@@ -27,6 +27,7 @@ const {
     TextareaControl,
     ToggleControl,
     CheckboxControl,
+    RadioControl,
     RangeControl,
     SelectControl,
     ColorIndicator,
@@ -337,6 +338,20 @@ options.blocks.forEach( ( item ) => {
                                     if ( control.allow_null && 'true' === control.allow_null && 'null' === val ) {
                                         val = null;
                                     }
+                                    this.onControlChange( val, control, childIndex );
+                                } }
+                            />
+                        ) );
+                        break;
+                    case 'radio':
+                        result.push( (
+                            <RadioControl
+                                key={ control.name }
+                                label={ control.label }
+                                help={ control.help }
+                                selected={ this.getControlValue( control, childIndex ) }
+                                options={ control.choices }
+                                onChange={ ( val ) => {
                                     this.onControlChange( val, control, childIndex );
                                 } }
                             />
