@@ -400,7 +400,7 @@ const controlTemplate = `
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[placement]">Placement</label>
                     </div>
-                    <div>
+                    <div data-cond="[id='${ controlNameTemplate }[type]'] != inner_blocks">
                         <select class="lzb-select" name="${ controlNameTemplate }[placement]" id="${ controlNameTemplate }[placement]">
                             <option value="content" #{placement:selected?content}>Content</option>
                             <option value="inspector" #{placement:selected?inspector}>Inspector</option>
@@ -408,10 +408,15 @@ const controlTemplate = `
                             <option value="nowhere" #{placement:selected?nowhere}>Hidden</option>
                         </select>
                     </div>
+                    <div data-cond="[id='${ controlNameTemplate }[type]'] == inner_blocks">
+                        <select class="lzb-select" disabled>
+                            <option value="content" #{placement:selected?content}>Content</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Meta -->
-                <div class="lzb-metabox lzb-metabox-control-hide-from-repeater">
+                <div class="lzb-metabox lzb-metabox-control-hide-from-repeater" data-cond="[id='${ controlNameTemplate }[type]'] != inner_blocks && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">
                         <label for="${ controlNameTemplate }[save_in_meta]">Save in Meta</label>
                     </div>

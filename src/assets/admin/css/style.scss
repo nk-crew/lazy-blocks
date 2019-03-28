@@ -46,6 +46,11 @@
         &[type="radio"] {
             width: auto;
         }
+
+        &[disabled] {
+            background: rgba(0, 0, 0, .05);
+            opacity: .6;
+        }
     }
     select.lzb-select {
         height: 32px;

@@ -175,12 +175,16 @@ options.blocks.forEach( ( item ) => {
             // prepare attributes.
             Object.keys( item.controls ).forEach( ( k ) => {
                 const control = item.controls[ k ];
+                let placementCheck = control.type && control.placement !== 'nowhere' &&
+                ( control.placement === 'both' || control.placement === placement );
+
+                // inner blocks show only in content.
+                if ( control.type === 'inner_blocks' ) {
+                    placementCheck = placement === 'content';
+                }
 
                 if (
-                    ( ! childOf && ! control.child_of &&
-                        control.type && control.placement !== 'nowhere' &&
-                      ( control.placement === 'both' || control.placement === placement )
-                    ) ||
+                    ( ! childOf && ! control.child_of && placementCheck ) ||
                     ( childOf && control.child_of === childOf )
                 ) {
                     switch ( control.type ) {
