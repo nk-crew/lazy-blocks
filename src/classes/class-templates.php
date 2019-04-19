@@ -106,27 +106,34 @@ class LazyBlocks_Templates {
         foreach ( $all_templates as $template ) {
             $data = $template['data'];
 
-            if ( ! empty( $data ) ) {
-                $post_type_object = get_post_type_object( $data['post_type'] );
-                $blocks = array();
+            if ( empty( $data ) ) {
+                continue;
+            }
 
-                foreach ( (array) $data['blocks'] as $block ) {
-                    $blocks[] = array(
-                        $block['name'],
-                        array(
-                            // default data.
-                        ),
-                    );
-                }
+            $post_type_object = get_post_type_object( $data['post_type'] );
 
-                if ( ! empty( $blocks ) ) {
-                    $post_type_object->template = $blocks;
-                    add_post_type_support( $data['post_type'], 'custom-fields' );
-                }
+            if ( ! $post_type_object ) {
+                continue;
+            }
 
-                if ( isset( $data['template_lock'] ) && $data['template_lock'] ) {
-                    $post_type_object->template_lock = $data['template_lock'];
-                }
+            $blocks = array();
+
+            foreach ( (array) $data['blocks'] as $block ) {
+                $blocks[] = array(
+                    $block['name'],
+                    array(
+                        // default data.
+                    ),
+                );
+            }
+
+            if ( ! empty( $blocks ) ) {
+                $post_type_object->template = $blocks;
+                add_post_type_support( $data['post_type'], 'custom-fields' );
+            }
+
+            if ( isset( $data['template_lock'] ) && $data['template_lock'] ) {
+                $post_type_object->template_lock = $data['template_lock'];
             }
         }
     }
