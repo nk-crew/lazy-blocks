@@ -728,7 +728,7 @@ if ( $controls.length ) {
 // add block slug if input is empty and user clicked on publish.
 const $titleInput = $( '[name="post_title"]' );
 const $slugInput = $( '#lazyblocks_slug' );
-$( document ).on( 'click', '#publish', function( e ) {
+$( document ).on( 'click', '.post-type-lazyblocks #publish', function( e ) {
     let slugVal = $slugInput.val();
     if ( ! $slugInput.val() && $titleInput.val() ) {
         slugVal = slugify( $titleInput.val(), {
