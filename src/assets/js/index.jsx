@@ -183,6 +183,11 @@ options.blocks.forEach( ( item ) => {
                     placementCheck = placement === 'content';
                 }
 
+                // hide if not selected
+                if ( placement === 'content' && control.hide_if_not_selected && 'true' === control.hide_if_not_selected ) {
+                    placementCheck = this.props.isSelected;
+                }
+
                 if (
                     ( ! childOf && ! control.child_of && placementCheck ) ||
                     ( childOf && control.child_of === childOf )

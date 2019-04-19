@@ -415,6 +415,20 @@ const controlTemplate = `
                     </div>
                 </div>
 
+                <!-- Hide if block is not selected -->
+                <div class="lzb-metabox" data-cond="[id='${ controlNameTemplate }[placement]'] == content || [id='${ controlNameTemplate }[placement]'] == both">
+                    <div class="lzb-metabox-label">
+                        <label for="${ controlNameTemplate }[hide_if_not_selected]">Hide if block is not selected</label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="hidden" name="${ controlNameTemplate }[hide_if_not_selected]" id="${ controlNameTemplate }[hide_if_not_selected]_hidden" value="false">
+                            <input class="lzb-input" type="checkbox" name="${ controlNameTemplate }[hide_if_not_selected]" id="${ controlNameTemplate }[hide_if_not_selected]" value="true" #{hide_if_not_selected:checked?true}>
+                            Yes
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Meta -->
                 <div class="lzb-metabox lzb-metabox-control-hide-from-repeater" data-cond="[id='${ controlNameTemplate }[type]'] != inner_blocks && [id='${ controlNameTemplate }[type]'] != repeater">
                     <div class="lzb-metabox-label">
