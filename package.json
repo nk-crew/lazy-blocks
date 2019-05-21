@@ -134,6 +134,7 @@
     "webpack-stream": "^5.1.1"
   },
   "dependencies": {
+    "array-move": "^2.1.0",
     "classnames": "^2.2.6",
     "deep-equal": "^1.0.1",
     "react-sortable-hoc": "^1.4.0",

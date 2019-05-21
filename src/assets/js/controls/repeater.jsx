@@ -53,6 +53,8 @@ class RepeaterControl extends Component {
     constructor() {
         super( ...arguments );
 
+        this.sortRef = wp.element.createRef();
+
         this.state = {
             activeItem: -1,
         };
@@ -100,6 +102,7 @@ class RepeaterControl extends Component {
                 <div className="lzb-gutenberg-repeater">
                     { items.length ? (
                         <SortableList
+                            ref={ this.sortRef }
                             items={ items }
                             onSortEnd={ ( { oldIndex, newIndex } ) => {
                                 resortRow( oldIndex, newIndex );
@@ -109,7 +112,13 @@ class RepeaterControl extends Component {
                                 }
                             } }
                             useDragHandle={ true }
-                            helperClass={ 'lzb-gutenberg-repeater-sortable' }
+                            helperContainer={ () => {
+                                if ( this.sortRef && this.sortRef.current && this.sortRef.current.container ) {
+                                    return this.sortRef.current.container;
+                                }
+
+                                return document.body;
+                            } }
                         />
                     ) : '' }
                     <div className="lzb-gutenberg-repeater-options">

@@ -1,6 +1,6 @@
 // External Dependencies.
 import classnames from 'classnames/dedupe';
-import { arrayMove } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 
 // Internal Dependencies
 import './blocks/free.jsx';

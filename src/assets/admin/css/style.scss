@@ -750,6 +750,7 @@
 // repeater
 .lzb-gutenberg-repeater-item {
     position: relative;
+    background-color: #fff;
 
     > div {
         margin-right: 15px;
@@ -837,13 +838,6 @@
         margin-left: 0;
         border-right: 1px solid #eaeaea;
         border-left: 1px solid #eaeaea;
-    }
-
-    &.lzb-gutenberg-repeater-sortable {
-        z-index: 100;
-    }
-    &.lzb-gutenberg-repeater-sortable .lzb-gutenberg-repeater-item-content {
-        visibility: hidden;
     }
 }
 .lzb-gutenberg-repeater-items {
