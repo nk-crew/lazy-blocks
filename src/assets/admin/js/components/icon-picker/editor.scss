@@ -1,0 +1,90 @@
+@import "../../variables";
+
+.lazyblocks-component-icon-picker {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .lazyblocks-component-icon-picker-btn.button {
+        height: auto;
+        padding: 5px 8px;
+        margin-bottom: 0;
+        line-height: normal;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        box-shadow: none;
+
+        &:active {
+            transform: none;
+        }
+
+        .lazyblocks-component-icon-picker-preview {
+            margin-right: 5px;
+            font-size: 18px;
+            line-height: inherit;
+        }
+    }
+    > .components-base-control {
+        flex: 1;
+
+        input {
+            margin-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+
+            &:focus {
+                z-index: 1;
+            }
+        }
+
+        .components-base-control__field {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.lazyblocks-component-icon-picker-list {
+    padding: 15px;
+
+    .lazyblocks-component-icon-picker-list-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: -10px;
+        margin-left: -10px;
+    }
+
+    .lazyblocks-component-icon-picker-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(33.33% - 10px);
+        max-width: calc(33.33% - 10px);
+        height: 55px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+        background: $color_gray_lighten;
+        border: 1px solid $color_gray_lighten;
+        border-radius: 4px;
+        transition: .15s background-color, .15s box-shadow, .15s border-color;
+
+        &:hover {
+            background-color: #fff;
+            border-color: $color_gray_darken;
+            box-shadow: 0 2px 7px 0 $color_gray_darken;
+        }
+
+        &.lazyblocks-component-icon-picker-icon-active {
+            background-color: #fff;
+            border-color: $color_main;
+        }
+
+        .dashicons {
+            width: 1em;
+            height: 1em;
+            font-size: 1em;
+        }
+    }
+}

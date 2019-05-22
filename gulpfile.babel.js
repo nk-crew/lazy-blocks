@@ -74,14 +74,14 @@ gulp.task('copy_to_dist_vendors', function () {
 });
 gulp.task('build_blocks_js', function () {
     return runStream(work_folders, function (itemData) {
-        return gulp.src(itemData.from + '/assets/js/index.jsx')
+        return gulp.src([itemData.from + '/*assets/js/index.jsx', itemData.from + '/*assets/admin/js/blocks.jsx'])
             .pipe($.plumber({ errorHandler }))
             .pipe(named())
             .pipe(webpack(webpackconfig(isDev)))
             .pipe($.rename({
                 suffix: '.min'
             }))
-            .pipe(gulp.dest(itemData.to + '/assets/js/'))
+            .pipe(gulp.dest(itemData.to))
     });
 });
 gulp.task('build_js', function () {
@@ -89,23 +89,7 @@ gulp.task('build_js', function () {
         return gulp.src([itemData.from + '/**/*.js', '!' + itemData.from + '/**/vendor/**/*'])
             .pipe($.plumber({ errorHandler }))
             .pipe(named())
-            .pipe(webpack({
-                mode: isDev ? 'development' : 'production',
-                module: {
-                    rules: [
-                        {
-                            test: /.js$/,
-                            loader: 'babel-loader',
-                            exclude: /node_modules/,
-                        },
-                    ],
-                },
-                resolve: {
-                    alias: {
-                        handlebars: 'handlebars/dist/handlebars.min.js',
-                    },
-                },
-            }))
+            .pipe(webpack(webpackconfig(isDev)))
             .pipe($.rename({
                 suffix: '.min'
             }))

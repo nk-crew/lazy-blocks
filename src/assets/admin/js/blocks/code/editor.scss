@@ -1,0 +1,17 @@
+@import "../../variables";
+
+.lzb-constructor .lzb-constructor-custom-code-settings {
+    .components-tab-panel__tab-content {
+        padding: 0;
+    }
+
+    p.description {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    hr {
+        margin: 10px -20px;
+        background-color: $color_gray_lighten;
+    }
+}

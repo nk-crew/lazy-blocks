@@ -219,15 +219,17 @@ class LazyBlocks {
         global $wp_locale;
 
         if ( 'lazyblocks' === $post_type || 'lazyblocks_templates' === $post_type ) {
-            wp_enqueue_style( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/css/dashicons-picker.css', array( 'dashicons' ), '1.0', false );
-            wp_enqueue_script( 'dashicons-picker', lazyblocks()->plugin_url . 'vendor/dashicons-picker/js/dashicons-picker.js', array( 'jquery' ), '1.1', true );
-
             wp_enqueue_style( 'selectize', lazyblocks()->plugin_url . 'vendor/selectize/css/selectize.css', array( 'dashicons' ), '0.12.4', false );
             wp_enqueue_script( 'selectize', lazyblocks()->plugin_url . 'vendor/selectize/js/standalone/selectize.min.js', array( 'jquery' ), '0.12.4', true );
+        }
 
-            wp_enqueue_script( 'conditionize', lazyblocks()->plugin_url . 'vendor/conditionize/conditionize.js', array( 'jquery' ), '', true );
-
-            wp_enqueue_script( 'sortablejs', lazyblocks()->plugin_url . 'vendor/sortablejs/Sortable.min.js', array( 'jquery' ), '', true );
+        if ( 'lazyblocks' === $post_type ) {
+            wp_enqueue_script(
+                'lazyblocks-admin-blocks',
+                lazyblocks()->plugin_url . 'assets/admin/js/blocks.min.js',
+                array( 'wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
+                filemtime( lazyblocks()->plugin_path . 'assets/admin/js/blocks.min.js' )
+            );
         }
 
         wp_enqueue_script( 'date_i18n', lazyblocks()->plugin_url . 'vendor/date_i18n/date_i18n.js', array(), '1.0.0', true );
@@ -246,6 +248,7 @@ class LazyBlocks {
 
         wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
         wp_enqueue_script( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery', 'wp-api' ), '@@plugin_version', true );
+
         wp_localize_script(
             'lazyblocks-admin', 'lazyblocksData', array(
                 'nonce'    => wp_create_nonce( 'ajax-nonce' ),

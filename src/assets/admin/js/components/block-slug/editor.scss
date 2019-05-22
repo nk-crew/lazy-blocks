@@ -1,0 +1,29 @@
+@import "../../variables";
+
+.lazyblocks-component-block-slug {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    > .lazyblocks-component-block-slug-prefix {
+        padding: 7px 8px;
+        line-height: normal;
+        color: #32373c;
+        background-color: $color_gray;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+    }
+    > .components-base-control {
+        flex: 1;
+
+        input {
+            margin-left: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .components-base-control__field {
+            margin-bottom: 0;
+        }
+    }
+}

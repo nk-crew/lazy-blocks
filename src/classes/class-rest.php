@@ -48,6 +48,33 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
                 'permission_callback' => array( $this, 'get_block_permission' ),
             )
         );
+
+        // Get Lazy Block Data.
+        register_rest_route(
+            $namespace, '/get-block-data/', array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_block_data' ),
+                'permission_callback' => array( $this, 'get_block_data_permission' ),
+            )
+        );
+
+        // Update Lazy Block Data.
+        register_rest_route(
+            $namespace, '/update-block-data/', array(
+                'methods'             => WP_REST_Server::EDITABLE,
+                'callback'            => array( $this, 'update_block_data' ),
+                'permission_callback' => array( $this, 'update_block_data_permission' ),
+            )
+        );
+
+        // Get WP post types.
+        register_rest_route(
+            $namespace, '/get-post-types/', array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_post_types' ),
+                'permission_callback' => array( $this, 'get_post_types_permission' ),
+            )
+        );
     }
 
     /**
@@ -74,6 +101,53 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
             if ( ! current_user_can( 'edit_posts' ) ) {
                 return $this->error( 'lazy_block_cannot_read', esc_html__( 'Sorry, you are not allowed to read Gutenberg blocks as this user.', '@@text_domain' ) );
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get read block data permissions.
+     *
+     * @return bool
+     */
+    public function get_block_data_permission() {
+        global $post;
+
+        $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+
+        if ( 0 < $post_id ) {
+            // phpcs:ignore
+            $post = get_post( $post_id );
+            if ( ! $post || ! current_user_can( 'edit_post', $post->ID ) ) {
+                return $this->error( 'lazy_block_data_cannot_read', esc_html__( 'Sorry, you are not allowed to read Gutenberg blocks data.', '@@text_domain' ) );
+            }
+        } else {
+            if ( ! current_user_can( 'edit_posts' ) ) {
+                return $this->error( 'lazy_block_data_cannot_read', esc_html__( 'Sorry, you are not allowed to read Gutenberg blocks data as this user.', '@@text_domain' ) );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get edit block data permissions.
+     *
+     * @return bool
+     */
+    public function update_block_data_permission() {
+        return $this->get_block_data_permission();
+    }
+
+    /**
+     * Get read wp post types permissions.
+     *
+     * @return bool
+     */
+    public function get_post_types_permission() {
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            return $this->error( 'lazy_block_data_cannot_read', esc_html__( 'Sorry, you are not allowed to read Gutenberg blocks data as this user.', '@@text_domain' ) );
         }
 
         return true;
@@ -116,6 +190,72 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
         } else {
             return $this->error( 'lazy_block_no_render_callback', esc_html__( 'Render callback is not specified.', '@@text_domain' ) );
         }
+    }
+
+    /**
+     * Update block data.
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     */
+    public function update_block_data( $request ) {
+        $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+        $data = isset( $request['data'] ) ? $request['data'] : false;
+        $meta = array();
+
+        if ( 0 < $post_id && $data ) {
+            $meta_prefix = 'lazyblocks_';
+
+            // add 'lazyblocks_' prefix.
+            foreach ( $data as $k => $val ) {
+                $meta[ $meta_prefix . $k ] = $val;
+            }
+
+            lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+        }
+
+        return $this->success( $meta );
+    }
+
+    /**
+     * Get block data.
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     */
+    public function get_block_data( $request ) {
+        $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+        $meta = array();
+
+        if ( 0 < $post_id ) {
+            $post_meta = lazyblocks()->blocks()->get_meta_boxes( $post_id );
+            $meta_prefix = 'lazyblocks_';
+
+            // remove 'lazyblocks_' prefix.
+            foreach ( $post_meta as $k => $val ) {
+                if ( substr( $k, 0, strlen( $meta_prefix ) ) === $meta_prefix ) {
+                    $meta[ substr( $k, strlen( $meta_prefix ) ) ] = $val;
+                }
+            }
+        }
+
+        return $this->success( $meta );
+    }
+
+    /**
+     * Get WP post types.
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     */
+    public function get_post_types( $request ) {
+        $args = isset( $request['args'] ) ? $request['args'] : array();
+        $output = isset( $request['output'] ) ? $request['output'] : 'names';
+        $operator = isset( $request['operator'] ) ? $request['operator'] : 'and';
+
+        $result = get_post_types( $args, $output, $operator );
+
+        return $this->success( $result );
     }
 
     /**

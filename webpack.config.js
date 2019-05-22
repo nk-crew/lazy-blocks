@@ -45,6 +45,7 @@ module.exports = function( isDev = false ) {
             ],
         },
         resolve: {
+            extensions: [ '.js', '.jsx', '.json' ],
             alias: {
                 handlebars: 'handlebars/dist/handlebars.min.js',
             },
