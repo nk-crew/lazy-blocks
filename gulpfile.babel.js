@@ -248,13 +248,15 @@ gulp.task('production-zip', function(cb) {
                     if (Array.isArray(itemData)) {
                         return gulp.src(itemData[0], itemData[1] ? itemData[1] : {} );
                     } else {
-                        return gulp.src(itemData);
+                        return gulp.src(itemData, { nodir: true });
                     }
                 })
-                    .pipe($.vinylZip.dest(item.to + '/' + item.file_name))
+                    .pipe($.zip(item.file_name))
+                    .pipe(gulp.dest(item.to))
             } else {
-                return gulp.src(item.from, { base: item.base })
-                    .pipe($.vinylZip.dest(item.to + '/' + item.file_name))
+                return gulp.src(item.from, { base: item.base, nodir: true })
+                    .pipe($.zip(item.file_name))
+                    .pipe(gulp.dest(item.to))
             }
         });
     });

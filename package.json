@@ -111,7 +111,6 @@
     "gulp-replace-task": "^0.11.0",
     "gulp-sass": "^4.0.1",
     "gulp-sort": "^2.0.0",
-    "gulp-vinyl-zip": "^2.1.0",
     "gulp-wp-pot": "^2.3.2",
     "gulp-zip": "^4.2.0",
     "husky": "^1.0.1",
