@@ -69,6 +69,18 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.5.0 =
+
+* changed Block Constructor page to Gutenberg
+* added option to hide controls if block is not selected
+* added Radio control
+* fixed duplicating of categories selector in blocks constructor
+* fixed block ID duplication
+* fixed block preview loading error
+* fixed block names some characters
+* fixed custom post types publishing
+* fixed error if custom post type removed, but the template for this post is still available
+
 = 1.4.3 =
 
 * fixed controls save when updating Lazy Blocks post in WordPress 5.1
