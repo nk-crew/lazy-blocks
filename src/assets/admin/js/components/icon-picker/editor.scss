@@ -6,8 +6,10 @@
     margin-bottom: 8px;
 
     .lazyblocks-component-icon-picker-btn.button {
+        display: flex;
+        align-items: center;
         height: auto;
-        padding: 5px 8px;
+        padding: 6px 8px;
         margin-bottom: 0;
         line-height: normal;
         border-top-left-radius: 0;
@@ -19,8 +21,15 @@
         }
 
         .lazyblocks-component-icon-picker-preview {
+            display: inline-block;
+            width: auto;
+            height: 1em;
             margin-right: 5px;
-            font-size: 18px;
+            font-size: 1em;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
             line-height: inherit;
         }
     }
