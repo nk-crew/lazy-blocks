@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 import BlockSlugControl from '../../components/block-slug';
 import IconPicker from '../../components/icon-picker';
 import Select from '../../components/select';
@@ -8,6 +10,7 @@ const {
     BaseControl,
     TextControl,
     TextareaControl,
+    Notice,
 } = wp.components;
 
 const { compose } = wp.compose;
@@ -18,6 +21,51 @@ const {
 } = wp.data;
 
 class GeneralSettings extends Component {
+    constructor() {
+        super( ...arguments );
+
+        this.maybeAddSlug = this.maybeAddSlug.bind( this );
+        this.isSlugValid = this.isSlugValid.bind( this );
+    }
+
+    maybeAddSlug() {
+        const {
+            data,
+            updateData,
+            postTitle,
+        } = this.props;
+
+        const {
+            slug,
+        } = data;
+
+        if ( slug || ! postTitle ) {
+            return;
+        }
+
+        const newSlug = slugify( postTitle, {
+            replacement: '-',
+            lower: true,
+            remove: /[^\w\s$0-9-*+~.\$(_)#&\|'"!:;@/\\]/g,
+        } );
+
+        updateData( {
+            slug: newSlug,
+        } );
+    }
+
+    isSlugValid() {
+        const {
+            data,
+        } = this.props;
+
+        const {
+            slug,
+        } = data;
+
+        return /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test( `lazyblock/${ slug }` );
+    }
+
     render() {
         const {
             data,
@@ -58,6 +106,7 @@ class GeneralSettings extends Component {
                     label={ __( 'Title' ) }
                     value={ postTitle }
                     onChange={ ( value ) => updatePostTitle( value ) }
+                    onBlur={ () => this.maybeAddSlug() }
                 />
                 <div className="lzb-constructor-grid">
                     <div>
@@ -66,6 +115,14 @@ class GeneralSettings extends Component {
                             value={ slug }
                             onChange={ ( value ) => updateData( { slug: value } ) }
                         />
+                        { slug && ! this.isSlugValid() ? (
+                            <Notice
+                                status="error"
+                                isDismissible={ false }
+                            >
+                                { __( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block' ) }
+                            </Notice>
+                        ) : '' }
                     </div>
                     <div>
                         <IconPicker
