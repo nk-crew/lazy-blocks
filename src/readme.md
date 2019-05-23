@@ -69,6 +69,13 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.5.1 =
+
+* added block slug validation in constructor
+* added slug creation if don't exist after block title added
+* fixed controls saving in new blocks
+* fixed icon picker button styles in constructor
+
 = 1.5.0 =
 
 * changed Block Constructor page to Gutenberg
