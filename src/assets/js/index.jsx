@@ -6,6 +6,7 @@ import arrayMove from 'array-move';
 import './blocks/free.jsx';
 import './extensions/block-id.jsx';
 
+import ColorControl from './controls/color.jsx';
 import ImageControl from './controls/image.jsx';
 import GalleryControl from './controls/gallery.jsx';
 import RepeaterControl from './controls/repeater.jsx';
@@ -30,7 +31,6 @@ const {
     RadioControl,
     RangeControl,
     SelectControl,
-    ColorIndicator,
     Dashicon,
     IconButton,
     DatePicker,
@@ -39,7 +39,6 @@ const {
 
 const {
     URLInput,
-    ColorPalette,
     InspectorControls,
     RichText,
     InnerBlocks,
@@ -399,24 +398,16 @@ options.blocks.forEach( ( item ) => {
                         break;
                     case 'color':
                         result.push( (
-                            <BaseControl
+                            <ColorControl
                                 key={ control.name }
-                                label={ (
-                                    <Fragment>
-                                        { control.label }
-                                        <ColorIndicator colorValue={ this.getControlValue( control, childIndex ) } />
-                                    </Fragment>
-                                ) }
+                                label={ control.label }
+                                value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
-                                className="lzb-gutenberg-color"
-                            >
-                                <ColorPalette
-                                    value={ this.getControlValue( control, childIndex ) }
-                                    onChange={ ( val ) => {
-                                        this.onControlChange( val, control, childIndex );
-                                    } }
-                                />
-                            </BaseControl>
+                                alpha={ control.alpha === 'true' }
+                                onChange={ ( val ) => {
+                                    this.onControlChange( val, control, childIndex );
+                                } }
+                            />
                         ) );
                         break;
                     case 'date_time':

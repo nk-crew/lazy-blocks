@@ -5,6 +5,7 @@ export default {
     choices: [],
     child_of: '',
     allow_null: 'false',
+    alpha: 'false',
     min: '',
     max: '',
     step: '',
