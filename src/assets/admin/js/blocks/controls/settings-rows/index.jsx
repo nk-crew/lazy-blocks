@@ -99,7 +99,6 @@ export default class settingsRows extends Component {
                 break;
             case 'save_in_meta':
                 allow = data.type !== 'inner_blocks' &&
-                        data.type !== 'repeater' &&
                         ! data.child_of;
                 break;
             }

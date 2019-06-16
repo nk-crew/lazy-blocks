@@ -295,7 +295,7 @@ function get_lzb_meta( $name, $id = null ) {
                     if (
                         'true' === $control['save_in_meta'] &&
                         $control['save_in_meta_name'] &&
-                        ( 'image' === $control['type'] || 'gallery' === $control['type'] )
+                        ( 'image' === $control['type'] || 'gallery' === $control['type'] || 'repeater' === $control['type'] )
                     ) {
                         $fix_meta_value = true;
                     }
