@@ -118,7 +118,7 @@ export class PreviewServerCallback extends Component {
 
         if ( ! this.state.allowRender ) {
             result = '';
-        } else if ( ! response ) {
+        } else if ( null === response ) {
             result = (
                 <Fragment>
                     { previousResponse ? (
@@ -131,8 +131,6 @@ export class PreviewServerCallback extends Component {
             // translators: %s: error message describing the problem
             const errorMessage = sprintf( __( 'Error loading block preview: %s' ), response.response );
             result = errorMessage;
-        } else if ( ! response.length ) {
-            result = __( 'No results found.' );
         } else {
             result = <RawHTML key="html">{ response }</RawHTML>;
         }

@@ -185,7 +185,7 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
 
         $block_result = lazyblocks()->blocks()->render_callback( $block_attributes, null, $block_context );
 
-        if ( isset( $block_result ) && $block_result ) {
+        if ( isset( $block_result ) && null !== $block_result ) {
             return $this->success( $block_result );
         } else {
             return $this->error( 'lazy_block_no_render_callback', esc_html__( 'Render callback is not specified.', '@@text_domain' ) );

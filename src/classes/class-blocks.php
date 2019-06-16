@@ -985,14 +985,14 @@ class LazyBlocks_Blocks {
      */
     public function render_callback( $attributes, $content = null, $context = 'frontend' ) {
         if ( ! isset( $attributes['lazyblock'] ) || ! isset( $attributes['lazyblock']['slug'] ) ) {
-            return '';
+            return null;
         }
 
         $check_array = '%5B%7B%22';
         $check_array_alt = '%7B%22';
         $block = $this->get_block( $attributes['lazyblock']['slug'] );
         $context = 'editor' === $context ? 'editor' : 'frontend';
-        $result = '';
+        $result = null;
 
         foreach ( $attributes as $k => $attr ) {
             // prepare decoded arrays to actual arrays.
@@ -1009,7 +1009,7 @@ class LazyBlocks_Blocks {
         }
 
         // apply filter for custom output callback.
-        $result = apply_filters( $block['slug'] . '/' . $context . '_callback', '', $attributes );
+        $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
 
         // custom callback and handlebars html.
         if ( ! $result && isset( $block['code'] ) ) {
