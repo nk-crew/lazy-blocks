@@ -1,4 +1,4 @@
-import CreatableSelect from 'react-select/lib/Creatable';
+import CreatableSelect from 'react-select/Creatable';
 import ReactSelect from 'react-select';
 
 // Import CSS
