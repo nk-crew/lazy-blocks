@@ -55,7 +55,7 @@ cfg.watch_files = [ '{src}/**/*', '!{src}/**/*.{jsx,js,scss}' ];
 
 cfg.watch_js_files = [ '{src}/**/*.js', '!{src}/*vendor/**/*' ];
 
-cfg.watch_jsx_files = [ '{src}/**/*.jsx', '!{src}/*vendor/**/*' ];
+cfg.watch_jsx_files = [ '{src}/**/*.jsx', '{src}/**/*.scss', '!{src}/*vendor/**/*' ];
 
 cfg.watch_scss_files = '{src}/**/*.scss';
 

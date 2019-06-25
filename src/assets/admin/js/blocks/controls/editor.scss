@@ -16,9 +16,8 @@
     .lzb-constructor-controls-item-appender {
         padding: 15px 20px;
         background-color: #fff;
-        border: 1px solid $color_gray_lighten;
+        border: 1px solid rgba(0, 0, 0, .07);
         border-radius: $radius_large;
-        box-shadow: $shadow;
         z-index: 1;
     }
 
@@ -68,7 +67,7 @@
         cursor: pointer;
         background: none;
         border: none;
-        border-top: 1px solid $color_gray_lighten;
+        border-top: 1px solid rgba(0, 0, 0, .07);
         border-bottom-right-radius: $radius_large;
         border-bottom-left-radius: $radius_large;
         outline: none;
@@ -100,7 +99,7 @@
             left: 10px;
             height: 25px;
             background-color: #fff;
-            border: 1px solid $color_gray_lighten;
+            border: 1px solid rgba(0, 0, 0, .07);
             border-radius: $radius_large;
             box-shadow: $shadow;
             transition: .2s transform ease-in-out;
@@ -211,7 +210,7 @@
             top: 0;
             right: -20px;
             left: -20px;
-            border-bottom: 1px solid $color_gray_lighten;
+            border-bottom: 1px solid rgba(0, 0, 0, .07);
         }
 
         .lzb-constructor-controls-item-settings-row {
