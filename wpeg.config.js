@@ -51,7 +51,7 @@ cfg.zip_files = [
 ];
 
 // Watch files.
-cfg.watch_files = [ '{src}/**/*', '!{src}/**/*.{php,jsx,js,scss}' ];
+cfg.watch_files = [ '{src}/**/*', '!{src}/**/*.{jsx,js,scss}' ];
 
 cfg.watch_js_files = [ '{src}/**/*.js', '!{src}/*vendor/**/*' ];
 
