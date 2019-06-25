@@ -14,13 +14,13 @@
         padding-top: 0;
     }
 
-    // change content width.
-    .wp-block {
-        max-width: 800px;
-    }
-
-    // fix for default themes.
     .editor-styles-wrapper {
+        // change content width.
+        .wp-block {
+            max-width: 800px;
+        }
+
+        // fix for default themes.
         margin-right: 0;
         margin-left: 0;
 
@@ -47,6 +47,10 @@
     display: block;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 13px;
+
+    .description {
+        font-size: 1em;
+    }
 
     // panels.
     > .components-panel__body {
@@ -90,6 +94,7 @@
 
 // remove outline from block.
 [data-type="lzb-constructor/main"] .editor-block-list__block-edit::before,
+[data-type="lzb-constructor/main"] .editor-block-contextual-toolbar,
 [data-type="lzb-constructor/main"] .editor-block-list__insertion-point {
     display: none;
 }

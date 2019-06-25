@@ -524,6 +524,21 @@ options.blocks.forEach( ( item ) => {
                 attsForRender[ attr ] = this.props.attributes[ attr ];
             } );
 
+            // show code preview
+            let showPreview = true;
+
+            switch ( item.code.show_preview ) {
+            case 'selected':
+                showPreview = this.props.isSelected;
+                break;
+            case 'unselected':
+                showPreview = ! this.props.isSelected;
+                break;
+            case 'never':
+                showPreview = false;
+                break;
+            }
+
             return (
                 <Fragment>
                     <InspectorControls>
@@ -541,10 +556,12 @@ options.blocks.forEach( ( item ) => {
                         <div className="lzb-content-controls">
                             { this.renderControls( 'content' ) }
                         </div>
-                        <PreviewServerCallback
-                            block={ item.slug }
-                            attributes={ attsForRender }
-                        />
+                        { showPreview ? (
+                            <PreviewServerCallback
+                                block={ item.slug }
+                                attributes={ attsForRender }
+                            />
+                        ) : '' }
                     </div>
                 </Fragment>
             );

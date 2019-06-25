@@ -3,6 +3,10 @@
 .lzb-constructor .lzb-constructor-custom-code-settings {
     .components-tab-panel__tab-content {
         padding: 0;
+
+        .lazyblocks-component-code-editor {
+            border: none;
+        }
     }
 
     p.description {

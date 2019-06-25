@@ -4,9 +4,42 @@ import Tabs from '../../components/tabs';
 import './editor.scss';
 
 const { __ } = wp.i18n;
+
 const { Component } = wp.element;
 
+const {
+    BaseControl,
+    SelectControl,
+    CheckboxControl,
+} = wp.components;
+
 export default class CustomCodeSettings extends Component {
+    constructor() {
+        super( ...arguments );
+
+        this.getEditor = this.getEditor.bind( this );
+    }
+
+    getEditor( name = 'frontend' ) {
+        const {
+            data,
+            updateData,
+        } = this.props;
+
+        const metaName = `code_${ name }_html`;
+
+        return (
+            <CodeEditor
+                mode="html"
+                onChange={ value => updateData( { [ metaName ]: value } ) }
+                value={ data[ metaName ] }
+                maxLines={ 20 }
+                minLines={ 5 }
+                height="300px"
+            />
+        );
+    }
+
     render() {
         const {
             data,
@@ -26,35 +59,70 @@ export default class CustomCodeSettings extends Component {
         // and print
         // sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/editor_callback</code>' )
 
+        const tabs = [ {
+            name: 'frontend',
+            title: __( 'HTML' ),
+        } ];
+
+        if ( 'never' !== data.code_show_preview && ! data.code_single_output ) {
+            tabs[ 0 ].title = __( 'Frontend HTML' );
+
+            tabs.push( {
+                name: 'editor',
+                title: __( 'Editor HTML' ),
+            } );
+        }
+
         return (
             <div className="lzb-constructor-custom-code-settings">
-                <Tabs
-                    tabs={ [
-                        {
-                            name: 'frontend',
-                            title: __( 'Frontend HTML' ),
-                        },
-                        {
-                            name: 'editor',
-                            title: __( 'Editor HTML' ),
-                        },
-                    ] }
-                >
-                    { ( tabData ) => {
-                        const metaName = `code_${ tabData.name }_html`;
-
-                        return (
-                            <CodeEditor
-                                mode="html"
-                                onChange={ value => updateData( { [ metaName ]: value } ) }
-                                value={ data[ metaName ] }
-                                maxLines={ 20 }
-                                minLines={ 5 }
-                                height="300px"
+                <div className="lzb-constructor-grid">
+                    <div>
+                        <BaseControl
+                            label={ __( 'Single output code for Editor and Frontend' ) }
+                        >
+                            <CheckboxControl
+                                label={ __( 'Yes' ) }
+                                checked={ data.code_single_output }
+                                onChange={ value => updateData( { code_single_output: value } ) }
                             />
-                        );
-                    } }
-                </Tabs>
+                        </BaseControl>
+                    </div>
+                    <div>
+                        <SelectControl
+                            label={ __( 'Show block preview in editor' ) }
+                            options={ [
+                                {
+                                    label: __( 'Always' ),
+                                    value: 'always',
+                                }, {
+                                    label: __( 'Within `selected` block only' ),
+                                    value: 'selected',
+                                }, {
+                                    label: __( 'Within `unselected` block only' ),
+                                    value: 'unselected',
+                                }, {
+                                    label: __( 'Never' ),
+                                    value: 'never',
+                                },
+                            ] }
+                            value={ data.code_show_preview }
+                            onChange={ value => updateData( { code_show_preview: value } ) }
+                        />
+                    </div>
+                </div>
+                { tabs.length > 1 ? (
+                    <Tabs tabs={ tabs }>
+                        { ( tabData ) => {
+                            return this.getEditor( tabData.name );
+                        } }
+                    </Tabs>
+                ) : (
+                    <BaseControl
+                        label={ __( 'HTML' ) }
+                    >
+                        { this.getEditor( 'frontend' ) }
+                    </BaseControl>
+                ) }
                 <p className="description">
                     { __( 'You can use PHP to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php/</a>
                 </p>

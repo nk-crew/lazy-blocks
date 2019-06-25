@@ -26,38 +26,50 @@ export default class SupportsSettings extends Component {
             <Fragment>
                 <div className="lzb-constructor-grid">
                     <div>
-                        <CheckboxControl
+                        <BaseControl
                             label={ __( 'Multiple' ) }
-                            help={ __( 'Allow use block multiple times on the page.' ) }
-                            checked={ supportsMultiple }
-                            onChange={ ( value ) => updateData( { supports_multiple: value } ) }
-                        />
+                        >
+                            <CheckboxControl
+                                label={ __( 'Yes' ) }
+                                checked={ supportsMultiple }
+                                onChange={ ( value ) => updateData( { supports_multiple: value } ) }
+                            />
+                        </BaseControl>
                     </div>
                     <div>
-                        <CheckboxControl
-                            label={ __( 'Class Name' ) }
-                            help={ __( 'Additional field to add custom class name.' ) }
-                            checked={ supportsClassname }
-                            onChange={ ( value ) => updateData( { supports_classname: value } ) }
-                        />
+                        <BaseControl
+                            label={ __( 'ClassName' ) }
+                        >
+                            <CheckboxControl
+                                label={ __( 'Yes' ) }
+                                checked={ supportsClassname }
+                                onChange={ ( value ) => updateData( { supports_classname: value } ) }
+                            />
+                        </BaseControl>
                     </div>
                 </div>
                 <div className="lzb-constructor-grid">
                     <div>
-                        <CheckboxControl
+                        <BaseControl
                             label={ __( 'Anchor' ) }
-                            help={ __( 'Additional field to add block ID attribute.' ) }
-                            checked={ supportsAnchor }
-                            onChange={ ( value ) => updateData( { supports_anchor: value } ) }
-                        />
+                        >
+                            <CheckboxControl
+                                label={ __( 'Yes' ) }
+                                checked={ supportsAnchor }
+                                onChange={ ( value ) => updateData( { supports_anchor: value } ) }
+                            />
+                        </BaseControl>
                     </div>
                     <div>
-                        <CheckboxControl
+                        <BaseControl
                             label={ __( 'Inserter' ) }
-                            help={ __( 'Show block in blocks inserter.' ) }
-                            checked={ supportsInserter }
-                            onChange={ ( value ) => updateData( { supports_inserter: value } ) }
-                        />
+                        >
+                            <CheckboxControl
+                                label={ __( 'Yes' ) }
+                                checked={ supportsInserter }
+                                onChange={ ( value ) => updateData( { supports_inserter: value } ) }
+                            />
+                        </BaseControl>
                     </div>
                 </div>
                 <div className="lzb-constructor-grid">

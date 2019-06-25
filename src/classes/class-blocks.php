@@ -397,6 +397,9 @@ class LazyBlocks_Blocks {
         'lazyblocks_keywords'               => '',
         'lazyblocks_category'               => 'common',
 
+        'lazyblocks_code_show_preview'      => 'always',
+        'lazyblocks_code_single_output'     => 'false',
+
         'lazyblocks_code_editor_html'       => '',
         'lazyblocks_code_editor_callback'   => '',
         'lazyblocks_code_editor_css'        => '',
@@ -681,6 +684,8 @@ class LazyBlocks_Blocks {
                         'frontend_html'     => $this->get_meta_value( 'lazyblocks_code_frontend_html', $block->ID ),
                         'frontend_callback' => '',
                         'frontend_css'      => $this->get_meta_value( 'lazyblocks_code_frontend_css', $block->ID ),
+                        'show_preview'      => $this->get_meta_value( 'lazyblocks_code_show_preview', $block->ID ),
+                        'single_output'     => $this->get_meta_value( 'lazyblocks_code_single_output', $block->ID ),
                     ),
                     'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );
