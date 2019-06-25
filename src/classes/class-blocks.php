@@ -228,6 +228,14 @@ class LazyBlocks_Blocks {
             return date_i18n( $format, strtotime( $time ) );
         } );
 
+        // var_dump.
+        // {{var_dump 'test'}}.
+        $this->handlebars->registerHelper( 'var_dump', function( $val ) {
+            ob_start();
+            var_dump( $val );
+            return ob_get_clean();
+        } );
+
         // custom action for extending default helpers by 3rd-party.
         do_action( 'lzb_handlebars_object', $this->handlebars );
     }
