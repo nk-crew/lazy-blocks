@@ -14,6 +14,14 @@
         padding-top: 0;
     }
 
+    // hide right sidebar tabs, as we select constructor block by default.
+    .components-panel__header.edit-post-sidebar-header {
+        display: none;
+    }
+    .edit-post-settings-sidebar__panel-block .editor-block-inspector__card {
+        display: none;
+    }
+
     .editor-styles-wrapper {
         // change content width.
         .wp-block {

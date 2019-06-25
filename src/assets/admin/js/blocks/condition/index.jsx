@@ -49,53 +49,47 @@ export default class ConditionSettings extends Component {
 
         return (
             this.state.postTypes ? (
-                <div className="lzb-constructor-grid">
-                    <div>
-                        <BaseControl
-                            label={ __( 'Show in posts' ) }
-                        >
-                            <Select
-                                isMulti
-                                placeholder={ __( 'In all posts by default' ) }
-                                options={
-                                    Object.keys( this.state.postTypes ).map( ( type ) => {
-                                        return {
-                                            value: type,
-                                            label: this.state.postTypes[ type ],
-                                        };
-                                    } )
-                                }
-                                value={ ( () => {
-                                    if ( conditionPostTypes && conditionPostTypes.length ) {
-                                        const result = conditionPostTypes.map( ( val ) => {
-                                            return {
-                                                value: val,
-                                                label: this.state.postTypes[ val ] || val,
-                                            };
-                                        } );
-                                        return result;
-                                    }
-                                    return [];
-                                } )() }
-                                onChange={ ( value ) => {
-                                    if ( value ) {
-                                        const result = [];
+                <BaseControl
+                    label={ __( 'Show in posts' ) }
+                >
+                    <Select
+                        isMulti
+                        placeholder={ __( 'In all posts by default' ) }
+                        options={
+                            Object.keys( this.state.postTypes ).map( ( type ) => {
+                                return {
+                                    value: type,
+                                    label: this.state.postTypes[ type ],
+                                };
+                            } )
+                        }
+                        value={ ( () => {
+                            if ( conditionPostTypes && conditionPostTypes.length ) {
+                                const result = conditionPostTypes.map( ( val ) => {
+                                    return {
+                                        value: val,
+                                        label: this.state.postTypes[ val ] || val,
+                                    };
+                                } );
+                                return result;
+                            }
+                            return [];
+                        } )() }
+                        onChange={ ( value ) => {
+                            if ( value ) {
+                                const result = [];
 
-                                        value.forEach( ( optionData ) => {
-                                            result.push( optionData.value );
-                                        } );
+                                value.forEach( ( optionData ) => {
+                                    result.push( optionData.value );
+                                } );
 
-                                        updateData( { condition_post_types: result } );
-                                    } else {
-                                        updateData( { condition_post_types: '' } );
-                                    }
-                                } }
-                            />
-                        </BaseControl>
-                    </div>
-                    <div>
-                    </div>
-                </div>
+                                updateData( { condition_post_types: result } );
+                            } else {
+                                updateData( { condition_post_types: '' } );
+                            }
+                        } }
+                    />
+                </BaseControl>
             ) : __( 'Loading...' )
         );
     }

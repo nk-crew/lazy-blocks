@@ -10,6 +10,7 @@ import ControlsSettings from './blocks/controls';
 import CustomCodeSettings from './blocks/code';
 
 import Tabs from './components/tabs';
+import Box from './components/box';
 
 /**
  * Internal dependencies
@@ -17,8 +18,13 @@ import Tabs from './components/tabs';
 const {
     registerBlockType,
 } = wp.blocks;
+
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+
+const {
+    Component,
+    Fragment,
+} = wp.element;
 
 const { compose } = wp.compose;
 
@@ -36,7 +42,12 @@ const {
 
 const {
     Spinner,
+    PanelBody,
 } = wp.components;
+
+const {
+    InspectorControls,
+} = wp.editor;
 
 /**
  * Container block
@@ -57,71 +68,42 @@ class ConstructorBlock extends Component {
         }
 
         return (
-            <div className="lzb-constructor">
-                <Tabs
-                    tabs={ [
-                        {
-                            name: 'general',
-                            title: __( 'General' ),
-                        }, {
-                            name: 'supports',
-                            title: __( 'Supports' ),
-                        }, {
-                            name: 'condition',
-                            title: __( 'Condition' ),
-                        }, {
-                            name: 'code',
-                            title: __( 'Code' ),
-                        },
-                    ] }
-                >
-                    { ( tabData ) => {
-                        // Supports.
-                        if ( 'supports' === tabData.name ) {
-                            return (
-                                <SupportsSettings
-                                    data={ blockData }
-                                    updateData={ updateBlockData }
-                                />
-                            );
-                        }
-
-                        // Condition.
-                        if ( 'condition' === tabData.name ) {
-                            return (
-                                <ConditionSettings
-                                    data={ blockData }
-                                    updateData={ updateBlockData }
-                                />
-                            );
-                        }
-
-                        // Code.
-                        if ( 'code' === tabData.name ) {
-                            return (
-                                <CustomCodeSettings
-                                    data={ blockData }
-                                    updateData={ updateBlockData }
-                                />
-                            );
-                        }
-
-                        // General.
-                        return (
-                            <GeneralSettings
-                                data={ blockData }
-                                updateData={ updateBlockData }
-                            />
-                        );
-                    } }
-                </Tabs>
-
-                <h2>{ __( 'Controls' ) }</h2>
-                <ControlsSettings
-                    data={ blockData }
-                    updateData={ updateBlockData }
-                />
-            </div>
+            <Fragment>
+                <InspectorControls>
+                    <PanelBody>
+                        <GeneralSettings
+                            data={ blockData }
+                            updateData={ updateBlockData }
+                        />
+                    </PanelBody>
+                    <PanelBody title={ __( 'Supports' ) } initialOpen={ false }>
+                        <SupportsSettings
+                            data={ blockData }
+                            updateData={ updateBlockData }
+                        />
+                    </PanelBody>
+                    <PanelBody title={ __( 'Condition' ) } initialOpen={ false }>
+                        <ConditionSettings
+                            data={ blockData }
+                            updateData={ updateBlockData }
+                        />
+                    </PanelBody>
+                </InspectorControls>
+                <div className="lzb-constructor">
+                    <h2>{ __( 'Controls' ) }</h2>
+                    <ControlsSettings
+                        data={ blockData }
+                        updateData={ updateBlockData }
+                    />
+                    <h2>{ __( 'Code' ) }</h2>
+                    <Box>
+                        <CustomCodeSettings
+                            data={ blockData }
+                            updateData={ updateBlockData }
+                        />
+                    </Box>
+                </div>
+            </Fragment>
         );
     }
 }
@@ -166,7 +148,7 @@ registerBlockType( 'lzb-constructor/main', {
 const getBlockList = () => wp.data.select( 'core/editor' ).getBlocks();
 let blockList = getBlockList();
 let blocksRestoreBusy = false;
-wp.data.subscribe( () => {
+subscribe( () => {
     if ( blocksRestoreBusy ) {
         return;
     }
@@ -183,6 +165,27 @@ wp.data.subscribe( () => {
             wp.blocks.createBlock( 'lzb-constructor/main' )
         );
         blocksRestoreBusy = false;
+    }
+} );
+
+// always select main block.
+subscribe( () => {
+    const selectedBlock = wp.data.select( 'core/editor' ).getSelectedBlock();
+    const blocks = wp.data.select( 'core/editor' ).getBlocks();
+
+    if ( selectedBlock && 'lzb-constructor/main' === selectedBlock.name ) {
+        return;
+    }
+
+    let selectBlockId = '';
+    blocks.forEach( ( blockData ) => {
+        if ( 'lzb-constructor/main' === blockData.name ) {
+            selectBlockId = blockData.clientId;
+        }
+    } );
+
+    if ( selectBlockId ) {
+        wp.data.dispatch( 'core/editor' ).selectBlock( selectBlockId );
     }
 } );
 

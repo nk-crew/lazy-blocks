@@ -108,87 +108,75 @@ class GeneralSettings extends Component {
                     onChange={ ( value ) => updatePostTitle( value ) }
                     onBlur={ () => this.maybeAddSlug() }
                 />
-                <div className="lzb-constructor-grid">
-                    <div>
-                        <BlockSlugControl
-                            label={ __( 'Slug' ) }
-                            value={ slug }
-                            onChange={ ( value ) => updateData( { slug: value } ) }
-                        />
-                        { slug && ! this.isSlugValid() ? (
-                            <Notice
-                                status="error"
-                                isDismissible={ false }
-                            >
-                                { __( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block' ) }
-                            </Notice>
-                        ) : '' }
-                    </div>
-                    <div>
-                        <IconPicker
-                            label={ __( 'Icon' ) }
-                            value={ icon }
-                            onChange={ ( value ) => updateData( { icon: value } ) }
-                        />
-                    </div>
-                </div>
-                <div className="lzb-constructor-grid">
-                    <div>
-                        <BaseControl
-                            label={ __( 'Category' ) }
-                        >
-                            <Select
-                                isCreatable
-                                placeholder={ __( 'Select category' ) }
-                                value={ categoriesOpts.filter( option => option.value === category ) }
-                                options={ categoriesOpts }
-                                onChange={ ( { value } ) => updateData( { category: value } ) }
-                            />
-                        </BaseControl>
-                    </div>
-                    <div>
-                        <BaseControl
-                            label={ __( 'Keywords' ) }
-                        >
-                            <Select
-                                isCreatable
-                                isTags
-                                placeholder={ __( 'Enter up to 3 keywords' ) }
-                                value={ ( () => {
-                                    if ( keywords ) {
-                                        const result = keywords.split( ',' ).map( ( val ) => {
-                                            return {
-                                                value: val,
-                                                label: val,
-                                            };
-                                        } );
-                                        return result;
-                                    }
-                                    return [];
-                                } )() }
-                                onChange={ ( value ) => {
-                                    let result = '';
+                <BlockSlugControl
+                    label={ __( 'Slug' ) }
+                    value={ slug }
+                    onChange={ ( value ) => updateData( { slug: value } ) }
+                />
+                { slug && ! this.isSlugValid() ? (
+                    <Notice
+                        status="error"
+                        isDismissible={ false }
+                    >
+                        { __( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block' ) }
+                    </Notice>
+                ) : '' }
+                <IconPicker
+                    label={ __( 'Icon' ) }
+                    value={ icon }
+                    onChange={ ( value ) => updateData( { icon: value } ) }
+                />
+                <BaseControl
+                    label={ __( 'Category' ) }
+                >
+                    <Select
+                        isCreatable
+                        placeholder={ __( 'Select category' ) }
+                        value={ categoriesOpts.filter( option => option.value === category ) }
+                        options={ categoriesOpts }
+                        onChange={ ( { value } ) => updateData( { category: value } ) }
+                    />
+                </BaseControl>
+                <BaseControl
+                    label={ __( 'Keywords' ) }
+                >
+                    <Select
+                        isCreatable
+                        isTags
+                        placeholder={ __( 'Enter up to 3 keywords' ) }
+                        value={ ( () => {
+                            if ( keywords ) {
+                                const result = keywords.split( ',' ).map( ( val ) => {
+                                    return {
+                                        value: val,
+                                        label: val,
+                                    };
+                                } );
+                                return result;
+                            }
+                            return [];
+                        } )() }
+                        onChange={ ( value ) => {
+                            let result = '';
 
-                                    if ( value ) {
-                                        const limitNum = 3;
-                                        let i = 0;
-                                        value.forEach( ( optionData ) => {
-                                            if ( optionData && i < limitNum ) {
-                                                i++;
-                                                if ( result ) {
-                                                    result += ',';
-                                                }
-                                                result += optionData.value;
-                                            }
-                                        } );
+                            if ( value ) {
+                                const limitNum = 3;
+                                let i = 0;
+                                value.forEach( ( optionData ) => {
+                                    if ( optionData && i < limitNum ) {
+                                        i++;
+                                        if ( result ) {
+                                            result += ',';
+                                        }
+                                        result += optionData.value;
                                     }
+                                } );
+                            }
 
-                                    updateData( { keywords: result } );
-                                } }
-                            />
-                        </BaseControl>
-                    </div>
-                </div>
+                            updateData( { keywords: result } );
+                        } }
+                    />
+                </BaseControl>
                 <TextareaControl
                     label={ __( 'Description' ) }
                     value={ description }

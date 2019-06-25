@@ -2,14 +2,14 @@
 
 .lazyblocks-component-icon-picker {
     display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+    align-items: flex-start;
 
     .lazyblocks-component-icon-picker-btn.button {
         display: flex;
         align-items: center;
         height: auto;
         padding: 6px 8px;
+        margin-top: 1px;
         margin-bottom: 0;
         line-height: normal;
         border-top-left-radius: 0;
@@ -35,6 +35,7 @@
     }
     > .components-base-control {
         flex: 1;
+        margin-bottom: 0 !important; // stylelint-disable-line
 
         input {
             margin-right: 0;
