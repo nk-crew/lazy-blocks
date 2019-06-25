@@ -319,6 +319,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ control.label }
                                 options={ control.choices }
+                                multiple={ 'true' === control.multiple }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 onChange={ ( val ) => {

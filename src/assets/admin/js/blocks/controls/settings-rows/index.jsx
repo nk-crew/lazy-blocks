@@ -4,6 +4,7 @@ import NameRow from './name';
 import TypeRow from './type';
 import ChoicesRow from './choices';
 import AllowNullRow from './allow-null';
+import Multiple from './multiple';
 import AlphaRow from './alpha';
 import MinMaxStepRow from './min-max-step';
 import DateTimePickerRow from './date-time-picker';
@@ -30,6 +31,7 @@ export default class settingsRows extends Component {
             type: TypeRow,
             choices: ChoicesRow,
             allow_null: AllowNullRow,
+            multiple: Multiple,
             alpha: AlphaRow,
             min_max_step: MinMaxStepRow,
             date_time_picker: DateTimePickerRow,
@@ -53,6 +55,9 @@ export default class settingsRows extends Component {
             case 'allow_null':
                 allow = data.type === 'select' ||
                         data.type === 'radio';
+                break;
+            case 'multiple':
+                allow = data.type === 'select';
                 break;
             case 'alpha':
                 allow = data.type === 'color';

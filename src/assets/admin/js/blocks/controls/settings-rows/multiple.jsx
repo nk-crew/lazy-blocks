@@ -4,7 +4,7 @@ const {
     CheckboxControl,
 } = wp.components;
 
-export default class AllowNullRow extends Component {
+export default class MultipleRow extends Component {
     render() {
         const {
             updateData,
@@ -14,14 +14,14 @@ export default class AllowNullRow extends Component {
         return (
             <div className="lzb-constructor-controls-item-settings-row">
                 <div className="lzb-constructor-controls-item-settings-row-label">
-                    <span>{ __( 'Allow Null' ) }</span>
-                    <small>{ __( 'Allows you to reset selected option value to null' ) }</small>
+                    <span>{ __( 'Multiple' ) }</span>
+                    <small>{ __( 'Allows you to select multiple values' ) }</small>
                 </div>
                 <div className="lzb-constructor-controls-item-settings-row-control">
                     <CheckboxControl
                         label={ __( 'Yes' ) }
-                        checked={ 'true' === data.allow_null }
-                        onChange={ ( value ) => updateData( { allow_null: value ? 'true' : 'false' } ) }
+                        checked={ 'true' === data.multiple }
+                        onChange={ ( value ) => updateData( { multiple: value ? 'true' : 'false' } ) }
                     />
                 </div>
             </div>
