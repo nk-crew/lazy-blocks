@@ -78,13 +78,17 @@ export default class ConditionSettings extends Component {
                                     return [];
                                 } )() }
                                 onChange={ ( value ) => {
-                                    const result = [];
+                                    if ( value ) {
+                                        const result = [];
 
-                                    value.forEach( ( optionData ) => {
-                                        result.push( optionData.value );
-                                    } );
+                                        value.forEach( ( optionData ) => {
+                                            result.push( optionData.value );
+                                        } );
 
-                                    updateData( { condition_post_types: result } );
+                                        updateData( { condition_post_types: result } );
+                                    } else {
+                                        updateData( { condition_post_types: '' } );
+                                    }
                                 } }
                             />
                         </BaseControl>

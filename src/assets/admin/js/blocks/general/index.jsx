@@ -169,17 +169,19 @@ class GeneralSettings extends Component {
                                 onChange={ ( value ) => {
                                     let result = '';
 
-                                    const limitNum = 3;
-                                    let i = 0;
-                                    value.forEach( ( optionData ) => {
-                                        if ( optionData && i < limitNum ) {
-                                            i++;
-                                            if ( result ) {
-                                                result += ',';
+                                    if ( value ) {
+                                        const limitNum = 3;
+                                        let i = 0;
+                                        value.forEach( ( optionData ) => {
+                                            if ( optionData && i < limitNum ) {
+                                                i++;
+                                                if ( result ) {
+                                                    result += ',';
+                                                }
+                                                result += optionData.value;
                                             }
-                                            result += optionData.value;
-                                        }
-                                    } );
+                                        } );
+                                    }
 
                                     updateData( { keywords: result } );
                                 } }

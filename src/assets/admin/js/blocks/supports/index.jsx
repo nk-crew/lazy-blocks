@@ -78,24 +78,32 @@ export default class SupportsSettings extends Component {
                                 }
                                 value={ ( () => {
                                     if ( supportsAlign && supportsAlign.length ) {
-                                        const result = supportsAlign.map( ( val ) => {
-                                            return {
-                                                value: val,
-                                                label: val,
-                                            };
-                                        } );
+                                        const result = supportsAlign
+                                            .filter( ( val ) => {
+                                                return val !== 'none';
+                                            } )
+                                            .map( ( val ) => {
+                                                return {
+                                                    value: val,
+                                                    label: val,
+                                                };
+                                            } );
                                         return result;
                                     }
                                     return [];
                                 } )() }
                                 onChange={ ( value ) => {
-                                    const result = [];
+                                    if ( value ) {
+                                        const result = [];
 
-                                    value.forEach( ( optionData ) => {
-                                        result.push( optionData.value );
-                                    } );
+                                        value.forEach( ( optionData ) => {
+                                            result.push( optionData.value );
+                                        } );
 
-                                    updateData( { supports_align: result } );
+                                        updateData( { supports_align: result } );
+                                    } else {
+                                        updateData( { supports_align: [ 'none' ] } );
+                                    }
                                 } }
                             />
                         </BaseControl>

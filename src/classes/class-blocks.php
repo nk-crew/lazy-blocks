@@ -644,6 +644,12 @@ class LazyBlocks_Blocks {
                     }
                 }
 
+                $align = (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID );
+                $align_none_key = array_search( 'none', $align );
+                if ( false !== $align_none_key ) {
+                    unset( $align[ $align_none_key ] );
+                }
+
                 $this->blocks[] = array(
                     'id'             => $block->ID,
                     'title'          => $block->post_title,
@@ -656,7 +662,7 @@ class LazyBlocks_Blocks {
                     'supports'       => array(
                         'customClassName' => $this->get_meta_value( 'lazyblocks_supports_classname', $block->ID ),
                         'anchor'          => $this->get_meta_value( 'lazyblocks_supports_anchor', $block->ID ),
-                        'align'           => (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID ),
+                        'align'           => $align,
                         'html'            => $this->get_meta_value( 'lazyblocks_supports_html', $block->ID ),
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
