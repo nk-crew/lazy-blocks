@@ -2,6 +2,7 @@ import Select from '../../../components/select';
 
 const { __ } = wp.i18n;
 const { Component } = wp.element;
+const { BaseControl } = wp.components;
 
 export default class TypeRow extends Component {
     render() {
@@ -132,18 +133,15 @@ export default class TypeRow extends Component {
         } );
 
         return (
-            <div className="lzb-constructor-controls-item-settings-row">
-                <div className="lzb-constructor-controls-item-settings-row-label">
-                    <span>{ __( 'Type' ) }</span>
-                </div>
-                <div className="lzb-constructor-controls-item-settings-row-control">
-                    <Select
-                        value={ types.filter( option => option.value === type ) }
-                        options={ reactSelectTypes }
-                        onChange={ ( { value } ) => updateData( { type: value } ) }
-                    />
-                </div>
-            </div>
+            <BaseControl
+                label={ __( 'Type' ) }
+            >
+                <Select
+                    value={ types.filter( option => option.value === type ) }
+                    options={ reactSelectTypes }
+                    onChange={ ( { value } ) => updateData( { type: value } ) }
+                />
+            </BaseControl>
         );
     }
 }

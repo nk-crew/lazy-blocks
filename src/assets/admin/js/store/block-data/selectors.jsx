@@ -1,13 +1,18 @@
-
-export function getBlockData( state, id ) {
-    return state[ id ] || {};
+export function getBlockData( state ) {
+    return state.data || {};
 }
 
-export function updateBlockData( state, id, data ) {
-    state[ id ] = {
-        ...state[ id ],
-        ...data,
-    };
+export function getSelectedControlId( state ) {
+    return state.selectedControlId || false;
+}
 
-    return state;
+export function getSelectedControl( state ) {
+    if ( state.selectedControlId ) {
+        const blockData = state.data;
+
+        if ( blockData.controls && blockData.controls[ state.selectedControlId ] ) {
+            return blockData.controls[ state.selectedControlId ];
+        }
+    }
+    return false;
 }

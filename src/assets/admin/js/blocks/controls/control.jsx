@@ -1,24 +1,25 @@
 /* eslint-disable camelcase */
-import SettingsRows from './settings-rows';
+import classnames from 'classnames';
 
 const { __, _n, sprintf } = wp.i18n;
 const { Component, Fragment } = wp.element;
 
-export default class Control extends Component {
+const { compose } = wp.compose;
+
+const {
+    withDispatch,
+    withSelect,
+} = wp.data;
+
+class Control extends Component {
     constructor() {
         super( ...arguments );
 
         this.state = {
-            collapsed: this.props.collapsed || false,
             collapsedChilds: false,
         };
 
-        this.toggleCollapse = this.toggleCollapse.bind( this );
         this.toggleCollapseChilds = this.toggleCollapseChilds.bind( this );
-    }
-
-    toggleCollapse() {
-        this.setState( { collapsed: ! this.state.collapsed } );
     }
 
     toggleCollapseChilds() {
@@ -27,13 +28,13 @@ export default class Control extends Component {
 
     render() {
         const {
-            removeControl,
-            updateData,
+            selectControl,
             printControls,
             data,
             id,
             controls,
             DragHandle,
+            isSelected,
         } = this.props;
 
         const {
@@ -46,7 +47,6 @@ export default class Control extends Component {
         } = data;
 
         const {
-            collapsed,
             collapsedChilds,
         } = this.state;
 
@@ -63,7 +63,13 @@ export default class Control extends Component {
         }
 
         return (
-            <div className="lzb-constructor-controls-item-wrap">
+            <div
+                className={ classnames( 'lzb-constructor-controls-item-wrap', isSelected ? 'lzb-constructor-controls-item-wrap-selected' : '' ) }
+                onMouseDown={ () => {
+                    selectControl( id );
+                } }
+                role="none"
+            >
                 <div className="lzb-constructor-controls-item">
                     <div className="lzb-constructor-controls-item-head">
                         <div className="lzb-constructor-controls-item-label">
@@ -72,20 +78,6 @@ export default class Control extends Component {
                         </div>
                         <div className="lzb-constructor-controls-item-type">
                             <div>{ type }</div>
-                            <div className="lzb-constructor-controls-item-actions">
-                                <button
-                                    className="lzb-constructor-controls-item-actions-collapse"
-                                    onClick={ this.toggleCollapse }
-                                >
-                                    { collapsed ? __( 'Collapse' ) : __( 'Expand' ) }
-                                </button>
-                                <button
-                                    className="lzb-constructor-controls-item-actions-delete"
-                                    onClick={ () => removeControl() }
-                                >
-                                    { __( 'Delete' ) }
-                                </button>
-                            </div>
                         </div>
                         <div className="lzb-constructor-controls-item-placement">
                             { data.child_of ? '' : placement }
@@ -96,13 +88,6 @@ export default class Control extends Component {
                         </div>
                         <DragHandle />
                     </div>
-                    { collapsed ? (
-                        <div className="lzb-constructor-controls-item-settings">
-                            <SettingsRows
-                                { ...{ updateData, data } }
-                            />
-                        </div>
-                    ) : '' }
                     { type === 'repeater' ? (
                         <button
                             className="lzb-constructor-controls-item-repeater-toggle"
@@ -139,3 +124,24 @@ export default class Control extends Component {
         );
     }
 }
+
+export default compose( [
+    withSelect( ( select, ownProps ) => {
+        const {
+            getSelectedControlId,
+        } = select( 'lazy-blocks/block-data' );
+
+        return {
+            isSelected: ownProps.id === getSelectedControlId(),
+        };
+    } ),
+    withDispatch( ( dispatch ) => {
+        const {
+            selectControl,
+        } = dispatch( 'lazy-blocks/block-data' );
+
+        return {
+            selectControl,
+        };
+    } ),
+] )( Control );

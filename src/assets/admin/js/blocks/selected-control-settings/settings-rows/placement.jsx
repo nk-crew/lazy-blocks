@@ -2,6 +2,7 @@ import Select from '../../../components/select';
 
 const { __ } = wp.i18n;
 const { Component } = wp.element;
+const { BaseControl } = wp.components;
 
 export default class PlacementRow extends Component {
     render() {
@@ -40,19 +41,16 @@ export default class PlacementRow extends Component {
         }
 
         return (
-            <div className="lzb-constructor-controls-item-settings-row">
-                <div className="lzb-constructor-controls-item-settings-row-label">
-                    <span>{ __( 'Placement' ) }</span>
-                </div>
-                <div className="lzb-constructor-controls-item-settings-row-control">
-                    <Select
-                        value={ options.filter( option => option.value === placement ) }
-                        options={ options }
-                        onChange={ ( { value } ) => updateData( { placement: value } ) }
-                        isDisabled={ 'inner_blocks' === data.type }
-                    />
-                </div>
-            </div>
+            <BaseControl
+                label={ __( 'Placement' ) }
+            >
+                <Select
+                    value={ options.filter( option => option.value === placement ) }
+                    options={ options }
+                    onChange={ ( { value } ) => updateData( { placement: value } ) }
+                    isDisabled={ 'inner_blocks' === data.type }
+                />
+            </BaseControl>
         );
     }
 }

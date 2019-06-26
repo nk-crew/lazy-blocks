@@ -11,11 +11,17 @@ const {
     BaseControl,
     SelectControl,
     CheckboxControl,
+    Button,
+    Popover,
 } = wp.components;
 
 export default class CustomCodeSettings extends Component {
     constructor() {
         super( ...arguments );
+
+        this.state = {
+            showInfo: false,
+        };
 
         this.getEditor = this.getEditor.bind( this );
     }
@@ -46,6 +52,10 @@ export default class CustomCodeSettings extends Component {
             updateData,
         } = this.props;
 
+        const {
+            showInfo,
+        } = this.state;
+
         // add ajax check for filter
         //
         // has_filter( $block_slug . '/frontend_callback' )
@@ -75,6 +85,53 @@ export default class CustomCodeSettings extends Component {
 
         return (
             <div className="lzb-constructor-custom-code-settings">
+                { tabs.length > 1 ? (
+                    <Tabs tabs={ tabs }>
+                        { ( tabData ) => {
+                            return this.getEditor( tabData.name );
+                        } }
+                    </Tabs>
+                ) : (
+                    <BaseControl
+                        label={ __( 'HTML' ) }
+                    >
+                        { this.getEditor( 'frontend' ) }
+                    </BaseControl>
+                ) }
+
+                <Button
+                    isDefault
+                    onClick={ () => {
+                        if ( ! showInfo ) {
+                            this.setState( { showInfo: true } );
+                        }
+                    } }
+                >
+                    { __( 'How to use?' ) }
+                    { showInfo ? (
+                        <Popover
+                            className="lzb-constructor-custom-code-settings-popover"
+                            focusOnMount={ false }
+                            onClickOutside={ () => {
+                                this.setState( { showInfo: false } );
+                            } }
+                        >
+                            <p className="description">
+                                { __( 'You can use PHP to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php/</a>
+                            </p>
+                            <hr />
+                            <p className="description">
+                                { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.' ) }
+                            </p>
+                            <p className="description">
+                                { __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name' ) } <strong>my_control</strong> { __( ', you can print it' ) } <strong>{ '{{my_control}}' }</strong>.
+                            </p>
+                        </Popover>
+                    ) : '' }
+                </Button>
+
+                <p />
+
                 <div className="lzb-constructor-grid">
                     <div>
                         <BaseControl
@@ -110,29 +167,6 @@ export default class CustomCodeSettings extends Component {
                         />
                     </div>
                 </div>
-                { tabs.length > 1 ? (
-                    <Tabs tabs={ tabs }>
-                        { ( tabData ) => {
-                            return this.getEditor( tabData.name );
-                        } }
-                    </Tabs>
-                ) : (
-                    <BaseControl
-                        label={ __( 'HTML' ) }
-                    >
-                        { this.getEditor( 'frontend' ) }
-                    </BaseControl>
-                ) }
-                <p className="description">
-                    { __( 'You can use PHP to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php/</a>
-                </p>
-                <hr />
-                <p className="description">
-                    { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.' ) }
-                </p>
-                <p className="description">
-                    { __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name' ) } <strong>my_control</strong> { __( ', you can print it' ) } <strong>{ '{{my_control}}' }</strong>.
-                </p>
             </div>
         );
     }

@@ -4,6 +4,7 @@ import arrayMove from 'array-move';
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
+    BaseControl,
     TextControl,
     Button,
 } = wp.components;
@@ -149,40 +150,37 @@ export default class ChoicesRow extends Component {
         }
 
         return (
-            <div className="lzb-constructor-controls-item-settings-row">
-                <div className="lzb-constructor-controls-item-settings-row-label">
-                    <span>{ __( 'Choices' ) }</span>
-                </div>
-                <div className="lzb-constructor-controls-item-settings-row-control">
-                    <div className="lzb-constructor-controls-item-settings-choices">
-                        { items.length ? (
-                            <SortableList
-                                ref={ self.sortRef }
-                                items={ items }
-                                onSortEnd={ ( { oldIndex, newIndex } ) => {
-                                    self.resortChoice( oldIndex, newIndex );
-                                } }
-                                useDragHandle={ true }
-                                helperContainer={ () => {
-                                    if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
-                                        return self.sortRef.current.container;
-                                    }
+            <BaseControl
+                label={ __( 'Choices' ) }
+            >
+                <div className="lzb-constructor-controls-item-settings-choices">
+                    { items.length ? (
+                        <SortableList
+                            ref={ self.sortRef }
+                            items={ items }
+                            onSortEnd={ ( { oldIndex, newIndex } ) => {
+                                self.resortChoice( oldIndex, newIndex );
+                            } }
+                            useDragHandle={ true }
+                            helperContainer={ () => {
+                                if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
+                                    return self.sortRef.current.container;
+                                }
 
-                                    return document.body;
-                                } }
-                            />
-                        ) : '' }
-                        <div>
-                            <Button
-                                onClick={ self.addChoice }
-                                isDefault
-                            >
-                                { __( '+ Add Choice' ) }
-                            </Button>
-                        </div>
+                                return document.body;
+                            } }
+                        />
+                    ) : '' }
+                    <div>
+                        <Button
+                            onClick={ self.addChoice }
+                            isDefault
+                        >
+                            { __( '+ Add Choice' ) }
+                        </Button>
                     </div>
                 </div>
-            </div>
+            </BaseControl>
         );
     }
 }

@@ -1,4 +1,3 @@
-
 export function apiFetch( request ) {
     return {
         type: 'API_FETCH',
@@ -6,7 +5,7 @@ export function apiFetch( request ) {
     };
 }
 
-export function setBlockData( postId, data ) {
+export function setBlockData( data ) {
     // check if control is array and change it to object
     // unless value will not be saved.
     // related topic: https://wordpress.org/support/topic/controls-not-saving/
@@ -16,15 +15,56 @@ export function setBlockData( postId, data ) {
 
     return {
         type: 'SET_BLOCK_DATA',
-        post_id: postId,
         data,
     };
 }
 
-export function updateBlockData( postId, data ) {
+export function updateBlockData( data ) {
     return {
         type: 'UPDATE_BLOCK_DATA',
-        post_id: postId,
         data,
+    };
+}
+
+export function updateControlData( id, data ) {
+    return {
+        type: 'UPDATE_CONTROL_DATA',
+        id,
+        data,
+    };
+}
+
+export function addControl( data ) {
+    return {
+        type: 'ADD_CONTROL',
+        data,
+    };
+}
+
+export function removeControl( id ) {
+    return {
+        type: 'REMOVE_CONTROL',
+        id,
+    };
+}
+
+export function resortControl( id, newId ) {
+    return {
+        type: 'RESORT_CONTROL',
+        id,
+        newId,
+    };
+}
+
+export function selectControl( id ) {
+    return {
+        type: 'SELECT_CONTROL',
+        id,
+    };
+}
+
+export function clearSelectedControl() {
+    return {
+        type: 'CLEAR_SELECTED_CONTROL',
     };
 }

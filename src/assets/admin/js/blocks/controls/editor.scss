@@ -14,11 +14,24 @@
 .lzb-constructor .lzb-constructor-controls {
     .lzb-constructor-controls-item,
     .lzb-constructor-controls-item-appender {
+        position: relative;
         padding: 15px 20px;
+        cursor: pointer;
         background-color: #fff;
         border: 1px solid rgba(0, 0, 0, .07);
         border-radius: $radius_large;
+        transition: .2s background ease-in-out, .2s color ease-in-out, .2s border-color ease-in-out, .2s box-shadow ease-in-out;
         z-index: 1;
+    }
+
+    .lzb-constructor-controls-item:hover {
+        border-color: $color_gray_darken;
+        box-shadow: 0 0 0 3px rgba($color_dark_darken, .05);
+    }
+
+    .lzb-constructor-controls-item-wrap-selected > .lzb-constructor-controls-item {
+        border-color: $color_main;
+        box-shadow: 0 0 0 3px rgba($color_main, .3);
     }
 
     .lzb-constructor-controls-item-wrap,
@@ -32,12 +45,11 @@
         width: 100%;
         min-height: 60px;
         color: $color_dark_lighten;
-        cursor: pointer;
         background: $color_gray_lighten_2;
         border-color: $color_gray_darken;
         border-style: dashed;
+        outline: none;
         box-shadow: none;
-        transition: .2s background ease-in-out, .2s color ease-in-out, .2s border-color ease-in-out;
 
         &:hover {
             color: $color_dark_darken;
@@ -88,6 +100,7 @@
         background: none;
         border: none;
         outline: none;
+        z-index: 0;
 
         &::after,
         &::before {
@@ -101,7 +114,7 @@
             background-color: #fff;
             border: 1px solid rgba(0, 0, 0, .07);
             border-radius: $radius_large;
-            box-shadow: $shadow;
+            box-shadow: $shadow_small;
             transition: .2s transform ease-in-out;
             z-index: -1;
         }
@@ -167,143 +180,5 @@
     .lzb-constructor-controls-item-placement,
     .lzb-constructor-controls-item-meta {
         font-size: 80%;
-    }
-
-    // actions
-    .lzb-constructor-controls-item-actions {
-        margin-top: 7px;
-    }
-    .lzb-constructor-controls-item-actions-collapse,
-    .lzb-constructor-controls-item-actions-delete {
-        padding: 0;
-        font-size: inherit;
-        color: inherit;
-        text-decoration: underline;
-        cursor: pointer;
-        background: none;
-        border: none;
-        opacity: 0;
-        transition: .2s opacity;
-    }
-    .lzb-constructor-controls-item-actions-delete {
-        margin-left: 5px;
-        color: $color_red;
-    }
-    .lzb-constructor-controls-item:hover .lzb-constructor-controls-item-actions-collapse,
-    .lzb-constructor-controls-item:hover .lzb-constructor-controls-item-actions-delete {
-        opacity: .5;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
-
-    // settings
-    .lzb-constructor-controls-item-settings {
-        position: relative;
-        padding-top: 15px;
-        margin-top: 15px;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: -20px;
-            left: -20px;
-            border-bottom: 1px solid rgba(0, 0, 0, .07);
-        }
-
-        .lzb-constructor-controls-item-settings-row {
-            display: flex;
-            flex-wrap: wrpa;
-
-            + .lzb-constructor-controls-item-settings-row {
-                margin-top: 15px;
-            }
-
-            .lzb-constructor-controls-item-settings-row-label {
-                flex: 1;
-
-                span {
-                    display: block;
-                    padding-right: 15px;
-                    font-weight: 600;
-                }
-                small {
-                    display: block;
-                    padding-right: 15px;
-                    margin-top: 5px;
-                    color: $color_dark_lighten;
-                }
-            }
-
-            .lzb-constructor-controls-item-settings-row-control {
-                flex: 3;
-            }
-        }
-    }
-
-    // choices setting
-    .lzb-constructor-controls-item-settings-choices {
-        .lzb-constructor-controls-item-settings-choices-item {
-            position: relative;
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -5px;
-            margin-left: -5px;
-
-            > div {
-                flex: 1;
-                margin-right: 5px;
-                margin-bottom: 0;
-                margin-left: 5px;
-            }
-
-            > .components-base-control {
-                min-width: 150px;
-            }
-        }
-
-        .lzb-constructor-controls-item-settings-choices-item-handler {
-            width: 25px;
-            min-width: 25px;
-            max-width: 25px;
-            padding-top: 7px;
-            text-align: right;
-            cursor: grab;
-            opacity: .2;
-            transition: .2s opacity ease-in-out;
-
-            &:hover {
-                opacity: .4;
-            }
-        }
-
-        .lzb-constructor-controls-item-settings-choices-item-remove {
-            position: absolute;
-            top: 10px;
-            left: -2px;
-            width: 15px;
-            height: 15px;
-            padding: 0;
-            color: #fff;
-            cursor: pointer;
-            background: $color_red;
-            border: none;
-            border-radius: 50%;
-            opacity: 0;
-            transition: .2s opacity ease-in-out;
-
-            .dashicons {
-                width: 13px;
-                height: 13px;
-                margin-top: 1px;
-                font-size: 13px;
-                text-align: center;
-            }
-        }
-        .lzb-constructor-controls-item-settings-choices-item:hover .lzb-constructor-controls-item-settings-choices-item-remove {
-            opacity: 1;
-        }
     }
 }

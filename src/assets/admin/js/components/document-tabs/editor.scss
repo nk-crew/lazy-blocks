@@ -1,0 +1,17 @@
+@import "../../variables";
+
+.post-type-lazyblocks .lazyblocks-component-document-tabs .components-panel__header.edit-post-sidebar-header {
+    display: flex;
+    margin: -16px;
+    margin-bottom: -1px;
+}
+
+.lazyblocks-component-document-tabs .lazyblocks-component-document-tabs-content {
+    .components-base-control__help {
+        color: $color_dark_lighten_2;
+    }
+
+    .components-panel__body:first-child {
+        margin-top: 0;
+    }
+}

@@ -47,19 +47,14 @@ export default class LabelRow extends Component {
         } = data;
 
         return (
-            <div className="lzb-constructor-controls-item-settings-row">
-                <div className="lzb-constructor-controls-item-settings-row-label">
-                    <span>{ __( 'Label' ) }</span>
-                    <small>{ __( 'This is the name which will appear on the block edit control' ) }</small>
-                </div>
-                <div className="lzb-constructor-controls-item-settings-row-control">
-                    <TextControl
-                        value={ label }
-                        onChange={ ( value ) => updateData( { label: value } ) }
-                        onBlur={ this.generateUniqueName }
-                    />
-                </div>
-            </div>
+            <TextControl
+                label={ __( 'Label' ) }
+                help={ __( 'This is the name which will appear on the block edit control' ) }
+                value={ label }
+                onChange={ ( value ) => updateData( { label: value } ) }
+                onBlur={ this.generateUniqueName }
+                autoFocus
+            />
         );
     }
 }

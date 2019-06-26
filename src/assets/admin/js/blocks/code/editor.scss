@@ -19,3 +19,10 @@
         background-color: $color_gray_lighten;
     }
 }
+
+.lzb-constructor-custom-code-settings-popover {
+    .components-popover__content {
+        width: 500px;
+        padding: 20px;
+    }
+}

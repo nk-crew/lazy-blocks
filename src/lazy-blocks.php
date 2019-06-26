@@ -227,9 +227,12 @@ class LazyBlocks {
             wp_enqueue_script(
                 'lazyblocks-admin-blocks',
                 lazyblocks()->plugin_url . 'assets/admin/js/blocks.min.js',
-                array( 'wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
+                array( 'wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
                 filemtime( lazyblocks()->plugin_path . 'assets/admin/js/blocks.min.js' )
             );
+            wp_localize_script( 'lazyblocks-admin-blocks', 'lazyblocks_localize', array(
+                'post_id' => $post->ID,
+            ) );
         }
 
         wp_enqueue_script( 'date_i18n', lazyblocks()->plugin_url . 'vendor/date_i18n/date_i18n.js', array(), '1.0.0', true );
