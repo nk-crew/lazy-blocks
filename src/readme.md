@@ -69,6 +69,19 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.6.0 =
+
+* Improved Constructor UI
+  * Block setting moved to the right side (Inspector)
+  * Control setting opens in Inspector when you select it
+* added alpha channel option to Color Picker control
+* added 'Save in Meta' support for Repeater field
+* added possibility to hide block previews in editor
+* added possibility to use single code output for both Frontend and Editor
+* added Select Multiple option
+* fixed block preview loading when returned empty string
+* fixed Keywords, Align and Condition block settings save when empty
+
 = 1.5.1 =
 
 * added block slug validation in constructor
