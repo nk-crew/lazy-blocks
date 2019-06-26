@@ -8,7 +8,7 @@ cfg.dist_root = './dist';
 cfg.dist = '{dist_root}/lazy-blocks';
 
 // Template variables that will be automatically replaced.
-cfg.template_files_src = '{src}/**/*.{php,js,css}';
+cfg.template_files_src = '{src}/**/*.{md,php,js,css}';
 cfg.template_files_variables = {
     text_domain: pkg.name,
     plugin_version: pkg.version,
