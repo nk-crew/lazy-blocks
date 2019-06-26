@@ -4,7 +4,11 @@ import './editor.scss';
 import Control from './control';
 
 const { __ } = wp.i18n;
-const { Component, Fragment } = wp.element;
+const {
+    Component,
+    Fragment,
+    createRef,
+} = wp.element;
 
 const { compose } = wp.compose;
 
@@ -48,7 +52,7 @@ class ControlsSettings extends Component {
             collapsedId: '',
         };
 
-        this.sortRef = wp.element.createRef();
+        this.sortRef = createRef();
 
         this.printControls = this.printControls.bind( this );
     }
@@ -97,23 +101,24 @@ class ControlsSettings extends Component {
 
         return (
             <Fragment>
-                { items.length ? (
-                    <SortableList
-                        ref={ self.sortRef }
-                        items={ items }
-                        onSortEnd={ ( { oldIndex, newIndex } ) => {
-                            resortControl( items[ oldIndex ].id, items[ newIndex ].id );
-                        } }
-                        useDragHandle={ true }
-                        helperContainer={ () => {
-                            if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
-                                return self.sortRef.current.container;
-                            }
+                <SortableList
+                    ref={ self.sortRef }
+                    items={ items }
+                    onSortEnd={ ( { oldIndex, newIndex } ) => {
+                        resortControl( items[ oldIndex ].id, items[ newIndex ].id );
+                    } }
+                    useDragHandle={ true }
+                    helperContainer={ function() {
+                        if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
+                            return self.sortRef.current.container;
+                        }
 
-                            return document.body;
-                        } }
-                    />
-                ) : '' }
+                        // sometimes container ref disappears, so we can find dom element manually.
+                        const newRef = document.querySelector( '.lzb-constructor' ) || document.body;
+
+                        return newRef;
+                    } }
+                />
                 <button
                     className="lzb-constructor-controls-item-appender"
                     onClick={ () => {
