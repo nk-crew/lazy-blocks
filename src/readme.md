@@ -69,6 +69,15 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.6.1 =
+
+* fixed order of controls was not saved
+* fixed php error when no lazy blocks available
+* fixed selecting inner repeater controls
+* fixed control styles disappear while resorting
+* prevent control selection on drag handler click
+* prevent control selection on repeater toggle click
+
 = 1.6.0 =
 
 * Improved Constructor UI
