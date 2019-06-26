@@ -252,25 +252,25 @@ let editorRefreshTimeout = false;
 subscribe( () => {
     const isSavingPost = select( 'core/editor' ).isSavingPost();
     const isAutosavingPost = select( 'core/editor' ).isAutosavingPost();
-
-    if ( isSavingPost || isAutosavingPost ) {
-        return;
-    }
-
     const blockData = select( 'lazy-blocks/block-data' ).getBlockData();
 
     if ( ! blockData || ! Object.keys( blockData ).length ) {
         return;
     }
 
-    if ( ! defaultBlockData ) {
-        defaultBlockData = blockData;
+    if ( isSavingPost || isAutosavingPost || ! defaultBlockData ) {
+        defaultBlockData = Object.assign( {}, blockData );
         return;
     }
 
     clearTimeout( editorRefreshTimeout );
     editorRefreshTimeout = setTimeout( () => {
-        if ( ! isEqual( defaultBlockData, blockData ) ) {
+        // isEqual can't determine that resorted objects are not equal.
+        const changedControls = defaultBlockData.controls &&
+                                blockData.controls &&
+                                ! isEqual( Object.keys( defaultBlockData.controls ), Object.keys( blockData.controls ) );
+
+        if ( changedControls || ! isEqual( defaultBlockData, blockData ) ) {
             wp.data.dispatch( 'core/editor' ).editPost( { edited: true } );
         }
     }, 150 );

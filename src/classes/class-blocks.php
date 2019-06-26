@@ -557,7 +557,7 @@ class LazyBlocks_Blocks {
                 add_post_meta( $post_id, $meta, $new_meta_value, true );
 
                 /* If the new meta value does not match the old value, update it. */
-            } elseif ( $new_meta_value && $new_meta_value != $meta_value ) {
+            } elseif ( $new_meta_value && $new_meta_value !== $meta_value ) {
                 update_post_meta( $post_id, $meta, $new_meta_value );
 
                 /* If there is no new meta value but an old value exists, delete it. */

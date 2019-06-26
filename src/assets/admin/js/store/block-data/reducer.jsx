@@ -12,9 +12,7 @@ function reducer( state = { data: false }, action ) {
             if ( state ) {
                 return {
                     ...state,
-                    ...{
-                        data: action.data,
-                    },
+                    data: action.data,
                 };
             }
             return action;
@@ -25,11 +23,9 @@ function reducer( state = { data: false }, action ) {
         if ( action.data && state ) {
             return {
                 ...state,
-                ...{
-                    data: {
-                        ...state.data,
-                        ...action.data,
-                    },
+                data: {
+                    ...state.data,
+                    ...action.data,
                 },
             };
         }
@@ -45,15 +41,13 @@ function reducer( state = { data: false }, action ) {
         ) {
             return {
                 ...state,
-                ...{
-                    data: {
-                        ...state.data,
-                        controls: {
-                            ...state.data.controls,
-                            ...{ [ action.id ]: {
-                                ...state.data.controls[ action.id ],
-                                ...action.data,
-                            } },
+                data: {
+                    ...state.data,
+                    controls: {
+                        ...state.data.controls,
+                        [ action.id ]: {
+                            ...state.data.controls[ action.id ],
+                            ...action.data,
                         },
                     },
                 },
@@ -75,15 +69,13 @@ function reducer( state = { data: false }, action ) {
 
             return {
                 ...state,
-                ...{
-                    data: {
-                        ...state.data,
-                        controls: {
-                            ...state.data.controls,
-                            [ newId ]: {
-                                ...controlsDefaults,
-                                ...action.data,
-                            },
+                data: {
+                    ...state.data,
+                    controls: {
+                        ...state.data.controls,
+                        [ newId ]: {
+                            ...controlsDefaults,
+                            ...action.data,
                         },
                     },
                 },
@@ -93,17 +85,19 @@ function reducer( state = { data: false }, action ) {
 
         break;
     case 'REMOVE_CONTROL':
-        if ( action.id && state.data ) {
-            if ( state.data.controls && state.data.controls[ action.id ] ) {
-                delete state.data.controls[ action.id ];
-
-                return {
-                    ...state,
-                    ...{
-                        data: omit( state.data, [ action.id ] ),
-                    },
-                };
-            }
+        if (
+            action.id &&
+            state.data &&
+            state.data.controls &&
+            state.data.controls[ action.id ]
+        ) {
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    controls: omit( state.data.controls, [ action.id ] ),
+                },
+            };
         }
 
         break;
@@ -121,28 +115,24 @@ function reducer( state = { data: false }, action ) {
             Object.keys( state.data.controls ).forEach( ( key ) => {
                 if ( key !== action.id ) {
                     if ( insertBefore && key === action.newId ) {
-                        newControls[ action.id ] = state.data.controls[ action.id ];
+                        newControls[ action.id ] = Object.assign( {}, state.data.controls[ action.id ] );
                     }
 
-                    newControls[ key ] = state.data.controls[ key ];
+                    newControls[ key ] = Object.assign( {}, state.data.controls[ key ] );
 
                     if ( ! insertBefore && key === action.newId ) {
-                        newControls[ action.id ] = state.data.controls[ action.id ];
+                        newControls[ action.id ] = Object.assign( {}, state.data.controls[ action.id ] );
                     }
                 } else {
                     insertBefore = false;
                 }
             } );
 
-            state.data.controls = newControls;
-
             return {
                 ...state,
-                ...{
-                    data: {
-                        ...state.data,
-                        controls: newControls,
-                    },
+                data: {
+                    ...state.data,
+                    controls: newControls,
                 },
             };
         }
