@@ -231,7 +231,7 @@ class LazyBlocks {
                 filemtime( lazyblocks()->plugin_path . 'assets/admin/js/blocks.min.js' )
             );
             wp_localize_script( 'lazyblocks-admin-blocks', 'lazyblocks_localize', array(
-                'post_id' => $post->ID,
+                'post_id' => isset( $post->ID ) ? $post->ID : 0,
             ) );
         }
 
