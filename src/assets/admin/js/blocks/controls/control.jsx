@@ -63,14 +63,14 @@ class Control extends Component {
         }
 
         return (
-            <div
-                className={ classnames( 'lzb-constructor-controls-item-wrap', isSelected ? 'lzb-constructor-controls-item-wrap-selected' : '' ) }
-                onMouseDown={ () => {
-                    selectControl( id );
-                } }
-                role="none"
-            >
-                <div className="lzb-constructor-controls-item">
+            <div className={ classnames( 'lzb-constructor-controls-item-wrap', isSelected ? 'lzb-constructor-controls-item-wrap-selected' : '' ) }>
+                <div
+                    className="lzb-constructor-controls-item"
+                    onClick={ () => {
+                        selectControl( id );
+                    } }
+                    role="none"
+                >
                     <div className="lzb-constructor-controls-item-head">
                         <div className="lzb-constructor-controls-item-label">
                             <span>{ label }</span>
@@ -91,7 +91,11 @@ class Control extends Component {
                     { type === 'repeater' ? (
                         <button
                             className="lzb-constructor-controls-item-repeater-toggle"
-                            onClick={ this.toggleCollapseChilds }
+                            onClick={ ( e ) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                this.toggleCollapseChilds();
+                            } }
                         >
                             { collapsedChilds ? (
                                 <Fragment>
