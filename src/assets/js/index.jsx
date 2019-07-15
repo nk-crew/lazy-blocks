@@ -49,6 +49,10 @@ const {
     registerBlockType,
 } = wp.blocks;
 
+const {
+    withSelect,
+} = wp.data;
+
 const getSettings = wp.date.__experimentalGetSettings;
 
 // each registered block.
@@ -184,7 +188,7 @@ options.blocks.forEach( ( item ) => {
 
                 // hide if not selected
                 if ( placement === 'content' && control.hide_if_not_selected && 'true' === control.hide_if_not_selected ) {
-                    placementCheck = this.props.isSelected;
+                    placementCheck = this.props.isLazyBlockSelected;
                 }
 
                 if (
@@ -530,10 +534,10 @@ options.blocks.forEach( ( item ) => {
 
             switch ( item.code.show_preview ) {
             case 'selected':
-                showPreview = this.props.isSelected;
+                showPreview = this.props.isLazyBlockSelected;
                 break;
             case 'unselected':
-                showPreview = ! this.props.isSelected;
+                showPreview = ! this.props.isLazyBlockSelected;
                 break;
             case 'never':
                 showPreview = false;
@@ -569,6 +573,16 @@ options.blocks.forEach( ( item ) => {
         }
     }
 
+    const LazyBlockWithSelect = withSelect( ( select, ownProps ) => {
+        const {
+            hasSelectedInnerBlock,
+        } = select( 'core/editor' );
+
+        return {
+            isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock( ownProps.clientId ),
+        };
+    } )( LazyBlock );
+
     // conditionally show for specific post type.
     if ( item.supports.inserter && item.condition.length ) {
         let preventInsertion = true;
@@ -591,7 +605,7 @@ options.blocks.forEach( ( item ) => {
 
         lazyblock: true,
 
-        edit: LazyBlock,
+        edit: LazyBlockWithSelect,
 
         save() {
             let result = null;
