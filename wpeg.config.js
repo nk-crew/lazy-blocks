@@ -46,6 +46,9 @@ cfg.translate_php_options = {
 cfg.zip_files = [
     {
         src: '{dist}/**/*',
+        src_opts: {
+            base: '{dist_root}',
+        },
         dist: '{dist_root}/lazy-blocks.zip',
     },
 ];
