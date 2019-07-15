@@ -512,6 +512,11 @@ class LazyBlocks_Blocks {
             $new_meta_value = '';
 
             if ( isset( $data[ $meta ] ) ) {
+                // convert boolean to string.
+                if ( is_bool( $data[ $meta ] ) ) {
+                    $data[ $meta ] = $data[ $meta ] ? 'true' : 'false';
+                }
+
                 // editors.
                 if (
                     'lazyblocks_code_editor_html' === $meta ||
