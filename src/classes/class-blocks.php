@@ -970,11 +970,8 @@ class LazyBlocks_Blocks {
             'default' => '',
         );
         $attributes['anchor'] = array(
-            'type'      => 'string',
-            'source'    => 'attribute',
-            'attribute' => 'id',
-            'selector'  => '*',
-            'default'   => '',
+            'type'    => 'string',
+            'default' => '',
         );
         $attributes['blockId'] = array(
             'type'    => 'string',
