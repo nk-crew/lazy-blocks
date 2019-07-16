@@ -911,7 +911,7 @@ class LazyBlocks_Blocks {
                             $default_val = (float) $default_val;
                             break;
                         case 'select':
-                            if ( isset( $control['multiple'] ) && $control['multiple'] ) {
+                            if ( isset( $control['multiple'] ) && 'true' === $control['multiple'] ) {
                                 $type = 'array';
                                 $default_val = explode( ',', $default_val );
                             }
