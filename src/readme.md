@@ -38,6 +38,7 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
     * Password
     * Image
     * Gallery
+    * File
     * Rich Text (WYSIWYG)
     * Code Editor
     * Inner Blocks
@@ -68,6 +69,14 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 3. Block in Gutenberg editor
 
 ## Changelog ##
+
+= 1.6.2 =
+
+* added File control
+* changed anchor attribute settings (fixed anchor save in the latest Gutenberg)
+* fixed select control value save (if no Multiple option set)
+* fixed InnerBlocks with option "Hide if block is not selected"
+* fixed boolean meta data of constructor save (convert to string)
 
 = 1.6.1 =
 
