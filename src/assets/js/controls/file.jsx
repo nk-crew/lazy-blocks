@@ -15,34 +15,46 @@ const {
     mediaUpload,
 } = wp.editor;
 
-const ALLOWED_MEDIA_TYPES = [ 'image' ];
+const {
+    allowed_mime_types: wpAllowedMimeTypes,
+} = window.lazyblocksGutenberg;
 
-class ImageControl extends Component {
+class FileControl extends Component {
     render() {
         const {
             label,
             value,
             help,
+            allowedMimeTypes,
             onChange = () => {},
         } = this.props;
+
+        const ALLOWED_MEDIA_TYPES = [];
+
+        if ( allowedMimeTypes ) {
+            allowedMimeTypes.forEach( ( typeName ) => {
+                if ( wpAllowedMimeTypes[ typeName ] ) {
+                    ALLOWED_MEDIA_TYPES.push( wpAllowedMimeTypes[ typeName ] );
+                }
+            } );
+        }
 
         return (
             <BaseControl
                 label={ label }
                 help={ help }
             >
-                <div className="lzb-gutenberg-image-wrap">
+                <div className="lzb-gutenberg-file-wrap">
                     { ! value || ! Object.keys( value ).length ? (
                         <MediaPlaceholder
-                            icon="format-image"
+                            icon="media-default"
                             labels={ {
                                 title: label,
-                                name: __( 'image' ),
+                                name: __( 'file' ),
                             } }
-                            onSelect={ ( image ) => {
-                                onChange( image );
+                            onSelect={ ( file ) => {
+                                onChange( file );
                             } }
-                            accept="image/*"
                             allowedTypes={ ALLOWED_MEDIA_TYPES }
                             disableMaxUploadErrorMessages
                             onError={ ( e ) => {
@@ -52,14 +64,14 @@ class ImageControl extends Component {
                         />
                     ) : '' }
                     { value && Object.keys( value ).length ? (
-                        <div className="lzb-gutenberg-image">
+                        <div className="lzb-gutenberg-file">
                             <DropZone
                                 onFilesDrop={ ( files ) => {
                                     mediaUpload( {
                                         allowedTypes: ALLOWED_MEDIA_TYPES,
                                         filesList: files,
-                                        onFileChange: ( image ) => {
-                                            onChange( image );
+                                        onFileChange: ( file ) => {
+                                            onChange( file );
                                         },
                                         onError( e ) {
                                             // eslint-disable-next-line no-console
@@ -68,18 +80,24 @@ class ImageControl extends Component {
                                     } );
                                 } }
                             />
-                            <div className="lzb-gutenberg-image-button">
+                            <div className="lzb-gutenberg-file-item" key={ value.id || value.url }>
+                                <div className="lzb-gutenberg-file-item-icon">
+                                    <span className="dashicons dashicons-media-default" />
+                                </div>
+                                <div className="lzb-gutenberg-file-item-content">
+                                    <div className="lzb-gutenberg-file-item-content-title">{ value.title }</div>
+                                    <div className="lzb-gutenberg-file-item-content-filename">{ value.url.replace( /^.*[\\\/]/, '' ) }</div>
+                                </div>
+                            </div>
+                            <div className="lzb-gutenberg-file-button">
                                 <Button
                                     isDefault={ true }
                                     onClick={ () => {
                                         onChange( '' );
                                     } }
                                 >
-                                    { __( 'Remove Image' ) }
+                                    { __( 'Remove File' ) }
                                 </Button>
-                            </div>
-                            <div className="lzb-gutenberg-image-item" key={ value.id || value.url }>
-                                <img src={ value.url } alt={ value.alt } />
                             </div>
                         </div>
                     ) : '' }
@@ -89,4 +107,4 @@ class ImageControl extends Component {
     }
 }
 
-export default withInstanceId( ImageControl );
+export default withInstanceId( FileControl );

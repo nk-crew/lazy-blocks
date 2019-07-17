@@ -232,6 +232,7 @@ class LazyBlocks {
             );
             wp_localize_script( 'lazyblocks-admin-blocks', 'lazyblocks_localize', array(
                 'post_id' => isset( $post->ID ) ? $post->ID : 0,
+                'allowed_mime_types' => get_allowed_mime_types(),
             ) );
         }
 
@@ -298,7 +299,12 @@ function get_lzb_meta( $name, $id = null ) {
                     if (
                         'true' === $control['save_in_meta'] &&
                         $control['save_in_meta_name'] &&
-                        ( 'image' === $control['type'] || 'gallery' === $control['type'] || 'repeater' === $control['type'] )
+                        (
+                            'image' === $control['type'] ||
+                            'gallery' === $control['type'] ||
+                            'file' === $control['type'] ||
+                            'repeater' === $control['type']
+                        )
                     ) {
                         $fix_meta_value = true;
                     }
@@ -306,6 +312,7 @@ function get_lzb_meta( $name, $id = null ) {
                     switch ( $control['type'] ) {
                         case 'image':
                         case 'gallery':
+                        case 'file':
                         case 'code_editor':
                             break;
                         case 'checkbox':

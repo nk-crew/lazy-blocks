@@ -275,6 +275,32 @@
     }
 }
 
+// File control
+.lzb-gutenberg-file-wrap {
+    .lzb-gutenberg-file-item {
+        display: flex;
+        margin-bottom: 10px;
+        border: 1px solid #e2e4e7;
+    }
+    .lzb-gutenberg-file-item-icon {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-right: 1px solid #e2e4e7;
+    }
+    .lzb-gutenberg-file-item-content {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+    .lzb-gutenberg-file-item-content-title {
+        font-weight: 600;
+    }
+    .lzb-gutenberg-file-item-content-filename {
+        opacity: .5;
+    }
+}
+
 // Rich Text control
 .lzb-gutenberg-rich-text {
     .editor-rich-text__inline-toolbar {

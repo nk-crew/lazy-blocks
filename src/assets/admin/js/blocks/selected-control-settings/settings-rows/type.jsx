@@ -57,6 +57,10 @@ export default class TypeRow extends Component {
                 label: __( 'Gallery' ),
                 group: __( 'Content' ),
             }, {
+                value: 'file',
+                label: __( 'File' ),
+                group: __( 'Content' ),
+            }, {
                 value: 'rich_text',
                 label: __( 'Rich Text (WYSIWYG)' ),
                 group: __( 'Content' ),

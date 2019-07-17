@@ -881,6 +881,7 @@ class LazyBlocks_Blocks {
             'lazyblocks-gutenberg', 'lazyblocksGutenberg', array(
                 'post_type' => $post_type,
                 'blocks'    => $blocks,
+                'allowed_mime_types' => get_allowed_mime_types(),
             )
         );
     }

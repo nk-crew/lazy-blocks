@@ -5,6 +5,7 @@ export default {
     choices: [],
     child_of: '',
     allow_null: 'false',
+    allowed_mime_types: [],
     multiple: 'false',
     alpha: 'false',
     min: '',

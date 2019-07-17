@@ -4,6 +4,7 @@ import NameRow from './name';
 import TypeRow from './type';
 import ChoicesRow from './choices';
 import AllowNullRow from './allow-null';
+import AllowedMimeTypesRow from './allowed-mime-types';
 import Multiple from './multiple';
 import AlphaRow from './alpha';
 import MinMaxStepRow from './min-max-step';
@@ -31,6 +32,7 @@ export default class settingsRows extends Component {
             type: TypeRow,
             choices: ChoicesRow,
             allow_null: AllowNullRow,
+            allowed_mime_types: AllowedMimeTypesRow,
             multiple: Multiple,
             alpha: AlphaRow,
             min_max_step: MinMaxStepRow,
@@ -56,6 +58,9 @@ export default class settingsRows extends Component {
                 allow = data.type === 'select' ||
                         data.type === 'radio';
                 break;
+            case 'allowed_mime_types':
+                allow = data.type === 'file';
+                break;
             case 'multiple':
                 allow = data.type === 'select';
                 break;
@@ -75,6 +80,7 @@ export default class settingsRows extends Component {
             case 'default':
                 allow = data.type !== 'image' &&
                         data.type !== 'gallery' &&
+                        data.type !== 'file' &&
                         data.type !== 'code_editor' &&
                         data.type !== 'inner_blocks' &&
                         data.type !== 'checkbox' &&

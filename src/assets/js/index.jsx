@@ -9,6 +9,7 @@ import './extensions/block-id.jsx';
 import ColorControl from './controls/color.jsx';
 import ImageControl from './controls/image.jsx';
 import GalleryControl from './controls/gallery.jsx';
+import FileControl from './controls/file.jsx';
 import RepeaterControl from './controls/repeater.jsx';
 import PreviewServerCallback from './blocks/preview-server-callback.jsx';
 
@@ -75,7 +76,12 @@ options.blocks.forEach( ( item ) => {
         // convert string to array.
         if (
             typeof result === 'string' &&
-            ( 'repeater' === control.type || 'image' === control.type || 'gallery' === control.type )
+            (
+                'repeater' === control.type ||
+                'image' === control.type ||
+                'gallery' === control.type ||
+                'file' === control.type
+            )
         ) {
             try {
                 result = JSON.parse( decodeURI( result ) );
@@ -128,7 +134,12 @@ options.blocks.forEach( ( item ) => {
             // we only may save in string, number, boolean and integer types.
             if (
                 ( typeof val === 'object' || Array.isArray( val ) ) &&
-                ( 'repeater' === control.type || 'image' === control.type || 'gallery' === control.type )
+                (
+                    'repeater' === control.type ||
+                    'image' === control.type ||
+                    'gallery' === control.type ||
+                    'file' === control.type
+                )
             ) {
                 result[ name ] = encodeURI( JSON.stringify( result[ name ] ) );
             }
@@ -159,6 +170,19 @@ options.blocks.forEach( ( item ) => {
                 id: image.id || '',
                 link: image.link || '',
                 url: image.url || '',
+            } : '';
+
+            this.onControlChange( result, control, childIndex );
+        }
+
+        onSelectFile( file, control, childIndex ) {
+            const result = file ? {
+                alt: file.alt || '',
+                title: file.title || '',
+                caption: file.caption || '',
+                id: file.id || '',
+                link: file.link || '',
+                url: file.url || '',
             } : '';
 
             this.onControlChange( result, control, childIndex );
@@ -400,6 +424,21 @@ options.blocks.forEach( ( item ) => {
                                 } }
                             />
                         ) );
+                        break;
+                    case 'file':
+                        result.push( (
+                            <FileControl
+                                key={ control.name }
+                                label={ control.label }
+                                value={ this.getControlValue( control, childIndex ) }
+                                help={ control.help }
+                                allowedMimeTypes={ control.allowed_mime_types }
+                                onChange={ ( val ) => {
+                                    this.onSelectFile( val, control, childIndex );
+                                } }
+                            />
+                        ) );
+
                         break;
                     case 'color':
                         result.push( (
