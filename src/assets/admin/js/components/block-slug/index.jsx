@@ -14,7 +14,7 @@ export default class BlockSlug extends Component {
                 label={ this.props.label || '' }
             >
                 <div className="lazyblocks-component-block-slug">
-                    <div className="lazyblocks-component-block-slug-prefix">lazyblocks/</div>
+                    <div className="lazyblocks-component-block-slug-prefix">lazyblock/</div>
                     <TextControl
                         { ...{
                             ...this.props,
