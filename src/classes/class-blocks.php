@@ -1056,6 +1056,10 @@ class LazyBlocks_Blocks {
         if ( $allow_wrapper ) {
             $html_atts = '';
 
+            if ( ! isset( $attributes['className'] ) ) {
+                $attributes['className'] = '';
+            }
+
             $attributes['className'] .= ' wp-block-' . str_replace( '/', '-', $attributes['lazyblock']['slug'] );
 
             if ( $attributes['blockUniqueClass'] ) {
