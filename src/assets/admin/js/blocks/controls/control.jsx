@@ -46,6 +46,19 @@ class Control extends Component {
             type = '',
         } = data;
 
+        let placementLabel = __( 'Content' );
+        switch ( placement ) {
+        case 'inspector':
+            placementLabel = __( 'Inspector' );
+            break;
+        case 'both':
+            placementLabel = __( 'Both' );
+            break;
+        case 'nowhere':
+            placementLabel = __( 'Hidden' );
+            break;
+        }
+
         const {
             collapsedChilds,
         } = this.state;
@@ -80,7 +93,7 @@ class Control extends Component {
                             <div>{ type }</div>
                         </div>
                         <div className="lzb-constructor-controls-item-placement">
-                            { data.child_of ? '' : placement }
+                            { data.child_of ? '' : placementLabel }
                         </div>
                         <div className="lzb-constructor-controls-item-meta">
                             { ! data.child_of && 'true' === save_in_meta ? save_in_meta_name : '' }
