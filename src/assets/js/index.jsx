@@ -58,50 +58,50 @@ const getDateSettings = wp.date.__experimentalGetSettings;
 
 // each registered block.
 options.blocks.forEach( ( item ) => {
-    function getControlValue( control, childIndex ) {
-        const {
-            attributes,
-        } = this.props;
-
-        let result = attributes[ control.name ];
-
-        // prepare repeater items.
-        if ( control.child_of && item.controls[ control.child_of ] && childIndex > -1 ) {
-            const childs = this.getControlValue( item.controls[ control.child_of ] );
-            if ( childs && typeof childs[ childIndex ] !== 'undefined' && typeof childs[ childIndex ][ control.name ] !== 'undefined' ) {
-                result = childs[ childIndex ][ control.name ];
-            }
-        }
-
-        // convert string to array.
-        if (
-            typeof result === 'string' &&
-            (
-                'repeater' === control.type ||
-                'image' === control.type ||
-                'gallery' === control.type ||
-                'file' === control.type
-            )
-        ) {
-            try {
-                result = JSON.parse( decodeURI( result ) );
-            } catch ( e ) {
-                result = [];
-            }
-        }
-
-        return result;
-    }
-
     class LazyBlock extends Component {
         constructor() {
             super( ...arguments );
 
-            this.getControlValue = getControlValue.bind( this );
+            this.getControlValue = this.getControlValue.bind( this );
             this.onControlChange = this.onControlChange.bind( this );
             this.onSelectImages = this.onSelectImages.bind( this );
             this.onSelectImage = this.onSelectImage.bind( this );
             this.renderControls = this.renderControls.bind( this );
+        }
+
+        getControlValue( control, childIndex ) {
+            const {
+                attributes,
+            } = this.props;
+
+            let result = attributes[ control.name ];
+
+            // prepare repeater items.
+            if ( control.child_of && item.controls[ control.child_of ] && childIndex > -1 ) {
+                const childs = this.getControlValue( item.controls[ control.child_of ] );
+                if ( childs && typeof childs[ childIndex ] !== 'undefined' && typeof childs[ childIndex ][ control.name ] !== 'undefined' ) {
+                    result = childs[ childIndex ][ control.name ];
+                }
+            }
+
+            // convert string to array.
+            if (
+                typeof result === 'string' &&
+                (
+                    'repeater' === control.type ||
+                    'image' === control.type ||
+                    'gallery' === control.type ||
+                    'file' === control.type
+                )
+            ) {
+                try {
+                    result = JSON.parse( decodeURI( result ) );
+                } catch ( e ) {
+                    result = [];
+                }
+            }
+
+            return result;
         }
 
         onControlChange( val, control, childIndex ) {
