@@ -54,7 +54,7 @@ const {
     withSelect,
 } = wp.data;
 
-const getSettings = wp.date.__experimentalGetSettings;
+const getDateSettings = wp.date.__experimentalGetSettings;
 
 // each registered block.
 options.blocks.forEach( ( item ) => {
@@ -455,7 +455,7 @@ options.blocks.forEach( ( item ) => {
                         ) );
                         break;
                     case 'date_time':
-                        const settings = getSettings();
+                        const settings = getDateSettings();
 
                         // To know if the current timezone is a 12 hour time with look for "a" in the time format.
                         // We also make sure this a is not escaped by a "/".
