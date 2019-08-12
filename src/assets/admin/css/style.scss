@@ -89,15 +89,20 @@
         font-size: .8em;
         border-bottom: 1px solid #e6e6e6;
 
-        span {
-            font-weight: 600;
-        }
-
         .dashicons {
             height: auto;
-            margin-right: 5px;
             font-size: 1.2em;
             opacity: .8;
+
+            + h6 {
+                margin-left: 10px;
+            }
+        }
+
+        h6 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 600;
         }
     }
 

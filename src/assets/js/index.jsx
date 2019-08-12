@@ -595,7 +595,7 @@ options.blocks.forEach( ( item ) => {
                             { item.icon ? (
                                 <span className={ item.icon } />
                             ) : '' }
-                            <span>{ item.title }</span>
+                            <h6>{ item.title }</h6>
                         </div>
                         <div className="lzb-content-controls">
                             { this.renderControls( 'content' ) }
