@@ -1,7 +1,5 @@
 import ColorPalette from './color-palette.jsx';
 
-const { isEmpty } = window.lodash;
-
 const { Component, Fragment } = wp.element;
 
 const {

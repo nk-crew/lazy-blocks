@@ -17,16 +17,18 @@ class LazyBlocks_Templates {
      * LazyBlocks_Templates constructor.
      */
     public function __construct() {
+        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+
         add_action( 'init', array( $this, 'register_post_type' ) );
 
         // add template to posts.
         add_action( 'init', array( $this, 'add_template_to_posts' ) );
 
-        // show blank state for portfolio list page.
-        add_action( 'manage_posts_extra_tablenav', array( $this, 'change_admin_list_table' ) );
-
         // enqueue Gutenberg on templates screen.
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 9 );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+        // redirect from admin list page.
+        add_action( 'admin_init', array( $this, 'admin_list_redirect' ) );
     }
 
     /**
@@ -139,6 +141,20 @@ class LazyBlocks_Templates {
     }
 
     /**
+     * Admin menu.
+     */
+    public function admin_menu() {
+        add_submenu_page(
+            'edit.php?post_type=lazyblocks',
+            esc_html__( 'Templates', '@@text_domain' ),
+            esc_html__( 'Templates', '@@text_domain' ),
+            'manage_options',
+            'lazyblocks_templates',
+            array( $this, 'render_templates_page' )
+        );
+    }
+
+    /**
      * Register CPT.
      */
     public function register_post_type() {
@@ -154,7 +170,7 @@ class LazyBlocks_Templates {
                 'show_ui'      => true,
 
                 // adding to custom menu manually.
-                'show_in_menu' => 'edit.php?post_type=lazyblocks',
+                'show_in_menu' => false,
                 'show_in_rest' => true,
                 'capabilities' => array(
                     'edit_post'          => 'edit_lazyblock',
@@ -184,103 +200,56 @@ class LazyBlocks_Templates {
     }
 
     /**
-     * Change default WP admin list table.
-     *
-     * @param string $which position.
+     * Templates page
      */
-    public function change_admin_list_table( $which ) {
-        global $posts;
-        global $post_type;
+    public function render_templates_page() {
+        ?>
+        <div class="wrap">
+            <h1 class="wp-heading-inline"><?php echo esc_html__( 'Templates', '@@text_domain' ); ?></h1>
 
-        if ( in_array( $post_type, array( 'lazyblocks_templates' ) ) && 'top' === $which ) {
-            $available_post_types = get_post_types( array(
-                'show_ui' => true,
-            ), 'object' );
-
-            $added_post_types = array();
-            if ( ! empty( $posts ) ) {
-                foreach ( $posts as $post ) {
-                    $meta = (array) json_decode( get_post_meta( $post->ID, 'lzb_template_data', true ) );
-
-                    if ( isset( $meta['post_type'] ) ) {
-                        $added_post_types[] = $meta['post_type'];
-                    }
-                }
+            <div id="poststuff">
+                <div class="lazyblocks-templates-page">
+                    <span class="spinner is-active"></span>
+                </div>
+            </div>
+        </div>
+        <style type="text/css">
+            .lazyblocks-templates-page > .spinner {
+                float: left;
+                margin-left: 0;
             }
+        </style>
+        <?php
+    }
 
-            if ( ! empty( $available_post_types ) ) :
-            ?>
-                <div class="lzb-templates-label">
-                    <?php echo esc_html__( 'Select post type:', '@@text_domain' ); ?>
-                </div>
-                <div class="lzb-templates-buttons">
-                    <?php
-                    foreach ( $available_post_types as $post ) {
-                        if ( 'lazyblocks' !== $post->name && 'lazyblocks_templates' !== $post->name && 'attachment' !== $post->name ) {
-                            $label = $post->label;
+    /**
+     * Redirect from templates list page.
+     */
+    public function admin_list_redirect() {
+        if ( ! isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
+            return;
+        }
 
-                            if ( isset( $post->labels ) && isset( $post->labels->singular_name ) ) {
-                                $label = $post->labels->singular_name;
-                            }
-                            ?>
-                            <button class="button button-secondary" data-post-type="<?php echo esc_html( $post->name ); ?>" data-post-label="<?php echo esc_attr( $label ); ?>" <?php echo esc_html( in_array( $post->name, $added_post_types ) ? 'disabled="disabled"' : '' ); ?>><?php echo esc_html( $label ); ?></button>
-                            <?php
-                        }
-                    }
-                    ?>
-                </div>
-                <div class="lzb-templates-list">
-                    <?php
-                    if ( ! empty( $posts ) ) {
-                        foreach ( $posts as $post ) {
-                            ?>
-                            <div class="lzb-templates-list-item">
-                                <div class="lzb-templates-single">
-                                    <div class="lzb-metabox">
-                                        <div class="lzb-metabox-label">
-                                            <label><?php echo esc_html( $post->post_title ); ?></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                    }
-                    ?>
-                </div>
-            <?php
-            endif;
-            ?>
-            <style type="text/css">
-                .lzb-templates-blocks,
-                #posts-filter .wp-list-table,
-                #posts-filter .tablenav.bottom,
-                #posts-filter .search-box,
-                .tablenav.top > .actions,
-                .tablenav .tablenav-pages,
-                .wrap .subsubsub,
-                .wp-heading-inline + .page-title-action {
-                    display: none;
-                }
-            </style>
-            <?php
+        if ( 'lazyblocks_templates' === $_GET['post_type'] ) {
+            wp_redirect( 'edit.php?post_type=lazyblocks&page=lazyblocks_templates' );
+            exit();
         }
     }
 
     /**
      * Enqueue Gutenberg scripts to work with registered blocks on Templates page.
+     *
+     * @param string $page_data Current page name.
      */
-    public function admin_enqueue_scripts() {
-        global $post_type;
-
-        if ( 'lazyblocks_templates' !== $post_type ) {
+    public function admin_enqueue_scripts( $page_data ) {
+        if ( 'lazyblocks_page_lazyblocks_templates' !== $page_data ) {
             return;
         }
 
         $block_categories = array();
         if ( function_exists( 'get_block_categories' ) ) {
             $block_categories = get_block_categories( get_post() );
-        } else if ( function_exists( 'gutenberg_get_block_categories' ) ) {
+        } elseif ( function_exists( 'gutenberg_get_block_categories' ) ) {
             $block_categories = gutenberg_get_block_categories( get_post() );
         }
 
@@ -292,7 +261,12 @@ class LazyBlocks_Templates {
 
         do_action( 'enqueue_block_editor_assets' );
 
-        // enqueue blocks library.
-        wp_enqueue_script( 'wp-block-library' );
+        // Lazyblocks Templates.
+        wp_enqueue_script(
+            'lazyblocks-templates',
+            lazyblocks()->plugin_url . 'assets/admin/templates/index.min.js',
+            array( 'wp-blocks', 'wp-block-library', 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
+            filemtime( lazyblocks()->plugin_path . 'assets/admin/templates/index.min.js' )
+        );
     }
 }

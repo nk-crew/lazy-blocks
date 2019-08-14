@@ -1,0 +1,182 @@
+@import "../../../variables";
+
+.lzb-constructor-controls-columns {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    color: $color_dark_lighten;
+
+    > div {
+        flex: 1;
+    }
+}
+
+.lzb-constructor-controls-item,
+.lzb-constructor-controls-item-appender {
+    position: relative;
+    padding: 15px 20px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .07);
+    border-radius: $radius_large;
+    transition: .2s background ease-in-out, .2s color ease-in-out, .2s border-color ease-in-out, .2s box-shadow ease-in-out;
+    z-index: 1;
+}
+
+.lzb-constructor-controls-item:hover {
+    border-color: $color_gray_darken;
+    box-shadow: 0 0 0 3px rgba($color_dark_darken, .05);
+}
+
+.lzb-constructor-controls-item-wrap-selected > .lzb-constructor-controls-item {
+    border-color: $color_main;
+    box-shadow: 0 0 0 3px rgba($color_main, .3);
+}
+
+.lzb-constructor-controls-item-wrap,
+.lzb-constructor-controls-item-appender {
+    margin-top: 15px;
+}
+
+// appender
+.lzb-constructor-controls-item-appender {
+    display: block;
+    width: 100%;
+    min-height: 60px;
+    color: $color_dark_lighten;
+    background: $color_gray_lighten_2;
+    border-color: $color_gray_darken;
+    border-style: dashed;
+    outline: none;
+    box-shadow: none;
+
+    &:hover {
+        color: $color_dark_darken;
+        background: #fff;
+        border-color: $color_dark_lighten;
+    }
+}
+
+// repeater child items.
+.lzb-constructor-controls-item-childs {
+    padding-left: 25px;
+}
+
+// repeater toggle child button.
+.lzb-constructor-controls-item-repeater-toggle {
+    position: relative;
+    display: block;
+    width: calc(100% + 40px);
+    padding: 7px;
+    padding-top: 5px;
+    margin-top: 15px;
+    margin-right: -20px;
+    margin-bottom: -15px;
+    margin-left: -20px;
+    font-size: 80%;
+    color: $color_dark_lighten;
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, .07);
+    border-bottom-right-radius: $radius_large;
+    border-bottom-left-radius: $radius_large;
+    outline: none;
+    transition: .2s background ease-in-out;
+
+    &:hover {
+        background: $color_gray_lighten_2;
+    }
+}
+
+// repeater decoration.
+.lzb-constructor-controls-item-repeater-decoration {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    z-index: 0;
+
+    &::after,
+    &::before {
+        content: "";
+        position: absolute;
+        display: block;
+        top: -20px;
+        right: 10px;
+        left: 10px;
+        height: 25px;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: $radius_large;
+        box-shadow: $shadow_small;
+        transition: .2s transform ease-in-out;
+        z-index: -1;
+    }
+    &::before {
+        top: -15px;
+        right: 20px;
+        left: 20px;
+    }
+
+    + .lzb-constructor-controls-item,
+    + .lzb-constructor-controls-item-appender {
+        margin-top: 15px;
+    }
+}
+.lzb-constructor-controls-item:hover + .lzb-constructor-controls-item-repeater-decoration,
+.lzb-constructor-controls-item-repeater-decoration:hover {
+    &::after {
+        transform: translateY(1px);
+    }
+    &::before {
+        transform: translateY(2px);
+    }
+}
+
+// head
+.lzb-constructor-controls-item-head {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+
+    > div {
+        flex: 1;
+    }
+
+    .lzb-constructor-controls-item-label span {
+        display: block;
+        font-weight: 600;
+    }
+
+    small {
+        font-size: 80%;
+        color: $color_dark_lighten;
+    }
+
+    .lzb-constructor-controls-item-handler {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 25px;
+        min-width: 25px;
+        max-width: 25px;
+        text-align: right;
+        cursor: grab;
+        opacity: .2;
+        transition: .2s opacity ease-in-out;
+
+        &:hover {
+            opacity: .4;
+        }
+    }
+}
+.lzb-constructor-controls-item-type,
+.lzb-constructor-controls-item-placement,
+.lzb-constructor-controls-item-meta {
+    font-size: 80%;
+}
