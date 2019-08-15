@@ -902,6 +902,7 @@ class LazyBlocks_Blocks {
         foreach ( $controls as $k => $control ) {
             if ( isset( $control['child_of'] ) && $control['child_of'] === $child_of ) {
                 $type        = 'string';
+                $items       = false;
                 $default_val = isset( $control['default'] ) ? $control['default'] : null;
 
                 if ( $control['type'] ) {
@@ -914,6 +915,7 @@ class LazyBlocks_Blocks {
                         case 'select':
                             if ( isset( $control['multiple'] ) && 'true' === $control['multiple'] ) {
                                 $type = 'array';
+                                $items = array( 'type' => 'string' );
                                 $default_val = explode( ',', $default_val );
                             }
                             break;
@@ -942,8 +944,13 @@ class LazyBlocks_Blocks {
                 }
 
                 $attributes[ $control['name'] ] = array(
-                    'type'    => $type,
+                    'type' => $type,
                 );
+
+                if ( $items ) {
+                    $attributes[ $control['name'] ]['items'] = $items;
+                }
+
                 if ( null !== $default_val ) {
                     $attributes[ $control['name'] ]['default'] = $default_val;
                 }
