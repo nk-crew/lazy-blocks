@@ -27,7 +27,12 @@ cfg.compile_scss_files_src = [ '{src}/**/*.scss', '!{src}/**/vendor/**/*' ];
 cfg.compile_js_files_src = [ '{src}/**/*.js', '!{src}/**/vendor/**/*' ];
 
 // Compile JSX files.
-cfg.compile_jsx_files_src = [ '{src}/*assets/js/index.jsx', '{src}/*assets/admin/blocks/index.jsx', '{src}/*assets/admin/templates/index.jsx' ];
+cfg.compile_jsx_files_src = [
+    '{src}/*assets/js/index.jsx',
+    '{src}/*assets/admin/blocks/index.jsx',
+    '{src}/*assets/admin/templates/index.jsx',
+    '{src}/*assets/admin/tools/index.jsx',
+];
 
 // Correct line endings files.
 cfg.correct_line_endings_files_src = '{dist}/**/*.{js,css}';

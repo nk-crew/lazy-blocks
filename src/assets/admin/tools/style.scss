@@ -1,0 +1,50 @@
+.lazyblocks-tools-page {
+    .lzb-export-textarea {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -6px;
+        margin-bottom: -12px;
+
+        > div {
+            flex: 1 1 auto;
+            padding: 0 6px;
+            padding-bottom: 12px;
+        }
+
+        textarea {
+            width: 100%;
+            min-width: 400px;
+            min-height: 500px;
+        }
+    }
+
+    .components-base-control + .components-base-control {
+        margin-top: 10px;
+    }
+
+    .components-base-control > .components-base-control__field > .components-base-control__label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .components-toggle-control {
+        > .components-base-control__field {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .components-form-toggle__on,
+        .components-form-toggle__off {
+            display: none;
+        }
+        .components-toggle-control__label {
+            display: inline-flex;
+            margin-left: 5px;
+
+            .dashicons {
+                margin-right: 5px;
+            }
+        }
+    }
+}

@@ -18,6 +18,9 @@ class LazyBlocks_Tools {
      */
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+
+        // enqueue script on Tools page.
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
     }
 
     /**
@@ -38,11 +41,32 @@ class LazyBlocks_Tools {
      * Tools page
      */
     public function render_tools_page() {
-        $blocks = lazyblocks()->blocks()->get_blocks( true );
-        $templates = lazyblocks()->templates()->get_templates( true );
-        $blocks_string = '';
-        $templates_string = '';
+        ?>
+        <div class="wrap">
+            <h1 class="wp-heading-inline"><?php echo esc_html__( 'Tools', '@@text_domain' ); ?></h1>
 
+            <div id="poststuff">
+                <div class="lazyblocks-tools-page">
+                    <span class="spinner is-active"></span>
+                </div>
+            </div>
+            <style type="text/css">
+                .lazyblocks-tools-page > .spinner {
+                    float: left;
+                    margin-left: 0;
+                }
+            </style>
+        </div>
+        <?php
+    }
+
+    /**
+     * Clear PHP string code.
+     *
+     * @param string $string code string.
+     * @return string
+     */
+    public function clear_php_string_code( $string ) {
         $str_replace = array(
             '  '      => '    ',
             'array (' => 'array(',
@@ -53,63 +77,90 @@ class LazyBlocks_Tools {
             '/\n/'               => "\n    ",
         );
 
+        // change 2-spaces to 4-spaces.
+        $string = str_replace( array_keys( $str_replace ), array_values( $str_replace ), $string );
+
+        // correct formats '=> array('.
+        // additional spaces.
+        $string = preg_replace( array_keys( $preg_replace ), array_values( $preg_replace ), $string );
+
+        return $string;
+    }
+
+    /**
+     * Get block PHP string code.
+     *
+     * @param array $block block data.
+     * @return string
+     */
+    public function get_block_php_string_code( $block ) {
+        $result = '';
+
+        $result .= "\nlazyblocks()->add_block( ";
+        $result .= var_export( $block, true );
+        $result .= " );\n";
+
+        return $this->clear_php_string_code( $result );
+    }
+
+    /**
+     * Get template PHP string code.
+     *
+     * @param array $template template data.
+     * @return string
+     */
+    public function get_template_php_string_code( $template ) {
+        $result = '';
+
+        $result .= "\nlazyblocks()->add_template( ";
+        $result .= var_export( $template, true );
+        $result .= " );\n";
+
+        return $this->clear_php_string_code( $result );
+    }
+
+    /**
+     * Enqueue script for Tools page.
+     *
+     * @param string $page_data Current page name.
+     */
+    public function admin_enqueue_scripts( $page_data ) {
+        if ( 'lazyblocks_page_lazyblocks_tools' !== $page_data ) {
+            return;
+        }
+
+        $blocks    = lazyblocks()->blocks()->get_blocks( true );
+        $templates = lazyblocks()->templates()->get_templates( true );
+        $data      = array(
+            'blocks'    => array(),
+            'templates' => array(),
+        );
+
         if ( ! empty( $blocks ) ) {
             foreach ( $blocks as $block ) {
-                $blocks_string .= "\nlazyblocks()->add_block( ";
-                $blocks_string .= var_export( $block, true );
-                $blocks_string .= " );\n";
+                $data['blocks'][] = array(
+                    'data'            => $block,
+                    'php_string_code' => $this->get_block_php_string_code( $block ),
+                );
             }
-
-            // change 2-spaces to 4-spaces.
-            $blocks_string = str_replace( array_keys( $str_replace ), array_values( $str_replace ), $blocks_string );
-
-            // correct formats '=> array('.
-            // additional spaces.
-            $blocks_string = preg_replace( array_keys( $preg_replace ), array_values( $preg_replace ), $blocks_string );
-
-            $blocks_string = "if ( function_exists( 'lazyblocks' ) ) :\n$blocks_string\nendif;";
         }
         if ( ! empty( $templates ) ) {
             foreach ( $templates as $template ) {
-                $templates_string .= "\nlazyblocks()->add_template( ";
-                $templates_string .= var_export( $template, true );
-                $templates_string .= " );\n";
+                $data['templates'][] = array(
+                    'data'            => $template,
+                    'php_string_code' => $this->get_template_php_string_code( $template ),
+                );
             }
-
-            // change 2-spaces to 4-spaces.
-            $templates_string = str_replace( array_keys( $str_replace ), array_values( $str_replace ), $templates_string );
-
-            // correct formats '=> array('.
-            // additional spaces.
-            $templates_string = preg_replace( array_keys( $preg_replace ), array_values( $preg_replace ), $templates_string );
-
-            $templates_string = "if ( function_exists( 'lazyblocks' ) ) :\n$templates_string\nendif;";
         }
 
-        ?>
-        <div class="wrap">
-            <h1 class="wp-heading-inline"><?php echo esc_html__( 'Tools', '@@text_domain' ); ?></h1>
+        // Lazyblocks Tools.
+        wp_enqueue_script(
+            'lazyblocks-tools',
+            lazyblocks()->plugin_url . 'assets/admin/tools/index.min.js',
+            array( 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
+            filemtime( lazyblocks()->plugin_path . 'assets/admin/tools/index.min.js' )
+        );
 
-            <div id="poststuff">
-                <div id="lazyblocks_tools" class="postbox">
-                    <button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text"><?php echo esc_html__( 'Toggle panel: Export', '@@text_domain' ); ?></span><span class="toggle-indicator" aria-hidden="true"></span></button><h2 class="hndle ui-sortable-handle"><span><?php echo esc_html__( 'Export', '@@text_domain' ); ?></span></h2>
-                    <div class="inside">
-                        <p><?php echo esc_html__( 'You can export PHP code and use it in the theme/plugin to register a local version of generated blocks and templates. A local field group can provide many benefits such as faster load times, version control & dynamic blocks/templates. Simply copy and paste the following code to your theme\'s functions.php file or include it within an external file.', '@@text_domain' ); ?></p>
-
-                        <div class="lzb-export-textarea">
-                            <div>
-                                <label for="lzb-export-blocks">Blocks</label>
-                                <textarea class="lzb-export-code" id="lzb-export-blocks" readonly><?php echo esc_textarea( $blocks_string ); ?></textarea>
-                            </div>
-                            <div>
-                                <label for="lzb-export-templates">Templates</label>
-                                <textarea class="lzb-export-code" id="lzb-export-templates" readonly><?php echo esc_textarea( $templates_string ); ?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
+        wp_localize_script( 'lazyblocks-tools', 'lazyblocksToolsData', $data );
     }
 }
