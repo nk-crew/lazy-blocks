@@ -3,6 +3,7 @@ import controlsDefaults from '../../blocks/selected-control-settings/defaults';
 
 const {
     omit,
+    cloneDeep,
 } = window.lodash;
 
 function reducer( state = { data: false }, action ) {
@@ -74,7 +75,7 @@ function reducer( state = { data: false }, action ) {
                     controls: {
                         ...state.data.controls,
                         [ newId ]: {
-                            ...controlsDefaults,
+                            ...cloneDeep( controlsDefaults ),
                             ...action.data,
                         },
                     },
