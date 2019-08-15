@@ -70,6 +70,16 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.7.0 =
+
+* added experimental Required option for top-level controls
+* added possibility to choose which blocks and template export on Tools page
+* changed Templates page to use React
+* changed Tools page to use React
+* fixed PHP error when className is not available in the block
+* fixed PHP warning when used multiple select options
+* minor changes
+
 = 1.6.2 =
 
 * added File control
