@@ -116,6 +116,10 @@
         opacity: .6;
     }
 
+    .components-base-control__label .required {
+        margin-left: 5px;
+    }
+
     .lzb-preview-server {
         .components-spinner {
             position: absolute;

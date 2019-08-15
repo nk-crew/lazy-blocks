@@ -2,6 +2,7 @@
 import LabelRow from './label';
 import NameRow from './name';
 import TypeRow from './type';
+import RequiredRow from './required';
 import ChoicesRow from './choices';
 import AllowNullRow from './allow-null';
 import AllowedMimeTypesRow from './allowed-mime-types';
@@ -30,6 +31,7 @@ export default class settingsRows extends Component {
             label: LabelRow,
             name: NameRow,
             type: TypeRow,
+            required: RequiredRow,
             choices: ChoicesRow,
             allow_null: AllowNullRow,
             allowed_mime_types: AllowedMimeTypesRow,
@@ -53,6 +55,11 @@ export default class settingsRows extends Component {
 
             // conditions to show rows.
             switch ( i ) {
+            case 'required':
+                allow = data.type !== 'inner_blocks' &&
+                        data.type !== 'repeater' &&
+                        ! data.child_of;
+                break;
             case 'choices':
             case 'allow_null':
                 allow = data.type === 'select' ||

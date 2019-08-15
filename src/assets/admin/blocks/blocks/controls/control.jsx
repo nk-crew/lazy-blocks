@@ -44,6 +44,7 @@ class Control extends Component {
             save_in_meta = 'false',
             save_in_meta_name = '',
             type = '',
+            required = 'false',
         } = data;
 
         let placementLabel = __( 'Content' );
@@ -86,7 +87,12 @@ class Control extends Component {
                 >
                     <div className="lzb-constructor-controls-item-head">
                         <div className="lzb-constructor-controls-item-label">
-                            <span>{ label }</span>
+                            <span>
+                                { label }
+                                { 'true' === required ? (
+                                    <span className="required">*</span>
+                                ) : '' }
+                            </span>
                             <small>{ name }</small>
                         </div>
                         <div className="lzb-constructor-controls-item-type">

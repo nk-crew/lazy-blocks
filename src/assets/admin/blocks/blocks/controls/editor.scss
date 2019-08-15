@@ -148,9 +148,13 @@
         flex: 1;
     }
 
-    .lzb-constructor-controls-item-label span {
+    .lzb-constructor-controls-item-label > span {
         display: block;
         font-weight: 600;
+
+        .required {
+            margin-left: 5px;
+        }
     }
 
     small {

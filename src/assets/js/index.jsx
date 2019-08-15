@@ -1,6 +1,7 @@
 // External Dependencies.
 import classnames from 'classnames/dedupe';
 import arrayMove from 'array-move';
+import { throttle } from 'throttle-debounce';
 
 // Internal Dependencies
 import './blocks/free.jsx';
@@ -19,6 +20,9 @@ if ( ! options || ! options.blocks || ! options.blocks.length ) {
 }
 
 const {
+    __,
+} = wp.i18n;
+const {
     Component,
     Fragment,
 } = wp.element;
@@ -36,6 +40,7 @@ const {
     IconButton,
     DatePicker,
     TimePicker,
+    Notice,
 } = wp.components;
 
 const {
@@ -52,7 +57,12 @@ const {
 
 const {
     withSelect,
+    withDispatch,
 } = wp.data;
+
+const {
+    compose,
+} = wp.compose;
 
 const getDateSettings = wp.date.__experimentalGetSettings;
 
@@ -62,11 +72,71 @@ options.blocks.forEach( ( item ) => {
         constructor() {
             super( ...arguments );
 
+            this.isControlValueValid = this.isControlValueValid.bind( this );
+            this.maybeLockPostSaving = throttle( 500, this.maybeLockPostSaving.bind( this ) );
             this.getControlValue = this.getControlValue.bind( this );
             this.onControlChange = this.onControlChange.bind( this );
             this.onSelectImages = this.onSelectImages.bind( this );
             this.onSelectImage = this.onSelectImage.bind( this );
             this.renderControls = this.renderControls.bind( this );
+        }
+
+        componentDidMount() {
+            this.maybeLockPostSaving();
+        }
+        componentDidUpdate() {
+            this.maybeLockPostSaving();
+        }
+
+        isControlValueValid( val, control ) {
+            let isValid = false;
+
+            switch ( control.type ) {
+            case 'select':
+            case 'radio':
+                if ( 'true' === control.allow_null ) {
+                    isValid = true;
+                } else {
+                    isValid = '' !== val && typeof val !== 'undefined';
+                }
+                break;
+            default:
+                isValid = '' !== val && typeof val !== 'undefined';
+            }
+
+            return isValid;
+        }
+
+        maybeLockPostSaving() {
+            let shouldLock = 0;
+            let thereIsRequired = false;
+
+            // check all controls
+            Object.keys( item.controls ).forEach( ( k ) => {
+                const control = item.controls[ k ];
+
+                if ( control.required && 'true' === control.required ) {
+                    thereIsRequired = true;
+
+                    const val = this.getControlValue( control );
+
+                    if ( ! this.isControlValueValid( val, control ) ) {
+                        shouldLock += 1;
+                    }
+                }
+            } );
+
+            // no required controls available.
+            if ( ! thereIsRequired ) {
+                return;
+            }
+
+            // lock or unlock post saving depending on required controls values.
+            if ( shouldLock > 0 ) {
+                this.props.lockPostSaving();
+            } else {
+                this.props.unlockPostSaving();
+            }
         }
 
         getControlValue( control, childIndex ) {
@@ -204,6 +274,7 @@ options.blocks.forEach( ( item ) => {
                 const control = item.controls[ k ];
                 let placementCheck = control.type && control.placement !== 'nowhere' &&
                 ( control.placement === 'both' || control.placement === placement );
+                let label = control.label;
 
                 // inner blocks show only in content.
                 if ( control.type === 'inner_blocks' ) {
@@ -215,6 +286,17 @@ options.blocks.forEach( ( item ) => {
                     placementCheck = this.props.isLazyBlockSelected;
                 }
 
+                // required mark
+                if ( control.required && 'true' === control.required ) {
+                    label = (
+                        <Fragment>
+                            { label }
+                            <span className="required">*</span>
+                        </Fragment>
+                    );
+                }
+
+                // prepare control output
                 if (
                     ( ! childOf && ! control.child_of && placementCheck ) ||
                     ( childOf && control.child_of === childOf )
@@ -227,7 +309,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <TextControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 type={ control.type }
                                 min={ control.min }
                                 max={ control.max }
@@ -245,7 +327,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <RangeControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 min={ control.min }
                                 max={ control.max }
                                 step={ control.step }
@@ -261,7 +343,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <BaseControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 help={ control.help }
                             >
                                 <form
@@ -284,7 +366,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <TextareaControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 placeholder={ control.placeholder }
@@ -298,7 +380,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <BaseControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 help={ control.help }
                                 className="lzb-gutenberg-rich-text"
                             >
@@ -318,7 +400,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <BaseControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 help={ control.help }
                                 className="wp-block-html"
                             >
@@ -335,7 +417,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <BaseControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                             >
                                 <InnerBlocks />
                             </BaseControl>
@@ -345,7 +427,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <SelectControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 options={ control.choices }
                                 multiple={ 'true' === control.multiple }
                                 value={ this.getControlValue( control, childIndex ) }
@@ -363,7 +445,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <RadioControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 help={ control.help }
                                 selected={ this.getControlValue( control, childIndex ) }
                                 options={ control.choices }
@@ -377,7 +459,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <ToggleControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 checked={ !! this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 onChange={ ( val ) => {
@@ -390,7 +472,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <CheckboxControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 checked={ !! this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 onChange={ ( val ) => {
@@ -403,7 +485,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <ImageControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 onChange={ ( val ) => {
@@ -416,7 +498,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <GalleryControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 onChange={ ( val ) => {
@@ -429,7 +511,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <FileControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 allowedMimeTypes={ control.allowed_mime_types }
@@ -444,7 +526,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <ColorControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
                                 help={ control.help }
                                 alpha={ control.alpha === 'true' }
@@ -469,7 +551,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <BaseControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 help={ control.help }
                             >
                                 { /date/.test( control.date_time_picker ) ? (
@@ -499,7 +581,7 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <RepeaterControl
                                 key={ control.name }
-                                label={ control.label }
+                                label={ label }
                                 count={ val.length }
                                 renderRow={ ( index ) => (
                                     <Fragment>
@@ -523,6 +605,23 @@ options.blocks.forEach( ( item ) => {
                             />
                         ) );
                         break;
+                    }
+
+                    // show error for required fields
+                    if ( control.required && 'true' === control.required ) {
+                        const val = this.getControlValue( control, childIndex );
+
+                        if ( ! this.isControlValueValid( val, control ) ) {
+                            result.push( (
+                                <Notice
+                                    key={ `notice-${ control.name }` }
+                                    status="warning"
+                                    isDismissible={ false }
+                                >
+                                    { __( 'This field is required' ) }
+                                </Notice>
+                            ) );
+                        }
                     }
                 }
             } );
@@ -612,15 +711,32 @@ options.blocks.forEach( ( item ) => {
         }
     }
 
-    const LazyBlockWithSelect = withSelect( ( select, ownProps ) => {
-        const {
-            hasSelectedInnerBlock,
-        } = select( 'core/editor' );
+    const LazyBlockWithSelect = compose( [
+        withSelect( ( select, ownProps ) => {
+            const {
+                hasSelectedInnerBlock,
+            } = select( 'core/editor' );
 
-        return {
-            isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock( ownProps.clientId ),
-        };
-    } )( LazyBlock );
+            return {
+                isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock( ownProps.clientId ),
+            };
+        } ),
+        withDispatch( ( dispatch, ownProps ) => {
+            const {
+                lockPostSaving,
+                unlockPostSaving,
+            } = dispatch( 'core/editor' );
+
+            return {
+                lockPostSaving() {
+                    lockPostSaving( `lazyblock-${ ownProps.clientId }` );
+                },
+                unlockPostSaving() {
+                    unlockPostSaving( `lazyblock-${ ownProps.clientId }` );
+                },
+            };
+        } ),
+    ] )( LazyBlock );
 
     // conditionally show for specific post type.
     if ( item.supports.inserter && item.condition.length ) {

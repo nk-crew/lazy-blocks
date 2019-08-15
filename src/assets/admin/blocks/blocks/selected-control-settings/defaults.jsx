@@ -2,23 +2,42 @@ export default {
     label: '',
     name: '',
     type: 'text',
-    choices: [],
     child_of: '',
-    allow_null: 'false',
-    allowed_mime_types: [],
-    multiple: 'false',
-    alpha: 'false',
-    min: '',
-    max: '',
-    step: '',
-    date_time_picker: 'date_time',
-    multiline: 'false',
     default: '',
-    checked: 'false',
     placeholder: '',
     help: '',
     placement: 'content',
     hide_if_not_selected: 'false',
     save_in_meta: 'false',
     save_in_meta_name: '',
+
+    // all controls, except repeater, inner-blocks.
+    required: 'false',
+
+    // select, radio.
+    choices: [],
+
+    // checkbox, toggle.
+    checked: 'false',
+
+    // select.
+    allow_null: 'false',
+    multiple: 'false',
+
+    // file.
+    allowed_mime_types: [],
+
+    // color.
+    alpha: 'false',
+
+    // number, range.
+    min: '',
+    max: '',
+    step: '',
+
+    // date-time.
+    date_time_picker: 'date_time',
+
+    // rich-text
+    multiline: 'false',
 };
