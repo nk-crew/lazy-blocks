@@ -10,13 +10,20 @@ import deepEqual from 'deep-equal';
 const {
     Spinner,
 } = wp.components;
+
 const {
     Component,
     RawHTML,
     Fragment,
 } = wp.element;
+
 const { __, sprintf } = wp.i18n;
+
 const { apiFetch } = wp;
+
+const {
+    doAction,
+} = wp.hooks;
 
 /**
  * Block Editor custom PHP preview.
@@ -47,7 +54,10 @@ export class PreviewServerCallback extends Component {
     }
 
     componentDidUpdate( prevProps ) {
-        if ( this.state.allowRender && ! deepEqual( prevProps, this.props ) ) {
+        const prevAttributes = prevProps.attributes;
+        const curAttributes = this.props.attributes;
+
+        if ( this.state.allowRender && ! deepEqual( prevAttributes, curAttributes ) ) {
             this.fetch( this.props );
         }
     }
@@ -59,7 +69,13 @@ export class PreviewServerCallback extends Component {
         if ( null !== this.state.response ) {
             this.setState( { response: null } );
         }
-        const { block, attributes = null, urlQueryArgs = {} } = props;
+        const {
+            block,
+            attributes = null,
+            urlQueryArgs = {},
+            onBeforeChange = () => {},
+            onChange = () => {},
+        } = props;
 
         // Store the latest fetch request so that when we process it, we can
         // check if it is the current request, to avoid race conditions on slow networks.
@@ -75,22 +91,34 @@ export class PreviewServerCallback extends Component {
         } )
             .then( ( response ) => {
                 if ( this.isStillMounted && fetchRequest === this.currentFetchRequest ) {
+                    onBeforeChange();
+                    doAction( 'lazyblocks.components.PreviewServerCallback.onBeforeChange', this.props );
+
                     if ( response && response.success ) {
                         this.setState( {
                             response: response.response,
                             previousResponse: response.response,
+                        }, () => {
+                            onChange();
+                            doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                         } );
                     } else if ( response && ! response.success && response.error_code ) {
                         if ( 'lazy_block_invalid' === response.error_code ) {
                             this.setState( {
                                 response: null,
                                 previousResponse: null,
+                            }, () => {
+                                onChange();
+                                doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                             } );
                         } else if ( 'lazy_block_no_render_callback' === response.error_code ) {
                             this.setState( {
                                 response: null,
                                 previousResponse: null,
                                 allowRender: false,
+                            }, () => {
+                                onChange();
+                                doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                             } );
                         }
                     }
@@ -98,11 +126,17 @@ export class PreviewServerCallback extends Component {
             } )
             .catch( ( response ) => {
                 if ( this.isStillMounted && fetchRequest === this.currentFetchRequest ) {
+                    onBeforeChange();
+                    doAction( 'lazyblocks.components.PreviewServerCallback.onBeforeChange', this.props );
+
                     this.setState( {
                         response: {
                             error: true,
                             response,
                         },
+                    }, () => {
+                        onChange();
+                        doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                     } );
                 }
             } );
