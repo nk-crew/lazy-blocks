@@ -4,6 +4,7 @@ export default {
     type: 'text',
     child_of: '',
     default: '',
+    characters_limit: '',
     placeholder: '',
     help: '',
     placement: 'content',

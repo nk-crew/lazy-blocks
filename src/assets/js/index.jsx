@@ -275,6 +275,7 @@ options.blocks.forEach( ( item ) => {
                 let placementCheck = control.type && control.placement !== 'nowhere' &&
                 ( control.placement === 'both' || control.placement === placement );
                 let label = control.label;
+                let maxlength = '';
 
                 // inner blocks show only in content.
                 if ( control.type === 'inner_blocks' ) {
@@ -296,6 +297,18 @@ options.blocks.forEach( ( item ) => {
                     );
                 }
 
+                // maxlength attribute
+                if (
+                    control.characters_limit && (
+                        control.type === 'text' ||
+                        control.type === 'textarea' ||
+                        control.type === 'email' ||
+                        control.type === 'password'
+                    )
+                ) {
+                    maxlength = control.characters_limit ? parseInt( control.characters_limit ) : '';
+                }
+
                 // prepare control output
                 if (
                     ( ! childOf && ! control.child_of && placementCheck ) ||
@@ -314,6 +327,7 @@ options.blocks.forEach( ( item ) => {
                                 min={ control.min }
                                 max={ control.max }
                                 step={ control.step }
+                                maxlength={ maxlength }
                                 help={ control.help }
                                 placeholder={ control.placeholder }
                                 value={ this.getControlValue( control, childIndex ) }
@@ -368,6 +382,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
+                                maxlength={ maxlength }
                                 help={ control.help }
                                 placeholder={ control.placeholder }
                                 onChange={ ( val ) => {

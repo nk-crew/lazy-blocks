@@ -12,6 +12,7 @@ import MinMaxStepRow from './min-max-step';
 import DateTimePickerRow from './date-time-picker';
 import MultilineRow from './multiline';
 import DefaultRow from './default';
+import CharactersLimit from './characters-limit';
 import CheckedRow from './checked';
 import PlaceholderRow from './placeholder';
 import HelpRow from './help';
@@ -41,6 +42,7 @@ export default class settingsRows extends Component {
             date_time_picker: DateTimePickerRow,
             multiline: MultilineRow,
             default: DefaultRow,
+            characters_limit: CharactersLimit,
             checked: CheckedRow,
             placeholder: PlaceholderRow,
             help: HelpRow,
@@ -93,6 +95,12 @@ export default class settingsRows extends Component {
                         data.type !== 'checkbox' &&
                         data.type !== 'toggle' &&
                         data.type !== 'repeater';
+                break;
+            case 'characters_limit':
+                allow = data.type === 'text' ||
+                        data.type === 'textarea' ||
+                        data.type === 'email' ||
+                        data.type === 'password';
                 break;
             case 'checked':
                 allow = data.type === 'checkbox' || data.type === 'toggle';
