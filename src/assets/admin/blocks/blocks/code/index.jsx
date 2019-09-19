@@ -117,7 +117,7 @@ export default class CustomCodeSettings extends Component {
                             } }
                         >
                             <p className="description">
-                                { __( 'You can use PHP to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php/</a>
+                                { __( 'You can use PHP to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/handlebars/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/handlebars/</a>
                             </p>
                             <hr />
                             <p className="description">
