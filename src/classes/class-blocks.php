@@ -938,7 +938,7 @@ class LazyBlocks_Blocks {
                                 $default_val[ $n ] = $inner_blocks[ $n ]['default'];
                             }
 
-                            $default_val = urlencode( json_encode( array( $default_val ) ) );
+                            $default_val = rawurlencode( json_encode( array( $default_val ) ) );
                             break;
                     }
                 }
@@ -1033,7 +1033,7 @@ class LazyBlocks_Blocks {
             // prepare decoded arrays to actual arrays.
             if ( is_string( $attr ) ) {
                 if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array || substr( $attr, 0, strlen( $check_array_alt ) ) === $check_array_alt ) {
-                    $attributes[ $k ] = json_decode( urldecode( $attr ), true );
+                    $attributes[ $k ] = json_decode( rawurldecode( $attr ), true );
                 }
             }
 
