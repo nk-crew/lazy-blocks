@@ -8,11 +8,11 @@
 * License: GPLv2 or later
 * License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.
+Custom blocks and custom meta fields without hard coding for Gutenberg.
 
 ## Description ##
 
-**Lazy Blocks** is a Gutenberg blocks visual constructor for WordPress developers. You can create custom **meta fields** as well as **blocks** with output HTML. Add editor controls to your blocks using **drag & drop** visual constructor. Create **post templates** with predefined blocks (any post type).
+Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You can create custom blocks as well as custom meta fields with output HTML. Add editor controls to your blocks using drag & drop visual constructor. Create post templates with predefined blocks (any post type).
 
 #### Links ####
 
@@ -22,8 +22,8 @@ Gutenberg blocks visual constructor. Custom meta fields or blocks with output wi
 
 #### Features ####
 
-* Create blocks with output code
-* Create blocks for meta custom fields
+* Create custom blocks with output code
+* Create custom blocks for meta custom fields
 * Handlebars used for blocks output
 * Export to PHP
 * Show controls in block content / inspector
