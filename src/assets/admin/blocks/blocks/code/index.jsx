@@ -36,7 +36,7 @@ export default class CustomCodeSettings extends Component {
 
         return (
             <CodeEditor
-                mode="html"
+                mode={ data.code_use_php ? 'php' : 'html' }
                 onChange={ value => updateData( { [ metaName ]: value } ) }
                 value={ data[ metaName ] }
                 maxLines={ 20 }
@@ -71,15 +71,15 @@ export default class CustomCodeSettings extends Component {
 
         const tabs = [ {
             name: 'frontend',
-            title: __( 'HTML' ),
+            title: data.code_use_php ? __( 'PHP' ) : __( 'HTML' ),
         } ];
 
         if ( 'never' !== data.code_show_preview && ! data.code_single_output ) {
-            tabs[ 0 ].title = __( 'Frontend HTML' );
+            tabs[ 0 ].title = data.code_use_php ? __( 'Frontend PHP' ) : __( 'Frontend HTML' );
 
             tabs.push( {
                 name: 'editor',
-                title: __( 'Editor HTML' ),
+                title: data.code_use_php ? __( 'Editor PHP' ) : __( 'Editor HTML' ),
             } );
         }
 
@@ -93,80 +93,90 @@ export default class CustomCodeSettings extends Component {
                     </Tabs>
                 ) : (
                     <BaseControl
-                        label={ __( 'HTML' ) }
+                        label={ data.code_use_php ? __( 'PHP' ) : __( 'HTML' ) }
                     >
                         { this.getEditor( 'frontend' ) }
                     </BaseControl>
                 ) }
 
-                <Button
-                    isDefault
-                    onClick={ () => {
-                        if ( ! showInfo ) {
-                            this.setState( { showInfo: true } );
-                        }
-                    } }
+                <BaseControl>
+                    <Button
+                        isDefault
+                        onClick={ () => {
+                            if ( ! showInfo ) {
+                                this.setState( { showInfo: true } );
+                            }
+                        } }
+                    >
+                        { __( 'How to use?' ) }
+                        { showInfo ? (
+                            <Popover
+                                className="lzb-constructor-custom-code-settings-popover"
+                                focusOnMount={ false }
+                                onClickOutside={ () => {
+                                    this.setState( { showInfo: false } );
+                                } }
+                            >
+                                <p className="description">
+                                    { __( 'Simple text field example see here:' ) } <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
+                                </p>
+                                <hr />
+                                <p className="description">
+                                    { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.' ) }
+                                </p>
+                                <p className="description">
+                                    { __( 'Note 2: supported custom PHP callback to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>.
+                                </p>
+                            </Popover>
+                        ) : '' }
+                    </Button>
+                </BaseControl>
+
+                <BaseControl
+                    label={ __( 'Single output code for Editor and Frontend' ) }
                 >
-                    { __( 'How to use?' ) }
-                    { showInfo ? (
-                        <Popover
-                            className="lzb-constructor-custom-code-settings-popover"
-                            focusOnMount={ false }
-                            onClickOutside={ () => {
-                                this.setState( { showInfo: false } );
-                            } }
-                        >
-                            <p className="description">
-                                { __( 'You can use PHP to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/handlebars/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/handlebars/</a>
-                            </p>
-                            <hr />
-                            <p className="description">
-                                { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.' ) }
-                            </p>
-                            <p className="description">
-                                { __( 'Note 2: supported Handlebars syntax with your controls available by name. For example, if you have control with name' ) } <strong>my_control</strong> { __( ', you can print it' ) } <strong>{ '{{my_control}}' }</strong>.
-                            </p>
-                        </Popover>
-                    ) : '' }
-                </Button>
+                    <CheckboxControl
+                        label={ __( 'Yes' ) }
+                        checked={ data.code_single_output }
+                        onChange={ value => updateData( { code_single_output: value } ) }
+                    />
+                </BaseControl>
 
-                <p />
+                <SelectControl
+                    label={ __( 'Output Method' ) }
+                    options={ [
+                        {
+                            label: __( 'HTML + Handlebars' ),
+                            value: 'html',
+                        }, {
+                            label: __( 'PHP' ),
+                            value: 'php',
+                        },
+                    ] }
+                    value={ data.code_use_php ? 'php' : 'html' }
+                    onChange={ value => updateData( { code_use_php: value === 'php' } ) }
+                />
 
-                <div className="lzb-constructor-grid">
-                    <div>
-                        <BaseControl
-                            label={ __( 'Single output code for Editor and Frontend' ) }
-                        >
-                            <CheckboxControl
-                                label={ __( 'Yes' ) }
-                                checked={ data.code_single_output }
-                                onChange={ value => updateData( { code_single_output: value } ) }
-                            />
-                        </BaseControl>
-                    </div>
-                    <div>
-                        <SelectControl
-                            label={ __( 'Show block preview in editor' ) }
-                            options={ [
-                                {
-                                    label: __( 'Always' ),
-                                    value: 'always',
-                                }, {
-                                    label: __( 'Within `selected` block only' ),
-                                    value: 'selected',
-                                }, {
-                                    label: __( 'Within `unselected` block only' ),
-                                    value: 'unselected',
-                                }, {
-                                    label: __( 'Never' ),
-                                    value: 'never',
-                                },
-                            ] }
-                            value={ data.code_show_preview }
-                            onChange={ value => updateData( { code_show_preview: value } ) }
-                        />
-                    </div>
-                </div>
+                <SelectControl
+                    label={ __( 'Show block preview in editor' ) }
+                    options={ [
+                        {
+                            label: __( 'Always' ),
+                            value: 'always',
+                        }, {
+                            label: __( 'Within `selected` block only' ),
+                            value: 'selected',
+                        }, {
+                            label: __( 'Within `unselected` block only' ),
+                            value: 'unselected',
+                        }, {
+                            label: __( 'Never' ),
+                            value: 'never',
+                        },
+                    ] }
+                    value={ data.code_show_preview }
+                    onChange={ value => updateData( { code_show_preview: value } ) }
+                />
             </div>
         );
     }

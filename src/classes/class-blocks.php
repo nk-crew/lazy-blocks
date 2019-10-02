@@ -407,6 +407,7 @@ class LazyBlocks_Blocks {
 
         'lazyblocks_code_show_preview'               => 'always',
         'lazyblocks_code_single_output'              => 'false',
+        'lazyblocks_code_use_php'                    => 'false',
 
         'lazyblocks_code_editor_html'                => '',
         'lazyblocks_code_editor_callback'            => '',
@@ -699,6 +700,7 @@ class LazyBlocks_Blocks {
                         'frontend_css'      => $this->get_meta_value( 'lazyblocks_code_frontend_css', $block->ID ),
                         'show_preview'      => $this->get_meta_value( 'lazyblocks_code_show_preview', $block->ID ),
                         'single_output'     => $this->get_meta_value( 'lazyblocks_code_single_output', $block->ID ),
+                        'use_php'           => $this->get_meta_value( 'lazyblocks_code_use_php', $block->ID ),
                     ),
                     'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
                 );
@@ -1004,6 +1006,24 @@ class LazyBlocks_Blocks {
     }
 
     /**
+     * Eval custom user code and return as string.
+     *
+     * @param string $code - user code string.
+     * @param array  $attributes - block attributes.
+     *
+     * @return string
+     */
+    // phpcs:disable
+    public function php_eval( $code, $attributes ) {
+        ob_start();
+
+        eval( '?>' . $code );
+
+        return ob_get_clean();
+    }
+    // phpcs:enable
+
+    /**
      * Register block attributes and custom frontend render callback if exists.
      */
     public function register_block_render() {
@@ -1063,8 +1083,15 @@ class LazyBlocks_Blocks {
                 call_user_func( $block['code'][ $context . '_callback' ], $attributes );
                 $result = ob_get_contents();
                 ob_end_clean();
-            } else if ( isset( $block['code'][ $context . '_html' ] ) && ! empty( $block['code'][ $context . '_html' ] ) ) {
-                $result = $this->handlebars->render( $block['code'][ $context . '_html' ], $attributes );
+            } elseif ( isset( $block['code'][ $context . '_html' ] ) && ! empty( $block['code'][ $context . '_html' ] ) ) {
+                // PHP output.
+                if ( isset( $block['code']['use_php'] ) && $block['code']['use_php'] ) {
+                    $result = $this->php_eval( $block['code'][ $context . '_html' ], $attributes );
+
+                    // Handlebars.
+                } else {
+                    $result = $this->handlebars->render( $block['code'][ $context . '_html' ], $attributes );
+                }
             }
         }
 

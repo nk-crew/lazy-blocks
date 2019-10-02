@@ -3,10 +3,12 @@ import AceEditor from 'react-ace';
 import 'brace/mode/css';
 import 'brace/mode/javascript';
 import 'brace/mode/html';
+import 'brace/mode/php';
 import 'brace/snippets/css';
 import 'brace/snippets/javascript';
 import 'brace/snippets/text';
 import 'brace/snippets/html';
+import 'brace/snippets/php';
 import 'brace/ext/language_tools';
 
 // Import CSS
