@@ -327,7 +327,7 @@ options.blocks.forEach( ( item ) => {
                                 min={ control.min }
                                 max={ control.max }
                                 step={ control.step }
-                                maxlength={ maxlength }
+                                maxLength={ maxlength }
                                 help={ control.help }
                                 placeholder={ control.placeholder }
                                 value={ this.getControlValue( control, childIndex ) }
@@ -382,7 +382,7 @@ options.blocks.forEach( ( item ) => {
                                 key={ control.name }
                                 label={ label }
                                 value={ this.getControlValue( control, childIndex ) }
-                                maxlength={ maxlength }
+                                maxLength={ maxlength }
                                 help={ control.help }
                                 placeholder={ control.placeholder }
                                 onChange={ ( val ) => {

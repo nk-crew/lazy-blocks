@@ -30,7 +30,7 @@ export default class DefaultRow extends Component {
                 help={ __( 'Appears when inserting a new block' ) }
                 value={ data.default }
                 onChange={ ( value ) => updateData( { default: value } ) }
-                maxlength={ maxlength }
+                maxLength={ maxlength }
             />
         );
     }
