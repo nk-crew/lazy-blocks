@@ -1073,6 +1073,10 @@ class LazyBlocks_Blocks {
             }
         }
 
+        // apply filter for block attributes.
+        $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $block );
+        $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $block );
+
         // apply filter for custom output callback.
         $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
         $result = apply_filters( $block['slug'] . '/callback', $result, $attributes );
