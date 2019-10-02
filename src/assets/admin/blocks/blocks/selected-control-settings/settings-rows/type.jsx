@@ -4,16 +4,32 @@ const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { BaseControl } = wp.components;
 
-export default class TypeRow extends Component {
+const {
+    withSelect,
+} = wp.data;
+
+class TypeRow extends Component {
     render() {
         const {
             updateData,
+            blockData,
             data,
         } = this.props;
 
         const {
             type = '',
         } = data;
+
+        let innedBlocksDisabled = !! data.child_of;
+
+        // InnerBlocks may be added only once per block.
+        if ( ! innedBlocksDisabled && blockData && blockData.controls && 'inner_block' !== type ) {
+            Object.keys( blockData.controls ).forEach( ( k ) => {
+                if ( 'inner_blocks' === blockData.controls[ k ].type ) {
+                    innedBlocksDisabled = true;
+                }
+            } );
+        }
 
         const types = [
             // Basic.
@@ -72,7 +88,7 @@ export default class TypeRow extends Component {
                 value: 'inner_blocks',
                 label: __( 'Inner Blocks' ),
                 group: __( 'Content' ),
-                isDisabled: data.child_of,
+                isDisabled: innedBlocksDisabled,
             },
 
             // Choice.
@@ -149,3 +165,13 @@ export default class TypeRow extends Component {
         );
     }
 }
+
+export default withSelect( ( select ) => {
+    const {
+        getBlockData,
+    } = select( 'lazy-blocks/block-data' );
+
+    return {
+        blockData: getBlockData(),
+    };
+} )( TypeRow );
