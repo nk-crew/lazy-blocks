@@ -140,7 +140,7 @@ class ControlsSettings extends Component {
                     <div>{ __( 'Name' ) }</div>
                     <div>{ __( 'Type' ) }</div>
                     <div>{ __( 'Placement' ) }</div>
-                    <div>{ __( 'Meta' ) }</div>
+                    <div>{ __( 'Meta Name' ) }</div>
                 </div>
                 { self.printControls( '' ) }
             </div>

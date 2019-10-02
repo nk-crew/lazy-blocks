@@ -842,8 +842,8 @@ class LazyBlocks_Blocks {
                                 break;
                         }
                     }
-                    if ( 'true' === $control['save_in_meta'] && $control['save_in_meta_name'] ) {
-                        register_meta( 'post', $control['save_in_meta_name'], array(
+                    if ( 'true' === $control['save_in_meta'] ) {
+                        register_meta( 'post', $control['save_in_meta_name'] ? : $control['name'], array(
                             'show_in_rest' => true,
                             'single'       => true,
                             'type'         => $type,
@@ -957,9 +957,9 @@ class LazyBlocks_Blocks {
                     $attributes[ $control['name'] ]['default'] = $default_val;
                 }
 
-                if ( 'true' === $control['save_in_meta'] && $control['save_in_meta_name'] ) {
+                if ( 'true' === $control['save_in_meta'] ) {
                     $attributes[ $control['name'] ]['source'] = 'meta';
-                    $attributes[ $control['name'] ]['meta']   = $control['save_in_meta_name'];
+                    $attributes[ $control['name'] ]['meta']   = $control['save_in_meta_name'] ? : $control['name'];
                 }
             }
         }

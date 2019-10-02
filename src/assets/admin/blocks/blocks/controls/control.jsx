@@ -102,7 +102,7 @@ class Control extends Component {
                             { data.child_of ? '' : placementLabel }
                         </div>
                         <div className="lzb-constructor-controls-item-meta">
-                            { ! data.child_of && 'true' === save_in_meta ? save_in_meta_name : '' }
+                            { ! data.child_of && 'true' === save_in_meta ? ( save_in_meta_name || name ) : '' }
                             { ! data.child_of && 'false' === save_in_meta ? '-' : '' }
                         </div>
                         <DragHandle />
