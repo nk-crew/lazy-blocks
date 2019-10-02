@@ -650,15 +650,11 @@ options.blocks.forEach( ( item ) => {
         }
 
         render() {
-            let {
-                className = '',
-            } = this.props;
-
             const {
                 blockUniqueClass = '',
             } = this.props.attributes;
 
-            className = classnames( 'lazyblock', blockUniqueClass, className );
+            const className = classnames( 'lazyblock', blockUniqueClass );
 
             const attsForRender = {};
 
@@ -772,6 +768,8 @@ options.blocks.forEach( ( item ) => {
         category: item.category,
         keywords: item.keywords,
         supports: item.supports,
+
+        ghostkit: item.ghostkit,
 
         lazyblock: true,
 

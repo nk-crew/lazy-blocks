@@ -397,38 +397,37 @@ class LazyBlocks_Blocks {
      * @var array
      */
     private $defaults = array(
-        'lazyblocks_controls'               => array(),
+        'lazyblocks_controls'                        => array(),
 
-        'lazyblocks_slug'                   => '',
-        'lazyblocks_icon'                   => '',
-        'lazyblocks_description'            => '',
-        'lazyblocks_keywords'               => '',
-        'lazyblocks_category'               => 'common',
+        'lazyblocks_slug'                            => '',
+        'lazyblocks_icon'                            => '',
+        'lazyblocks_description'                     => '',
+        'lazyblocks_keywords'                        => '',
+        'lazyblocks_category'                        => 'common',
 
-        'lazyblocks_code_show_preview'      => 'always',
-        'lazyblocks_code_single_output'     => 'false',
+        'lazyblocks_code_show_preview'               => 'always',
+        'lazyblocks_code_single_output'              => 'false',
 
-        'lazyblocks_code_editor_html'       => '',
-        'lazyblocks_code_editor_callback'   => '',
-        'lazyblocks_code_editor_css'        => '',
-        'lazyblocks_code_frontend_html'     => '',
-        'lazyblocks_code_frontend_callback' => '',
-        'lazyblocks_code_frontend_css'      => '',
+        'lazyblocks_code_editor_html'                => '',
+        'lazyblocks_code_editor_callback'            => '',
+        'lazyblocks_code_editor_css'                 => '',
+        'lazyblocks_code_frontend_html'              => '',
+        'lazyblocks_code_frontend_callback'          => '',
+        'lazyblocks_code_frontend_css'               => '',
 
-        'lazyblocks_supports_multiple'      => 'true',
-        'lazyblocks_supports_classname'     => 'true',
-        'lazyblocks_supports_anchor'        => 'false',
-        'lazyblocks_supports_html'          => 'false',
-        'lazyblocks_supports_inserter'      => 'true',
-        'lazyblocks_supports_align'         => array( 'wide', 'full' ),
+        'lazyblocks_supports_multiple'               => 'true',
+        'lazyblocks_supports_classname'              => 'true',
+        'lazyblocks_supports_anchor'                 => 'false',
+        'lazyblocks_supports_html'                   => 'false',
+        'lazyblocks_supports_inserter'               => 'true',
+        'lazyblocks_supports_align'                  => array( 'wide', 'full' ),
 
-        /*
-            TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
-            'lazyblocks_supports_ghostkit_indents' => 'false',
-            'lazyblocks_supports_ghostkit_display' => 'false',
-         */
+        // GhostKit Extensions.
+        'lazyblocks_supports_ghostkit_spacings'      => 'false',
+        'lazyblocks_supports_ghostkit_display'       => 'false',
+        'lazyblocks_supports_ghostkit_scroll_reveal' => 'false',
 
-        'lazyblocks_condition_post_types' => '',
+        'lazyblocks_condition_post_types'            => '',
     );
 
     /**
@@ -682,15 +681,16 @@ class LazyBlocks_Blocks {
                         'html'            => $this->get_meta_value( 'lazyblocks_supports_html', $block->ID ),
                         'multiple'        => $this->get_meta_value( 'lazyblocks_supports_multiple', $block->ID ),
                         'inserter'        => $this->get_meta_value( 'lazyblocks_supports_inserter', $block->ID ),
-
-                        /*
-                            TODO: GhostKit extensions support when will be resolved https://github.com/WordPress/gutenberg/issues/9901
-                            'ghostkitIndents' => $this->get_meta_value( 'lazyblocks_supports_ghostkit_indents', $block->ID ),
-                            'ghostkitDisplay' => $this->get_meta_value( 'lazyblocks_supports_ghostkit_display', $block->ID ),
-                        */
                     ),
-                    'controls'      => $controls,
-                    'code'          => array(
+                    'ghostkit'       => array(
+                        'supports' => array(
+                            'spacings'     => $this->get_meta_value( 'lazyblocks_supports_ghostkit_spacings', $block->ID ),
+                            'display'      => $this->get_meta_value( 'lazyblocks_supports_ghostkit_display', $block->ID ),
+                            'scrollReveal' => $this->get_meta_value( 'lazyblocks_supports_ghostkit_scroll_reveal', $block->ID ),
+                        ),
+                    ),
+                    'controls'       => $controls,
+                    'code'           => array(
                         'editor_html'       => $this->get_meta_value( 'lazyblocks_code_editor_html', $block->ID ),
                         'editor_callback'   => '',
                         'editor_css'        => $this->get_meta_value( 'lazyblocks_code_editor_css', $block->ID ),
@@ -990,6 +990,16 @@ class LazyBlocks_Blocks {
             'default' => '',
         );
 
+        // GhostKit.
+        $attributes['ghostkitSpacings'] = array(
+            'type'    => 'object',
+            'default' => '',
+        );
+        $attributes['ghostkitSR'] = array(
+            'type'    => 'string',
+            'default' => '',
+        );
+
         return $attributes;
     }
 
@@ -1083,6 +1093,10 @@ class LazyBlocks_Blocks {
             }
             if ( $attributes['anchor'] ) {
                 $html_atts .= ' id="' . esc_attr( $attributes['anchor'] ) . '"';
+            }
+
+            if ( isset( $attributes['ghostkitSR'] ) && $attributes['ghostkitSR'] ) {
+                $html_atts .= ' data-ghostkit-sr="' . esc_attr( $attributes['ghostkitSR'] ) . '"';
             }
 
             $result = '<div' . $html_atts . '>' . $result . '</div>';
