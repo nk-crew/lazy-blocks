@@ -1075,6 +1075,7 @@ class LazyBlocks_Blocks {
 
         // apply filter for custom output callback.
         $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
+        $result = apply_filters( $block['slug'] . '/callback', $result, $attributes );
 
         // custom callback and handlebars html.
         if ( ! $result && isset( $block['code'] ) ) {
@@ -1097,6 +1098,8 @@ class LazyBlocks_Blocks {
 
         // add wrapper.
         $allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $result && 'frontend' === $context, $attributes );
+        $allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes );
+
         if ( $allow_wrapper ) {
             $html_atts = '';
 
