@@ -70,6 +70,24 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog ##
 
+= 1.8.0 =
+
+* added support for PHP output method (instead of Handlebars)
+* added new Repeater options:
+  * Row Label
+  * Add Button Label
+  * Minimum Rows
+  * Maximum Rows
+  * Collapsible Rows
+* added Characters Limit option to text controls
+* added js actions to PreviewServerCallback component (before change and after change), useful for developers <https://lazyblocks.com/documentation/js-actions/>
+* added support for [Ghost Kit](https://ghostkit.io/) Extensions
+* added `callback` and `allow_wrapper` filters for both contexts using single filter name (frontend and editor) <https://lazyblocks.com/documentation/php-filters/#render-callback>
+* added filter for output attributes <https://lazyblocks.com/documentation/php-filters/#attributes>
+* improved Meta setting (use control name as meta if custom meta name is not defined)
+* fixed encoded values in Repeater controls
+* fixed possibility to add more than 1 InnerBlocks control per block
+
 = 1.7.0 =
 
 * added experimental Required option for top-level controls
