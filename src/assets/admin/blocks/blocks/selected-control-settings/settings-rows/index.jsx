@@ -15,6 +15,7 @@ import DefaultRow from './default';
 import CharactersLimit from './characters-limit';
 import CheckedRow from './checked';
 import PlaceholderRow from './placeholder';
+import RepeaterRows from './repeater-rows';
 import HelpRow from './help';
 import PlacementRow from './placement';
 import HideIfNotSelectedRow from './hide-if-not-selected';
@@ -45,6 +46,7 @@ export default class settingsRows extends Component {
             characters_limit: CharactersLimit,
             checked: CheckedRow,
             placeholder: PlaceholderRow,
+            repeater: RepeaterRows,
             help: HelpRow,
             placement: PlacementRow,
             hide_if_not_selected: HideIfNotSelectedRow,
@@ -111,6 +113,9 @@ export default class settingsRows extends Component {
                         data.type === 'number' ||
                         data.type === 'email' ||
                         data.type === 'password';
+                break;
+            case 'repeater':
+                allow = data.type === 'repeater';
                 break;
             case 'help':
                 allow = data.type !== 'inner_blocks' &&

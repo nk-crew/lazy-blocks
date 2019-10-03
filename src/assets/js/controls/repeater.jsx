@@ -35,7 +35,9 @@ const SortableItem = SortableElement( ( data ) =>
             <DragHandle />
             <span className="lzb-gutenberg-repeater-btn-arrow dashicons dashicons-arrow-right-alt2" />
         </button>
-        <button className="lzb-gutenberg-repeater-btn-remove" onClick={ data.onRemove }><span className="dashicons dashicons-no-alt" /></button>
+        { ! data.controlData.rows_min || data.count > data.controlData.rows_min ? (
+            <button className="lzb-gutenberg-repeater-btn-remove" onClick={ data.onRemove }><span className="dashicons dashicons-no-alt" /></button>
+        ) : '' }
         { data.active ? data.renderContent() : '' }
     </div>
 );
@@ -53,16 +55,75 @@ class RepeaterControl extends Component {
     constructor() {
         super( ...arguments );
 
+        const {
+            controlData,
+        } = this.props;
+
         this.sortRef = wp.element.createRef();
 
+        let activeItem = -1;
+
+        if ( 'false' === controlData.rows_collapsible ) {
+            activeItem = -2;
+        } else if ( 'false' === controlData.rows_collapsed ) {
+            activeItem = -2;
+        }
+
         this.state = {
-            activeItem: -1,
+            activeItem,
         };
+
+        this.getRowTitle = this.getRowTitle.bind( this );
     }
+
+    componentDidMount() {
+        const {
+            count = 0,
+            controlData,
+            addRow = () => {},
+        } = this.props;
+
+        // add rows to meet Minimum requirements
+        if ( controlData.rows_min && controlData.rows_min > 0 && controlData.rows_min > count ) {
+            const needToAdd = controlData.rows_min - count;
+
+            for ( let i = 0; i < needToAdd; i++ ) {
+                addRow();
+            }
+        }
+    }
+
+    getRowTitle( i ) {
+        const {
+            controlData,
+            getInnerControls = () => {},
+        } = this.props;
+
+        let title = controlData.rows_label || __( 'Row {{#}}' );
+
+        // add row number.
+        title = title.replace( /{{#}}/g, i + 1 );
+
+        const innerControls = getInnerControls( i );
+
+        // add inner controls values.
+        if ( innerControls ) {
+            Object.keys( innerControls ).forEach( ( k ) => {
+                const val = innerControls[ k ].val || '';
+                const data = innerControls[ k ].data;
+
+                title = title.replace( new RegExp( `{{${ data.name }}}`, 'g' ), val );
+            } );
+        }
+
+        return title;
+    }
+
     render() {
         const {
             label,
-            count = 1,
+            count = 0,
+            controlData,
             renderRow = () => {},
             addRow = () => {},
             removeRow = () => {},
@@ -74,13 +135,17 @@ class RepeaterControl extends Component {
             const active = this.state.activeItem === -2 || this.state.activeItem === i;
 
             items.push( {
-                title: `Row ${ i + 1 }`,
+                title: this.getRowTitle( i ),
                 active: active,
+                count,
+                controlData,
                 onToggle: ( e ) => {
                     e.preventDefault();
                     e.stopPropagation();
 
-                    this.setState( { activeItem: active ? -1 : i } );
+                    if ( 'true' === controlData.rows_collapsible ) {
+                        this.setState( { activeItem: active ? -1 : i } );
+                    }
                 },
                 onRemove: ( e ) => {
                     e.preventDefault();
@@ -124,13 +189,14 @@ class RepeaterControl extends Component {
                     <div className="lzb-gutenberg-repeater-options">
                         <Button
                             isDefault={ true }
+                            disabled={ controlData.rows_max && count >= controlData.rows_max }
                             onClick={ () => {
                                 addRow();
                             } }
                         >
-                            { __( '+ Add Row' ) }
+                            { controlData.rows_add_button_label || __( '+ Add Row' ) }
                         </Button>
-                        { items.length && items.length > 1 ? (
+                        { 'true' === controlData.rows_collapsible && items.length && items.length > 1 ? (
                             <Tooltip text={ __( 'Toggle all rows' ) }>
                                 <div>
                                     { /* For some reason Tooltip is not working without this <div> */ }

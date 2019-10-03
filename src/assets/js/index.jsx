@@ -14,18 +14,26 @@ import FileControl from './controls/file.jsx';
 import RepeaterControl from './controls/repeater.jsx';
 import PreviewServerCallback from './blocks/preview-server-callback.jsx';
 
+import controlsDefaults from '../admin/blocks/blocks/selected-control-settings/defaults.jsx';
+
 let options = window.lazyblocksGutenberg;
 if ( ! options || ! options.blocks || ! options.blocks.length ) {
     options = { post_type: 'post', blocks: [] };
 }
 
 const {
+    cloneDeep,
+} = window.lodash;
+
+const {
     __,
 } = wp.i18n;
+
 const {
     Component,
     Fragment,
 } = wp.element;
+
 const {
     PanelBody,
     BaseControl,
@@ -78,6 +86,7 @@ options.blocks.forEach( ( item ) => {
             this.onControlChange = this.onControlChange.bind( this );
             this.onSelectImages = this.onSelectImages.bind( this );
             this.onSelectImage = this.onSelectImage.bind( this );
+            this.getControls = this.getControls.bind( this );
             this.renderControls = this.renderControls.bind( this );
         }
 
@@ -259,19 +268,49 @@ options.blocks.forEach( ( item ) => {
         }
 
         /**
+         * Get controls
+         *
+         * @param {String|Boolean} childOf - parent control name.
+         *
+         * @return {Object} controls list.
+         */
+        getControls( childOf = '' ) {
+            const result = {};
+
+            Object.keys( item.controls ).forEach( ( k ) => {
+                const control = {
+                    ...cloneDeep( controlsDefaults ),
+                    ...item.controls[ k ],
+                };
+
+                if (
+                    ( ! childOf && ! control.child_of ) ||
+                    ( childOf && control.child_of === childOf )
+                ) {
+                    result[ k ] = control;
+                }
+            } );
+
+            return result;
+        }
+
+        /**
          * Render controls
          *
          * @param {String} placement - controls placement [inspector, content]
          * @param {String|Boolean} childOf - parent control name.
          * @param {Number|Boolean} childIndex - child index in parent.
-         * @returns {Array} react blocks with controls.
+         *
+         * @return {Array} react blocks with controls.
          */
         renderControls( placement, childOf = '', childIndex = false ) {
             let result = [];
+            const controls = this.getControls( childOf );
 
             // prepare attributes.
-            Object.keys( item.controls ).forEach( ( k ) => {
-                const control = item.controls[ k ];
+            Object.keys( controls ).forEach( ( k ) => {
+                const control = controls[ k ];
+
                 let placementCheck = control.type && control.placement !== 'nowhere' &&
                 ( control.placement === 'both' || control.placement === placement );
                 let label = control.label;
@@ -310,10 +349,7 @@ options.blocks.forEach( ( item ) => {
                 }
 
                 // prepare control output
-                if (
-                    ( ! childOf && ! control.child_of && placementCheck ) ||
-                    ( childOf && control.child_of === childOf )
-                ) {
+                if ( control.child_of || placementCheck ) {
                     switch ( control.type ) {
                     case 'text':
                     case 'number':
@@ -596,8 +632,24 @@ options.blocks.forEach( ( item ) => {
                         result.push( (
                             <RepeaterControl
                                 key={ control.name }
+                                controlData={ control }
                                 label={ label }
                                 count={ val.length }
+                                getInnerControls={ ( index ) => {
+                                    const innerControls = this.getControls( k );
+                                    const innerResult = {};
+
+                                    Object.keys( innerControls ).forEach( ( i ) => {
+                                        const innerData = innerControls[ i ];
+
+                                        innerResult[ i ] = {
+                                            data: innerData,
+                                            val: this.getControlValue( innerData, index ),
+                                        };
+                                    } );
+
+                                    return innerResult;
+                                } }
                                 renderRow={ ( index ) => (
                                     <Fragment>
                                         { this.renderControls( placement, k, index ) }

@@ -41,4 +41,12 @@ export default {
 
     // rich-text
     multiline: 'false',
+
+    // repeater
+    rows_min: '',
+    rows_max: '',
+    rows_label: '',
+    rows_add_button_label: '',
+    rows_collapsible: 'true',
+    rows_collapsed: 'true',
 };
