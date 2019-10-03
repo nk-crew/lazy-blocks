@@ -706,7 +706,11 @@ options.blocks.forEach( ( item ) => {
                 blockUniqueClass = '',
             } = this.props.attributes;
 
-            const className = classnames( 'lazyblock', blockUniqueClass );
+            const className = classnames(
+                'lazyblock',
+                `wp-block-${ item.slug.replace( '/', '-' ) }`,
+                blockUniqueClass
+            );
 
             const attsForRender = {};
 
