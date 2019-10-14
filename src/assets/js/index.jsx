@@ -322,7 +322,7 @@ options.blocks.forEach( ( item ) => {
                 }
 
                 // hide if not selected
-                if ( placement === 'content' && control.hide_if_not_selected && 'true' === control.hide_if_not_selected ) {
+                if ( placement === 'content' && control.placement === 'content' && control.hide_if_not_selected && 'true' === control.hide_if_not_selected ) {
                     placementCheck = this.props.isLazyBlockSelected;
                 }
 
