@@ -1,6 +1,10 @@
-const { InnerBlocks } = wp.editor;
 const { __ } = wp.i18n;
+
 const { registerBlockType } = wp.blocks;
+
+const {
+    InnerBlocks,
+} = wp.blockEditor;
 
 // register block.
 registerBlockType( 'lazyblock-core/free', {

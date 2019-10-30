@@ -12,6 +12,9 @@ const {
 
 const {
     MediaPlaceholder,
+} = wp.blockEditor;
+
+const {
     mediaUpload,
 } = wp.editor;
 

@@ -57,7 +57,7 @@ const {
     RichText,
     InnerBlocks,
     PlainText,
-} = wp.editor;
+} = wp.blockEditor;
 
 const {
     registerBlockType,
@@ -782,7 +782,7 @@ options.blocks.forEach( ( item ) => {
         withSelect( ( select, ownProps ) => {
             const {
                 hasSelectedInnerBlock,
-            } = select( 'core/editor' );
+            } = select( 'core/block-editor' );
 
             return {
                 isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock( ownProps.clientId ),

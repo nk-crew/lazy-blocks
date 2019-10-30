@@ -52,7 +52,7 @@ const {
 
 const {
     InspectorControls,
-} = wp.editor;
+} = wp.blockEditor;
 
 /**
  * Container block
@@ -163,7 +163,7 @@ registerBlockType( 'lzb-constructor/main', {
 } );
 
 // Add default block to post if doesn't exist.
-const getBlockList = () => wp.data.select( 'core/editor' ).getBlocks();
+const getBlockList = () => wp.data.select( 'core/block-editor' ).getBlocks();
 let blockList = getBlockList();
 let blocksRestoreBusy = false;
 subscribe( () => {
@@ -178,8 +178,8 @@ subscribe( () => {
 
     if ( blockListChanged && ! isValidList ) {
         blocksRestoreBusy = true;
-        wp.data.dispatch( 'core/editor' ).resetBlocks( [] );
-        wp.data.dispatch( 'core/editor' ).insertBlocks(
+        wp.data.dispatch( 'core/block-editor' ).resetBlocks( [] );
+        wp.data.dispatch( 'core/block-editor' ).insertBlocks(
             wp.blocks.createBlock( 'lzb-constructor/main' )
         );
         blocksRestoreBusy = false;
@@ -188,8 +188,8 @@ subscribe( () => {
 
 // always select main block.
 subscribe( () => {
-    const selectedBlock = wp.data.select( 'core/editor' ).getSelectedBlock();
-    const blocks = wp.data.select( 'core/editor' ).getBlocks();
+    const selectedBlock = wp.data.select( 'core/block-editor' ).getSelectedBlock();
+    const blocks = wp.data.select( 'core/block-editor' ).getBlocks();
 
     if ( selectedBlock && 'lzb-constructor/main' === selectedBlock.name ) {
         return;
@@ -203,7 +203,7 @@ subscribe( () => {
     } );
 
     if ( selectBlockId ) {
-        wp.data.dispatch( 'core/editor' ).selectBlock( selectBlockId );
+        wp.data.dispatch( 'core/block-editor' ).selectBlock( selectBlockId );
     }
 } );
 
