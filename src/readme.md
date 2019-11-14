@@ -71,6 +71,11 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 1.8.1 =
+
+* fixes for WordPress 5.3
+* fixed placement control when enabled option `hide_if_not_selected` and set `placement` to `inspector`
+
 = 1.8.0 =
 
 * added support for PHP output method (instead of Handlebars)
