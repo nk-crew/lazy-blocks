@@ -26,10 +26,10 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
         <div className={ classes }>
             { map( colors, ( { color, name } ) => {
                 const style = { color };
-                const itemClasses = classnames( 'components-color-palette__item', { 'is-active': value === color } );
+                const itemClasses = classnames( 'components-color-palette__item components-circular-option-picker__option', { 'is-active': value === color } );
 
                 return (
-                    <div key={ color } className="components-color-palette__item-wrapper">
+                    <div key={ color } className="components-color-palette__item-wrapper components-circular-option-picker__option-wrapper">
                         <Tooltip
                             text={ name ||
                                 // translators: %s: color hex code e.g: "#f00".
