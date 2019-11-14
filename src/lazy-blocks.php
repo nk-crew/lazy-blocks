@@ -222,7 +222,7 @@ class LazyBlocks {
             wp_enqueue_script(
                 'lazyblocks-admin-blocks',
                 lazyblocks()->plugin_url . 'assets/admin/blocks/index.min.js',
-                array( 'wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
+                array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
                 filemtime( lazyblocks()->plugin_path . 'assets/admin/blocks/index.min.js' )
             );
             wp_localize_script( 'lazyblocks-admin-blocks', 'lazyblocks_localize', array(
