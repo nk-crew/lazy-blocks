@@ -1,26 +1,27 @@
-# Lazy Blocks - Gutenberg Blocks Constructor #
+# Lazy Blocks - Gutenberg Blocks Constructor
+
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
-* Requires at least: 4.9.0
-* Tested up to: 5.2
+* Requires at least: 5.0.0
+* Tested up to: 5.3
 * Requires PHP: 5.4
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
-* License URI: http://www.gnu.org/licenses/gpl-2.0.html
+* License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
 Custom blocks and custom meta fields without hard coding for Gutenberg.
 
-## Description ##
+## Description
 
 Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You can create custom blocks as well as custom meta fields with output HTML. Add editor controls to your blocks using drag & drop visual constructor. Create post templates with predefined blocks (any post type).
 
-#### Links ####
+### Links
 
 * [Site](https://lazyblocks.com/)
 * [Documentation](https://lazyblocks.com/documentation/getting-started/)
 * [GitHub](https://github.com/nk-o/lazy-blocks)
 
-#### Features ####
+### Features
 
 * Create custom blocks with output code
 * Create custom blocks for meta custom fields
@@ -28,47 +29,47 @@ Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You ca
 * Export to PHP
 * Show controls in block content / inspector
 * Controls available:
-    * Repeater
-    * Text
-    * Textarea
-    * Number
-    * Range
-    * URL
-    * Email
-    * Password
-    * Image
-    * Gallery
-    * File
-    * Rich Text (WYSIWYG)
-    * Code Editor
-    * Inner Blocks
-    * Select
-    * Checkbox
-    * Toggle
-    * Color Picker
-    * Date Time
+  * Repeater
+  * Text
+  * Textarea
+  * Number
+  * Range
+  * URL
+  * Email
+  * Password
+  * Image
+  * Gallery
+  * File
+  * Rich Text (WYSIWYG)
+  * Code Editor
+  * Inner Blocks
+  * Select
+  * Checkbox
+  * Toggle
+  * Color Picker
+  * Date Time
 
-## Installation ##
+## Installation
 
 Make sure you use WordPress 5.0.x. As alternative you need to install the [Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) to use Lazy Blocks.
 
-#### Automatic installation ####
+### Automatic installation
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of LazyBlocks, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
 In the search field type LazyBlocks and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
 
-#### Manual installation ####
+### Manual installation
 
 The manual installation method involves downloading our LazyBlocks plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
-## Screenshots ##
+## Screenshots
 
 1. Blocks constructor
 2. Posts templates
 3. Block in Gutenberg editor
 
-## Changelog ##
+## Changelog
 
 = 1.8.0 =
 
