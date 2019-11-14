@@ -648,20 +648,11 @@ class LazyBlocks_Blocks {
                 } else {
                     $keywords = array();
                 }
-                $controls = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
 
-                // prepare controls.
-                foreach ( $controls as $k => $control ) {
-                    if ( 'select' === $control['type'] && isset( $control['allow_null'] ) && 'true' === $control['allow_null'] ) {
-                        array_unshift( $controls[ $k ]['choices'], array(
-                            'value' => 'null',
-                            'label' => esc_html__( '-- Select --', '@@text_domain' ),
-                        ) );
-                    }
-                }
-
-                $align = (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID );
+                $controls       = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
+                $align          = (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID );
                 $align_none_key = array_search( 'none', $align );
+
                 if ( false !== $align_none_key ) {
                     unset( $align[ $align_none_key ] );
                 }
@@ -821,7 +812,8 @@ class LazyBlocks_Blocks {
      * Register blocks meta if exists.
      */
     public function register_block_meta() {
-        $blocks = $this->get_blocks();
+        $blocks       = $this->get_blocks();
+        $all_controls = lazyblocks()->controls()->get_controls();
 
         foreach ( $blocks as $block ) {
             $controls = $block['controls'];
@@ -830,19 +822,11 @@ class LazyBlocks_Blocks {
                 foreach ( $controls as $control ) {
                     $type = 'string';
 
-                    if ( isset( $control['type'] ) ) {
-                        switch ( $control['type'] ) {
-                            case 'number':
-                            case 'range':
-                                $type = 'number';
-                                break;
-                            case 'checkbox':
-                            case 'toggle':
-                                $type = 'boolean';
-                                break;
-                        }
+                    if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) ) {
+                        $type = $all_controls[ $control['type'] ]['type'];
                     }
-                    if ( 'true' === $control['save_in_meta'] ) {
+
+                    if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
                         register_meta( 'post', $control['save_in_meta_name'] ? : $control['name'], array(
                             'show_in_rest' => true,
                             'single'       => true,
@@ -867,7 +851,7 @@ class LazyBlocks_Blocks {
             'lazyblocks-gutenberg',
             lazyblocks()->plugin_url . 'assets/css/style.min.css',
             array(),
-            filemtime( lazyblocks()->plugin_path . 'assets/css/style.min.css' )
+            '@@plugin_version'
         );
 
         // enqueue block js.
@@ -875,14 +859,15 @@ class LazyBlocks_Blocks {
             'lazyblocks-gutenberg',
             lazyblocks()->plugin_url . 'assets/js/index.min.js',
             array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
-            filemtime( lazyblocks()->plugin_path . 'assets/js/index.min.js' )
+            '@@plugin_version'
         );
 
         // additional data for block js.
         wp_localize_script(
             'lazyblocks-gutenberg', 'lazyblocksGutenberg', array(
-                'post_type' => $post_type,
-                'blocks'    => $blocks,
+                'post_type'          => $post_type,
+                'blocks'             => $blocks,
+                'controls'           => lazyblocks()->controls()->get_controls(),
                 'allowed_mime_types' => get_allowed_mime_types(),
             )
         );
@@ -899,68 +884,31 @@ class LazyBlocks_Blocks {
      * @return array.
      */
     public function prepare_block_attributes( $controls, $child_of = '', $block ) {
-        $attributes = array();
+        $all_controls = lazyblocks()->controls()->get_controls();
+        $attributes   = array();
 
         foreach ( $controls as $k => $control ) {
             if ( isset( $control['child_of'] ) && $control['child_of'] === $child_of ) {
-                $type        = 'string';
-                $items       = false;
-                $default_val = isset( $control['default'] ) ? $control['default'] : null;
+                $attribute_data = array(
+                    'type'    => 'string',
+                    'default' => isset( $control['default'] ) ? $control['default'] : null,
+                );
 
-                if ( $control['type'] ) {
-                    switch ( $control['type'] ) {
-                        case 'number':
-                        case 'range':
-                            $type = 'number';
-                            $default_val = (float) $default_val;
-                            break;
-                        case 'select':
-                            if ( isset( $control['multiple'] ) && 'true' === $control['multiple'] ) {
-                                $type = 'array';
-                                $items = array( 'type' => 'string' );
-                                $default_val = explode( ',', $default_val );
-                            }
-                            break;
-                        case 'checkbox':
-                        case 'toggle':
-                            $type        = 'boolean';
-                            $default_val = 'true' === $control['checked'];
-                            break;
-                        case 'inner_blocks':
-                            $type        = 'string';
+                if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
+                    $attribute_data['source'] = 'meta';
+                    $attribute_data['meta']   = $control['save_in_meta_name'] ? : $control['name'];
+                }
 
-                            // this value will be detected in render callback and added inner blocks content.
-                            $default_val = '@@lazy_blocks_inner_blocks';
-                            break;
-                        case 'repeater':
-                            $default_val  = array();
-                            $inner_blocks = $this->prepare_block_attributes( $controls, $k, $block );
+                // get attribute type from control data.
+                if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) ) {
+                    $attribute_data['type'] = $all_controls[ $control['type'] ]['type'];
 
-                            foreach ( $inner_blocks as $n => $inner_block ) {
-                                $default_val[ $n ] = $inner_blocks[ $n ]['default'];
-                            }
-
-                            $default_val = rawurlencode( json_encode( array( $default_val ) ) );
-                            break;
+                    if ( 'number' === $attribute_data['type'] && null !== $attribute_data['default'] ) {
+                        $attribute_data['default'] = (float) $attribute_data['default'];
                     }
                 }
 
-                $attributes[ $control['name'] ] = array(
-                    'type' => $type,
-                );
-
-                if ( $items ) {
-                    $attributes[ $control['name'] ]['items'] = $items;
-                }
-
-                if ( null !== $default_val ) {
-                    $attributes[ $control['name'] ]['default'] = $default_val;
-                }
-
-                if ( 'true' === $control['save_in_meta'] ) {
-                    $attributes[ $control['name'] ]['source'] = 'meta';
-                    $attributes[ $control['name'] ]['meta']   = $control['save_in_meta_name'] ? : $control['name'];
-                }
+                $attributes[ $control['name'] ] = apply_filters( 'lzb/prepare_block_attribute', $attribute_data, $control, $controls, $k, $block );
             }
         }
 
@@ -1031,7 +979,7 @@ class LazyBlocks_Blocks {
 
         foreach ( $blocks as $block ) {
             $data = array(
-                'attributes' => $this->prepare_block_attributes( $block['controls'], '', $block ),
+                'attributes'      => $this->prepare_block_attributes( $block['controls'], '', $block ),
                 'render_callback' => array( $this, 'render_callback' ),
             );
 
@@ -1053,31 +1001,17 @@ class LazyBlocks_Blocks {
             return null;
         }
 
-        $check_array = '%5B%7B%22';
-        $check_array_alt = '%7B%22';
-        $block = $this->get_block( $attributes['lazyblock']['slug'] );
+        $block   = $this->get_block( $attributes['lazyblock']['slug'] );
         $context = 'editor' === $context ? 'editor' : 'frontend';
-        $result = null;
-
-        foreach ( $attributes as $k => $attr ) {
-            // prepare decoded arrays to actual arrays.
-            if ( is_string( $attr ) ) {
-                if ( substr( $attr, 0, strlen( $check_array ) ) === $check_array || substr( $attr, 0, strlen( $check_array_alt ) ) === $check_array_alt ) {
-                    $attributes[ $k ] = json_decode( rawurldecode( $attr ), true );
-                }
-            }
-
-            // prepare content attribute.
-            if ( '@@lazy_blocks_inner_blocks' === $attr ) {
-                $attributes[ $k ] = $content ? : '';
-            }
-        }
+        $result  = null;
 
         // apply filter for block attributes.
-        $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $block );
-        $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $block );
+        $attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block );
+        $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $content, $block );
+        $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block );
 
         // apply filter for custom output callback.
+        $result = apply_filters( 'lzb/block_render/callback', $result, $attributes );
         $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
         $result = apply_filters( $block['slug'] . '/callback', $result, $attributes );
 
@@ -1101,7 +1035,8 @@ class LazyBlocks_Blocks {
         }
 
         // add wrapper.
-        $allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $result && 'frontend' === $context, $attributes );
+        $allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $result && 'frontend' === $context, $attributes );
+        $allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $allow_wrapper, $attributes );
         $allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes );
 
         if ( $allow_wrapper ) {

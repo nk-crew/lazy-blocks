@@ -1,0 +1,59 @@
+const { __ } = wp.i18n;
+
+const {
+    addFilter,
+} = wp.hooks;
+
+const {
+    PanelBody,
+    CheckboxControl,
+    BaseControl,
+} = wp.components;
+
+const {
+    RichText,
+} = wp.blockEditor;
+
+/**
+ * Control render in editor.
+ */
+addFilter( 'lzb.editor.control.rich_text.render', 'lzb.editor', ( render, props ) => {
+    return (
+        <BaseControl
+            key={ props.data.name }
+            label={ props.data.label }
+            help={ props.data.help }
+            className="lzb-gutenberg-rich-text"
+        >
+            <RichText
+                format="string"
+                multiline={ props.data.multiline === 'true' ? 'p' : false }
+                inlineToolbar={ true }
+                value={ props.getValue() }
+                onChange={ ( val ) => {
+                    props.onChange( parseFloat( val ) );
+                } }
+            />
+        </BaseControl>
+    );
+} );
+
+/**
+ * Control settings render in constructor.
+ */
+addFilter( 'lzb.constructor.control.rich_text.settings', 'lzb.constructor', ( render, props ) => {
+    const {
+        updateData,
+        data,
+    } = props;
+
+    return (
+        <PanelBody>
+            <CheckboxControl
+                label={ __( 'Multiline' ) }
+                checked={ 'true' === data.multiline }
+                onChange={ ( value ) => updateData( { multiline: value ? 'true' : 'false' } ) }
+            />
+        </PanelBody>
+    );
+} );

@@ -29,9 +29,10 @@ cfg.compile_js_files_src = [ '{src}/**/*.js', '!{src}/**/vendor/**/*' ];
 // Compile JSX files.
 cfg.compile_jsx_files_src = [
     '{src}/*assets/js/index.jsx',
-    '{src}/*assets/admin/blocks/index.jsx',
+    '{src}/*assets/admin/constructor/index.jsx',
     '{src}/*assets/admin/templates/index.jsx',
     '{src}/*assets/admin/tools/index.jsx',
+    '{src}/*controls/**/*.jsx',
 ];
 
 // Correct line endings files.

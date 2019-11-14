@@ -158,7 +158,7 @@ class LazyBlocks_Tools {
             'lazyblocks-tools',
             lazyblocks()->plugin_url . 'assets/admin/tools/index.min.js',
             array( 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
-            filemtime( lazyblocks()->plugin_path . 'assets/admin/tools/index.min.js' )
+            '@@plugin_version'
         );
 
         wp_localize_script( 'lazyblocks-tools', 'lazyblocksToolsData', $data );

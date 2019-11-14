@@ -1,24 +1,21 @@
 // External Dependencies.
 import classnames from 'classnames/dedupe';
-import arrayMove from 'array-move';
 import { throttle } from 'throttle-debounce';
 
 // Internal Dependencies
 import './blocks/free.jsx';
 import './extensions/block-id.jsx';
 
-import ColorControl from './controls/color.jsx';
-import ImageControl from './controls/image.jsx';
-import GalleryControl from './controls/gallery.jsx';
-import FileControl from './controls/file.jsx';
-import RepeaterControl from './controls/repeater.jsx';
 import PreviewServerCallback from './blocks/preview-server-callback.jsx';
-
-import controlsDefaults from '../admin/blocks/blocks/selected-control-settings/defaults.jsx';
+import getControlTypeData from '../admin/utils/get-control-type-data';
 
 let options = window.lazyblocksGutenberg;
 if ( ! options || ! options.blocks || ! options.blocks.length ) {
-    options = { post_type: 'post', blocks: [] };
+    options = {
+        post_type: 'post',
+        blocks: [],
+        controls: {},
+    };
 }
 
 const {
@@ -35,28 +32,17 @@ const {
 } = wp.element;
 
 const {
+    applyFilters,
+} = wp.hooks;
+
+const {
     PanelBody,
-    BaseControl,
-    TextControl,
-    TextareaControl,
-    ToggleControl,
-    CheckboxControl,
-    RadioControl,
-    RangeControl,
-    SelectControl,
-    Dashicon,
-    IconButton,
-    DatePicker,
-    TimePicker,
     Notice,
 } = wp.components;
 
 const {
-    URLInput,
     InspectorControls,
-    RichText,
     InnerBlocks,
-    PlainText,
 } = wp.blockEditor;
 
 const {
@@ -72,8 +58,6 @@ const {
     compose,
 } = wp.compose;
 
-const getDateSettings = wp.date.__experimentalGetSettings;
-
 // each registered block.
 options.blocks.forEach( ( item ) => {
     class LazyBlock extends Component {
@@ -84,8 +68,6 @@ options.blocks.forEach( ( item ) => {
             this.maybeLockPostSaving = throttle( 500, this.maybeLockPostSaving.bind( this ) );
             this.getControlValue = this.getControlValue.bind( this );
             this.onControlChange = this.onControlChange.bind( this );
-            this.onSelectImages = this.onSelectImages.bind( this );
-            this.onSelectImage = this.onSelectImage.bind( this );
             this.getControls = this.getControls.bind( this );
             this.renderControls = this.renderControls.bind( this );
         }
@@ -98,20 +80,11 @@ options.blocks.forEach( ( item ) => {
         }
 
         isControlValueValid( val, control ) {
-            let isValid = false;
+            let isValid = '' !== val && typeof val !== 'undefined';
 
-            switch ( control.type ) {
-            case 'select':
-            case 'radio':
-                if ( 'true' === control.allow_null ) {
-                    isValid = true;
-                } else {
-                    isValid = '' !== val && typeof val !== 'undefined';
-                }
-                break;
-            default:
-                isValid = '' !== val && typeof val !== 'undefined';
-            }
+            // custom validation filter.
+            isValid = applyFilters( `lzb.editor.control.${ control.type }.isValueValid`, isValid, val, control );
+            isValid = applyFilters( 'lzb.editor.control.isValueValid', isValid, val, control );
 
             return isValid;
         }
@@ -155,30 +128,18 @@ options.blocks.forEach( ( item ) => {
 
             let result = attributes[ control.name ];
 
-            // prepare repeater items.
+            // prepare child items.
             if ( control.child_of && item.controls[ control.child_of ] && childIndex > -1 ) {
                 const childs = this.getControlValue( item.controls[ control.child_of ] );
+
                 if ( childs && typeof childs[ childIndex ] !== 'undefined' && typeof childs[ childIndex ][ control.name ] !== 'undefined' ) {
                     result = childs[ childIndex ][ control.name ];
                 }
             }
 
-            // convert string to array.
-            if (
-                typeof result === 'string' &&
-                (
-                    'repeater' === control.type ||
-                    'image' === control.type ||
-                    'gallery' === control.type ||
-                    'file' === control.type
-                )
-            ) {
-                try {
-                    result = JSON.parse( decodeURI( result ) );
-                } catch ( e ) {
-                    result = [];
-                }
-            }
+            // filter control value.
+            result = applyFilters( `lzb.editor.control.${ control.type }.getValue`, result, control );
+            result = applyFilters( 'lzb.editor.control.getValue', result, control );
 
             return result;
         }
@@ -190,9 +151,10 @@ options.blocks.forEach( ( item ) => {
 
             let name = control.name;
 
-            // prepare repeater items.
+            // prepare child items.
             if ( control.child_of && item.controls[ control.child_of ] && childIndex > -1 ) {
                 const childs = this.getControlValue( item.controls[ control.child_of ] );
+
                 if ( childs && typeof childs[ childIndex ] !== 'undefined' ) {
                     childs[ childIndex ][ control.name ] = val;
                     val = childs;
@@ -202,69 +164,14 @@ options.blocks.forEach( ( item ) => {
                 name = control.name;
             }
 
-            // convert string in number type.
-            if ( 'number' === control.type || 'range' === control.type ) {
-                val = parseFloat( val );
-            }
+            // filter control value.
+            val = applyFilters( `lzb.editor.control.${ control.type }.updateValue`, val, control );
+            val = applyFilters( 'lzb.editor.control.updateValue', val, control );
 
             const result = {};
             result[ name ] = val;
 
-            // we only may save in string, number, boolean and integer types.
-            if (
-                ( typeof val === 'object' || Array.isArray( val ) ) &&
-                (
-                    'repeater' === control.type ||
-                    'image' === control.type ||
-                    'gallery' === control.type ||
-                    'file' === control.type
-                )
-            ) {
-                result[ name ] = encodeURI( JSON.stringify( result[ name ] ) );
-            }
-
             setAttributes( result );
-        }
-
-        onSelectImages( images, control, childIndex ) {
-            const result = images.map( ( image ) => {
-                return {
-                    alt: image.alt || '',
-                    title: image.title || '',
-                    caption: image.caption || '',
-                    id: image.id || '',
-                    link: image.link || '',
-                    url: image.url || '',
-                };
-            } );
-
-            this.onControlChange( result, control, childIndex );
-        }
-
-        onSelectImage( image, control, childIndex ) {
-            const result = image ? {
-                alt: image.alt || '',
-                title: image.title || '',
-                caption: image.caption || '',
-                id: image.id || '',
-                link: image.link || '',
-                url: image.url || '',
-            } : '';
-
-            this.onControlChange( result, control, childIndex );
-        }
-
-        onSelectFile( file, control, childIndex ) {
-            const result = file ? {
-                alt: file.alt || '',
-                title: file.title || '',
-                caption: file.caption || '',
-                id: file.id || '',
-                link: file.link || '',
-                url: file.url || '',
-            } : '';
-
-            this.onControlChange( result, control, childIndex );
         }
 
         /**
@@ -278,10 +185,15 @@ options.blocks.forEach( ( item ) => {
             const result = {};
 
             Object.keys( item.controls ).forEach( ( k ) => {
-                const control = {
-                    ...cloneDeep( controlsDefaults ),
-                    ...item.controls[ k ],
-                };
+                let control = item.controls[ k ];
+                const controlTypeData = getControlTypeData( control.type );
+
+                if ( controlTypeData && controlTypeData.attributes ) {
+                    control = {
+                        ...cloneDeep( controlTypeData.attributes ),
+                        ...control,
+                    };
+                }
 
                 if (
                     ( ! childOf && ! control.child_of ) ||
@@ -314,368 +226,83 @@ options.blocks.forEach( ( item ) => {
                 let placementCheck = control.type && control.placement !== 'nowhere' &&
                 ( control.placement === 'both' || control.placement === placement );
                 let label = control.label;
-                let maxlength = '';
 
-                // inner blocks show only in content.
-                if ( control.type === 'inner_blocks' ) {
-                    placementCheck = placement === 'content';
-                }
+                const controlTypeData = getControlTypeData( control.type );
 
-                // hide if not selected
-                if ( placement === 'content' && control.placement === 'content' && control.hide_if_not_selected && 'true' === control.hide_if_not_selected ) {
-                    placementCheck = this.props.isLazyBlockSelected;
-                }
+                // restrictions.
+                if ( controlTypeData && controlTypeData.restrictions ) {
+                    // Restrict placement.
+                    if (
+                        placementCheck &&
+                        controlTypeData.restrictions.placement_settings
+                    ) {
+                        placementCheck = controlTypeData.restrictions.placement_settings.indexOf( placement ) > -1;
+                    }
 
-                // required mark
-                if ( control.required && 'true' === control.required ) {
-                    label = (
-                        <Fragment>
-                            { label }
-                            <span className="required">*</span>
-                        </Fragment>
-                    );
-                }
+                    // Restrict hide if not selected.
+                    if (
+                        placementCheck &&
+                        placement === 'content' &&
+                        control.placement === 'content' &&
+                        controlTypeData.restrictions.hide_if_not_selected_settings &&
+                        control.hide_if_not_selected &&
+                        'true' === control.hide_if_not_selected
+                    ) {
+                        placementCheck = this.props.isLazyBlockSelected;
+                    }
 
-                // maxlength attribute
-                if (
-                    control.characters_limit && (
-                        control.type === 'text' ||
-                        control.type === 'textarea' ||
-                        control.type === 'email' ||
-                        control.type === 'password'
-                    )
-                ) {
-                    maxlength = control.characters_limit ? parseInt( control.characters_limit ) : '';
+                    // Restrict required mark
+                    if (
+                        controlTypeData.restrictions.required_settings &&
+                        control.required &&
+                        'true' === control.required
+                    ) {
+                        label = (
+                            <Fragment>
+                                { label }
+                                <span className="required">*</span>
+                            </Fragment>
+                        );
+                    }
                 }
 
                 // prepare control output
                 if ( control.child_of || placementCheck ) {
-                    switch ( control.type ) {
-                    case 'text':
-                    case 'number':
-                    case 'email':
-                    case 'password':
-                        result.push( (
-                            <TextControl
-                                key={ control.name }
-                                label={ label }
-                                type={ control.type }
-                                min={ control.min }
-                                max={ control.max }
-                                step={ control.step }
-                                maxLength={ maxlength }
-                                help={ control.help }
-                                placeholder={ control.placeholder }
-                                value={ this.getControlValue( control, childIndex ) }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'range':
-                        result.push( (
-                            <RangeControl
-                                key={ control.name }
-                                label={ label }
-                                min={ control.min }
-                                max={ control.max }
-                                step={ control.step }
-                                help={ control.help }
-                                value={ this.getControlValue( control, childIndex ) }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'url':
-                        result.push( (
-                            <BaseControl
-                                key={ control.name }
-                                label={ label }
-                                help={ control.help }
-                            >
-                                <form
-                                    className="lzb-gutenberg-url"
-                                    onSubmit={ ( event ) => event.preventDefault() }>
-                                    <URLInput
-                                        value={ this.getControlValue( control, childIndex ) }
-                                        onChange={ ( val ) => {
-                                            this.onControlChange( val, control, childIndex );
-                                        } }
-                                        autoFocus={ false }
-                                    />
-                                    <Dashicon icon="admin-links" />
-                                    <IconButton icon="editor-break" label="Apply" type="submit" />
-                                </form>
-                            </BaseControl>
-                        ) );
-                        break;
-                    case 'textarea':
-                        result.push( (
-                            <TextareaControl
-                                key={ control.name }
-                                label={ label }
-                                value={ this.getControlValue( control, childIndex ) }
-                                maxLength={ maxlength }
-                                help={ control.help }
-                                placeholder={ control.placeholder }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'rich_text':
-                        result.push( (
-                            <BaseControl
-                                key={ control.name }
-                                label={ label }
-                                help={ control.help }
-                                className="lzb-gutenberg-rich-text"
-                            >
-                                <RichText
-                                    value={ this.getControlValue( control, childIndex ) }
-                                    format="string"
-                                    multiline={ control.multiline === 'true' ? 'p' : false }
-                                    inlineToolbar={ true }
-                                    onChange={ ( val ) => {
-                                        this.onControlChange( val, control, childIndex );
-                                    } }
-                                />
-                            </BaseControl>
-                        ) );
-                        break;
-                    case 'code_editor':
-                        result.push( (
-                            <BaseControl
-                                key={ control.name }
-                                label={ label }
-                                help={ control.help }
-                                className="wp-block-html"
-                            >
-                                <PlainText
-                                    value={ this.getControlValue( control, childIndex ) }
-                                    onChange={ ( val ) => {
-                                        this.onControlChange( val, control, childIndex );
-                                    } }
-                                />
-                            </BaseControl>
-                        ) );
-                        break;
-                    case 'inner_blocks':
-                        result.push( (
-                            <BaseControl
-                                key={ control.name }
-                                label={ label }
-                            >
-                                <InnerBlocks />
-                            </BaseControl>
-                        ) );
-                        break;
-                    case 'select':
-                        result.push( (
-                            <SelectControl
-                                key={ control.name }
-                                label={ label }
-                                options={ control.choices }
-                                multiple={ 'true' === control.multiple }
-                                value={ this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                onChange={ ( val ) => {
-                                    if ( control.allow_null && 'true' === control.allow_null && 'null' === val ) {
-                                        val = null;
-                                    }
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'radio':
-                        result.push( (
-                            <RadioControl
-                                key={ control.name }
-                                label={ label }
-                                help={ control.help }
-                                selected={ this.getControlValue( control, childIndex ) }
-                                options={ control.choices }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'toggle':
-                        result.push( (
-                            <ToggleControl
-                                key={ control.name }
-                                label={ label }
-                                checked={ !! this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'checkbox':
-                        result.push( (
-                            <CheckboxControl
-                                key={ control.name }
-                                label={ label }
-                                checked={ !! this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'image':
-                        result.push( (
-                            <ImageControl
-                                key={ control.name }
-                                label={ label }
-                                value={ this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                onChange={ ( val ) => {
-                                    this.onSelectImage( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'gallery':
-                        result.push( (
-                            <GalleryControl
-                                key={ control.name }
-                                label={ label }
-                                value={ this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                onChange={ ( val ) => {
-                                    this.onSelectImages( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'file':
-                        result.push( (
-                            <FileControl
-                                key={ control.name }
-                                label={ label }
-                                value={ this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                allowedMimeTypes={ control.allowed_mime_types }
-                                onChange={ ( val ) => {
-                                    this.onSelectFile( val, control, childIndex );
-                                } }
-                            />
-                        ) );
+                    // prepare data for filter.
+                    const controlData = {
+                        data: {
+                            ...control,
+                            label,
+                        },
+                        placement,
+                        uniqueId: k,
+                        getValue: ( optionalControl = control, optionalChildIndex = childIndex ) => {
+                            return this.getControlValue( optionalControl, optionalChildIndex );
+                        },
+                        onChange: ( val ) => {
+                            this.onControlChange( val, control, childIndex );
+                        },
+                        getControls: this.getControls,
+                        renderControls: this.renderControls,
+                    };
 
-                        break;
-                    case 'color':
-                        result.push( (
-                            <ColorControl
-                                key={ control.name }
-                                label={ label }
-                                value={ this.getControlValue( control, childIndex ) }
-                                help={ control.help }
-                                alpha={ control.alpha === 'true' }
-                                onChange={ ( val ) => {
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
-                    case 'date_time':
-                        const settings = getDateSettings();
+                    // get control data from filter.
+                    let controlResult = applyFilters( `lzb.editor.control.${ control.type }.render`, '', controlData );
 
-                        // To know if the current timezone is a 12 hour time with look for "a" in the time format.
-                        // We also make sure this a is not escaped by a "/".
-                        const is12HourTime = /a(?!\\)/i.test(
-                            settings.formats.time
-                                .toLowerCase() // Test only the lower case a
-                                .replace( /\\\\/g, '' ) // Replace "//" with empty strings
-                                .split( '' ).reverse().join( '' ) // Reverse the string and test for "a" not followed by a slash
+                    if ( controlResult ) {
+                        controlResult = applyFilters( 'lzb.editor.control.render', controlResult, controlData );
+                        result.push(
+                            <div key={ `control-${ k }` }>{ controlResult }</div>
                         );
-
-                        result.push( (
-                            <BaseControl
-                                key={ control.name }
-                                label={ label }
-                                help={ control.help }
-                            >
-                                { /date/.test( control.date_time_picker ) ? (
-                                    <DatePicker
-                                        currentDate={ this.getControlValue( control, childIndex ) }
-                                        onChange={ ( val ) => {
-                                            this.onControlChange( val, control, childIndex );
-                                        } }
-                                        locale={ settings.l10n.locale }
-                                    />
-                                ) : '' }
-                                { /time/.test( control.date_time_picker ) ? (
-                                    <TimePicker
-                                        currentTime={ this.getControlValue( control, childIndex ) }
-                                        onChange={ ( val ) => {
-                                            this.onControlChange( val, control, childIndex );
-                                        } }
-                                        is12Hour={ is12HourTime }
-                                    />
-                                ) : '' }
-                            </BaseControl>
-                        ) );
-                        break;
-                    case 'repeater':
-                        const val = this.getControlValue( control, childIndex );
-
-                        result.push( (
-                            <RepeaterControl
-                                key={ control.name }
-                                controlData={ control }
-                                label={ label }
-                                count={ val.length }
-                                getInnerControls={ ( index ) => {
-                                    const innerControls = this.getControls( k );
-                                    const innerResult = {};
-
-                                    Object.keys( innerControls ).forEach( ( i ) => {
-                                        const innerData = innerControls[ i ];
-
-                                        innerResult[ i ] = {
-                                            data: innerData,
-                                            val: this.getControlValue( innerData, index ),
-                                        };
-                                    } );
-
-                                    return innerResult;
-                                } }
-                                renderRow={ ( index ) => (
-                                    <Fragment>
-                                        { this.renderControls( placement, k, index ) }
-                                    </Fragment>
-                                ) }
-                                removeRow={ ( i ) => {
-                                    if ( i > -1 ) {
-                                        val.splice( i, 1 );
-                                        this.onControlChange( val, control, childIndex );
-                                    }
-                                } }
-                                addRow={ () => {
-                                    val.push( {} );
-                                    this.onControlChange( val, control, childIndex );
-                                } }
-                                resortRow={ ( oldIndex, newIndex ) => {
-                                    const newVal = arrayMove( val, oldIndex, newIndex );
-                                    this.onControlChange( newVal, control, childIndex );
-                                } }
-                            />
-                        ) );
-                        break;
                     }
 
                     // show error for required fields
-                    if ( control.required && 'true' === control.required ) {
+                    if (
+                        controlTypeData &&
+                        controlTypeData.restrictions.required_settings &&
+                        control.required &&
+                        'true' === control.required
+                    ) {
                         const val = this.getControlValue( control, childIndex );
 
                         if ( ! this.isControlValueValid( val, control ) ) {

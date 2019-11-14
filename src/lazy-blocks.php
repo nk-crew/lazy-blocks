@@ -115,27 +115,28 @@ class LazyBlocks {
      */
     public function init() {
         $this->plugin_path = plugin_dir_path( __FILE__ );
-        $this->plugin_url = plugin_dir_url( __FILE__ );
+        $this->plugin_url  = plugin_dir_url( __FILE__ );
 
         // get current plugin data.
         if ( ! function_exists( 'get_plugin_data' ) ) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
-        $data = get_plugin_data( __FILE__ );
-        $this->plugin_name = $data['Name'];
+        $data                 = get_plugin_data( __FILE__ );
+        $this->plugin_name    = $data['Name'];
         $this->plugin_version = $data['Version'];
-        $this->plugin_author = $data['Author'];
+        $this->plugin_author  = $data['Author'];
 
-        $this->plugin_slug = plugin_basename( __FILE__ );
+        $this->plugin_slug           = plugin_basename( __FILE__ );
         $this->plugin_name_sanitized = basename( __FILE__, '.php' );
 
         $this->load_text_domain();
         $this->add_actions();
         $this->include_dependencies();
 
-        $this->blocks = new LazyBlocks_Blocks();
+        $this->controls  = new LazyBlocks_Controls();
+        $this->blocks    = new LazyBlocks_Blocks();
         $this->templates = new LazyBlocks_Templates();
-        $this->tools = new LazyBlocks_Tools();
+        $this->tools     = new LazyBlocks_Tools();
 
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     }
@@ -158,6 +159,7 @@ class LazyBlocks {
      * Set plugin Dependencies.
      */
     private function include_dependencies() {
+        require_once $this->plugin_path . '/classes/class-controls.php';
         require_once $this->plugin_path . '/classes/class-blocks.php';
         require_once $this->plugin_path . '/classes/class-templates.php';
         require_once $this->plugin_path . '/classes/class-tools.php';
@@ -165,7 +167,14 @@ class LazyBlocks {
     }
 
     /**
-     * Get lazyblocks object.
+     * Get lazyblocks controls object.
+     */
+    public function controls() {
+        return $this->controls;
+    }
+
+    /**
+     * Get lazyblocks blocks object.
      */
     public function blocks() {
         return $this->blocks;
@@ -220,29 +229,32 @@ class LazyBlocks {
 
         if ( 'lazyblocks' === $post_type ) {
             wp_enqueue_script(
-                'lazyblocks-admin-blocks',
-                lazyblocks()->plugin_url . 'assets/admin/blocks/index.min.js',
+                'lazyblocks-constructor',
+                $this->plugin_url . 'assets/admin/constructor/index.min.js',
                 array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
-                filemtime( lazyblocks()->plugin_path . 'assets/admin/blocks/index.min.js' )
+                '@@plugin_version'
             );
-            wp_localize_script( 'lazyblocks-admin-blocks', 'lazyblocks_localize', array(
-                'post_id' => isset( $post->ID ) ? $post->ID : 0,
+            wp_localize_script( 'lazyblocks-constructor', 'lazyblocksConstructorData', array(
+                'post_id'            => isset( $post->ID ) ? $post->ID : 0,
                 'allowed_mime_types' => get_allowed_mime_types(),
+                'controls'           => $this->controls()->get_controls(),
             ) );
+
+            wp_enqueue_style( 'lazyblocks-constructor', $this->plugin_url . 'assets/admin/constructor/style.min.css', array(), '@@plugin_version' );
         }
 
-        wp_enqueue_script( 'date_i18n', lazyblocks()->plugin_url . 'vendor/date_i18n/date_i18n.js', array(), '1.0.0', true );
+        wp_enqueue_script( 'date_i18n', $this->plugin_url . 'vendor/date_i18n/date_i18n.js', array(), '1.0.0', true );
 
-        $month_names = array_map( array( &$wp_locale, 'get_month' ), range( 1, 12 ) );
+        $month_names       = array_map( array( &$wp_locale, 'get_month' ), range( 1, 12 ) );
         $month_names_short = array_map( array( &$wp_locale, 'get_month_abbrev' ), $month_names );
-        $day_names = array_map( array( &$wp_locale, 'get_weekday' ), range( 0, 6 ) );
-        $day_names_short = array_map( array( &$wp_locale, 'get_weekday_abbrev' ), $day_names );
+        $day_names         = array_map( array( &$wp_locale, 'get_weekday' ), range( 0, 6 ) );
+        $day_names_short   = array_map( array( &$wp_locale, 'get_weekday_abbrev' ), $day_names );
 
         wp_localize_script( 'date_i18n', 'DATE_I18N', array(
-            'month_names' => $month_names,
+            'month_names'       => $month_names,
             'month_names_short' => $month_names_short,
-            'day_names' => $day_names,
-            'day_names_short' => $day_names_short,
+            'day_names'         => $day_names,
+            'day_names_short'   => $day_names_short,
         ) );
 
         wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
@@ -268,47 +280,32 @@ add_action( 'plugins_loaded', 'lazyblocks' );
  * @return array|mixed|object
  */
 function get_lzb_meta( $name, $id = null ) {
-    $fix_meta_value = false;
-    $default = null;
+    $control_data = null;
 
     if ( null === $id ) {
         global $post;
         $id = $post->ID;
     }
 
+    // Find control data by meta name.
     $blocks = lazyblocks()->blocks()->get_blocks();
     foreach ( $blocks as $block ) {
         if ( isset( $block['controls'] ) && is_array( $block['controls'] ) ) {
             foreach ( $block['controls'] as $control ) {
-                if ( $control['save_in_meta_name'] === $name ) {
-                    // get all Image and Gallery metabox names.
-                    if (
-                        'true' === $control['save_in_meta'] &&
-                        $control['save_in_meta_name'] &&
-                        (
-                            'image' === $control['type'] ||
-                            'gallery' === $control['type'] ||
-                            'file' === $control['type'] ||
-                            'repeater' === $control['type']
-                        )
-                    ) {
-                        $fix_meta_value = true;
-                    }
+                if ( $control_data || 'true' !== $control['save_in_meta'] ) {
+                    continue;
+                }
 
-                    switch ( $control['type'] ) {
-                        case 'image':
-                        case 'gallery':
-                        case 'file':
-                        case 'code_editor':
-                            break;
-                        case 'checkbox':
-                        case 'toggle':
-                            $default = 'true' === $control['checked'] ? 1 : 0;
-                            break;
-                        default:
-                            $default = $control['default'];
-                            break;
-                    }
+                $meta_name = false;
+
+                if ( isset( $control['save_in_meta_name'] ) && $control['save_in_meta_name'] ) {
+                    $meta_name = $control['save_in_meta_name'];
+                } elseif ( $control['name'] ) {
+                    $meta_name = $control['name'];
+                }
+
+                if ( $meta_name && $meta_name === $name ) {
+                    $control_data = $control;
                 }
             }
         }
@@ -316,14 +313,10 @@ function get_lzb_meta( $name, $id = null ) {
 
     $result = get_post_meta( $id, $name, true );
 
-    if ( ! $result ) {
-        $result = $default;
+    // set default.
+    if ( ! $result && isset( $control_data['default'] ) && $control_data['default'] ) {
+        $result = $control_data['default'];
     }
 
-    // find Image and Gallery controls with meta data to fix it.
-    if ( $fix_meta_value ) {
-        $result = json_decode( urldecode( $result ), true );
-    }
-
-    return $result;
+    return apply_filters( 'lzb/get_meta', $result, $name, $id, $control_data );
 }

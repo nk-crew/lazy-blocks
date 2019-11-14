@@ -15,10 +15,15 @@ export default class Select extends Component {
                 menuPlacement="auto"
                 className="lazyblocks-component-select"
                 styles={ {
-                    control: ( styles ) => {
+                    control: ( styles, props ) => {
                         return {
                             ...styles,
-                            'min-height': 32,
+                            minHeight: 32,
+                            borderColor: props.isFocused ? '#007cba' : '#7e8993',
+                            boxShadow: props.isFocused ? '0 0 0 1px #007cba' : '',
+                            ':hover': {
+                                borderColor: props.isFocused ? '#007cba' : '#7e8993',
+                            },
                         };
                     },
                     input: ( styles ) => {

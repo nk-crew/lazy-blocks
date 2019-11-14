@@ -54,6 +54,13 @@
 		</properties>
 	</rule>
 
+    <!-- Add several extra word delimiters. -->
+    <rule ref="WordPress.NamingConventions.ValidHookName">
+        <properties>
+            <property name="additionalWordDelimiters" value="/"/>
+        </properties>
+    </rule>
+
 	<!-- Disable some VIP errors -->
 	<rule ref="WordPress.VIP.RestrictedFunctions">
 		<properties>

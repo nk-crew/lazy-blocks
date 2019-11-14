@@ -1,0 +1,142 @@
+@import "../../../variables";
+
+.lzb-constructor-controls-columns {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px 20px;
+    color: $color_dark_lighten;
+
+    > div {
+        flex: 1;
+    }
+}
+
+.lzb-constructor-controls-item,
+.lzb-constructor-controls-item-appender {
+    position: relative;
+    padding: 15px 20px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid $color_gray;
+    border-radius: $radius_large;
+    transition: .15s background ease-in-out, .15s color ease-in-out, .15s border-color ease-in-out, .15s box-shadow ease-in-out;
+    z-index: 1;
+}
+
+.lzb-constructor-controls-item:hover {
+    border-color: $color_dark_lighten_2;
+}
+
+.lzb-constructor-controls-item-wrap-selected > .lzb-constructor-controls-item {
+    border-color: $color_main;
+    box-shadow: 0 0 0 1px $color_main;
+}
+
+.lzb-constructor-controls-item-wrap,
+.lzb-constructor-controls-item-appender {
+    margin-top: 15px;
+}
+
+// appender
+.lzb-constructor-controls-item-appender {
+    display: block;
+    width: 100%;
+    min-height: 60px;
+    color: $color_dark_lighten;
+    background: $color_gray_lighten_2;
+    border-color: $color_gray_darken;
+    border-style: dashed;
+    outline: none;
+    box-shadow: none;
+
+    &:hover {
+        color: $color_dark_darken;
+        background: #fff;
+        border-color: $color_dark_lighten_2;
+    }
+}
+
+// repeater child items.
+.lzb-constructor-controls-item-childs {
+    padding-left: 20px;
+}
+
+// repeater toggle child button.
+.lzb-constructor-controls-item-repeater-toggle {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 9px;
+    padding-left: 20px;
+    margin-top: 3px;
+    margin-bottom: -11px;
+    font-size: 80%;
+    color: $color_dark_lighten;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    transition: .15s color;
+
+    &:hover {
+        color: $color_dark_darken;
+    }
+
+    > svg {
+        height: .7em;
+        margin-left: .5em;
+        vertical-align: -.05em;
+    }
+
+    &.lzb-constructor-controls-item-repeater-toggle-collapsed > svg {
+        transform: rotate(-90deg);
+    }
+}
+
+// head
+.lzb-constructor-controls-item-head {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+
+    > div {
+        flex: 1;
+    }
+
+    .lzb-constructor-controls-item-label > span {
+        display: block;
+        font-weight: 600;
+
+        .required {
+            margin-left: 5px;
+        }
+    }
+
+    small {
+        font-size: 80%;
+        color: $color_dark_lighten;
+    }
+
+    .lzb-constructor-controls-item-handler {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 25px;
+        min-width: 25px;
+        max-width: 25px;
+        text-align: right;
+        cursor: grab;
+        opacity: .2;
+        transition: .2s opacity ease-in-out;
+
+        &:hover {
+            opacity: .4;
+        }
+    }
+}
+.lzb-constructor-controls-item-type,
+.lzb-constructor-controls-item-placement,
+.lzb-constructor-controls-item-meta {
+    font-size: 80%;
+}
