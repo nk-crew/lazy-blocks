@@ -31,7 +31,7 @@ addFilter( 'lzb.editor.control.rich_text.render', 'lzb.editor', ( render, props 
                 inlineToolbar={ true }
                 value={ props.getValue() }
                 onChange={ ( val ) => {
-                    props.onChange( parseFloat( val ) );
+                    props.onChange( val );
                 } }
             />
         </BaseControl>

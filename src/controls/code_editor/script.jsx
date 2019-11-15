@@ -23,7 +23,7 @@ addFilter( 'lzb.editor.control.code_editor.render', 'lzb.editor', ( render, prop
             <PlainText
                 value={ props.getValue() }
                 onChange={ ( val ) => {
-                    props.onChange( parseFloat( val ) );
+                    props.onChange( val );
                 } }
             />
         </BaseControl>
