@@ -445,9 +445,9 @@ options.blocks.forEach( ( item ) => {
 
     // register block.
     registerBlockType( item.slug, {
-        title: item.title,
+        title: item.title || item.slug,
         description: item.description,
-        icon: item.icon.replace( /^dashicons dashicons-/, '' ),
+        icon: item.icon.replace( /^dashicons dashicons-/, '' ) || 'marker',
         category: item.category,
         keywords: item.keywords,
         supports: item.supports,
