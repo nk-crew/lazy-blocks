@@ -1,7 +1,11 @@
 @import "../../variables";
 
 .lazyblocks-component-select {
-    input[type="text"]:focus {
-        box-shadow: none;
+    input[type="text"] {
+        min-height: 20px;
+
+        &:focus {
+            box-shadow: none;
+        }
     }
 }
