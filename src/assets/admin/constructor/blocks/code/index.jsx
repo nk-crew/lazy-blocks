@@ -142,41 +142,47 @@ export default class CustomCodeSettings extends Component {
                     />
                 </BaseControl>
 
-                <SelectControl
+                <BaseControl
                     label={ __( 'Output Method' ) }
-                    options={ [
-                        {
-                            label: __( 'HTML + Handlebars' ),
-                            value: 'html',
-                        }, {
-                            label: __( 'PHP' ),
-                            value: 'php',
-                        },
-                    ] }
-                    value={ data.code_use_php ? 'php' : 'html' }
-                    onChange={ value => updateData( { code_use_php: value === 'php' } ) }
-                />
+                >
+                    <SelectControl
+                        options={ [
+                            {
+                                label: __( 'HTML + Handlebars' ),
+                                value: 'html',
+                            }, {
+                                label: __( 'PHP' ),
+                                value: 'php',
+                            },
+                        ] }
+                        value={ data.code_use_php ? 'php' : 'html' }
+                        onChange={ value => updateData( { code_use_php: value === 'php' } ) }
+                    />
+                </BaseControl>
 
-                <SelectControl
+                <BaseControl
                     label={ __( 'Show block preview in editor' ) }
-                    options={ [
-                        {
-                            label: __( 'Always' ),
-                            value: 'always',
-                        }, {
-                            label: __( 'Within `selected` block only' ),
-                            value: 'selected',
-                        }, {
-                            label: __( 'Within `unselected` block only' ),
-                            value: 'unselected',
-                        }, {
-                            label: __( 'Never' ),
-                            value: 'never',
-                        },
-                    ] }
-                    value={ data.code_show_preview }
-                    onChange={ value => updateData( { code_show_preview: value } ) }
-                />
+                >
+                    <SelectControl
+                        options={ [
+                            {
+                                label: __( 'Always' ),
+                                value: 'always',
+                            }, {
+                                label: __( 'Within `selected` block only' ),
+                                value: 'selected',
+                            }, {
+                                label: __( 'Within `unselected` block only' ),
+                                value: 'unselected',
+                            }, {
+                                label: __( 'Never' ),
+                                value: 'never',
+                            },
+                        ] }
+                        value={ data.code_show_preview }
+                        onChange={ value => updateData( { code_show_preview: value } ) }
+                    />
+                </BaseControl>
             </div>
         );
     }
