@@ -77,7 +77,11 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
      * @return array filtered attribute data.
      */
     public function filter_lzb_prepare_block_attribute( $attribute_data, $control, $controls, $control_id, $block ) {
-        if ( ! $control || $this->name !== $control['type'] ) {
+        if (
+            ! $control ||
+            ! isset( $control['type'] ) ||
+            $this->name !== $control['type']
+        ) {
             return $attribute_data;
         }
 

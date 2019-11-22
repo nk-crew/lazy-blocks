@@ -63,7 +63,12 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
      * @return array filtered attribute data.
      */
     public function filter_lzb_prepare_block_attribute( $attribute_data, $control ) {
-        if ( ! $control || $this->name !== $control['type'] || ! isset( $control['multiple'] ) ) {
+        if (
+            ! $control ||
+            ! isset( $control['type'] ) ||
+            $this->name !== $control['type'] ||
+            ! isset( $control['multiple'] )
+        ) {
             return $attribute_data;
         }
 
