@@ -4,9 +4,11 @@ const {
     BaseControl,
     Button,
     DropZone,
+    withNotices,
 } = wp.components;
 
 const {
+    compose,
     withInstanceId,
 } = wp.compose;
 
@@ -23,12 +25,30 @@ const {
 } = window.lazyblocksConstructorData || window.lazyblocksGutenberg;
 
 class FileControl extends Component {
+    constructor() {
+        super( ...arguments );
+
+        this.state = {
+            hasError: false,
+        };
+
+        this.onUploadError = this.onUploadError.bind( this );
+    }
+
+    onUploadError( message ) {
+        const { noticeOperations } = this.props;
+        noticeOperations.removeAllNotices();
+        noticeOperations.createErrorNotice( message );
+    }
+
     render() {
         const {
             label,
             value,
             help,
             allowedMimeTypes,
+            noticeOperations,
+            noticeUI,
             onChange = () => {},
         } = this.props;
 
@@ -56,14 +76,14 @@ class FileControl extends Component {
                                 name: __( 'file' ),
                             } }
                             onSelect={ ( file ) => {
+                                this.setState( { hasError: false } );
                                 onChange( file );
                             } }
+                            notices={ noticeUI }
+                            accept={ ALLOWED_MEDIA_TYPES }
                             allowedTypes={ ALLOWED_MEDIA_TYPES }
                             disableMaxUploadErrorMessages
-                            onError={ ( e ) => {
-                                // eslint-disable-next-line no-console
-                                console.log( e );
-                            } }
+                            onError={ this.onUploadError }
                         />
                     ) : '' }
                     { value && Object.keys( value ).length ? (
@@ -74,11 +94,12 @@ class FileControl extends Component {
                                         allowedTypes: ALLOWED_MEDIA_TYPES,
                                         filesList: files,
                                         onFileChange: ( file ) => {
+                                            this.setState( { hasError: false } );
                                             onChange( file );
                                         },
-                                        onError( e ) {
-                                            // eslint-disable-next-line no-console
-                                            console.log( e );
+                                        onError: ( message ) => {
+                                            this.setState( { hasError: true } );
+                                            noticeOperations.createErrorNotice( message );
                                         },
                                     } );
                                 } }
@@ -96,6 +117,7 @@ class FileControl extends Component {
                                 <Button
                                     isDefault={ true }
                                     onClick={ () => {
+                                        this.setState( { hasError: false } );
                                         onChange( '' );
                                     } }
                                 >
@@ -110,4 +132,7 @@ class FileControl extends Component {
     }
 }
 
-export default withInstanceId( FileControl );
+export default compose( [
+    withInstanceId,
+    withNotices,
+] )( FileControl );

@@ -4,9 +4,11 @@ const {
     BaseControl,
     Button,
     DropZone,
+    withNotices,
 } = wp.components;
 
 const {
+    compose,
     withInstanceId,
 } = wp.compose;
 
@@ -22,11 +24,29 @@ const {
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 class GalleryControl extends Component {
+    constructor() {
+        super( ...arguments );
+
+        this.state = {
+            hasError: false,
+        };
+
+        this.onUploadError = this.onUploadError.bind( this );
+    }
+
+    onUploadError( message ) {
+        const { noticeOperations } = this.props;
+        noticeOperations.removeAllNotices();
+        noticeOperations.createErrorNotice( message );
+    }
+
     render() {
         const {
             label,
             value,
             help,
+            noticeOperations,
+            noticeUI,
             onChange = () => {},
         } = this.props;
 
@@ -44,21 +64,21 @@ class GalleryControl extends Component {
                                 name: __( 'images' ),
                             } }
                             onSelect={ ( images ) => {
+                                this.setState( { hasError: false } );
                                 onChange( images );
                             } }
+                            notices={ noticeUI }
                             accept="image/*"
                             allowedTypes={ ALLOWED_MEDIA_TYPES }
                             disableMaxUploadErrorMessages
                             multiple
-                            onError={ ( e ) => {
-                                // eslint-disable-next-line no-console
-                                console.log( e );
-                            } }
+                            onError={ this.onUploadError }
                         />
                     ) : '' }
                     { value && Object.keys( value ).length ? (
                         <MediaUpload
                             onSelect={ ( images ) => {
+                                this.setState( { hasError: false } );
                                 onChange( images );
                             } }
                             allowedTypes={ ALLOWED_MEDIA_TYPES }
@@ -78,11 +98,12 @@ class GalleryControl extends Component {
                                                 allowedTypes: ALLOWED_MEDIA_TYPES,
                                                 filesList: files,
                                                 onFileChange: ( images ) => {
+                                                    this.setState( { hasError: false } );
                                                     onChange( currentImages.concat( images ) );
                                                 },
-                                                onError( e ) {
-                                                    // eslint-disable-next-line no-console
-                                                    console.log( e );
+                                                onError: ( message ) => {
+                                                    this.setState( { hasError: true } );
+                                                    noticeOperations.createErrorNotice( message );
                                                 },
                                             } );
                                         } }
@@ -105,4 +126,7 @@ class GalleryControl extends Component {
     }
 }
 
-export default withInstanceId( GalleryControl );
+export default compose( [
+    withInstanceId,
+    withNotices,
+] )( GalleryControl );

@@ -4,9 +4,11 @@ const {
     BaseControl,
     Button,
     DropZone,
+    withNotices,
 } = wp.components;
 
 const {
+    compose,
     withInstanceId,
 } = wp.compose;
 
@@ -21,11 +23,29 @@ const {
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 class ImageControl extends Component {
+    constructor() {
+        super( ...arguments );
+
+        this.state = {
+            hasError: false,
+        };
+
+        this.onUploadError = this.onUploadError.bind( this );
+    }
+
+    onUploadError( message ) {
+        const { noticeOperations } = this.props;
+        noticeOperations.removeAllNotices();
+        noticeOperations.createErrorNotice( message );
+    }
+
     render() {
         const {
             label,
             value,
             help,
+            noticeOperations,
+            noticeUI,
             onChange = () => {},
         } = this.props;
 
@@ -43,15 +63,14 @@ class ImageControl extends Component {
                                 name: __( 'image' ),
                             } }
                             onSelect={ ( image ) => {
+                                this.setState( { hasError: false } );
                                 onChange( image );
                             } }
+                            notices={ noticeUI }
                             accept="image/*"
                             allowedTypes={ ALLOWED_MEDIA_TYPES }
                             disableMaxUploadErrorMessages
-                            onError={ ( e ) => {
-                                // eslint-disable-next-line no-console
-                                console.log( e );
-                            } }
+                            onError={ this.onUploadError }
                         />
                     ) : '' }
                     { value && Object.keys( value ).length ? (
@@ -62,11 +81,12 @@ class ImageControl extends Component {
                                         allowedTypes: ALLOWED_MEDIA_TYPES,
                                         filesList: files,
                                         onFileChange: ( image ) => {
+                                            this.setState( { hasError: false } );
                                             onChange( image );
                                         },
-                                        onError( e ) {
-                                            // eslint-disable-next-line no-console
-                                            console.log( e );
+                                        onError: ( message ) => {
+                                            this.setState( { hasError: true } );
+                                            noticeOperations.createErrorNotice( message );
                                         },
                                     } );
                                 } }
@@ -75,6 +95,7 @@ class ImageControl extends Component {
                                 <Button
                                     isDefault={ true }
                                     onClick={ () => {
+                                        this.setState( { hasError: false } );
                                         onChange( '' );
                                     } }
                                 >
@@ -92,4 +113,7 @@ class ImageControl extends Component {
     }
 }
 
-export default withInstanceId( ImageControl );
+export default compose( [
+    withInstanceId,
+    withNotices,
+] )( ImageControl );
