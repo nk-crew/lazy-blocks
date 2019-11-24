@@ -54,11 +54,18 @@ class FileControl extends Component {
 
         const ALLOWED_MEDIA_TYPES = [];
 
-        if ( allowedMimeTypes ) {
+        // If selected specific media types.
+        if ( allowedMimeTypes && allowedMimeTypes.length ) {
             allowedMimeTypes.forEach( ( typeName ) => {
                 if ( wpAllowedMimeTypes[ typeName ] ) {
                     ALLOWED_MEDIA_TYPES.push( wpAllowedMimeTypes[ typeName ] );
                 }
+            } );
+
+            // If nothing selected - all types allowed.
+        } else {
+            Object.keys( wpAllowedMimeTypes ).forEach( ( typeName ) => {
+                ALLOWED_MEDIA_TYPES.push( wpAllowedMimeTypes[ typeName ] );
             } );
         }
 
