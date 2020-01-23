@@ -45,7 +45,8 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
             'lazyblocks-control-inner-blocks',
             lazyblocks()->plugin_url . 'controls/inner_blocks/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 
@@ -75,7 +76,7 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
         // prepare decoded array to actual array.
         foreach ( $block['controls'] as $control ) {
             if ( $this->name === $control['type'] ) {
-                $attributes[ $control['name'] ] = $content ? : '';
+                $attributes[ $control['name'] ] = $content ? $content : '';
             }
         }
 

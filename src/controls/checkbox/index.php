@@ -43,7 +43,8 @@ class LazyBlocks_Control_Checkbox extends LazyBlocks_Control {
             'lazyblocks-control-checkbox',
             lazyblocks()->plugin_url . 'controls/checkbox/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 

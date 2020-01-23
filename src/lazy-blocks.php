@@ -26,18 +26,18 @@ class LazyBlocks {
      *
      * @var null
      */
-    private static $_instance = null;
+    private static $instance = null;
 
     /**
      * Main Instance
      * Ensures only one instance of this class exists in memory at any one time.
      */
     public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-            self::$_instance->init();
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new self();
+            self::$instance->init();
         }
-        return self::$_instance;
+        return self::$instance;
     }
 
     /**
@@ -232,13 +232,18 @@ class LazyBlocks {
                 'lazyblocks-constructor',
                 $this->plugin_url . 'assets/admin/constructor/index.min.js',
                 array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
-                '@@plugin_version'
+                '@@plugin_version',
+                true
             );
-            wp_localize_script( 'lazyblocks-constructor', 'lazyblocksConstructorData', array(
-                'post_id'            => isset( $post->ID ) ? $post->ID : 0,
-                'allowed_mime_types' => get_allowed_mime_types(),
-                'controls'           => $this->controls()->get_controls(),
-            ) );
+            wp_localize_script(
+                'lazyblocks-constructor',
+                'lazyblocksConstructorData',
+                array(
+                    'post_id'            => isset( $post->ID ) ? $post->ID : 0,
+                    'allowed_mime_types' => get_allowed_mime_types(),
+                    'controls'           => $this->controls()->get_controls(),
+                )
+            );
 
             wp_enqueue_style( 'lazyblocks-constructor', $this->plugin_url . 'assets/admin/constructor/style.min.css', array(), '@@plugin_version' );
         }
@@ -250,12 +255,16 @@ class LazyBlocks {
         $day_names         = array_map( array( &$wp_locale, 'get_weekday' ), range( 0, 6 ) );
         $day_names_short   = array_map( array( &$wp_locale, 'get_weekday_abbrev' ), $day_names );
 
-        wp_localize_script( 'date_i18n', 'DATE_I18N', array(
-            'month_names'       => $month_names,
-            'month_names_short' => $month_names_short,
-            'day_names'         => $day_names,
-            'day_names_short'   => $day_names_short,
-        ) );
+        wp_localize_script(
+            'date_i18n',
+            'DATE_I18N',
+            array(
+                'month_names'       => $month_names,
+                'month_names_short' => $month_names_short,
+                'day_names'         => $day_names,
+                'day_names_short'   => $day_names_short,
+            )
+        );
 
         wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
     }
@@ -279,6 +288,7 @@ add_action( 'plugins_loaded', 'lazyblocks' );
  *
  * @return array|mixed|object
  */
+// phpcs:ignore
 function get_lzb_meta( $name, $id = null ) {
     $control_data = null;
 

@@ -5,4 +5,7 @@
 /dist
 /vendor
 /node_modules
+/src/languages/*
 npm-debug.log
+.phpcs.xml
+phpcs.xml

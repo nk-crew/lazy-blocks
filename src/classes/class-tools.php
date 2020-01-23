@@ -67,7 +67,7 @@ class LazyBlocks_Tools {
      * @return string
      */
     public function clear_php_string_code( $string ) {
-        $str_replace = array(
+        $str_replace  = array(
             '  '      => '    ',
             'array (' => 'array(',
         );
@@ -97,6 +97,7 @@ class LazyBlocks_Tools {
         $result = '';
 
         $result .= "\nlazyblocks()->add_block( ";
+        // phpcs:ignore
         $result .= var_export( $block, true );
         $result .= " );\n";
 
@@ -113,6 +114,7 @@ class LazyBlocks_Tools {
         $result = '';
 
         $result .= "\nlazyblocks()->add_template( ";
+        // phpcs:ignore
         $result .= var_export( $template, true );
         $result .= " );\n";
 
@@ -158,7 +160,8 @@ class LazyBlocks_Tools {
             'lazyblocks-tools',
             lazyblocks()->plugin_url . 'assets/admin/tools/index.min.js',
             array( 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
 
         wp_localize_script( 'lazyblocks-tools', 'lazyblocksToolsData', $data );

@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Lazy_Blocks_Rest
+ * Class LazyBlocks_Rest
  */
-class Lazy_Blocks_Rest extends WP_REST_Controller {
+class LazyBlocks_Rest extends WP_REST_Controller {
     /**
      * Namespace.
      *
@@ -25,10 +25,10 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
      *
      * @var string
      */
-    protected $version   = '1';
+    protected $version = '1';
 
     /**
-     * Lazy_Blocks_Rest constructor.
+     * LazyBlocks_Rest constructor.
      */
     public function __construct() {
         add_action( 'rest_api_init', array( $this, 'register_routes' ) );
@@ -42,7 +42,9 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
 
         // Get Lazy Block Editor Preview.
         register_rest_route(
-            $namespace, '/block-render/', array(
+            $namespace,
+            '/block-render/',
+            array(
                 'methods'             => WP_REST_Server::EDITABLE,
                 'callback'            => array( $this, 'get_block' ),
                 'permission_callback' => array( $this, 'get_block_permission' ),
@@ -51,7 +53,9 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
 
         // Get Lazy Block Data.
         register_rest_route(
-            $namespace, '/get-block-data/', array(
+            $namespace,
+            '/get-block-data/',
+            array(
                 'methods'             => WP_REST_Server::READABLE,
                 'callback'            => array( $this, 'get_block_data' ),
                 'permission_callback' => array( $this, 'get_block_data_permission' ),
@@ -60,7 +64,9 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
 
         // Update Lazy Block Data.
         register_rest_route(
-            $namespace, '/update-block-data/', array(
+            $namespace,
+            '/update-block-data/',
+            array(
                 'methods'             => WP_REST_Server::EDITABLE,
                 'callback'            => array( $this, 'update_block_data' ),
                 'permission_callback' => array( $this, 'update_block_data_permission' ),
@@ -69,7 +75,9 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
 
         // Get WP post types.
         register_rest_route(
-            $namespace, '/get-post-types/', array(
+            $namespace,
+            '/get-post-types/',
+            array(
                 'methods'             => WP_REST_Server::READABLE,
                 'callback'            => array( $this, 'get_post_types' ),
                 'permission_callback' => array( $this, 'get_post_types_permission' ),
@@ -165,9 +173,9 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
     public function get_block( $request ) {
         global $post;
 
-        $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
-        $block_context = $request->get_param( 'context' );
-        $block_name = $request->get_param( 'name' );
+        $post_id          = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+        $block_context    = $request->get_param( 'context' );
+        $block_name       = $request->get_param( 'name' );
         $block_attributes = $request->get_param( 'attributes' );
 
         if ( 0 < $post_id ) {
@@ -204,8 +212,8 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
      */
     public function update_block_data( $request ) {
         $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
-        $data = isset( $request['data'] ) ? $request['data'] : false;
-        $meta = array();
+        $data    = isset( $request['data'] ) ? $request['data'] : false;
+        $meta    = array();
 
         if ( 0 < $post_id && $data ) {
             $meta_prefix = 'lazyblocks_';
@@ -229,10 +237,10 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
      */
     public function get_block_data( $request ) {
         $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
-        $meta = array();
+        $meta    = array();
 
         if ( 0 < $post_id ) {
-            $post_meta = lazyblocks()->blocks()->get_meta_boxes( $post_id );
+            $post_meta   = lazyblocks()->blocks()->get_meta_boxes( $post_id );
             $meta_prefix = 'lazyblocks_';
 
             // remove 'lazyblocks_' prefix.
@@ -253,8 +261,8 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function get_post_types( $request ) {
-        $args = isset( $request['args'] ) ? $request['args'] : array();
-        $output = isset( $request['output'] ) ? $request['output'] : 'names';
+        $args     = isset( $request['args'] ) ? $request['args'] : array();
+        $output   = isset( $request['output'] ) ? $request['output'] : 'names';
         $operator = isset( $request['operator'] ) ? $request['operator'] : 'and';
 
         $result = get_post_types( $args, $output, $operator );
@@ -271,9 +279,10 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
     public function success( $response ) {
         return new WP_REST_Response(
             array(
-                'success' => true,
+                'success'  => true,
                 'response' => $response,
-            ), 200
+            ),
+            200
         );
     }
 
@@ -287,12 +296,13 @@ class Lazy_Blocks_Rest extends WP_REST_Controller {
     public function error( $code, $response ) {
         return new WP_REST_Response(
             array(
-                'error' => true,
-                'success' => false,
+                'error'      => true,
+                'success'    => false,
                 'error_code' => $code,
-                'response' => $response,
-            ), 200
+                'response'   => $response,
+            ),
+            200
         );
     }
 }
-new Lazy_Blocks_Rest();
+new LazyBlocks_Rest();

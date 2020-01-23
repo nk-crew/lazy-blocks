@@ -37,7 +37,8 @@ class LazyBlocks_Control_Text extends LazyBlocks_Control {
             'lazyblocks-control-text',
             lazyblocks()->plugin_url . 'controls/text/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 

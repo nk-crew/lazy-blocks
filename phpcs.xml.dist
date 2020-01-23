@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="LazyBlocks"
+    xsi:noNamespaceSchemaLocation="./vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+    <description>LazyBlocks rules for PHP_CodeSniffer</description>
+
+    <!--
+    #############################################################################
+    COMMAND LINE ARGUMENTS
+    https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+    #############################################################################
+    -->
+
+    <!-- Check the /src/ directory and the directories below it. -->
+    <file>./src/</file>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/vendors/*</exclude-pattern>
+
+    <!-- These files are too large to be scanned. -->
+    <exclude-pattern>/src/classes/class-fonts\.php</exclude-pattern>
+    <exclude-pattern>/src/classes/class-icons\.php</exclude-pattern>
+
+
+    <!-- Only check the PHP files. JS files are checked separately with JSCS and JSHint. -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Show progress, show the error codes for each message (source). -->
+    <arg value="ps"/>
+
+    <!-- Check up to 8 files simultaneously. -->
+    <arg name="parallel" value="8"/>
+
+
+    <!--
+    #############################################################################
+    SET THE RULES TO USE
+    See https://github.com/WordPress/WordPress-Coding-Standards
+    See https://github.com/PHPCompatibility/PHPCompatibility
+    #############################################################################
+    -->
+
+    <!-- Include sniffs for PHP cross-version compatibility. -->
+    <config name="testVersion" value="5.5-"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <!-- Include the WordPress ruleset, with select exclusions. -->
+    <rule ref="WordPress">
+        <!-- Don't ask to use string in text-domain -->
+        <exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain" />
+
+        <!-- Disallow tabs -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
+        <!-- Don't ask to use posts_per_page and nopaging args -->
+    </rule>
+
+    <!-- Disallow tabs -->
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+
+
+    <!--
+    #############################################################################
+    SNIFF SPECIFIC CONFIGURATION
+    See https://github.com/WordPress/WordPress-Coding-Standards/wiki
+    #############################################################################
+    -->
+
+    <!-- Set the minimum supported WP version to WP 4.9. -->
+    <config name="minimum_supported_wp_version" value="4.9"/>
+
+    <!-- Prevent error about filename with Class -->
+    <rule ref="WordPress.Files.FileName">
+        <properties>
+            <property name="strict_class_file_names" value="false" />
+        </properties>
+    </rule>
+
+
+    <!-- Verify that all gettext calls use the correct text domain. -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <!-- This placeholder domain will be replaced automatically on each release. -->
+                <element value="@@text_domain"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Additional hook names delimiter. -->
+    <rule ref="WordPress.NamingConventions.ValidHookName">
+        <properties>
+            <property name="additionalWordDelimiters" value="/"/>
+        </properties>
+    </rule>
+
+    <!-- Verify that everything in the global namespace is prefixed with a theme specific prefix.
+         Multiple valid prefixes can be provided as a comma-delimited list. -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="lazyblocks"/>
+                <element value="lzb"/>
+            </property>
+        </properties>
+    </rule>
+
+    <rule ref="WordPress.Arrays.MultipleStatementAlignment">
+        <properties>
+            <!-- No need to adjust alignment of large arrays when the item with the largest key is removed. -->
+            <property name="exact" value="false"/>
+            <!-- Don't align multi-line items if ALL items in the array are multi-line. -->
+            <property name="alignMultilineItems" value="!=100"/>
+            <!-- Array Assignment operator should always be on the same line as the array key. -->
+            <property name="ignoreNewlines" value="false"/>
+        </properties>
+    </rule>
+
+</ruleset>

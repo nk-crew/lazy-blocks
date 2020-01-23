@@ -33,7 +33,8 @@ class LazyBlocks_Control_URL extends LazyBlocks_Control {
             'lazyblocks-control-url',
             lazyblocks()->plugin_url . 'controls/url/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 

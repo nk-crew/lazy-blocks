@@ -61,180 +61,205 @@ class LazyBlocks_Blocks {
 
         $this->handlebars = new Handlebars\Handlebars();
 
+        // phpcs:ignore
         // truncate
         // {{truncate 'string' 2 'true'}}.
-        $this->handlebars->registerHelper( 'truncate', function( $str, $len, $ellipsis = 'true' ) {
-            if ( $str && $len && mb_strlen( $str ) > $len ) {
-                $new_str = mb_substr( $str, 0, $len + 1 );
-                $count = mb_strlen( $new_str );
+        $this->handlebars->registerHelper(
+            'truncate',
+            function( $str, $len, $ellipsis = 'true' ) {
+                if ( $str && $len && mb_strlen( $str, 'UTF-8' ) > $len ) {
+                    $new_str = mb_substr( $str, 0, $len + 1, 'UTF-8' );
+                    $count   = mb_strlen( $new_str, 'UTF-8' );
 
-                while ( $count > 0 ) {
-                    $ch = mb_substr( $new_str, -1 );
-                    $new_str = mb_substr( $new_str, 0, -1 );
+                    while ( $count > 0 ) {
+                        $ch      = mb_substr( $new_str, -1, null, 'UTF-8' );
+                        $new_str = mb_substr( $new_str, 0, -1, 'UTF-8' );
 
-                    $count--;
+                        $count--;
 
-                    if ( ' ' === $ch ) {
-                        break;
+                        if ( ' ' === $ch ) {
+                            break;
+                        }
                     }
-                }
 
-                if ( '' === $new_str ) {
-                    $new_str = mb_substr( $str, 0, $len );
-                }
+                    if ( '' === $new_str ) {
+                        $new_str = mb_substr( $str, 0, $len, 'UTF-8' );
+                    }
 
-                return new \Handlebars\SafeString( $new_str . ( 'true' === $ellipsis ? '...' : '' ) );
+                    return new \Handlebars\SafeString( $new_str . ( 'true' === $ellipsis ? '...' : '' ) );
+                }
+                return $str;
             }
-            return $str;
-        } );
+        );
 
         // compare.
         // {{#compare 1 '===' 2}} Show if true {{/compare}}
         // slightly changed https://gist.github.com/doginthehat/1890659.
-        $this->handlebars->registerHelper( 'compare', function( $lvalue, $operator, $rvalue = null, $options = null ) {
-            if ( null === $rvalue ) {
+        $this->handlebars->registerHelper(
+            'compare',
+            function( $lvalue, $operator, $rvalue = null, $options = null ) {
+                if ( null === $rvalue ) {
+                    return $options['inverse']();
+                }
+
+                if ( null === $options ) {
+                    $options  = $rvalue;
+                    $rvalue   = $operator;
+                    $operator = '===';
+                }
+
+                $result = false;
+
+                switch ( $operator ) {
+                    case '==':
+                        // phpcs:ignore
+                        $result = $lvalue == $rvalue;
+                        break;
+                    case '===':
+                        $result = $lvalue === $rvalue;
+                        break;
+                    case '!=':
+                        // phpcs:ignore
+                        $result = $lvalue != $rvalue;
+                        break;
+                    case '!==':
+                        $result = $lvalue !== $rvalue;
+                        break;
+                    case '<':
+                        $result = $lvalue < $rvalue;
+                        break;
+                    case '>':
+                        $result = $lvalue > $rvalue;
+                        break;
+                    case '<=':
+                        $result = $lvalue <= $rvalue;
+                        break;
+                    case '>=':
+                        $result = $lvalue >= $rvalue;
+                        break;
+                    case '&&':
+                        $result = $lvalue && $rvalue;
+                        break;
+                    case '||':
+                        $result = $lvalue || $rvalue;
+                        break;
+                    case 'typeof':
+                        $result = gettype( $lvalue ) === $rvalue;
+                        break;
+                }
+
+                if ( $result ) {
+                    return $options['fn']();
+                }
+
                 return $options['inverse']();
             }
-
-            if ( null === $options ) {
-                $options = $rvalue;
-                $rvalue = $operator;
-                $operator = '===';
-            }
-
-            $result = false;
-
-            switch ( $operator ) {
-                case '==':
-                    $result = $lvalue == $rvalue;
-                    break;
-                case '===':
-                    $result = $lvalue === $rvalue;
-                    break;
-                case '!=':
-                    $result = $lvalue != $rvalue;
-                    break;
-                case '!==':
-                    $result = $lvalue !== $rvalue;
-                    break;
-                case '<':
-                    $result = $lvalue < $rvalue;
-                    break;
-                case '>':
-                    $result = $lvalue > $rvalue;
-                    break;
-                case '<=':
-                    $result = $lvalue <= $rvalue;
-                    break;
-                case '>=':
-                    $result = $lvalue >= $rvalue;
-                    break;
-                case '&&':
-                    $result = $lvalue && $rvalue;
-                    break;
-                case '||':
-                    $result = $lvalue || $rvalue;
-                    break;
-                case 'typeof':
-                    $result = gettype( $lvalue ) === $rvalue;
-                    break;
-            }
-
-            if ( $result ) {
-                return $options['fn']();
-            }
-
-            return $options['inverse']();
-        } );
+        );
 
         // math.
         // {{math 1 '+' 2}}
         // https://stackoverflow.com/questions/33059203/error-missing-helper-in-handlebars-js/46317662#46317662.
-        $this->handlebars->registerHelper( 'math', function( $lvalue, $operator, $rvalue ) {
-            $result = '';
+        $this->handlebars->registerHelper(
+            'math',
+            function( $lvalue, $operator, $rvalue ) {
+                $result = '';
 
-            switch ( $operator ) {
-                case '+':
-                    $result = $lvalue + $rvalue;
-                    break;
-                case '-':
-                    $result = $lvalue - $rvalue;
-                    break;
-                case '*':
-                    $result = $lvalue * $rvalue;
-                    break;
-                case '/':
-                    $result = $lvalue / $rvalue;
-                    break;
-                case '%':
-                    $result = $lvalue % $rvalue;
-                    break;
+                switch ( $operator ) {
+                    case '+':
+                        $result = $lvalue + $rvalue;
+                        break;
+                    case '-':
+                        $result = $lvalue - $rvalue;
+                        break;
+                    case '*':
+                        $result = $lvalue * $rvalue;
+                        break;
+                    case '/':
+                        $result = $lvalue / $rvalue;
+                        break;
+                    case '%':
+                        $result = $lvalue % $rvalue;
+                        break;
+                }
+
+                return $result;
             }
+        );
 
-            return $result;
-        } );
-
+        // phpcs:ignore
         // do_shortcode.
         // {{{do_shortcode 'my_shortcode' this}}}.
-        $this->handlebars->registerHelper( 'do_shortcode', function( $shortcode_name, $attributes ) {
-            $result = '[' . $shortcode_name;
+        $this->handlebars->registerHelper(
+            'do_shortcode',
+            function( $shortcode_name, $attributes ) {
+                $result = '[' . $shortcode_name;
 
-            // prepare attributes.
-            if ( isset( $attributes ) && ! empty( $attributes ) ) {
-                foreach ( $attributes as $name => $val ) {
-                    if (
+                // prepare attributes.
+                if ( isset( $attributes ) && ! empty( $attributes ) ) {
+                    foreach ( $attributes as $name => $val ) {
+                        if (
                         'content' === $name
                         || 'lazyblock_code_frontend_html' === $name
                         || 'lazyblock_code_backend_html' === $name
                         || 'data' === $name
                         || 'hash' === $name
-                    ) {
-                        continue;
-                    }
+                        ) {
+                            continue;
+                        }
 
-                    if ( is_array( $val ) ) {
-                        $val = json_encode( $val );
-                    }
+                        if ( is_array( $val ) ) {
+                            $val = wp_json_encode( $val );
+                        }
 
-                    if (
+                        if (
                         ! is_numeric( $val )
                         && ! is_string( $val )
                         && ! is_bool( $val )
-                    ) {
-                        continue;
+                        ) {
+                            continue;
+                        }
+
+                        if ( is_bool( $val ) ) {
+                            $val = $val ? '1' : '0';
+                        }
+
+                        $result .= ' ' . esc_attr( $name ) . '="' . esc_attr( $val ) . '"';
                     }
 
-                    if ( is_bool( $val ) ) {
-                        $val = $val ? '1' : '0';
+                    // content.
+                    if ( isset( $attributes['content'] ) ) {
+                        $result .= ']' . $attributes['content'] . '[/' . $shortcode_name;
                     }
-
-                    $result .= ' ' . esc_attr( $name ) . '="' . esc_attr( $val ) . '"';
                 }
 
-                // content.
-                if ( isset( $attributes['content'] ) ) {
-                    $result .= ']' . $attributes['content'] . '[/' . $shortcode_name;
-                }
+                $result .= ']';
+
+                return do_shortcode( $result );
             }
+        );
 
-            $result .= ']';
-
-            return do_shortcode( $result );
-        } );
-
+        // phpcs:ignore
         // date_i18n.
         // {{date_i18n 'F j, Y H:i' '2018-09-16 15:35'}}.
-        $this->handlebars->registerHelper( 'date_i18n', function( $format, $time ) {
-            return date_i18n( $format, strtotime( $time ) );
-        } );
+        $this->handlebars->registerHelper(
+            'date_i18n',
+            function( $format, $time ) {
+                return date_i18n( $format, strtotime( $time ) );
+            }
+        );
 
+        // phpcs:ignore
         // var_dump.
         // {{var_dump 'test'}}.
-        $this->handlebars->registerHelper( 'var_dump', function( $val ) {
-            ob_start();
-            var_dump( $val );
-            return ob_get_clean();
-        } );
+        $this->handlebars->registerHelper(
+            'var_dump',
+            function( $val ) {
+                ob_start();
+                // phpcs:ignore
+                var_dump( $val );
+                return ob_get_clean();
+            }
+        );
 
         // custom action for extending default helpers by 3rd-party.
         do_action( 'lzb_handlebars_object', $this->handlebars );
@@ -247,37 +272,37 @@ class LazyBlocks_Blocks {
         register_post_type(
             'lazyblocks',
             array(
-                'labels' => array(
-                    'name' => __( 'Lazy Blocks', '@@text_domain' ),
+                'labels'            => array(
+                    'name'          => __( 'Lazy Blocks', '@@text_domain' ),
                     'singular_name' => __( 'Lazy Block', '@@text_domain' ),
                 ),
-                'public'       => false,
-                'has_archive'  => false,
-                'show_ui'      => true,
+                'public'            => false,
+                'has_archive'       => false,
+                'show_ui'           => true,
 
                 // adding to custom menu manually.
-                'show_in_menu' => true,
+                'show_in_menu'      => true,
                 'show_in_admin_bar' => true,
-                'show_in_rest' => true,
-                'menu_icon'    => 'dashicons-editor-table',
-                'menu_position' => 80,
-                'capabilities' => array(
-                    'edit_post' => 'edit_lazyblock',
-                    'edit_posts' => 'edit_lazyblocks',
-                    'edit_others_posts' => 'edit_other_lazyblocks',
-                    'publish_posts' => 'publish_lazyblocks',
-                    'read_post' => 'read_lazyblock',
+                'show_in_rest'      => true,
+                'menu_icon'         => 'dashicons-editor-table',
+                'menu_position'     => 80,
+                'capabilities'      => array(
+                    'edit_post'          => 'edit_lazyblock',
+                    'edit_posts'         => 'edit_lazyblocks',
+                    'edit_others_posts'  => 'edit_other_lazyblocks',
+                    'publish_posts'      => 'publish_lazyblocks',
+                    'read_post'          => 'read_lazyblock',
                     'read_private_posts' => 'read_private_lazyblocks',
-                    'delete_posts' => 'delete_lazyblocks',
-                    'delete_post' => 'delete_lazyblock',
+                    'delete_posts'       => 'delete_lazyblocks',
+                    'delete_post'        => 'delete_lazyblock',
                 ),
-                'rewrite' => true,
-                'supports' => array(
+                'rewrite'           => true,
+                'supports'          => array(
                     'title',
                     'editor',
                     'revisions',
                 ),
-                'template' => array(
+                'template'          => array(
                     array(
                         'lzb-constructor/main',
                     ),
@@ -375,7 +400,7 @@ class LazyBlocks_Blocks {
                 $gutenberg_categories = array();
                 if ( function_exists( 'get_block_categories' ) ) {
                     $gutenberg_categories = get_block_categories( $post );
-                } else if ( function_exists( 'gutenberg_get_block_categories' ) ) {
+                } elseif ( function_exists( 'gutenberg_get_block_categories' ) ) {
                     $gutenberg_categories = gutenberg_get_block_categories( $post );
                 }
 
@@ -457,7 +482,7 @@ class LazyBlocks_Blocks {
 
         if ( 'true' === $result ) {
             $result = true;
-        } else if ( 'false' === $result ) {
+        } elseif ( 'false' === $result ) {
             $result = false;
         }
 
@@ -558,7 +583,7 @@ class LazyBlocks_Blocks {
             $meta_value = get_post_meta( $post_id, $meta, true );
 
             /* If a new meta value was added and there was no previous value, add it. */
-            if ( $new_meta_value && '' == $meta_value ) {
+            if ( $new_meta_value && '' === $meta_value ) {
                 add_post_meta( $post_id, $meta, $new_meta_value, true );
 
                 /* If the new meta value does not match the old value, update it. */
@@ -566,7 +591,7 @@ class LazyBlocks_Blocks {
                 update_post_meta( $post_id, $meta, $new_meta_value );
 
                 /* If there is no new meta value but an old value exists, delete it. */
-            } elseif ( '' == $new_meta_value && $meta_value ) {
+            } elseif ( '' === $new_meta_value && $meta_value ) {
                 delete_post_meta( $post_id, $meta, $meta_value );
             }
         }
@@ -651,7 +676,7 @@ class LazyBlocks_Blocks {
 
                 $controls       = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
                 $align          = (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID );
-                $align_none_key = array_search( 'none', $align );
+                $align_none_key = array_search( 'none', $align, true );
 
                 if ( false !== $align_none_key ) {
                     unset( $align[ $align_none_key ] );
@@ -693,7 +718,7 @@ class LazyBlocks_Blocks {
                         'single_output'     => $this->get_meta_value( 'lazyblocks_code_single_output', $block->ID ),
                         'use_php'           => $this->get_meta_value( 'lazyblocks_code_use_php', $block->ID ),
                     ),
-                    'condition'   => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? : array(),
+                    'condition'      => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) : array(),
                 );
             }
         }
@@ -706,10 +731,10 @@ class LazyBlocks_Blocks {
 
         // unique only.
         $unique_result = array();
-        $slug_array = array();
+        $slug_array    = array();
         foreach ( $result as $item ) {
-            if ( ! in_array( $item['slug'], $slug_array ) ) {
-                $slug_array[] = $item['slug'];
+            if ( ! in_array( $item['slug'], $slug_array, true ) ) {
+                $slug_array[]    = $item['slug'];
                 $unique_result[] = $item;
             }
         }
@@ -745,7 +770,7 @@ class LazyBlocks_Blocks {
      * @return array|null
      */
     public function get_blocks_categories( $db_only = false ) {
-        $blocks = $this->get_blocks( $db_only );
+        $blocks             = $this->get_blocks( $db_only );
         $default_categories = array(
             'common',
             'embed',
@@ -761,7 +786,7 @@ class LazyBlocks_Blocks {
             if (
                 ! isset( $default_categories[ $block['category'] ] ) &&
                 ! isset( $custom_categories[ $block['category'] ] ) &&
-                ! in_array( $block['category'], $default_categories ) &&
+                ! in_array( $block['category'], $default_categories, true ) &&
                 isset( $block['category_label'] )
             ) {
                 $custom_categories[ $block['category'] ] = $block['category_label'];
@@ -827,11 +852,15 @@ class LazyBlocks_Blocks {
                     }
 
                     if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
-                        register_meta( 'post', $control['save_in_meta_name'] ? : $control['name'], array(
-                            'show_in_rest' => true,
-                            'single'       => true,
-                            'type'         => $type,
-                        ) );
+                        register_meta(
+                            'post',
+                            $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'],
+                            array(
+                                'show_in_rest' => true,
+                                'single'       => true,
+                                'type'         => $type,
+                            )
+                        );
                     }
                 }
             }
@@ -859,12 +888,15 @@ class LazyBlocks_Blocks {
             'lazyblocks-gutenberg',
             lazyblocks()->plugin_url . 'assets/js/index.min.js',
             array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
 
         // additional data for block js.
         wp_localize_script(
-            'lazyblocks-gutenberg', 'lazyblocksGutenberg', array(
+            'lazyblocks-gutenberg',
+            'lazyblocksGutenberg',
+            array(
                 'post_type'          => $post_type,
                 'blocks'             => $blocks,
                 'controls'           => lazyblocks()->controls()->get_controls(),
@@ -896,7 +928,7 @@ class LazyBlocks_Blocks {
 
                 if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
                     $attribute_data['source'] = 'meta';
-                    $attribute_data['meta']   = $control['save_in_meta_name'] ? : $control['name'];
+                    $attribute_data['meta']   = $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'];
                 }
 
                 // get attribute type from control data.
@@ -913,25 +945,25 @@ class LazyBlocks_Blocks {
         }
 
         // reserved attributes.
-        $attributes['lazyblock'] = array(
+        $attributes['lazyblock']        = array(
             'type'    => 'object',
             'default' => array(
                 'slug' => $block['slug'],
             ),
         );
-        $attributes['className'] = array(
+        $attributes['className']        = array(
             'type'    => 'string',
             'default' => '',
         );
-        $attributes['align'] = array(
+        $attributes['align']            = array(
             'type'    => 'string',
             'default' => '',
         );
-        $attributes['anchor'] = array(
+        $attributes['anchor']           = array(
             'type'    => 'string',
             'default' => '',
         );
-        $attributes['blockId'] = array(
+        $attributes['blockId']          = array(
             'type'    => 'string',
             'default' => '',
         );
@@ -945,7 +977,7 @@ class LazyBlocks_Blocks {
             'type'    => 'object',
             'default' => '',
         );
-        $attributes['ghostkitSR'] = array(
+        $attributes['ghostkitSR']       = array(
             'type'    => 'string',
             'default' => '',
         );
@@ -1007,12 +1039,16 @@ class LazyBlocks_Blocks {
 
         // apply filter for block attributes.
         $attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block );
+        // phpcs:ignore
         $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $content, $block );
+        // phpcs:ignore
         $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block );
 
         // apply filter for custom output callback.
         $result = apply_filters( 'lzb/block_render/callback', $result, $attributes );
+        // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
+        // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/callback', $result, $attributes );
 
         // custom callback and handlebars html.
@@ -1036,7 +1072,9 @@ class LazyBlocks_Blocks {
 
         // add wrapper.
         $allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $result && 'frontend' === $context, $attributes );
+        // phpcs:ignore
         $allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $allow_wrapper, $attributes );
+        // phpcs:ignore
         $allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes );
 
         if ( $allow_wrapper ) {
@@ -1058,7 +1096,7 @@ class LazyBlocks_Blocks {
 
             if ( $attributes['className'] ) {
                 $attributes['className'] = trim( $attributes['className'] );
-                $html_atts .= ' class="' . esc_attr( $attributes['className'] ) . '"';
+                $html_atts              .= ' class="' . esc_attr( $attributes['className'] ) . '"';
             }
             if ( $attributes['anchor'] ) {
                 $html_atts .= ' id="' . esc_attr( $attributes['anchor'] ) . '"';

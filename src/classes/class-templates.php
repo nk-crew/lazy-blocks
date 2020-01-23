@@ -161,7 +161,7 @@ class LazyBlocks_Templates {
         register_post_type(
             'lazyblocks_templates',
             array(
-                'labels' => array(
+                'labels'       => array(
                     'name'          => __( 'Templates', '@@text_domain' ),
                     'singular_name' => __( 'Template', '@@text_domain' ),
                 ),
@@ -182,8 +182,8 @@ class LazyBlocks_Templates {
                     'delete_posts'       => 'delete_lazyblocks',
                     'delete_post'        => 'delete_lazyblock',
                 ),
-                'rewrite' => true,
-                'supports' => array(
+                'rewrite'      => true,
+                'supports'     => array(
                     'title',
                     'revisions',
                     'custom-fields',
@@ -191,12 +191,16 @@ class LazyBlocks_Templates {
             )
         );
 
-        register_meta( 'post', 'lzb_template_data', array(
-            'object_subtype' => 'lazyblocks_templates',
-            'show_in_rest'   => true,
-            'single'         => true,
-            'type'           => 'string',
-        ) );
+        register_meta(
+            'post',
+            'lzb_template_data',
+            array(
+                'object_subtype' => 'lazyblocks_templates',
+                'show_in_rest'   => true,
+                'single'         => true,
+                'type'           => 'string',
+            )
+        );
     }
 
     /**
@@ -226,12 +230,14 @@ class LazyBlocks_Templates {
      * Redirect from templates list page.
      */
     public function admin_list_redirect() {
+        // phpcs:ignore
         if ( ! isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
             return;
         }
 
+        // phpcs:ignore
         if ( 'lazyblocks_templates' === $_GET['post_type'] ) {
-            wp_redirect( 'edit.php?post_type=lazyblocks&page=lazyblocks_templates' );
+            wp_safe_redirect( 'edit.php?post_type=lazyblocks&page=lazyblocks_templates' );
             exit();
         }
     }
@@ -259,6 +265,7 @@ class LazyBlocks_Templates {
             'after'
         );
 
+        // phpcs:ignore
         do_action( 'enqueue_block_editor_assets' );
 
         // Lazyblocks Templates.
@@ -266,7 +273,8 @@ class LazyBlocks_Templates {
             'lazyblocks-templates',
             lazyblocks()->plugin_url . 'assets/admin/templates/index.min.js',
             array( 'wp-blocks', 'wp-block-library', 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 }

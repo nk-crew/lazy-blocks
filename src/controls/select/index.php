@@ -22,7 +22,7 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
         $this->label      = __( 'Select', '@@text_domain' );
         $this->category   = __( 'Choice', '@@text_domain' );
         $this->attributes = array(
-            'choices'    => [],
+            'choices'    => array(),
             'allow_null' => 'false',
             'multiple'   => 'false',
         );
@@ -41,7 +41,8 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
             'lazyblocks-control-select',
             lazyblocks()->plugin_url . 'controls/select/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 

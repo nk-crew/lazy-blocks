@@ -43,7 +43,8 @@ class LazyBlocks_Control_Toggle extends LazyBlocks_Control {
             'lazyblocks-control-toggle',
             lazyblocks()->plugin_url . 'controls/toggle/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 

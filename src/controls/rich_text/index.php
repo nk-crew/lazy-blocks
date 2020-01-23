@@ -36,7 +36,8 @@ class LazyBlocks_Control_RichText extends LazyBlocks_Control {
             'lazyblocks-control-rich-text',
             lazyblocks()->plugin_url . 'controls/rich_text/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 

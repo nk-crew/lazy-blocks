@@ -52,7 +52,8 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
             'lazyblocks-control-repeater',
             lazyblocks()->plugin_url . 'controls/repeater/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            '@@plugin_version'
+            '@@plugin_version',
+            true
         );
     }
 
@@ -92,7 +93,7 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
             $default_val[ $n ] = $inner_blocks[ $n ]['default'];
         }
 
-        $attribute_data['default'] = rawurlencode( json_encode( array( $default_val ) ) );
+        $attribute_data['default'] = rawurlencode( wp_json_encode( array( $default_val ) ) );
 
         return $attribute_data;
     }
