@@ -854,7 +854,7 @@ class LazyBlocks_Blocks {
                     if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
                         register_meta(
                             'post',
-                            $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'],
+                            isset( $control['save_in_meta_name'] ) && $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'],
                             array(
                                 'show_in_rest' => true,
                                 'single'       => true,
@@ -928,7 +928,7 @@ class LazyBlocks_Blocks {
 
                 if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
                     $attribute_data['source'] = 'meta';
-                    $attribute_data['meta']   = $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'];
+                    $attribute_data['meta']   = isset( $control['save_in_meta_name'] ) && $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'];
                 }
 
                 // get attribute type from control data.
