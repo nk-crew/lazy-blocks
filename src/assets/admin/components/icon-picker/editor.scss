@@ -1,100 +1,114 @@
 @import "../../variables";
 
-.lazyblocks-component-icon-picker {
-    display: flex;
-    align-items: flex-start;
-
-    .lazyblocks-component-icon-picker-btn.button {
+.lazyblocks-component-icon-picker-wrapper {
+    > .components-base-control__field {
         display: flex;
         align-items: center;
-        height: auto;
-        padding: 6px 8px;
-        margin-top: 1px;
-        margin-bottom: 0;
-        line-height: normal;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        box-shadow: none;
+        justify-content: space-between;
+        margin-top: 16px;
+    }
+}
+.lazyblocks-component-icon-picker-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 4px;
 
-        &:active {
-            transform: none;
+    svg {
+        display: block;
+    }
+    path {
+        fill: currentColor;
+    }
+
+    &.lazyblocks-component-icon-picker-preview {
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: .15s background-color, .15s border-color;
+
+        &:hover,
+        &.hover {
+            background-color: $color_gray_lighten;
+            border-color: $color_gray_lighten;
+        }
+        &.hover:hover {
+            background-color: $color_gray;
+            border-color: $color_gray;
         }
 
-        .lazyblocks-component-icon-picker-preview {
-            display: inline-block;
-            width: auto;
-            height: 1em;
-            margin-right: 5px;
-            font-size: 17px;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            line-height: 1;
-            line-height: inherit;
+        &.lazyblocks-component-icon-picker-button-active {
+            background-color: #fff;
+            border-color: $color_main;
         }
     }
-    > .components-base-control {
-        flex: 1;
-        margin-bottom: 0 !important; // stylelint-disable-line
+}
+.lazyblocks-component-icon-picker-preview-clickable {
+    cursor: pointer;
+}
+.lazyblocks-component-icon-picker {
+    .components-base-control {
+        // fix hidden right part of inputs.
+        padding-right: 2px;
 
-        input {
-            margin-right: 0;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+        + .components-base-control {
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+    }
 
-            &:focus {
-                z-index: 1;
-            }
+    .lazyblocks-component-icon-picker-list-wrap {
+        padding: 15px;
+
+        .ReactVirtualized__Grid__innerScrollContainer > div {
+            padding-bottom: 10px;
+        }
+    }
+    .lazyblocks-component-icon-picker-list-panel-toggle {
+        border-bottom: none;
+
+        &.is-opened > .components-panel__body-title {
+            margin-bottom: -16px;
+        }
+    }
+    .lazyblocks-component-icon-picker-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -10px;
+
+        > * {
+            width: calc(33.33% - 10px);
+            max-width: calc(33.33% - 10px);
+            margin-left: 10px;
         }
 
-        .components-base-control__field {
-            margin-bottom: 0;
+        .lazyblocks-component-icon-picker-button {
+            width: 100%;
+            height: 55px;
+            font-size: 20px;
         }
     }
 }
 
-.lazyblocks-component-icon-picker-list {
-    padding: 15px;
+// add max height to popover.
+.lazyblocks-component-icon-picker-content > .components-popover__content {
+    // stylelint-disable-next-line
+    overflow-y: hidden !important;
 
-    .lazyblocks-component-icon-picker-list-wrap {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: -10px;
-        margin-left: -10px;
+    .lazyblocks-component-icon-picker-sizer {
+        height: 100vh;
     }
 
-    .lazyblocks-component-icon-picker-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: calc(33.33% - 10px);
-        max-width: calc(33.33% - 10px);
-        height: 55px;
-        margin-bottom: 10px;
-        margin-left: 10px;
-        font-size: 18px;
-        text-align: center;
-        cursor: pointer;
-        background: $color_gray_lighten;
-        border: 1px solid $color_gray_lighten;
-        border-radius: 4px;
-        transition: .15s background-color, .15s box-shadow, .15s border-color;
-
-        &:hover {
-            background-color: #fff;
-            border-color: $color_gray_darken;
-            box-shadow: 0 2px 7px 0 $color_gray_darken;
-        }
-
-        &.lazyblocks-component-icon-picker-icon-active {
-            background-color: #fff;
-            border-color: $color_main;
-        }
-
-        .dashicons {
-            width: 1em;
-            height: 1em;
-            font-size: 1em;
-        }
+    .lazyblocks-component-icon-picker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
 }

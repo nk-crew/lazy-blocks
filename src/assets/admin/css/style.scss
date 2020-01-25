@@ -89,7 +89,11 @@
         font-size: .8em;
         border-bottom: 1px solid #e6e6e6;
 
-        .dashicons {
+        svg {
+            display: block;
+        }
+
+        > span {
             height: auto;
             font-size: 1.2em;
             opacity: .8;

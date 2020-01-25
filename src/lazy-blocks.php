@@ -133,6 +133,7 @@ class LazyBlocks {
         $this->add_actions();
         $this->include_dependencies();
 
+        $this->icons     = new LazyBlocks_Icons();
         $this->controls  = new LazyBlocks_Controls();
         $this->blocks    = new LazyBlocks_Blocks();
         $this->templates = new LazyBlocks_Templates();
@@ -159,11 +160,19 @@ class LazyBlocks {
      * Set plugin Dependencies.
      */
     private function include_dependencies() {
+        require_once $this->plugin_path . '/classes/class-icons.php';
         require_once $this->plugin_path . '/classes/class-controls.php';
         require_once $this->plugin_path . '/classes/class-blocks.php';
         require_once $this->plugin_path . '/classes/class-templates.php';
         require_once $this->plugin_path . '/classes/class-tools.php';
         require_once $this->plugin_path . '/classes/class-rest.php';
+    }
+
+    /**
+     * Get lazyblocks icons object.
+     */
+    public function icons() {
+        return $this->icons;
     }
 
     /**
@@ -242,6 +251,7 @@ class LazyBlocks {
                     'post_id'            => isset( $post->ID ) ? $post->ID : 0,
                     'allowed_mime_types' => get_allowed_mime_types(),
                     'controls'           => $this->controls()->get_controls(),
+                    'icons'              => $this->icons()->get_all(),
                 )
             );
 

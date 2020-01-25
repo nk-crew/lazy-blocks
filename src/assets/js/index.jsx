@@ -385,9 +385,13 @@ options.blocks.forEach( ( item ) => {
                     </InspectorControls>
                     <div className={ className }>
                         <div className="lzb-content-title">
-                            { item.icon ? (
+                            { item.icon && /^dashicons/.test( item.icon ) ? (
                                 <span className={ item.icon } />
                             ) : '' }
+                            { item.icon && ! /^dashicons/.test( item.icon ) ? (
+                                <span dangerouslySetInnerHTML={ { __html: item.icon } } />
+                            ) : '' }
+
                             <h6>{ item.title }</h6>
                         </div>
                         <div className="lzb-content-controls">
@@ -443,11 +447,19 @@ options.blocks.forEach( ( item ) => {
         item.supports.inserter = ! preventInsertion;
     }
 
+    let registerIcon = '';
+
+    if ( item.icon && /^dashicons/.test( item.icon ) ) {
+        registerIcon = item.icon.replace( /^dashicons dashicons-/, '' ) || 'marker';
+    } else if ( item.icon ) {
+        registerIcon = <span dangerouslySetInnerHTML={ { __html: item.icon } } />;
+    }
+
     // register block.
     registerBlockType( item.slug, {
         title: item.title || item.slug,
         description: item.description,
-        icon: item.icon.replace( /^dashicons dashicons-/, '' ) || 'marker',
+        icon: registerIcon,
         category: item.category,
         keywords: item.keywords,
         supports: item.supports,

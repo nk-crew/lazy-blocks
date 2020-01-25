@@ -22,6 +22,30 @@ class LazyBlocks_Blocks {
     private $handlebars = null;
 
     /**
+     * Rules to sanitize SVG
+     *
+     * @var array
+     */
+    private $kses_svg = array(
+        'svg'   => array(
+            'class'           => true,
+            'aria-hidden'     => true,
+            'aria-labelledby' => true,
+            'role'            => true,
+            'xmlns'           => true,
+            'width'           => true,
+            'height'          => true,
+            'viewbox'         => true,   // <= Must be lower case!
+        ),
+        'g'     => array( 'fill' => true ),
+        'title' => array( 'title' => true ),
+        'path'  => array(
+            'd'    => true,
+            'fill' => true,
+        ),
+    );
+
+    /**
      * LazyBlocks_Blocks constructor.
      */
     public function __construct() {
@@ -389,8 +413,11 @@ class LazyBlocks_Blocks {
 
         if ( 'lazyblocks_post_icon' === $column_name ) {
             $icon = $this->get_meta_value( 'lazyblocks_icon' );
-            if ( $icon ) {
+
+            if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
                 echo '<span class="lzb-admin-block-icon"><span class="dashicons ' . esc_attr( $icon ) . '"></span></span>';
+            } elseif ( $icon ) {
+                echo '<span class="lzb-admin-block-icon">' . wp_kses( $icon, $this->kses_svg ) . '</span>';
             }
         }
 
@@ -542,8 +569,9 @@ class LazyBlocks_Blocks {
                     $data[ $meta ] = $data[ $meta ] ? 'true' : 'false';
                 }
 
-                // editors.
+                // icon and editors.
                 if (
+                    'lazyblocks_icon' === $meta ||
                     'lazyblocks_code_editor_html' === $meta ||
                     'lazyblocks_code_editor_css' === $meta ||
                     'lazyblocks_code_frontend_html' === $meta ||
@@ -554,9 +582,8 @@ class LazyBlocks_Blocks {
                 } else {
                     // Get the posted data and sanitize it for use as an HTML class.
                     if ( is_array( $data[ $meta ] ) ) {
-                        // phpcs:disable
+                        // phpcs:ignore
                         $new_meta_value = $this->sanitize_array( wp_unslash( $data[ $meta ] ) );
-                        // phpcs:enable
                     } else {
                         $new_meta_value = sanitize_text_field( wp_unslash( $data[ $meta ] ) );
                     }
@@ -664,8 +691,13 @@ class LazyBlocks_Blocks {
                 )
             );
             foreach ( $all_blocks as $block ) {
-                $icon = esc_attr( $this->get_meta_value( 'lazyblocks_icon', $block->ID ) );
-                $icon = str_replace( 'dashicons-', 'dashicons dashicons-', $icon );
+                $icon = $this->get_meta_value( 'lazyblocks_icon', $block->ID );
+
+                if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
+                    $icon = esc_attr( str_replace( 'dashicons-', 'dashicons dashicons-', $icon ) );
+                } elseif ( $icon ) {
+                    $icon = wp_kses( $icon, $this->kses_svg );
+                }
 
                 $keywords = esc_attr( $this->get_meta_value( 'lazyblocks_keywords', $block->ID ) );
                 if ( $keywords ) {
