@@ -79,6 +79,8 @@ class LazyBlocks_Control {
      * @var array
      */
     public $default_attributes = array(
+        'type'                 => 'text',
+        'name'                 => '',
         'default'              => '',
         'label'                => '',
         'help'                 => '',

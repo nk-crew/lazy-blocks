@@ -2,6 +2,7 @@ import getUID from '../../../utils/get-uid';
 
 const {
     omit,
+    merge,
 } = window.lodash;
 
 function reducer( state = { data: false }, action ) {
@@ -22,10 +23,7 @@ function reducer( state = { data: false }, action ) {
         if ( action.data && state ) {
             return {
                 ...state,
-                data: {
-                    ...state.data,
-                    ...action.data,
-                },
+                data: merge( {}, state.data, action.data ),
             };
         }
 
@@ -40,16 +38,15 @@ function reducer( state = { data: false }, action ) {
         ) {
             return {
                 ...state,
-                data: {
-                    ...state.data,
-                    controls: {
-                        ...state.data.controls,
-                        [ action.id ]: {
-                            ...state.data.controls[ action.id ],
-                            ...action.data,
+                data: merge(
+                    {},
+                    state.data,
+                    {
+                        controls: {
+                            [ action.id ]: action.data,
                         },
-                    },
-                },
+                    }
+                ),
             };
         }
 
@@ -68,15 +65,15 @@ function reducer( state = { data: false }, action ) {
 
             return {
                 ...state,
-                data: {
-                    ...state.data,
-                    controls: {
-                        ...state.data.controls,
-                        [ newId ]: {
-                            ...action.data,
+                data: merge(
+                    {},
+                    state.data,
+                    {
+                        controls: {
+                            [ newId ]: action.data,
                         },
-                    },
-                },
+                    }
+                ),
                 selectedControlId: newId,
             };
         }
