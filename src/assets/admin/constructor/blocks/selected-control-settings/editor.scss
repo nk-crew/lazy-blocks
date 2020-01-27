@@ -48,15 +48,32 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 5px 10px;
+    padding: 3px 5px;
     cursor: pointer;
-    background-color: $color_gray_lighten_2;
-    border: 1px solid $color_gray_darken;
+    background-color: #fff;
+    border: 1px solid $color_dark_lighten_2;
     border-radius: 3px;
+    transition: .15s border-color ease-in-out;
 
-    svg {
+    &:hover {
+        border-color: $color_dark_lighten;
+    }
+
+    // icon
+    span svg {
         display: block;
-        margin-right: 10px;
+        margin-right: 5px;
+        opacity: .7;
+    }
+
+    // arrow
+    > svg {
+        margin-left: auto;
+        opacity: .2;
+        transition: .15s opacity ease-in-out;
+    }
+    &:hover > svg {
+        opacity: .4;
     }
 }
 .lzb-constructor-type-dropdown {
