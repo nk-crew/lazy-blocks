@@ -7,6 +7,7 @@ import ControlSpecificRows from './control-specific-rows';
 import DefaultRow from './default';
 import HelpRow from './help';
 import PlacementRow from './placement';
+import WidthRow from './width';
 import HideIfNotSelectedRow from './hide-if-not-selected';
 import SaveInMetaRow from './save-in-meta';
 import getControlTypeData from '../../../../utils/get-control-type-data';
@@ -17,6 +18,7 @@ export default class settingsRows extends Component {
     render() {
         const {
             data,
+            id,
         } = this.props;
 
         const rows = {
@@ -27,6 +29,7 @@ export default class settingsRows extends Component {
             default: DefaultRow,
             help: HelpRow,
             placement: PlacementRow,
+            width: WidthRow,
             required: RequiredRow,
             hide_if_not_selected: HideIfNotSelectedRow,
             save_in_meta: SaveInMetaRow,
@@ -50,8 +53,9 @@ export default class settingsRows extends Component {
             case 'save_in_meta':
                 allow = allow && ! data.child_of;
                 break;
+            case 'width':
             case 'hide_if_not_selected':
-                allow = data.placement === 'content' || data.placement === 'both';
+                allow = ! data.placement || data.placement === 'content' || data.placement === 'both';
                 break;
             }
 
@@ -62,7 +66,7 @@ export default class settingsRows extends Component {
 
             return (
                 <Row
-                    key={ `settings-row-${ i }` }
+                    key={ `settings-row-${ id }-${ i }` }
                     { ...this.props }
                 />
             );

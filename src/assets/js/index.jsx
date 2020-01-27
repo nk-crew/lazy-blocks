@@ -292,7 +292,14 @@ options.blocks.forEach( ( item ) => {
                     if ( controlResult ) {
                         controlResult = applyFilters( 'lzb.editor.control.render', controlResult, controlData );
                         result.push(
-                            <div key={ `control-${ k }` }>{ controlResult }</div>
+                            <div
+                                key={ `control-${ k }` }
+                                style={ {
+                                    width: control.width ? `${ control.width }%` : '',
+                                } }
+                            >
+                                { controlResult }
+                            </div>
                         );
                     }
 

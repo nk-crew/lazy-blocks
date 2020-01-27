@@ -38,6 +38,7 @@ class SelectedControlSettings extends Component {
                                 updateControlData( optionalId || id, newData );
                             } }
                             data={ data }
+                            id={ id }
                         />
                         <PanelBody
                             title={ __( 'Remove Control', '@@text_domain' ) }
