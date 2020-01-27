@@ -67,18 +67,6 @@ addFilter( 'lzb.constructor.control.radio.settings', 'lzb.constructor', ( render
                     />
                 </BaseControl>
             </PanelBody>
-            <PanelBody>
-                <BaseControl
-                    label={ __( 'Multiple', '@@text_domain' ) }
-                    help={ __( 'Allows you to select multiple values', '@@text_domain' ) }
-                >
-                    <CheckboxControl
-                        label={ __( 'Yes', '@@text_domain' ) }
-                        checked={ 'true' === data.multiple }
-                        onChange={ ( value ) => updateData( { multiple: value ? 'true' : 'false' } ) }
-                    />
-                </BaseControl>
-            </PanelBody>
         </Fragment>
     );
 } );
