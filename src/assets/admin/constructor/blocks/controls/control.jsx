@@ -62,9 +62,8 @@ class Control extends Component {
 
         const {
             label,
-            // icon,
             name,
-            // placement,
+            placeholder,
             save_in_meta,
             save_in_meta_name,
             type,
@@ -94,7 +93,7 @@ class Control extends Component {
                     </div>
                     <div className="lzb-constructor-controls-item-label">
                         <span>
-                            { label }
+                            { label || placeholder || <span>&nbsp;</span> }
                             { 'true' === required ? (
                                 <span className="required">*</span>
                             ) : '' }
