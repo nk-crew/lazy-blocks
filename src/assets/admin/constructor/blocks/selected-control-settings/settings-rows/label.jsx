@@ -33,8 +33,9 @@ export default class LabelRow extends Component {
 
         updateData( {
             name: slugify( label, {
-                replacement: '_',
+                replacement: '-',
                 lower: true,
+                remove: /[^\w\s$0-9-*+~.\$(_)#&\|'"!:;@/\\]/g,
             } ),
         } );
     }
