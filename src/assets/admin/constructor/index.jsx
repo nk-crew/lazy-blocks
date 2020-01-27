@@ -8,6 +8,7 @@ import ControlsSettings from './blocks/controls';
 import SelectedControlSettings from './blocks/selected-control-settings';
 import CustomCodeSettings from './blocks/code';
 
+import '../components/tab-panel';
 import DocumentTabs from '../components/document-tabs';
 import Box from '../components/box';
 

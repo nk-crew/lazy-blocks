@@ -1,0 +1,62 @@
+@import "../../variables";
+
+/**
+ * Tabs Panel Control.
+ */
+.lazyblocks-control-tabs {
+    > .components-tab-panel__tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        border-bottom: 1px solid $color_gray;
+
+        // single tab
+        > .lazyblocks-control-tabs-tab {
+            padding: 15px 20px;
+            margin: 0;
+            margin-bottom: -1px;
+            color: #555d66;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            outline-offset: -1px;
+
+            &.lazyblocks-control-tabs-tab-hidden:not(.is-active) {
+                display: none;
+            }
+
+            svg {
+                display: block;
+                width: auto;
+                height: 1.4em;
+            }
+
+            &.is-active {
+                position: relative;
+                font-weight: 600;
+                border-bottom: 2px solid $color_main;
+                z-index: 1;
+            }
+        }
+    }
+
+    // wide
+    &.lazyblocks-control-tabs-wide > .components-tab-panel__tabs > .lazyblocks-control-tabs-tab {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .lazyblocks-control-tabs-separator {
+        padding: 15px;
+        margin-right: -15px;
+        margin-left: -15px;
+        border-top: 1px solid $color_gray;
+
+        &:first-child {
+            margin-top: -16px;
+        }
+    }
+}

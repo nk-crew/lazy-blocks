@@ -3,7 +3,7 @@
 .post-type-lazyblocks {
     // editor background.
     .edit-post-layout__content {
-        background-color: $color_gray_lighten_2;
+        background-color: $color_gray_lighten;
     }
 
     // hide title since we have our own control to change it.
@@ -27,14 +27,15 @@
     }
 
     .editor-styles-wrapper {
+        // fix for default themes.
+        margin-right: 0;
+        margin-left: 0;
+        background: none;
+
         // change content width.
         .wp-block {
             max-width: 800px;
         }
-
-        // fix for default themes.
-        margin-right: 0;
-        margin-left: 0;
 
         h2 {
             margin: 40px 0 20px;
@@ -42,7 +43,13 @@
             font-size: 18px;
             font-weight: 700;
             color: inherit;
+            color: $color_dark_darken;
             text-align: center;
+
+            // Fix for some TwentyX themes.
+            &::before {
+                content: none;
+            }
         }
     }
 }

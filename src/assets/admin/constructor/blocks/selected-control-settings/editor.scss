@@ -43,6 +43,59 @@
     }
 }
 
+// type settings
+.lzb-constructor-type-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: $color_gray_lighten_2;
+    border: 1px solid $color_gray_darken;
+    border-radius: 3px;
+
+    svg {
+        display: block;
+        margin-right: 10px;
+    }
+}
+.lzb-constructor-type-dropdown {
+    > .components-base-control {
+        padding: 15px;
+        padding-bottom: 10px;
+    }
+
+    .components-panel__body > button {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px 15px;
+        text-align: left;
+        cursor: pointer;
+        background: $color_gray_lighten;
+        border: none;
+        border-radius: 3px;
+        transition: .15s background-color ease-in-out, .15s box-shadow ease-in-out;
+
+        &.is-active {
+            box-shadow: 0 0 0 2px $color_main;
+        }
+
+        &:hover {
+            background-color: $color_gray;
+        }
+
+        + button {
+            margin-top: 15px;
+        }
+
+        svg {
+            display: block;
+            margin-right: 10px;
+        }
+    }
+}
+
 // choices setting
 .lzb-constructor-controls-item-settings-choices {
     .lzb-constructor-controls-item-settings-choices-item {

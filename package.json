@@ -54,6 +54,7 @@
   "dependencies": {
     "array-move": "^2.1.0",
     "classnames": "^2.2.6",
+    "clipboard-polyfill": "^2.8.6",
     "deep-equal": "^1.0.1",
     "react-ace": "^7.0.2",
     "react-select": "^3.0.4",

@@ -1,5 +1,4 @@
 import CodeEditor from '../../../components/code-editor';
-import Tabs from '../../../components/tabs';
 
 import './editor.scss';
 
@@ -13,6 +12,7 @@ const {
     CheckboxControl,
     Button,
     Popover,
+    TabPanel,
 } = wp.components;
 
 export default class CustomCodeSettings extends Component {
@@ -71,30 +71,36 @@ export default class CustomCodeSettings extends Component {
 
         const tabs = [ {
             name: 'frontend',
-            title: data.code_use_php ? __( 'PHP' ) : __( 'HTML' ),
+            title: __( 'Frontend' ),
+            className: 'lazyblocks-control-tabs-tab',
         } ];
 
         if ( 'never' !== data.code_show_preview && ! data.code_single_output ) {
-            tabs[ 0 ].title = data.code_use_php ? __( 'Frontend PHP' ) : __( 'Frontend HTML' );
-
             tabs.push( {
                 name: 'editor',
-                title: data.code_use_php ? __( 'Editor PHP' ) : __( 'Editor HTML' ),
+                title: __( 'Editor' ),
+                className: 'lazyblocks-control-tabs-tab',
             } );
         }
 
         return (
             <div className="lzb-constructor-custom-code-settings">
                 { tabs.length > 1 ? (
-                    <Tabs tabs={ tabs }>
-                        { ( tabData ) => {
-                            return this.getEditor( tabData.name );
-                        } }
-                    </Tabs>
+                    <BaseControl>
+                        <TabPanel
+                            className="lazyblocks-control-tabs"
+                            activeClass="is-active"
+                            tabs={ tabs }
+                        >
+                            {
+                                ( tab ) => {
+                                    return this.getEditor( tab.name );
+                                }
+                            }
+                        </TabPanel>
+                    </BaseControl>
                 ) : (
-                    <BaseControl
-                        label={ data.code_use_php ? __( 'PHP' ) : __( 'HTML' ) }
-                    >
+                    <BaseControl>
                         { this.getEditor( 'frontend' ) }
                     </BaseControl>
                 ) }
@@ -133,7 +139,7 @@ export default class CustomCodeSettings extends Component {
                 </BaseControl>
 
                 <BaseControl
-                    label={ __( 'Single output code for Editor and Frontend' ) }
+                    label={ __( 'Single output code for Frontend and Editor' ) }
                 >
                     <CheckboxControl
                         label={ __( 'Yes' ) }

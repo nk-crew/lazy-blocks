@@ -45,6 +45,7 @@ Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You ca
   * Inner Blocks
   * Select
   * Checkbox
+  * Radio
   * Toggle
   * Color Picker
   * Date Time

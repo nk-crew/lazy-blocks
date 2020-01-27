@@ -18,6 +18,7 @@ class LazyBlocks_Control_Range extends LazyBlocks_Control {
      */
     public function __construct() {
         $this->name       = 'range';
+        $this->icon       = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 12L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M2 12L6 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8.5" cy="12" r="2.25" stroke="currentColor" stroke-width="1.5"/></svg>';
         $this->type       = 'number';
         $this->label      = __( 'Range', '@@text_domain' );
         $this->category   = __( 'Basic', '@@text_domain' );

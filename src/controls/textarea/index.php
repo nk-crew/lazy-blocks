@@ -18,6 +18,7 @@ class LazyBlocks_Control_TextArea extends LazyBlocks_Control {
      */
     public function __construct() {
         $this->name       = 'textarea';
+        $this->icon       = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
         $this->type       = 'string';
         $this->label      = __( 'Text Area', '@@text_domain' );
         $this->category   = __( 'Basic', '@@text_domain' );

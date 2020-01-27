@@ -1,30 +1,31 @@
 @import "../../../variables";
 
-.lzb-constructor-controls-columns {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 15px 20px;
-    color: $color_dark_lighten;
-
-    > div {
-        flex: 1;
-    }
+.lzb-constructor-controls {
+    margin-top: -10px;
+    margin-bottom: 5px;
 }
 
 .lzb-constructor-controls-item,
 .lzb-constructor-controls-item-appender {
     position: relative;
-    padding: 15px 20px;
+    padding: 20px 25px;
+    color: $color_dark;
     cursor: pointer;
-    background-color: #fff;
-    border: 1px solid $color_gray;
     border-radius: $radius_large;
-    transition: .15s background ease-in-out, .15s color ease-in-out, .15s border-color ease-in-out, .15s box-shadow ease-in-out;
+    transition: .15s background-color ease-in-out, .15s color ease-in-out, .15s border-color ease-in-out, .15s box-shadow ease-in-out;
     z-index: 1;
 }
 
-.lzb-constructor-controls-item:hover {
-    border-color: $color_dark_lighten_2;
+.lzb-constructor-controls-item {
+    background-color: #fff;
+    border: 1px solid #fff;
+
+    &:hover {
+        box-shadow: 0 0 0 1px $color_gray_darken;
+    }
+    .lzb-constructor-controls-item-dragging > & {
+        box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, .2);
+    }
 }
 
 .lzb-constructor-controls-item-wrap-selected > .lzb-constructor-controls-item {
@@ -41,11 +42,10 @@
 .lzb-constructor-controls-item-appender {
     display: block;
     width: 100%;
-    min-height: 60px;
+    padding: 18px 25px;
     color: $color_dark_lighten;
     background: $color_gray_lighten_2;
-    border-color: $color_gray_darken;
-    border-style: dashed;
+    border: 1px dashed $color_gray_darken;
     outline: none;
     box-shadow: none;
 
@@ -53,6 +53,11 @@
         color: $color_dark_darken;
         background: #fff;
         border-color: $color_dark_lighten_2;
+    }
+
+    svg {
+        display: block;
+        margin: 0 auto;
     }
 }
 
@@ -99,9 +104,55 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
+    padding-left: 40px;
 
     > div {
         flex: 1;
+    }
+
+    // icon
+    .lzb-constructor-controls-item-icon {
+        position: absolute;
+        top: -20px;
+        bottom: -20px;
+        left: -24px;
+        width: 65px;
+        color: $color_dark_lighten;
+        cursor: grab;
+
+        > span {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transition: .15s opacity ease-in-out, .15s transform ease-in-out;
+
+            + span {
+                opacity: 0;
+                transform: scale(.5);
+            }
+        }
+
+        .lzb-constructor-controls-item-dragging > .lzb-constructor-controls-item > &,
+        &:hover {
+            > span {
+                opacity: 0;
+                transform: scale(.5);
+
+                + span {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+
+    // drag icon
+    .lzb-constructor-controls-item-handler {
+        z-index: 1;
     }
 
     .lzb-constructor-controls-item-label > span {
@@ -117,26 +168,60 @@
         font-size: 80%;
         color: $color_dark_lighten;
     }
+}
+.lzb-constructor-controls-item-name {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 80%;
+    color: $color_dark_lighten;
+    cursor: pointer;
+    background-color: $color_gray;
+    border: none;
+    border-radius: 2px;
+    outline: 0;
+    transition: .15s color ease-in-out, .15s background-color ease-in-out;
 
-    .lzb-constructor-controls-item-handler {
+    &:hover {
+        color: $color_dark;
+        background-color: $color_gray_darken;
+    }
+
+    svg {
+        width: 1em;
+        height: 1em;
+        margin-right: .4em;
+    }
+
+    .lzb-constructor-controls-item-name-copied {
         position: absolute;
-        top: 0;
-        right: 0;
-        width: 25px;
-        min-width: 25px;
-        max-width: 25px;
-        text-align: right;
-        cursor: grab;
-        opacity: .2;
-        transition: .2s opacity ease-in-out;
-
-        &:hover {
-            opacity: .4;
-        }
+        bottom: 100%;
+        left: 0;
+        padding: 4px 6px;
+        margin-left: 50%;
+        color: #fff;
+        background: #000;
+        border-radius: 3px;
+        opacity: 0;
+        transform: translateY(5px) translateX(-50%);
+        animation: .3s lzb-constructor-copied linear;
     }
 }
-.lzb-constructor-controls-item-type,
-.lzb-constructor-controls-item-placement,
-.lzb-constructor-controls-item-meta {
-    font-size: 80%;
+
+@keyframes lzb-constructor-copied {
+    0% {
+        opacity: 0;
+        transition-timing-function: ease-out;
+        transform: translateY(5px) translateX(-50%);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-5px) translateX(-50%);
+    }
+    100% {
+        opacity: 0;
+        transition-timing-function: ease-in;
+        transform: translateY(-15px) translateX(-50%);
+    }
 }

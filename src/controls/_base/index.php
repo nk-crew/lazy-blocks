@@ -22,6 +22,13 @@ class LazyBlocks_Control {
     public $name;
 
     /**
+     * SVG Icon.
+     *
+     * @var string
+     */
+    public $icon = '';
+
+    /**
      * Type.
      *
      * @var string
@@ -132,6 +139,7 @@ class LazyBlocks_Control {
             array(
                 $this->name => array(
                     'name'         => $this->name,
+                    'icon'         => $this->icon,
                     'type'         => $this->type,
                     'label'        => $this->label,
                     'category'     => $this->category,
