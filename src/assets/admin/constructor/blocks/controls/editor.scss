@@ -173,6 +173,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    align-self: flex-start;
     padding: 5px 10px;
     font-size: 80%;
     color: $color_dark_lighten;
