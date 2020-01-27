@@ -118,7 +118,7 @@ class Templates extends Component {
 
         // prepare selected blocks.
         meta.blocks.forEach( ( val, k ) => {
-            meta.blocks[ k ].title = __( 'Undefined Block' );
+            meta.blocks[ k ].title = __( 'Undefined Block', '@@text_domain' );
 
             let availableBlock = false;
 
@@ -492,13 +492,13 @@ class Templates extends Component {
 
         const templateLockOptions = [
             {
-                label: __( 'None' ),
+                label: __( 'None', '@@text_domain' ),
                 value: '',
             }, {
-                label: __( 'Prevent all operations' ),
+                label: __( 'Prevent all operations', '@@text_domain' ),
                 value: 'all',
             }, {
-                label: __( 'Prevent inserting new blocks, but allows moving existing ones' ),
+                label: __( 'Prevent inserting new blocks, but allows moving existing ones', '@@text_domain' ),
                 value: 'insert',
             },
         ];
@@ -508,7 +508,7 @@ class Templates extends Component {
                 { postTypes && postTypes.length ? (
                     <Fragment>
                         <div className="lzb-templates-label">
-                            { __( 'Select post type:' ) }
+                            { __( 'Select post type:', '@@text_domain' ) }
                         </div>
                         <div className="lzb-templates-buttons">
                             { postTypes.filter( ( post ) => {
@@ -559,9 +559,9 @@ class Templates extends Component {
                                                     <thead>
                                                         <tr>
                                                             <td className="check-column"></td>
-                                                            <th scope="col">{ __( 'Block Name' ) }</th>
-                                                            <th scope="col">{ __( 'Slug' ) }</th>
-                                                            <th scope="col" className="column-categories">{ __( 'Category' ) }</th>
+                                                            <th scope="col">{ __( 'Block Name', '@@text_domain' ) }</th>
+                                                            <th scope="col">{ __( 'Slug', '@@text_domain' ) }</th>
+                                                            <th scope="col" className="column-categories">{ __( 'Category', '@@text_domain' ) }</th>
                                                         </tr>
                                                     </thead>
 
@@ -589,7 +589,7 @@ class Templates extends Component {
                                                                                     this.removeBlockFromTemplate( data.ID, i );
                                                                                 } }
                                                                             >
-                                                                                { __( 'Remove' ) }
+                                                                                { __( 'Remove', '@@text_domain' ) }
                                                                             </a>
                                                                         </span>
                                                                     </div>
@@ -602,7 +602,7 @@ class Templates extends Component {
                                                 </table>
                                             ) : '' }
                                             <Select
-                                                placeholder={ __( '+ Add Block' ) }
+                                                placeholder={ __( '+ Add Block', '@@text_domain' ) }
                                                 options={ blocksCategorized }
                                                 value={ [] }
                                                 onChange={ ( { name } ) => {
@@ -619,7 +619,7 @@ class Templates extends Component {
                                             />
                                         </BaseControl>
                                         <BaseControl
-                                            label={ __( 'Template Lock' ) }
+                                            label={ __( 'Template Lock', '@@text_domain' ) }
                                         >
                                             <Select
                                                 options={ templateLockOptions }
@@ -651,7 +651,7 @@ class Templates extends Component {
                                                         this.saveTemplate( data.ID );
                                                     } }
                                                 >
-                                                    { __( 'Save Template' ) }
+                                                    { __( 'Save Template', '@@text_domain' ) }
                                                 </button>
                                                 <span className="trash">
                                                     { /* eslint-disable-next-line */ }
@@ -661,12 +661,12 @@ class Templates extends Component {
                                                             e.preventDefault();
 
                                                             // eslint-disable-next-line
-                                                            if ( window.confirm( sprintf( __( 'Do you really want to remove template for "%s"?' ), data.post_label ) ) ) {
+                                                            if ( window.confirm( sprintf( __( 'Do you really want to remove template for "%s"?', '@@text_domain' ), data.post_label ) ) ) {
                                                                 this.removeTemplate( data.ID );
                                                             }
                                                         } }
                                                     >
-                                                        { __( 'Remove' ) }
+                                                        { __( 'Remove', '@@text_domain' ) }
                                                     </a>
                                                 </span>
                                             </div>

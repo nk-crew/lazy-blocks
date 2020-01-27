@@ -133,7 +133,7 @@ class ControlsSettings extends Component {
                         return newRef;
                     } }
                 />
-                <Tooltip text={ childOf ? __( 'Add Child Control' ) : __( 'Add Control' ) }>
+                <Tooltip text={ childOf ? __( 'Add Child Control', '@@text_domain' ) : __( 'Add Control', '@@text_domain' ) }>
                     <button
                         className="lzb-constructor-controls-item-appender"
                         onClick={ () => {

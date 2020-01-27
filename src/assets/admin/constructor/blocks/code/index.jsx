@@ -61,24 +61,24 @@ export default class CustomCodeSettings extends Component {
         // has_filter( $block_slug . '/frontend_callback' )
         //
         // and print
-        // sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/frontend_callback</code>' )
+        // sprintf( __( 'For block output used filter: %s', '@@text_domain' ), '<code>' . $block_slug . '/frontend_callback</code>' )
         //
         //
         // has_filter( $block_slug . '/editor_callback' )
         //
         // and print
-        // sprintf( __( 'For block output used filter: %s' ), '<code>' . $block_slug . '/editor_callback</code>' )
+        // sprintf( __( 'For block output used filter: %s', '@@text_domain' ), '<code>' . $block_slug . '/editor_callback</code>' )
 
         const tabs = [ {
             name: 'frontend',
-            title: __( 'Frontend' ),
+            title: __( 'Frontend', '@@text_domain' ),
             className: 'lazyblocks-control-tabs-tab',
         } ];
 
         if ( 'never' !== data.code_show_preview && ! data.code_single_output ) {
             tabs.push( {
                 name: 'editor',
-                title: __( 'Editor' ),
+                title: __( 'Editor', '@@text_domain' ),
                 className: 'lazyblocks-control-tabs-tab',
             } );
         }
@@ -114,7 +114,7 @@ export default class CustomCodeSettings extends Component {
                             }
                         } }
                     >
-                        { __( 'How to use?' ) }
+                        { __( 'How to use?', '@@text_domain' ) }
                         { showInfo ? (
                             <Popover
                                 className="lzb-constructor-custom-code-settings-popover"
@@ -124,14 +124,14 @@ export default class CustomCodeSettings extends Component {
                                 } }
                             >
                                 <p className="description">
-                                    { __( 'Simple text field example see here:' ) } <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
+                                    { __( 'Simple text field example see here:', '@@text_domain' ) } <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
                                 </p>
                                 <hr />
                                 <p className="description">
-                                    { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.' ) }
+                                    { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.', '@@text_domain' ) }
                                 </p>
                                 <p className="description">
-                                    { __( 'Note 2: supported custom PHP callback to output block' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>.
+                                    { __( 'Note 2: supported custom PHP callback to output block', '@@text_domain' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>.
                                 </p>
                             </Popover>
                         ) : '' }
@@ -139,25 +139,25 @@ export default class CustomCodeSettings extends Component {
                 </BaseControl>
 
                 <BaseControl
-                    label={ __( 'Single output code for Frontend and Editor' ) }
+                    label={ __( 'Single output code for Frontend and Editor', '@@text_domain' ) }
                 >
                     <CheckboxControl
-                        label={ __( 'Yes' ) }
+                        label={ __( 'Yes', '@@text_domain' ) }
                         checked={ data.code_single_output }
                         onChange={ value => updateData( { code_single_output: value } ) }
                     />
                 </BaseControl>
 
                 <BaseControl
-                    label={ __( 'Output Method' ) }
+                    label={ __( 'Output Method', '@@text_domain' ) }
                 >
                     <SelectControl
                         options={ [
                             {
-                                label: __( 'HTML + Handlebars' ),
+                                label: __( 'HTML + Handlebars', '@@text_domain' ),
                                 value: 'html',
                             }, {
-                                label: __( 'PHP' ),
+                                label: __( 'PHP', '@@text_domain' ),
                                 value: 'php',
                             },
                         ] }
@@ -167,21 +167,21 @@ export default class CustomCodeSettings extends Component {
                 </BaseControl>
 
                 <BaseControl
-                    label={ __( 'Show block preview in editor' ) }
+                    label={ __( 'Show block preview in editor', '@@text_domain' ) }
                 >
                     <SelectControl
                         options={ [
                             {
-                                label: __( 'Always' ),
+                                label: __( 'Always', '@@text_domain' ),
                                 value: 'always',
                             }, {
-                                label: __( 'Within `selected` block only' ),
+                                label: __( 'Within `selected` block only', '@@text_domain' ),
                                 value: 'selected',
                             }, {
-                                label: __( 'Within `unselected` block only' ),
+                                label: __( 'Within `unselected` block only', '@@text_domain' ),
                                 value: 'unselected',
                             }, {
-                                label: __( 'Never' ),
+                                label: __( 'Never', '@@text_domain' ),
                                 value: 'never',
                             },
                         ] }

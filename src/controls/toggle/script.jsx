@@ -37,10 +37,10 @@ addFilter( 'lzb.constructor.control.toggle.settings', 'lzb.constructor', ( rende
     return (
         <PanelBody>
             <BaseControl
-                label={ __( 'Checked' ) }
+                label={ __( 'Checked', '@@text_domain' ) }
             >
                 <CheckboxControl
-                    label={ __( 'Yes' ) }
+                    label={ __( 'Yes', '@@text_domain' ) }
                     checked={ 'true' === data.checked }
                     onChange={ ( value ) => updateData( { checked: value ? 'true' : 'false' } ) }
                 />

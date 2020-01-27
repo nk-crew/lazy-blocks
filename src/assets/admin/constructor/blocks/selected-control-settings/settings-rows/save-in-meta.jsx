@@ -20,10 +20,10 @@ export default class SaveInMetaRow extends Component {
             <Fragment>
                 <PanelBody>
                     <BaseControl
-                        label={ __( 'Save in meta' ) }
+                        label={ __( 'Save in meta', '@@text_domain' ) }
                     >
                         <CheckboxControl
-                            label={ __( 'Yes' ) }
+                            label={ __( 'Yes', '@@text_domain' ) }
                             checked={ 'true' === data.save_in_meta }
                             onChange={ ( value ) => updateData( { save_in_meta: value ? 'true' : 'false' } ) }
                         />
@@ -32,10 +32,10 @@ export default class SaveInMetaRow extends Component {
                 { 'true' === data.save_in_meta ? (
                     <PanelBody>
                         <TextControl
-                            label={ __( 'Meta custom name (optional)' ) }
+                            label={ __( 'Meta custom name (optional)', '@@text_domain' ) }
                             value={ data.save_in_meta_name }
                             onChange={ ( value ) => updateData( { save_in_meta_name: value } ) }
-                            placeholder={ data.name || __( 'Unique metabox name' ) }
+                            placeholder={ data.name || __( 'Unique metabox name', '@@text_domain' ) }
                         />
                     </PanelBody>
                 ) : '' }

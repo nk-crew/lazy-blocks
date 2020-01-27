@@ -137,9 +137,9 @@ class ControlsRepeaterItem extends Component {
             }
         } );
 
-        let toggleText = __( 'Show Child Controls' );
+        let toggleText = __( 'Show Child Controls', '@@text_domain' );
         if ( collapsedChilds ) {
-            toggleText = __( 'Hide Child Controls' );
+            toggleText = __( 'Hide Child Controls', '@@text_domain' );
         } else if ( childItemsNum ) {
             toggleText = sprintf( _n( 'Show %d Child Control', 'Show %d Child Controls', childItemsNum ), childItemsNum );
         }
@@ -194,17 +194,17 @@ addFilter( 'lzb.constructor.control.repeater.settings', 'lzb.constructor', ( ren
         <Fragment>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Row Label' ) }
-                    placeholder={ __( 'Row {{#}}' ) }
-                    help={ __( 'Example: "My row number {{#}} with inner control {{control_name}}"' ) }
+                    label={ __( 'Row Label', '@@text_domain' ) }
+                    placeholder={ __( 'Row {{#}}', '@@text_domain' ) }
+                    help={ __( 'Example: "My row number {{#}} with inner control {{control_name}}"', '@@text_domain' ) }
                     value={ data.rows_label }
                     onChange={ ( value ) => updateData( { rows_label: value } ) }
                 />
             </PanelBody>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Add Button Label' ) }
-                    placeholder={ __( '+ Add Row' ) }
+                    label={ __( 'Add Button Label', '@@text_domain' ) }
+                    placeholder={ __( '+ Add Row', '@@text_domain' ) }
                     value={ data.rows_add_button_label }
                     onChange={ ( value ) => updateData( { rows_add_button_label: value } ) }
                 />
@@ -212,7 +212,7 @@ addFilter( 'lzb.constructor.control.repeater.settings', 'lzb.constructor', ( ren
             <PanelBody>
                 <TextControl
                     type="number"
-                    label={ __( 'Minimum Rows' ) }
+                    label={ __( 'Minimum Rows', '@@text_domain' ) }
                     placeholder={ 0 }
                     min={ 0 }
                     value={ data.rows_min }
@@ -222,7 +222,7 @@ addFilter( 'lzb.constructor.control.repeater.settings', 'lzb.constructor', ( ren
             <PanelBody>
                 <TextControl
                     type="number"
-                    label={ __( 'Maximum Rows' ) }
+                    label={ __( 'Maximum Rows', '@@text_domain' ) }
                     placeholder={ 0 }
                     min={ 0 }
                     value={ data.rows_max }
@@ -231,16 +231,16 @@ addFilter( 'lzb.constructor.control.repeater.settings', 'lzb.constructor', ( ren
             </PanelBody>
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Collapsible Rows' ) }
+                    label={ __( 'Collapsible Rows', '@@text_domain' ) }
                 >
                     <CheckboxControl
-                        label={ __( 'Yes' ) }
+                        label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.rows_collapsible }
                         onChange={ ( value ) => updateData( { rows_collapsible: value ? 'true' : 'false' } ) }
                     />
                     { 'true' === data.rows_collapsible ? (
                         <CheckboxControl
-                            label={ __( 'Collapsed by Default' ) }
+                            label={ __( 'Collapsed by Default', '@@text_domain' ) }
                             checked={ 'true' === data.rows_collapsed }
                             onChange={ ( value ) => updateData( { rows_collapsed: value ? 'true' : 'false' } ) }
                         />

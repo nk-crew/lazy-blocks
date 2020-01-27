@@ -50,7 +50,7 @@ addFilter( 'lzb.constructor.control.rich_text.settings', 'lzb.constructor', ( re
     return (
         <PanelBody>
             <CheckboxControl
-                label={ __( 'Multiline' ) }
+                label={ __( 'Multiline', '@@text_domain' ) }
                 checked={ 'true' === data.multiline }
                 onChange={ ( value ) => updateData( { multiline: value ? 'true' : 'false' } ) }
             />

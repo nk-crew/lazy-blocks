@@ -44,15 +44,15 @@ addFilter( 'lzb.constructor.control.password.settings', 'lzb.constructor', ( ren
         <Fragment>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Placeholder' ) }
+                    label={ __( 'Placeholder', '@@text_domain' ) }
                     value={ data.placeholder }
                     onChange={ ( value ) => updateData( { placeholder: value } ) }
                 />
             </PanelBody>
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Characters Limit' ) }
-                    help={ __( 'Maximum number of characters allowed. Leave blank to no limit.' ) }
+                    label={ __( 'Characters Limit', '@@text_domain' ) }
+                    help={ __( 'Maximum number of characters allowed. Leave blank to no limit.', '@@text_domain' ) }
                 >
                     <TextControl
                         value={ data.characters_limit ? parseInt( data.characters_limit, 10 ) : '' }

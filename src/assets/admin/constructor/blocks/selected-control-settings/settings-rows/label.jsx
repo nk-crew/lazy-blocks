@@ -52,8 +52,8 @@ export default class LabelRow extends Component {
         return (
             <PanelBody>
                 <TextControl
-                    label={ __( 'Label' ) }
-                    help={ __( 'This is the name which will appear on the block edit control' ) }
+                    label={ __( 'Label', '@@text_domain' ) }
+                    help={ __( 'This is the name which will appear on the block edit control', '@@text_domain' ) }
                     value={ label }
                     onChange={ ( value ) => updateData( { label: value } ) }
                     onBlur={ this.generateUniqueName }

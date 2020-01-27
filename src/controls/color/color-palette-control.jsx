@@ -20,7 +20,7 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
     function applyOrUnset( color ) {
         return () => onChange( value === color ? undefined : color );
     }
-    const customColorPickerLabel = __( 'Custom color picker' );
+    const customColorPickerLabel = __( 'Custom color picker', '@@text_domain' );
     const classes = classnames( 'components-color-palette', className );
     return (
         <div className={ classes }>
@@ -33,7 +33,7 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
                         <Tooltip
                             text={ name ||
                                 // translators: %s: color hex code e.g: "#f00".
-                                sprintf( __( 'Color code: %s' ), color )
+                                sprintf( __( 'Color code: %s', '@@text_domain' ), color )
                             }>
                             <button
                                 type="button"
@@ -42,9 +42,9 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
                                 onClick={ applyOrUnset( color ) }
                                 aria-label={ name ?
                                     // translators: %s: The name of the color e.g: "vivid red".
-                                    sprintf( __( 'Color: %s' ), name ) :
+                                    sprintf( __( 'Color: %s', '@@text_domain' ), name ) :
                                     // translators: %s: color hex code e.g: "#f00".
-                                    sprintf( __( 'Color code: %s' ), color ) }
+                                    sprintf( __( 'Color code: %s', '@@text_domain' ), color ) }
                                 aria-pressed={ value === color }
                             />
                         </Tooltip>
@@ -65,7 +65,7 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
                                 aria-label={ customColorPickerLabel }
                                 isLink
                             >
-                                { __( 'Custom Color' ) }
+                                { __( 'Custom Color', '@@text_domain' ) }
                             </Button>
                         ) }
                         renderContent={ () => (
@@ -96,7 +96,7 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
                     isSmall
                     isDefault
                 >
-                    { __( 'Clear' ) }
+                    { __( 'Clear', '@@text_domain' ) }
                 </Button>
             </div>
         </div>

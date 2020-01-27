@@ -39,11 +39,11 @@ addFilter( 'lzb.constructor.control.color.settings', 'lzb.constructor', ( render
     return (
         <PanelBody>
             <BaseControl
-                label={ __( 'Alpha Channel' ) }
-                help={ __( 'Will be added option that allow you to set semi-transparent colors with rgba' ) }
+                label={ __( 'Alpha Channel', '@@text_domain' ) }
+                help={ __( 'Will be added option that allow you to set semi-transparent colors with rgba', '@@text_domain' ) }
             >
                 <CheckboxControl
-                    label={ __( 'Yes' ) }
+                    label={ __( 'Yes', '@@text_domain' ) }
                     checked={ 'true' === data.alpha }
                     onChange={ ( value ) => updateData( { alpha: value ? 'true' : 'false' } ) }
                 />

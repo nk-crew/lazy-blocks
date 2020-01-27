@@ -80,7 +80,7 @@ class FileControl extends Component {
                             icon="media-default"
                             labels={ {
                                 title: label,
-                                name: __( 'file' ),
+                                name: __( 'file', '@@text_domain' ),
                             } }
                             onSelect={ ( file ) => {
                                 this.setState( { hasError: false } );
@@ -128,7 +128,7 @@ class FileControl extends Component {
                                         onChange( '' );
                                     } }
                                 >
-                                    { __( 'Remove File' ) }
+                                    { __( 'Remove File', '@@text_domain' ) }
                                 </Button>
                             </div>
                         </div>

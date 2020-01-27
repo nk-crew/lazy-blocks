@@ -23,8 +23,8 @@ export default class NameRow extends Component {
         return (
             <PanelBody>
                 <TextControl
-                    label={ __( 'Name' ) }
-                    help={ __( 'Unique control name, no spaces. Underscores and dashes allowed' ) }
+                    label={ __( 'Name', '@@text_domain' ) }
+                    help={ __( 'Unique control name, no spaces. Underscores and dashes allowed', '@@text_domain' ) }
                     value={ name }
                     onChange={ ( value ) => updateData( { name: value } ) }
                 />

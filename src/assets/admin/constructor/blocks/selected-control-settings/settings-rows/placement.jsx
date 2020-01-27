@@ -32,13 +32,13 @@ export default class PlacementRow extends Component {
                 case 'content':
                     options.push( {
                         value: thisPlacement,
-                        label: __( 'Content' ),
+                        label: __( 'Content', '@@text_domain' ),
                     } );
                     break;
                 case 'inspector':
                     options.push( {
                         value: thisPlacement,
-                        label: __( 'Inspector' ),
+                        label: __( 'Inspector', '@@text_domain' ),
                     } );
                     break;
                 default:
@@ -54,14 +54,14 @@ export default class PlacementRow extends Component {
         if ( options.length > 1 ) {
             options.push( {
                 value: 'both',
-                label: __( 'Both' ),
+                label: __( 'Both', '@@text_domain' ),
             } );
         }
 
         if ( options.length ) {
             options.push( {
                 value: 'nowhere',
-                label: __( 'Hidden' ),
+                label: __( 'Hidden', '@@text_domain' ),
             } );
         }
 
@@ -73,7 +73,7 @@ export default class PlacementRow extends Component {
         return (
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Placement' ) }
+                    label={ __( 'Placement', '@@text_domain' ) }
                 >
                     <Select
                         value={ options.filter( option => option.value === placement ) }

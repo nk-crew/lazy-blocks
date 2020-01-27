@@ -99,7 +99,7 @@ class RepeaterControl extends Component {
             getInnerControls = () => {},
         } = this.props;
 
-        let title = controlData.rows_label || __( 'Row {{#}}' );
+        let title = controlData.rows_label || __( 'Row {{#}}', '@@text_domain' );
 
         // add row number.
         title = title.replace( /{{#}}/g, i + 1 );
@@ -194,10 +194,10 @@ class RepeaterControl extends Component {
                                 addRow();
                             } }
                         >
-                            { controlData.rows_add_button_label || __( '+ Add Row' ) }
+                            { controlData.rows_add_button_label || __( '+ Add Row', '@@text_domain' ) }
                         </Button>
                         { 'true' === controlData.rows_collapsible && items.length && items.length > 1 ? (
-                            <Tooltip text={ __( 'Toggle all rows' ) }>
+                            <Tooltip text={ __( 'Toggle all rows', '@@text_domain' ) }>
                                 <div>
                                     { /* For some reason Tooltip is not working without this <div> */ }
                                     <ToggleControl

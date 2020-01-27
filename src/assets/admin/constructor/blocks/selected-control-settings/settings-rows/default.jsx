@@ -17,8 +17,8 @@ export default class DefaultRow extends Component {
         return (
             <PanelBody>
                 <TextControl
-                    label={ __( 'Default value' ) }
-                    help={ __( 'Appears when inserting a new block' ) }
+                    label={ __( 'Default value', '@@text_domain' ) }
+                    help={ __( 'Appears when inserting a new block', '@@text_domain' ) }
                     value={ data.default }
                     onChange={ ( value ) => updateData( { default: value } ) }
                 />

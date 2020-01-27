@@ -17,8 +17,8 @@ export default class HelpRow extends Component {
         return (
             <PanelBody>
                 <TextareaControl
-                    label={ __( 'Help text' ) }
-                    help={ __( 'Instructions under control' ) }
+                    label={ __( 'Help text', '@@text_domain' ) }
+                    help={ __( 'Instructions under control', '@@text_domain' ) }
                     value={ data.help }
                     onChange={ ( value ) => updateData( { help: value } ) }
                 />

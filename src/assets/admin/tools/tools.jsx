@@ -89,20 +89,20 @@ class Templates extends Component {
     render() {
         return (
             <div className="postbox">
-                <h2 className="hndle"><span>{ __( 'Export' ) }</span></h2>
+                <h2 className="hndle"><span>{ __( 'Export', '@@text_domain' ) }</span></h2>
                 <div className="inside">
-                    <p>{ __( 'You can export PHP code and use it in the theme/plugin to register a local version of generated blocks and templates. A local field group can provide many benefits such as faster load times, version control & dynamic blocks/templates. Simply copy and paste the following code to your theme\'s functions.php file or include it within an external file.' ) }</p>
+                    <p>{ __( 'You can export PHP code and use it in the theme/plugin to register a local version of generated blocks and templates. A local field group can provide many benefits such as faster load times, version control & dynamic blocks/templates. Simply copy and paste the following code to your theme\'s functions.php file or include it within an external file.', '@@text_domain' ) }</p>
 
                     <div className="lzb-export-textarea">
                         <div>
                             <TextareaControl
                                 className="lzb-export-code"
-                                label={ __( 'Blocks' ) }
+                                label={ __( 'Blocks', '@@text_domain' ) }
                                 readOnly
                                 value={ this.getBlockPHPStringCode() }
                             />
                             { data.blocks && data.blocks.length ? (
-                                <BaseControl label={ __( 'Select Specific Blocks:' ) }>
+                                <BaseControl label={ __( 'Select Specific Blocks:', '@@text_domain' ) }>
                                     { data.blocks.map( ( block ) => {
                                         const isSelected = ! this.state.disabledBlocks[ block.data.id ];
 
@@ -136,12 +136,12 @@ class Templates extends Component {
                         <div>
                             <TextareaControl
                                 className="lzb-export-code"
-                                label={ __( 'Templates' ) }
+                                label={ __( 'Templates', '@@text_domain' ) }
                                 readOnly
                                 value={ this.getTemplatePHPStringCode() }
                             />
                             { data.templates && data.templates.length ? (
-                                <BaseControl label={ __( 'Select Specific Templates:' ) }>
+                                <BaseControl label={ __( 'Select Specific Templates:', '@@text_domain' ) }>
                                     { data.templates.map( ( template ) => {
                                         const isSelected = ! this.state.disabledTemplates[ template.data.id ];
 

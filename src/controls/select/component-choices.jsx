@@ -18,12 +18,12 @@ const DragHandle = SortableHandle( () => (
 const SortableItem = SortableElement( ( data ) =>
     <div className="lzb-constructor-controls-item-settings-choices-item">
         <TextControl
-            placeholder={ __( 'Label' ) }
+            placeholder={ __( 'Label', '@@text_domain' ) }
             value={ data.label }
             onChange={ ( value ) => data.updateChoice( { label: value } ) }
         />
         <TextControl
-            placeholder={ __( 'Value' ) }
+            placeholder={ __( 'Value', '@@text_domain' ) }
             value={ data.value }
             onChange={ ( value ) => data.updateChoice( { value: value } ) }
         />
@@ -151,7 +151,7 @@ export default class ChoicesRow extends Component {
 
         return (
             <BaseControl
-                label={ __( 'Choices' ) }
+                label={ __( 'Choices', '@@text_domain' ) }
             >
                 <div className="lzb-constructor-controls-item-settings-choices">
                     { items.length ? (
@@ -176,7 +176,7 @@ export default class ChoicesRow extends Component {
                             onClick={ self.addChoice }
                             isDefault
                         >
-                            { __( '+ Add Choice' ) }
+                            { __( '+ Add Choice', '@@text_domain' ) }
                         </Button>
                     </div>
                 </div>

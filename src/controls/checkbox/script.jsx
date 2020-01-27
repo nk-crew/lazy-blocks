@@ -36,10 +36,10 @@ addFilter( 'lzb.constructor.control.checkbox.settings', 'lzb.constructor', ( ren
     return (
         <PanelBody>
             <BaseControl
-                label={ __( 'Checked' ) }
+                label={ __( 'Checked', '@@text_domain' ) }
             >
                 <CheckboxControl
-                    label={ __( 'Yes' ) }
+                    label={ __( 'Yes', '@@text_domain' ) }
                     checked={ 'true' === data.checked }
                     onChange={ ( value ) => updateData( { checked: value ? 'true' : 'false' } ) }
                 />

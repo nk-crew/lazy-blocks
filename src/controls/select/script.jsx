@@ -26,7 +26,7 @@ addFilter( 'lzb.editor.control.select.render', 'lzb.editor', ( render, props ) =
         choices = [
             {
                 value: null,
-                label: __( '-- Select --' ),
+                label: __( '-- Select --', '@@text_domain' ),
             },
             ...choices,
         ];
@@ -73,11 +73,11 @@ addFilter( 'lzb.constructor.control.select.settings', 'lzb.constructor', ( rende
             </PanelBody>
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Allow Null' ) }
-                    help={ __( 'Allows you to reset selected option value to null' ) }
+                    label={ __( 'Allow Null', '@@text_domain' ) }
+                    help={ __( 'Allows you to reset selected option value to null', '@@text_domain' ) }
                 >
                     <CheckboxControl
-                        label={ __( 'Yes' ) }
+                        label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.allow_null }
                         onChange={ ( value ) => updateData( { allow_null: value ? 'true' : 'false' } ) }
                     />
@@ -85,11 +85,11 @@ addFilter( 'lzb.constructor.control.select.settings', 'lzb.constructor', ( rende
             </PanelBody>
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Multiple' ) }
-                    help={ __( 'Allows you to select multiple values' ) }
+                    label={ __( 'Multiple', '@@text_domain' ) }
+                    help={ __( 'Allows you to select multiple values', '@@text_domain' ) }
                 >
                     <CheckboxControl
-                        label={ __( 'Yes' ) }
+                        label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.multiple }
                         onChange={ ( value ) => updateData( { multiple: value ? 'true' : 'false' } ) }
                     />

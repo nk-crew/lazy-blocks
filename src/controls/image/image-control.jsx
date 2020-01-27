@@ -60,7 +60,7 @@ class ImageControl extends Component {
                             icon="format-image"
                             labels={ {
                                 title: label,
-                                name: __( 'image' ),
+                                name: __( 'image', '@@text_domain' ),
                             } }
                             onSelect={ ( image ) => {
                                 this.setState( { hasError: false } );
@@ -99,7 +99,7 @@ class ImageControl extends Component {
                                         onChange( '' );
                                     } }
                                 >
-                                    { __( 'Remove Image' ) }
+                                    { __( 'Remove Image', '@@text_domain' ) }
                                 </Button>
                             </div>
                             <div className="lzb-gutenberg-image-item" key={ value.id || value.url }>

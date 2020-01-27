@@ -18,10 +18,10 @@ export default class HideIfNotSelectedRow extends Component {
         return (
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Hide if block is not selected' ) }
+                    label={ __( 'Hide if block is not selected', '@@text_domain' ) }
                 >
                     <CheckboxControl
-                        label={ __( 'Yes' ) }
+                        label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.hide_if_not_selected }
                         onChange={ ( value ) => updateData( { hide_if_not_selected: value ? 'true' : 'false' } ) }
                     />

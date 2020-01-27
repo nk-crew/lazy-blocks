@@ -105,7 +105,7 @@ class GeneralSettings extends Component {
             <Fragment>
                 <PanelBody>
                     <TextControl
-                        label={ __( 'Title' ) }
+                        label={ __( 'Title', '@@text_domain' ) }
                         value={ postTitle }
                         onChange={ ( value ) => updatePostTitle( value ) }
                         onBlur={ () => this.maybeAddSlug() }
@@ -113,7 +113,7 @@ class GeneralSettings extends Component {
                 </PanelBody>
                 <PanelBody>
                     <BlockSlugControl
-                        label={ __( 'Slug' ) }
+                        label={ __( 'Slug', '@@text_domain' ) }
                         value={ slug }
                         onChange={ ( value ) => updateData( { slug: value } ) }
                     />
@@ -122,24 +122,24 @@ class GeneralSettings extends Component {
                             status="error"
                             isDismissible={ false }
                         >
-                            { __( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block' ) }
+                            { __( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block', '@@text_domain' ) }
                         </Notice>
                     ) : '' }
                 </PanelBody>
                 <PanelBody>
                     <IconPicker
-                        label={ __( 'Icon' ) }
+                        label={ __( 'Icon', '@@text_domain' ) }
                         value={ icon }
                         onChange={ ( value ) => updateData( { icon: value } ) }
                     />
                 </PanelBody>
                 <PanelBody>
                     <BaseControl
-                        label={ __( 'Category' ) }
+                        label={ __( 'Category', '@@text_domain' ) }
                     >
                         <Select
                             isCreatable
-                            placeholder={ __( 'Select category' ) }
+                            placeholder={ __( 'Select category', '@@text_domain' ) }
                             value={ categoriesOpts.filter( option => option.value === category ) }
                             options={ categoriesOpts }
                             onChange={ ( { value } ) => updateData( { category: value } ) }
@@ -148,12 +148,12 @@ class GeneralSettings extends Component {
                 </PanelBody>
                 <PanelBody>
                     <BaseControl
-                        label={ __( 'Keywords' ) }
+                        label={ __( 'Keywords', '@@text_domain' ) }
                     >
                         <Select
                             isCreatable
                             isTags
-                            placeholder={ __( 'Enter up to 3 keywords' ) }
+                            placeholder={ __( 'Enter up to 3 keywords', '@@text_domain' ) }
                             value={ ( () => {
                                 if ( keywords ) {
                                     const result = keywords.split( ',' ).map( ( val ) => {
@@ -190,7 +190,7 @@ class GeneralSettings extends Component {
                 </PanelBody>
                 <PanelBody>
                     <TextareaControl
-                        label={ __( 'Description' ) }
+                        label={ __( 'Description', '@@text_domain' ) }
                         value={ description }
                         onChange={ ( value ) => updateData( { description: value } ) }
                     />

@@ -37,35 +37,35 @@ export default class SupportsSettings extends Component {
         return (
             <Fragment>
                 <ToggleControl
-                    label={ __( 'Multiple' ) }
-                    help={ __( 'Allow use block multiple times on the page.' ) }
+                    label={ __( 'Multiple', '@@text_domain' ) }
+                    help={ __( 'Allow use block multiple times on the page.', '@@text_domain' ) }
                     checked={ supportsMultiple }
                     onChange={ ( value ) => updateData( { supports_multiple: value } ) }
                 />
                 <ToggleControl
-                    label={ __( 'Class Name' ) }
-                    help={ __( 'Additional field to add custom class name.' ) }
+                    label={ __( 'Class Name', '@@text_domain' ) }
+                    help={ __( 'Additional field to add custom class name.', '@@text_domain' ) }
                     checked={ supportsClassname }
                     onChange={ ( value ) => updateData( { supports_classname: value } ) }
                 />
                 <ToggleControl
-                    label={ __( 'Anchor' ) }
-                    help={ __( 'Additional field to add block ID attribute.' ) }
+                    label={ __( 'Anchor', '@@text_domain' ) }
+                    help={ __( 'Additional field to add block ID attribute.', '@@text_domain' ) }
                     checked={ supportsAnchor }
                     onChange={ ( value ) => updateData( { supports_anchor: value } ) }
                 />
                 <ToggleControl
-                    label={ __( 'Inserter' ) }
-                    help={ __( 'Show block in blocks inserter.' ) }
+                    label={ __( 'Inserter', '@@text_domain' ) }
+                    help={ __( 'Show block in blocks inserter.', '@@text_domain' ) }
                     checked={ supportsInserter }
                     onChange={ ( value ) => updateData( { supports_inserter: value } ) }
                 />
                 <BaseControl
-                    label={ __( 'Align' ) }
+                    label={ __( 'Align', '@@text_domain' ) }
                 >
                     <Select
                         isMulti
-                        placeholder={ __( 'Select align options' ) }
+                        placeholder={ __( 'Select align options', '@@text_domain' ) }
                         options={
                             [ 'wide', 'full', 'left', 'center', 'right' ].map( ( alignName ) => {
                                 return {
@@ -105,12 +105,12 @@ export default class SupportsSettings extends Component {
                         } }
                     />
                 </BaseControl>
-                <h3>{ __( 'GhostKit Extensions' ) }</h3>
+                <h3>{ __( 'GhostKit Extensions', '@@text_domain' ) }</h3>
                 { ! window.GHOSTKIT ? (
                     <BaseControl>
                         <Notice isDismissible={ false }>
                             <p>
-                                { __( 'Install GhostKit plugin to use the following settings.' ) }
+                                { __( 'Install GhostKit plugin to use the following settings.', '@@text_domain' ) }
                             </p>
                             <a
                                 className="components-button is-button is-default is-small"
@@ -118,7 +118,7 @@ export default class SupportsSettings extends Component {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                { __( 'Install' ) }
+                                { __( 'Install', '@@text_domain' ) }
                             </a>
                         </Notice>
                     </BaseControl>
@@ -127,27 +127,27 @@ export default class SupportsSettings extends Component {
                     <BaseControl>
                         <Notice isDismissible={ false } status="error">
                             <p>
-                                { __( 'To use these extensions required "Class Name" support.' ) }
+                                { __( 'To use these extensions required "Class Name" support.', '@@text_domain' ) }
                             </p>
                         </Notice>
                     </BaseControl>
                 ) : '' }
                 <GktWrap>
                     <ToggleControl
-                        label={ __( 'Spacings' ) }
-                        help={ __( 'Change block margins and paddings.' ) }
+                        label={ __( 'Spacings', '@@text_domain' ) }
+                        help={ __( 'Change block margins and paddings.', '@@text_domain' ) }
                         checked={ supportsGktSpacings }
                         onChange={ ( value ) => updateData( { supports_ghostkit_spacings: value } ) }
                     />
                     <ToggleControl
-                        label={ __( 'Display' ) }
-                        help={ __( 'Display / Hide blocks on different screen sizes.' ) }
+                        label={ __( 'Display', '@@text_domain' ) }
+                        help={ __( 'Display / Hide blocks on different screen sizes.', '@@text_domain' ) }
                         checked={ supportsGktDisplay }
                         onChange={ ( value ) => updateData( { supports_ghostkit_display: value } ) }
                     />
                     <ToggleControl
-                        label={ __( 'Animate on Scroll' ) }
-                        help={ __( 'Display block with animation on scroll.' ) }
+                        label={ __( 'Animate on Scroll', '@@text_domain' ) }
+                        help={ __( 'Display block with animation on scroll.', '@@text_domain' ) }
                         checked={ supportsGktScrollReveal }
                         onChange={ ( value ) => updateData( { supports_ghostkit_scroll_reveal: value } ) }
                     />

@@ -40,7 +40,7 @@ class SelectedControlSettings extends Component {
                             data={ data }
                         />
                         <PanelBody
-                            title={ __( 'Remove Control' ) }
+                            title={ __( 'Remove Control', '@@text_domain' ) }
                             initialOpen={ false }
                         >
                             <Button
@@ -49,12 +49,12 @@ class SelectedControlSettings extends Component {
                                     removeControl();
                                 } }
                             >
-                                { __( 'Remove' ) }
+                                { __( 'Remove', '@@text_domain' ) }
                             </Button>
                         </PanelBody>
                     </Fragment>
                 ) : (
-                    __( 'Select control to see settings.' )
+                    __( 'Select control to see settings.', '@@text_domain' )
                 ) }
             </div>
         );

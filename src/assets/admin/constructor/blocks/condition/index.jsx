@@ -50,11 +50,11 @@ export default class ConditionSettings extends Component {
         return (
             this.state.postTypes ? (
                 <BaseControl
-                    label={ __( 'Show in posts' ) }
+                    label={ __( 'Show in posts', '@@text_domain' ) }
                 >
                     <Select
                         isMulti
-                        placeholder={ __( 'In all posts by default' ) }
+                        placeholder={ __( 'In all posts by default', '@@text_domain' ) }
                         options={
                             Object.keys( this.state.postTypes ).map( ( type ) => {
                                 return {
@@ -90,7 +90,7 @@ export default class ConditionSettings extends Component {
                         } }
                     />
                 </BaseControl>
-            ) : __( 'Loading...' )
+            ) : __( 'Loading...', '@@text_domain' )
         );
     }
 }

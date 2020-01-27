@@ -31,9 +31,9 @@ class DocumentTabs extends Component {
                                     activateTab( 'block' );
                                 } }
                                 className={ `edit-post-sidebar__panel-tab ${ 'block' === activeTab ? 'is-active' : '' }` }
-                                aria-label={ __( 'Block' ) }
+                                aria-label={ __( 'Block', '@@text_domain' ) }
                             >
-                                { __( 'Block' ) }
+                                { __( 'Block', '@@text_domain' ) }
                             </button>
                         </li>
                         <li>
@@ -42,9 +42,9 @@ class DocumentTabs extends Component {
                                     activateTab( 'control' );
                                 } }
                                 className={ `edit-post-sidebar__panel-tab ${ 'control' === activeTab ? 'is-active' : '' }` }
-                                aria-label={ __( 'Control' ) }
+                                aria-label={ __( 'Control', '@@text_domain' ) }
                             >
-                                { __( 'Control' ) }
+                                { __( 'Control', '@@text_domain' ) }
                             </button>
                         </li>
                     </ul>

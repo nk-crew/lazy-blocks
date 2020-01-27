@@ -48,7 +48,7 @@ addFilter( 'lzb.constructor.control.number.settings', 'lzb.constructor', ( rende
         <Fragment>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Minimum Value' ) }
+                    label={ __( 'Minimum Value', '@@text_domain' ) }
                     type="number"
                     step={ data.step }
                     value={ data.min }
@@ -57,7 +57,7 @@ addFilter( 'lzb.constructor.control.number.settings', 'lzb.constructor', ( rende
             </PanelBody>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Maximum Value' ) }
+                    label={ __( 'Maximum Value', '@@text_domain' ) }
                     type="number"
                     step={ data.step }
                     value={ data.max }
@@ -66,7 +66,7 @@ addFilter( 'lzb.constructor.control.number.settings', 'lzb.constructor', ( rende
             </PanelBody>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Step Size' ) }
+                    label={ __( 'Step Size', '@@text_domain' ) }
                     type="number"
                     value={ data.step }
                     onChange={ ( value ) => updateData( { step: value } ) }
@@ -74,7 +74,7 @@ addFilter( 'lzb.constructor.control.number.settings', 'lzb.constructor', ( rende
             </PanelBody>
             <PanelBody>
                 <TextControl
-                    label={ __( 'Placeholder' ) }
+                    label={ __( 'Placeholder', '@@text_domain' ) }
                     value={ data.placeholder }
                     onChange={ ( value ) => updateData( { placeholder: value } ) }
                 />

@@ -65,20 +65,20 @@ addFilter( 'lzb.constructor.control.date_time.settings', 'lzb.constructor', ( re
     const options = [
         {
             value: 'date_time',
-            label: __( 'Date + Time' ),
+            label: __( 'Date + Time', '@@text_domain' ),
         }, {
             value: 'date',
-            label: __( 'Date' ),
+            label: __( 'Date', '@@text_domain' ),
         }, {
             value: 'time',
-            label: __( 'Time' ),
+            label: __( 'Time', '@@text_domain' ),
         },
     ];
 
     return (
         <PanelBody>
             <Select
-                label={ __( 'Picker' ) }
+                label={ __( 'Picker', '@@text_domain' ) }
                 value={ options.filter( option => option.value === data.date_time_picker ) }
                 options={ options }
                 onChange={ ( { value } ) => updateData( { date_time_picker: value } ) }

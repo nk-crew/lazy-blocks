@@ -89,8 +89,8 @@ addFilter( 'lzb.constructor.control.file.settings', 'lzb.constructor', ( render,
     return (
         <PanelBody>
             <BaseControl
-                label={ __( 'Allowed Mime Types' ) }
-                help={ __( 'If nothing selected, all file types will be allowed to use.' ) }
+                label={ __( 'Allowed Mime Types', '@@text_domain' ) }
+                help={ __( 'If nothing selected, all file types will be allowed to use.', '@@text_domain' ) }
             >
                 <Select
                     isMulti={ true }

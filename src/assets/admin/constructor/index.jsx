@@ -90,13 +90,13 @@ class ConstructorBlock extends Component {
                                         data={ blockData }
                                         updateData={ updateBlockData }
                                     />
-                                    <PanelBody title={ __( 'Supports' ) } initialOpen={ false }>
+                                    <PanelBody title={ __( 'Supports', '@@text_domain' ) } initialOpen={ false }>
                                         <SupportsSettings
                                             data={ blockData }
                                             updateData={ updateBlockData }
                                         />
                                     </PanelBody>
-                                    <PanelBody title={ __( 'Condition' ) } initialOpen={ false }>
+                                    <PanelBody title={ __( 'Condition', '@@text_domain' ) } initialOpen={ false }>
                                         <ConditionSettings
                                             data={ blockData }
                                             updateData={ updateBlockData }
@@ -108,12 +108,12 @@ class ConstructorBlock extends Component {
                     </DocumentTabs>
                 </InspectorControls>
                 <div className="lzb-constructor">
-                    <h2>{ __( 'Controls' ) }</h2>
+                    <h2>{ __( 'Controls', '@@text_domain' ) }</h2>
                     <ControlsSettings
                         data={ blockData }
                         updateData={ updateBlockData }
                     />
-                    <h2>{ __( 'Code' ) }</h2>
+                    <h2>{ __( 'Code', '@@text_domain' ) }</h2>
                     <Box>
                         <CustomCodeSettings
                             data={ blockData }
@@ -142,7 +142,7 @@ const ConstructorBlockWithSelect = compose( [
 ] )( ConstructorBlock );
 
 registerBlockType( 'lzb-constructor/main', {
-    title: __( 'Block constructor.' ),
+    title: __( 'Blocks Constructor', '@@text_domain' ),
     category: 'common',
     supports: {
         html: false,

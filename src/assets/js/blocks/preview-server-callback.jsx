@@ -163,7 +163,7 @@ export class PreviewServerCallback extends Component {
             );
         } else if ( response.error ) {
             // translators: %s: error message describing the problem
-            const errorMessage = sprintf( __( 'Error loading block preview: %s' ), response.response );
+            const errorMessage = sprintf( __( 'Error loading block preview: %s', '@@text_domain' ), response.response );
             result = errorMessage;
         } else {
             result = <RawHTML key="html">{ response }</RawHTML>;

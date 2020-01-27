@@ -312,7 +312,7 @@ options.blocks.forEach( ( item ) => {
                                     status="warning"
                                     isDismissible={ false }
                                 >
-                                    { __( 'This field is required' ) }
+                                    { __( 'This field is required', '@@text_domain' ) }
                                 </Notice>
                             ) );
                         }

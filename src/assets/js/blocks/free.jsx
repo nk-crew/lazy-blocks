@@ -8,8 +8,8 @@ const {
 
 // register block.
 registerBlockType( 'lazyblock-core/free', {
-    title: __( 'Free Content' ),
-    description: __( 'Block used for adding blocks inside it in cases when template locked from adding blocks.' ),
+    title: __( 'Free Content', '@@text_domain' ),
+    description: __( 'Block used for adding blocks inside it in cases when template locked from adding blocks.', '@@text_domain' ),
     category: 'lazyblocks',
     supports: {
         html: true,

@@ -92,7 +92,7 @@ class TypeRow extends Component {
         return (
             <PanelBody>
                 <BaseControl
-                    label={ __( 'Type' ) }
+                    label={ __( 'Type', '@@text_domain' ) }
                 >
                     <Dropdown
                         renderToggle={ ( { isOpen, onToggle } ) => {
