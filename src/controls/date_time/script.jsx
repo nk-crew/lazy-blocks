@@ -1,5 +1,3 @@
-import Select from '../../assets/admin/components/select';
-
 const { __ } = wp.i18n;
 
 const {
@@ -11,6 +9,8 @@ const {
     BaseControl,
     DatePicker,
     TimePicker,
+    ButtonGroup,
+    Button,
 } = wp.components;
 
 const getDateSettings = wp.date.__experimentalGetSettings;
@@ -62,27 +62,56 @@ addFilter( 'lzb.constructor.control.date_time.settings', 'lzb.constructor', ( re
         data,
     } = props;
 
-    const options = [
-        {
-            value: 'date_time',
-            label: __( 'Date + Time', '@@text_domain' ),
-        }, {
-            value: 'date',
-            label: __( 'Date', '@@text_domain' ),
-        }, {
-            value: 'time',
-            label: __( 'Time', '@@text_domain' ),
-        },
-    ];
+    const {
+        date_time_picker: dateTimePicker,
+    } = data;
 
     return (
         <PanelBody>
-            <Select
-                label={ __( 'Picker', '@@text_domain' ) }
-                value={ options.filter( option => option.value === data.date_time_picker ) }
-                options={ options }
-                onChange={ ( { value } ) => updateData( { date_time_picker: value } ) }
-            />
+            <ButtonGroup>
+                <Button
+                    isDefault
+                    isPrimary={ /date/.test( dateTimePicker ) }
+                    onClick={ () => {
+                        let result = 'date';
+
+                        if ( 'date_time' === dateTimePicker ) {
+                            result = 'time';
+                        } else if ( 'date' === dateTimePicker ) {
+                            result = '';
+                        } else if ( 'time' === dateTimePicker ) {
+                            result = 'date_time';
+                        }
+
+                        updateData( {
+                            date_time_picker: result,
+                        } );
+                    } }
+                >
+                    { __( 'Date', '@@text_domain' ) }
+                </Button>
+                <Button
+                    isDefault
+                    isPrimary={ /time/.test( dateTimePicker ) }
+                    onClick={ () => {
+                        let result = 'time';
+
+                        if ( 'date_time' === dateTimePicker ) {
+                            result = 'date';
+                        } else if ( 'time' === dateTimePicker ) {
+                            result = '';
+                        } else if ( 'date' === dateTimePicker ) {
+                            result = 'date_time';
+                        }
+
+                        updateData( {
+                            date_time_picker: result,
+                        } );
+                    } }
+                >
+                    { __( 'Time', '@@text_domain' ) }
+                </Button>
+            </ButtonGroup>
         </PanelBody>
     );
 } );
