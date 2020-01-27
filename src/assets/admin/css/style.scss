@@ -110,8 +110,16 @@
         }
     }
 
-    .lzb-content-controls > div + div {
-        margin-top: 15px;
+    .lzb-content-controls {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: -15px;
+        margin-left: -15px;
+
+        > div > div {
+            margin-bottom: 15px;
+            margin-left: 15px;
+        }
     }
 
     .components-base-control__help {
@@ -125,6 +133,8 @@
     }
 
     .lzb-preview-server {
+        margin-top: 15px;
+
         .components-spinner {
             position: absolute;
             top: 16px;
