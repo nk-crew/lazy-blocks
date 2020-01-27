@@ -26,7 +26,8 @@ class LazyBlocks_Control_Toggle extends LazyBlocks_Control {
             'default_settings' => false,
         );
         $this->attributes   = array(
-            'checked' => 'false',
+            'checked'        => 'false',
+            'alongside_text' => '',
         );
 
         // Filters.

@@ -7,6 +7,7 @@ const {
 const {
     PanelBody,
     BaseControl,
+    TextControl,
     CheckboxControl,
 } = wp.components;
 
@@ -15,12 +16,14 @@ const {
  */
 addFilter( 'lzb.editor.control.checkbox.render', 'lzb.editor', ( render, props ) => {
     return (
-        <CheckboxControl
-            label={ props.data.label }
-            checked={ !! props.getValue() }
-            help={ props.data.help }
-            onChange={ props.onChange }
-        />
+        <BaseControl label={ props.data.label }>
+            <CheckboxControl
+                label={ props.data.alongside_text }
+                checked={ !! props.getValue() }
+                help={ props.data.help }
+                onChange={ props.onChange }
+            />
+        </BaseControl>
     );
 } );
 
@@ -35,6 +38,12 @@ addFilter( 'lzb.constructor.control.checkbox.settings', 'lzb.constructor', ( ren
 
     return (
         <PanelBody>
+            <TextControl
+                label={ __( 'Alongside Text', '@@text_domain' ) }
+                help={ __( 'Displays text alongside the checkbox', '@@text_domain' ) }
+                value={ data.alongside_text }
+                onChange={ ( value ) => updateData( { alongside_text: value } ) }
+            />
             <BaseControl
                 label={ __( 'Checked', '@@text_domain' ) }
             >

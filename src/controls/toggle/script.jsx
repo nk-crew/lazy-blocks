@@ -7,6 +7,7 @@ const {
 const {
     PanelBody,
     BaseControl,
+    TextControl,
     ToggleControl,
     CheckboxControl,
 } = wp.components;
@@ -16,12 +17,14 @@ const {
  */
 addFilter( 'lzb.editor.control.toggle.render', 'lzb.editor', ( render, props ) => {
     return (
-        <ToggleControl
-            label={ props.data.label }
-            checked={ !! props.getValue() }
-            help={ props.data.help }
-            onChange={ props.onChange }
-        />
+        <BaseControl label={ props.data.label }>
+            <ToggleControl
+                label={ props.data.alongside_text }
+                checked={ !! props.getValue() }
+                help={ props.data.help }
+                onChange={ props.onChange }
+            />
+        </BaseControl>
     );
 } );
 
@@ -36,6 +39,12 @@ addFilter( 'lzb.constructor.control.toggle.settings', 'lzb.constructor', ( rende
 
     return (
         <PanelBody>
+            <TextControl
+                label={ __( 'Alongside Text', '@@text_domain' ) }
+                help={ __( 'Displays text alongside the toggle', '@@text_domain' ) }
+                value={ data.alongside_text }
+                onChange={ ( value ) => updateData( { alongside_text: value } ) }
+            />
             <BaseControl
                 label={ __( 'Checked', '@@text_domain' ) }
             >
