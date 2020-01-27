@@ -25,6 +25,8 @@ const {
     dispatch,
 } = wp.data;
 
+const $ = window.jQuery;
+
 const DragHandle = SortableHandle( () => (
     <span className="lzb-constructor-controls-item-handler">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6.99L9 14L11 14L11 6.99L14 6.99L10 3L6 6.99L9 6.99Z" fill="currentColor" /><path d="M15 18.01L15 11L13 11L13 18.01L10 18.01L14 22L18 18.01L15 18.01Z" fill="currentColor" /></svg>
@@ -63,6 +65,11 @@ class ControlsSettings extends Component {
         this.sortRef = createRef();
 
         this.printControls = this.printControls.bind( this );
+    }
+
+    componentDidMount() {
+        // fix first loading focus on code editor
+        $( '.lazyblocks-control-tabs button:eq(0)' ).focus();
     }
 
     printControls( childOf = '', placement = '' ) {
