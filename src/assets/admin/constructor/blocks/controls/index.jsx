@@ -103,7 +103,7 @@ class ControlsSettings extends Component {
                 return '';
             }
 
-            if ( placement !== controlPlacement && 'both' !== controlPlacement ) {
+            if ( ! controlData.child_of && placement !== controlPlacement && 'both' !== controlPlacement ) {
                 return '';
             }
 
