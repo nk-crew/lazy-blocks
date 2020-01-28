@@ -10,6 +10,10 @@ const {
 const { compose } = wp.compose;
 
 const {
+    PanelBody,
+} = wp.components;
+
+const {
     withSelect,
     withDispatch,
 } = wp.data;
@@ -33,7 +37,9 @@ class SelectedControlSettings extends Component {
                         id={ id }
                     />
                 ) : (
-                    __( 'Select control to see settings.', '@@text_domain' )
+                    <PanelBody>
+                        { __( 'Select control to see settings.', '@@text_domain' ) }
+                    </PanelBody>
                 ) }
             </div>
         );
