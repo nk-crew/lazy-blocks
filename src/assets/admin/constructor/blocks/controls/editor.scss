@@ -16,18 +16,6 @@
     z-index: 1;
 }
 
-.lzb-constructor-controls-item {
-    background-color: #fff;
-    border: 1px solid #fff;
-
-    &:hover {
-        box-shadow: 0 0 0 1px $color_gray_darken;
-    }
-    .lzb-constructor-controls-item-dragging > & {
-        box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, .2);
-    }
-}
-
 .lzb-constructor-controls-item-wrap-selected > .lzb-constructor-controls-item {
     border-color: $color_main;
     box-shadow: 0 0 0 1px $color_main;
@@ -61,50 +49,21 @@
     }
 }
 
-// repeater child items.
-.lzb-constructor-controls-item-childs {
-    padding-left: 20px;
-}
-
-// repeater toggle child button.
-.lzb-constructor-controls-item-repeater-toggle {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 9px;
-    padding-left: 20px;
-    margin-top: 3px;
-    margin-bottom: -11px;
-    font-size: 80%;
-    color: $color_dark_lighten;
-    text-align: left;
-    cursor: pointer;
-    background: none;
-    border: none;
-    outline: none;
-    transition: .15s color;
-
-    &:hover {
-        color: $color_dark_darken;
-    }
-
-    > svg {
-        height: .7em;
-        margin-left: .5em;
-        vertical-align: -.05em;
-    }
-
-    &.lzb-constructor-controls-item-repeater-toggle-collapsed > svg {
-        transform: rotate(-90deg);
-    }
-}
-
 // head
-.lzb-constructor-controls-item-head {
+.lzb-constructor-controls-item {
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    padding-left: 40px;
+    padding-left: 60px;
+    background-color: #fff;
+    border: 1px solid #fff;
+
+    &:hover {
+        box-shadow: 0 0 0 1px $color_gray_darken;
+    }
+    .lzb-constructor-controls-item-dragging > & {
+        box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, .2);
+    }
 
     > div {
         flex: 1;
@@ -113,9 +72,9 @@
     // icon
     .lzb-constructor-controls-item-icon {
         position: absolute;
-        top: -20px;
-        bottom: -20px;
-        left: -24px;
+        top: 0;
+        bottom: 0;
+        left: 0;
         width: 65px;
         color: $color_dark_lighten;
         cursor: grab;
@@ -168,7 +127,7 @@
     .lzb-constructor-controls-item-label-buttons {
         position: absolute;
         display: block;
-        bottom: 0;
+        bottom: 20px;
         opacity: 0;
         transition: .15s opacity ease-in-out, .15s transform ease-in-out;
 
@@ -200,12 +159,14 @@
 .lzb-constructor-controls-item-wrap:hover,
 .lzb-constructor-controls-item-wrap:focus,
 .lzb-constructor-controls-item-wrap-selected {
-    .lzb-constructor-controls-item-label-text {
-        transform: translateY(-7px);
-    }
-    .lzb-constructor-controls-item-label-buttons {
-        opacity: 1;
-        transform: translateY(10px);
+    > .lzb-constructor-controls-item > .lzb-constructor-controls-item-label {
+        .lzb-constructor-controls-item-label-text {
+            transform: translateY(-7px);
+        }
+        .lzb-constructor-controls-item-label-buttons {
+            opacity: 1;
+            transform: translateY(10px);
+        }
     }
 }
 
@@ -264,5 +225,43 @@
         opacity: 0;
         transition-timing-function: ease-in;
         transform: translateY(-15px) translateX(-50%);
+    }
+}
+
+// repeater child items.
+.lzb-constructor-controls-item-childs {
+    padding-left: 20px;
+}
+
+// repeater toggle child button.
+.lzb-constructor-controls-item-repeater-toggle {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 9px;
+    padding-left: 20px;
+    margin-top: 3px;
+    margin-bottom: -11px;
+    font-size: 80%;
+    color: $color_dark_lighten;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    transition: .15s color;
+
+    &:hover {
+        color: $color_dark_darken;
+    }
+
+    > svg {
+        height: .7em;
+        margin-left: .5em;
+        vertical-align: -.05em;
+    }
+
+    &.lzb-constructor-controls-item-repeater-toggle-collapsed > svg {
+        transform: rotate(-90deg);
     }
 }
