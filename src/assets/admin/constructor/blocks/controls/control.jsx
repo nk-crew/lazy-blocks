@@ -2,6 +2,10 @@
 import classnames from 'classnames/dedupe';
 import * as clipboard from 'clipboard-polyfill';
 
+const {
+    merge,
+} = window.lodash;
+
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 
@@ -58,6 +62,8 @@ class Control extends Component {
             id,
             DragHandle,
             isSelected,
+            addControl,
+            removeControl,
         } = this.props;
 
         const {
@@ -92,11 +98,42 @@ class Control extends Component {
                         <DragHandle />
                     </div>
                     <div className="lzb-constructor-controls-item-label">
-                        <span>
+                        <span className="lzb-constructor-controls-item-label-text">
                             { label || placeholder || <span>&nbsp;</span> }
                             { 'true' === required ? (
                                 <span className="required">*</span>
                             ) : '' }
+                        </span>
+                        <span className="lzb-constructor-controls-item-label-buttons">
+                            <button
+                                onClick={ ( e ) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    const newData = merge( {}, data );
+
+                                    newData.label += ' ' + __( '(copy)', '@@text_domain' );
+                                    newData.name += '-copy';
+
+                                    addControl( newData, id );
+                                } }
+                            >
+                                { __( 'Duplicate', '@@text_domain' ) }
+                            </button>
+                            <button
+                                className="lzb-constructor-controls-item-label-buttons-remove"
+                                onClick={ ( e ) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    // eslint-disable-next-line
+                                    if ( window.confirm( __( 'Do you really want to remove control?', '@@text_domain' ) ) ) {
+                                        removeControl();
+                                    }
+                                } }
+                            >
+                                { __( 'Remove', '@@text_domain' ) }
+                            </button>
                         </span>
                     </div>
                     { ! data.child_of && controlName ? (

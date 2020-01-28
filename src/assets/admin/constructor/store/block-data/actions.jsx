@@ -34,10 +34,11 @@ export function updateControlData( id, data ) {
     };
 }
 
-export function addControl( data ) {
+export function addControl( data, resortId ) {
     return {
         type: 'ADD_CONTROL',
         data,
+        resortId,
     };
 }
 

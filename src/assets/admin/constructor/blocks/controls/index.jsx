@@ -108,8 +108,8 @@ class ControlsSettings extends Component {
             }
 
             items.push( {
-                addControl( newControlData ) {
-                    addControl( newControlData );
+                addControl( newControlData, resortId ) {
+                    addControl( newControlData, resortId );
                 },
                 removeControl( optionalId = false ) {
                     removeControl( optionalId || id );
@@ -230,11 +230,11 @@ export default compose( [
         } = dispatch( 'lazy-blocks/block-data' );
 
         return {
-            addControl( attributes ) {
+            addControl( attributes, resortId ) {
                 addControl( {
                     ...constructorData.controls.text.attributes,
                     ...attributes,
-                } );
+                }, resortId );
             },
             removeControl,
             resortControl,

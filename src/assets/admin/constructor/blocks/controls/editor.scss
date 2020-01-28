@@ -155,12 +155,40 @@
         z-index: 1;
     }
 
-    .lzb-constructor-controls-item-label > span {
+    .lzb-constructor-controls-item-label-text {
         display: block;
         font-weight: 600;
+        transition: .15s transform ease-in-out;
 
         .required {
             margin-left: 5px;
+        }
+    }
+
+    .lzb-constructor-controls-item-label-buttons {
+        position: absolute;
+        display: block;
+        bottom: 0;
+        opacity: 0;
+        transition: .15s opacity ease-in-out, .15s transform ease-in-out;
+
+        button {
+            padding: 0;
+            margin-right: 5px;
+            font-size: .8em;
+            color: inherit;
+            cursor: pointer;
+            background: none;
+            border: none;
+            opacity: .5;
+            transition: .15s opacity ease-in-out;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+        .lzb-constructor-controls-item-label-buttons-remove {
+            color: $color_red;
         }
     }
 
@@ -169,6 +197,18 @@
         color: $color_dark_lighten;
     }
 }
+.lzb-constructor-controls-item-wrap:hover,
+.lzb-constructor-controls-item-wrap:focus,
+.lzb-constructor-controls-item-wrap-selected {
+    .lzb-constructor-controls-item-label-text {
+        transform: translateY(-7px);
+    }
+    .lzb-constructor-controls-item-label-buttons {
+        opacity: 1;
+        transform: translateY(10px);
+    }
+}
+
 .lzb-constructor-controls-item-name {
     position: relative;
     display: flex;

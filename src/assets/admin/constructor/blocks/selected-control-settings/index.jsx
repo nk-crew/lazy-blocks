@@ -5,13 +5,7 @@ const { __ } = wp.i18n;
 
 const {
     Component,
-    Fragment,
 } = wp.element;
-
-const {
-    PanelBody,
-    Button,
-} = wp.components;
 
 const { compose } = wp.compose;
 
@@ -26,34 +20,18 @@ class SelectedControlSettings extends Component {
             id,
             data,
             updateControlData,
-            removeControl,
         } = this.props;
 
         return (
             <div className="lzb-constructor-controls-item-settings">
                 { id && data ? (
-                    <Fragment>
-                        <SettingsRows
-                            updateData={ ( newData, optionalId = false ) => {
-                                updateControlData( optionalId || id, newData );
-                            } }
-                            data={ data }
-                            id={ id }
-                        />
-                        <PanelBody
-                            title={ __( 'Remove Control', '@@text_domain' ) }
-                            initialOpen={ false }
-                        >
-                            <Button
-                                isDefault={ true }
-                                onClick={ () => {
-                                    removeControl();
-                                } }
-                            >
-                                { __( 'Remove', '@@text_domain' ) }
-                            </Button>
-                        </PanelBody>
-                    </Fragment>
+                    <SettingsRows
+                        updateData={ ( newData, optionalId = false ) => {
+                            updateControlData( optionalId || id, newData );
+                        } }
+                        data={ data }
+                        id={ id }
+                    />
                 ) : (
                     __( 'Select control to see settings.', '@@text_domain' )
                 ) }
@@ -74,18 +52,12 @@ export default compose( [
             data: getSelectedControl(),
         };
     } ),
-    withDispatch( ( dispatch, ownProps ) => {
+    withDispatch( ( dispatch ) => {
         const {
-            removeControl,
             updateControlData,
         } = dispatch( 'lazy-blocks/block-data' );
 
         return {
-            removeControl() {
-                if ( ownProps.id ) {
-                    removeControl( ownProps.id );
-                }
-            },
             updateControlData,
         };
     } ),

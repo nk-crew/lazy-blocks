@@ -5,6 +5,28 @@ const {
     merge,
 } = window.lodash;
 
+function resort( data, id, newId, insertBefore = true ) {
+    const newControls = {};
+
+    Object.keys( data ).forEach( ( key ) => {
+        if ( key !== id ) {
+            if ( insertBefore && key === newId ) {
+                newControls[ id ] = Object.assign( {}, data[ id ] );
+            }
+
+            newControls[ key ] = Object.assign( {}, data[ key ] );
+
+            if ( ! insertBefore && key === newId ) {
+                newControls[ id ] = Object.assign( {}, data[ id ] );
+            }
+        } else {
+            insertBefore = false;
+        }
+    } );
+
+    return newControls;
+}
+
 function reducer( state = { data: false }, action ) {
     switch ( action.type ) {
     case 'SET_BLOCK_DATA':
@@ -63,17 +85,24 @@ function reducer( state = { data: false }, action ) {
             }
             newId = `control_${ newId }`;
 
+            const newData = merge(
+                {},
+                state.data,
+                {
+                    controls: {
+                        [ newId ]: action.data,
+                    },
+                }
+            );
+
+            // insert after another control
+            if ( action.resortId ) {
+                newData.controls = resort( newData.controls, newId, action.resortId, false );
+            }
+
             return {
                 ...state,
-                data: merge(
-                    {},
-                    state.data,
-                    {
-                        controls: {
-                            [ newId ]: action.data,
-                        },
-                    }
-                ),
+                data: newData,
                 selectedControlId: newId,
             };
         }
@@ -104,24 +133,7 @@ function reducer( state = { data: false }, action ) {
             state.data &&
             state.data.controls
         ) {
-            const newControls = {};
-            let insertBefore = true;
-
-            Object.keys( state.data.controls ).forEach( ( key ) => {
-                if ( key !== action.id ) {
-                    if ( insertBefore && key === action.newId ) {
-                        newControls[ action.id ] = Object.assign( {}, state.data.controls[ action.id ] );
-                    }
-
-                    newControls[ key ] = Object.assign( {}, state.data.controls[ key ] );
-
-                    if ( ! insertBefore && key === action.newId ) {
-                        newControls[ action.id ] = Object.assign( {}, state.data.controls[ action.id ] );
-                    }
-                } else {
-                    insertBefore = false;
-                }
-            } );
+            const newControls = resort( state.data.controls, action.id, action.newId );
 
             return {
                 ...state,
