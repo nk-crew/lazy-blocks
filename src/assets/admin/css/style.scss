@@ -110,6 +110,7 @@
         }
     }
 
+    // Columns
     .lzb-content-controls {
         display: flex;
         flex-wrap: wrap;
@@ -355,6 +356,12 @@
 .lzb-gutenberg-repeater-item {
     position: relative;
     background-color: #fff;
+    border: 1px solid #7e8993;
+    border-radius: 3px;
+
+    + .lzb-gutenberg-repeater-item {
+        margin-top: 5px;
+    }
 
     > div {
         margin-right: 15px;
@@ -368,8 +375,9 @@
         margin-bottom: -1px;
         text-align: left;
         cursor: pointer;
-        background-color: #fff;
-        border: 1px solid #eaeaea;
+        background: none;
+        border: none;
+        border-bottom: 1px solid #7e8993;
 
         > .lzb-gutenberg-repeater-btn-arrow {
             position: absolute;
@@ -436,17 +444,23 @@
         opacity: .5;
     }
 
+    // Repeater item content with columns support
     .lzb-gutenberg-repeater-item-content {
+        display: flex;
+        flex-wrap: wrap;
         padding: 15px;
         margin-right: 0;
-        margin-left: 0;
-        border-right: 1px solid #eaeaea;
-        border-left: 1px solid #eaeaea;
+        margin-bottom: -15px;
+        margin-left: -15px;
+
+        > div > div {
+            margin-bottom: 15px;
+            margin-left: 15px;
+        }
     }
 }
 .lzb-gutenberg-repeater-items {
     margin-bottom: 15px;
-    border-bottom: 1px solid #eaeaea;
 }
 .lzb-gutenberg-repeater-options {
     display: flex;
