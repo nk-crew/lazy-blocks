@@ -308,7 +308,8 @@ class LazyBlocks_Blocks {
                 'show_in_menu'      => true,
                 'show_in_admin_bar' => true,
                 'show_in_rest'      => true,
-                'menu_icon'         => 'dashicons-editor-table',
+                // phpcs:ignore
+                'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( lazyblocks()->plugin_path . 'assets/svg/icon-lazyblocks.svg' ) ),
                 'menu_position'     => 80,
                 'capabilities'      => array(
                     'edit_post'          => 'edit_lazyblock',
