@@ -110,6 +110,25 @@
         }
     }
 
+    .lzb-content-title .lzb-content-edit-link {
+        margin-left: auto;
+        color: inherit;
+        opacity: 0;
+        transition: .15s opacity ease-in-out;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    &:hover .lzb-content-title .lzb-content-edit-link {
+        opacity: .2;
+
+        &:hover {
+            opacity: .4;
+        }
+    }
+
     // Columns
     .lzb-content-controls {
         display: flex;

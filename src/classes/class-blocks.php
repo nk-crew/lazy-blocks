@@ -753,6 +753,7 @@ class LazyBlocks_Blocks {
                         'use_php'           => $this->get_meta_value( 'lazyblocks_code_use_php', $block->ID ),
                     ),
                     'condition'      => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) : array(),
+                    'edit_url'       => get_edit_post_link( $block->ID ),
                 );
             }
         }
