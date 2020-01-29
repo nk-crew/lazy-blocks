@@ -59,6 +59,8 @@ const SortableList = SortableContainer( ( { items } ) => {
     );
 } );
 
+let initialActiveTab = '';
+
 class ControlsSettings extends Component {
     constructor() {
         super( ...arguments );
@@ -202,11 +204,44 @@ class ControlsSettings extends Component {
             className: classnames( 'lazyblocks-control-tabs-tab', ! thereIsHidden ? 'lazyblocks-control-tabs-tab-hidden' : '' ),
         } );
 
+        // set initial active tab.
+        if ( ! initialActiveTab ) {
+            initialActiveTab = 'content';
+            let contentControlsCount = 0;
+            let inspectorControlsCount = 0;
+            let nowhereControlsCount = 0;
+
+            Object.keys( controls ).forEach( ( id ) => {
+                const controlData = controls[ id ];
+
+                switch ( controlData.placement ) {
+                case 'content':
+                    contentControlsCount += 1;
+                    break;
+                case 'inspector':
+                    inspectorControlsCount += 1;
+                    break;
+                case 'nowhere':
+                    nowhereControlsCount += 1;
+                    break;
+                }
+            } );
+
+            if ( ! contentControlsCount ) {
+                if ( inspectorControlsCount ) {
+                    initialActiveTab = 'inspector';
+                } else if ( nowhereControlsCount ) {
+                    initialActiveTab = 'nowhere';
+                }
+            }
+        }
+
         return (
             <div className="lzb-constructor-controls">
                 <TabPanel
                     className="lazyblocks-control-tabs"
                     activeClass="is-active"
+                    initialTabName={ initialActiveTab }
                     tabs={ placementTabs }
                 >
                     {
