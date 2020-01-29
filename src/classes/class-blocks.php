@@ -671,12 +671,14 @@ class LazyBlocks_Blocks {
      * Get all blocks array.
      *
      * @param bool $db_only - get blocks from database only.
+     * @param bool $no_cache - get blocks without cache.
+     * @param bool $keep_duplicates - get blocks with same slugs.
      *
      * @return array|null
      */
-    public function get_blocks( $db_only = false ) {
+    public function get_blocks( $db_only = false, $no_cache = false, $keep_duplicates = false ) {
         // fetch blocks.
-        if ( null === $this->blocks ) {
+        if ( null === $this->blocks || $no_cache ) {
             $this->blocks = array();
 
             // get all lazyblocks post types.
@@ -762,16 +764,21 @@ class LazyBlocks_Blocks {
         }
 
         // unique only.
-        $unique_result = array();
-        $slug_array    = array();
-        foreach ( $result as $item ) {
-            if ( ! in_array( $item['slug'], $slug_array, true ) ) {
-                $slug_array[]    = $item['slug'];
-                $unique_result[] = $item;
+        if ( ! $keep_duplicates ) {
+            $unique_result = array();
+            $slug_array    = array();
+
+            foreach ( $result as $item ) {
+                if ( ! in_array( $item['slug'], $slug_array, true ) ) {
+                    $slug_array[]    = $item['slug'];
+                    $unique_result[] = $item;
+                }
             }
+
+            return $unique_result;
         }
 
-        return $unique_result;
+        return $result;
     }
 
     /**

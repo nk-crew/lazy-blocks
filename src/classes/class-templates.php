@@ -61,12 +61,13 @@ class LazyBlocks_Templates {
      * Get all templates array.
      *
      * @param bool $db_only - get templates from database only.
+     * @param bool $no_cache - get templates without cache.
      *
      * @return array|null
      */
-    public function get_templates( $db_only = false ) {
+    public function get_templates( $db_only = false, $no_cache = false ) {
         // fetch templates.
-        if ( null === $this->templates ) {
+        if ( null === $this->templates || $no_cache ) {
             $this->templates = array();
 
             // get all lazyblocks_templates post types.

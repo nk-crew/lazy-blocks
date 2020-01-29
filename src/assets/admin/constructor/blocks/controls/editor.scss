@@ -195,37 +195,6 @@
         height: 1em;
         margin-right: .4em;
     }
-
-    .lzb-constructor-controls-item-name-copied {
-        position: absolute;
-        bottom: 100%;
-        left: 0;
-        padding: 4px 6px;
-        margin-left: 50%;
-        color: #fff;
-        background: #000;
-        border-radius: 3px;
-        opacity: 0;
-        transform: translateY(5px) translateX(-50%);
-        animation: .3s lzb-constructor-copied linear;
-    }
-}
-
-@keyframes lzb-constructor-copied {
-    0% {
-        opacity: 0;
-        transition-timing-function: ease-out;
-        transform: translateY(5px) translateX(-50%);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(-5px) translateX(-50%);
-    }
-    100% {
-        opacity: 0;
-        transition-timing-function: ease-in;
-        transform: translateY(-15px) translateX(-50%);
-    }
 }
 
 // repeater child items.

@@ -107,7 +107,7 @@ class Templates extends Component {
         let meta;
 
         try {
-            meta = JSON.parse( decodeURI( postData.meta.lzb_template_data ) );
+            meta = JSON.parse( decodeURIComponent( postData.meta.lzb_template_data ) );
         } catch ( e ) {
             meta = {};
         }
@@ -289,7 +289,7 @@ class Templates extends Component {
                 title: post.name,
                 status: 'publish',
                 meta: {
-                    lzb_template_data: encodeURI( JSON.stringify( {
+                    lzb_template_data: encodeURIComponent( JSON.stringify( {
                         post_type: post.slug,
                         post_label: post.name,
                         template_lock: '',
@@ -365,7 +365,7 @@ class Templates extends Component {
             method: 'PUT',
             data: {
                 meta: {
-                    lzb_template_data: encodeURI( JSON.stringify( {
+                    lzb_template_data: encodeURIComponent( JSON.stringify( {
                         post_type: template.post_type,
                         post_label: template.post_label,
                         template_lock: template.template_lock,
