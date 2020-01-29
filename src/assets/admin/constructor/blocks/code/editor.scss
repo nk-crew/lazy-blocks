@@ -1,9 +1,15 @@
 @import "../../../variables";
 
 .lzb-constructor .lzb-constructor-custom-code-settings {
+    margin-bottom: -15px;
+
     p.description {
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+
+    .lazyblocks-control-tabs {
+        margin-top: -15px;
     }
 
     hr {
