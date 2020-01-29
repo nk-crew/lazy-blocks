@@ -119,6 +119,10 @@
         font-weight: 600;
         transition: .15s transform ease-in-out;
 
+        .lzb-constructor-controls-item-label-no {
+            opacity: .3;
+        }
+
         .required {
             margin-left: 5px;
         }

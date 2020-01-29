@@ -99,7 +99,7 @@ class Control extends Component {
                 </div>
                 <div className="lzb-constructor-controls-item-label">
                     <span className="lzb-constructor-controls-item-label-text">
-                        { label || placeholder || <span>&nbsp;</span> }
+                        { label || placeholder || <span className="lzb-constructor-controls-item-label-no">{ __( '(no label)', '@@text_domain' ) }</span> }
                         { 'true' === required ? (
                             <span className="required">*</span>
                         ) : '' }
