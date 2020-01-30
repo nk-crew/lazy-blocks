@@ -291,7 +291,31 @@ options.blocks.forEach( ( item ) => {
                     let controlResult = applyFilters( `lzb.editor.control.${ control.type }.render`, '', controlData );
 
                     if ( controlResult ) {
+                        let controlNotice = '';
                         controlResult = applyFilters( 'lzb.editor.control.render', controlResult, controlData );
+
+                        // show error for required fields
+                        if (
+                            controlTypeData &&
+                            controlTypeData.restrictions.required_settings &&
+                            control.required &&
+                            'true' === control.required
+                        ) {
+                            const val = this.getControlValue( control, childIndex );
+
+                            if ( ! this.isControlValueValid( val, control ) ) {
+                                controlNotice = (
+                                    <Notice
+                                        key={ `notice-${ control.name }` }
+                                        status="warning"
+                                        isDismissible={ false }
+                                    >
+                                        { __( 'This field is required', '@@text_domain' ) }
+                                    </Notice>
+                                );
+                            }
+                        }
+
                         result.push(
                             <div
                                 key={ `control-${ k }` }
@@ -300,30 +324,9 @@ options.blocks.forEach( ( item ) => {
                                 } }
                             >
                                 { controlResult }
+                                { controlNotice }
                             </div>
                         );
-                    }
-
-                    // show error for required fields
-                    if (
-                        controlTypeData &&
-                        controlTypeData.restrictions.required_settings &&
-                        control.required &&
-                        'true' === control.required
-                    ) {
-                        const val = this.getControlValue( control, childIndex );
-
-                        if ( ! this.isControlValueValid( val, control ) ) {
-                            result.push( (
-                                <Notice
-                                    key={ `notice-${ control.name }` }
-                                    status="warning"
-                                    isDismissible={ false }
-                                >
-                                    { __( 'This field is required', '@@text_domain' ) }
-                                </Notice>
-                            ) );
-                        }
                     }
                 }
             } );
