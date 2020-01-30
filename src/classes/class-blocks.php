@@ -43,6 +43,14 @@ class LazyBlocks_Blocks {
             'd'    => true,
             'fill' => true,
         ),
+        'rect'  => array(
+            'fill'      => true,
+            'opacity'   => true,
+            'width'     => true,
+            'height'    => true,
+            'rx'        => true,
+            'transform' => true,
+        ),
     );
 
     /**

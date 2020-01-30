@@ -111,6 +111,18 @@ class LazyBlocks {
     }
 
     /**
+     * Activation Hook
+     */
+    public function activation_hook() {
+        LazyBlocks_Dummy::add();
+    }
+
+    /**
+     * Deactivation Hook
+     */
+    public function deactivation_hook() {}
+
+    /**
      * Init.
      */
     public function init() {
@@ -166,6 +178,7 @@ class LazyBlocks {
         require_once $this->plugin_path . '/classes/class-templates.php';
         require_once $this->plugin_path . '/classes/class-tools.php';
         require_once $this->plugin_path . '/classes/class-rest.php';
+        require_once $this->plugin_path . '/classes/class-dummy.php';
     }
 
     /**
@@ -289,6 +302,9 @@ function lazyblocks() {
     return LazyBlocks::instance();
 }
 add_action( 'plugins_loaded', 'lazyblocks' );
+
+register_deactivation_hook( __FILE__, array( lazyblocks(), 'activation_hook' ) );
+register_activation_hook( __FILE__, array( lazyblocks(), 'deactivation_hook' ) );
 
 /**
  * Function to get meta value with some improvements for Lazyblocks metas.
