@@ -66,9 +66,13 @@ class LazyBlocks_Blocks {
         // custom post roles.
         add_action( 'admin_init', array( $this, 'add_role_caps' ) );
 
-        // additional columns in blocks list table.
-        add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'add_lazyblocks_columns' ) );
-        add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_lazyblocks_columns' ), 10, 2 );
+        // additional elements in blocks list table.
+        add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
+        add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
+        add_filter( 'bulk_actions-edit-lazyblocks', array( $this, 'bulk_actions_edit' ) );
+        add_filter( 'handle_bulk_actions-edit-lazyblocks', array( $this, 'handle_bulk_actions_edit' ), 10, 3 );
+        add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'manage_posts_columns' ) );
+        add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 
         // add meta.
         add_action( 'init', array( $this, 'register_block_meta' ) );
@@ -388,25 +392,108 @@ class LazyBlocks_Blocks {
     }
 
     /**
+     * Disable month dropdown.
+     *
+     * @param array  $return disabled dropdown or no.
+     * @param object $post_type current post type name.
+     *
+     * @return array
+     */
+    public function disable_months_dropdown( $return, $post_type ) {
+        return 'lazyblocks' === $post_type ? true : $return;
+    }
+
+    /**
+     * Add featured image in lazyblocks list
+     *
+     * @param array  $actions actions for posts.
+     * @param object $post current post data.
+     *
+     * @return array
+     */
+    public function post_row_actions( $actions = array(), $post ) {
+        if ( 'lazyblocks' !== $post->post_type ) {
+            return $actions;
+        }
+
+        // remove quick edit link.
+        if ( isset( $actions['inline hide-if-no-js'] ) ) {
+            unset( $actions['inline hide-if-no-js'] );
+        }
+
+        // add export link.
+        $actions = array_merge(
+            array_slice( $actions, 0, 1 ),
+            array(
+                'export' => sprintf(
+                    '<a href="%1$s" aria-label="%2$s">%3$s</a>',
+                    add_query_arg(
+                        array(
+                            'lazyblocks_export_block' => $post->ID,
+                        )
+                    ),
+                    sprintf(
+                        // translators: %1$ - post title.
+                        esc_html__( 'Export “%1$s”', '@@text_domain' ),
+                        get_the_title( $post->ID )
+                    ),
+                    esc_html__( 'Export', '@@text_domain' )
+                ),
+            ),
+            array_slice( $actions, 1 )
+        );
+
+        return $actions;
+    }
+
+    /**
+     * Bulk actions.
+     *
+     * @param array $actions bulk actions for posts.
+     *
+     * @return array
+     */
+    public function bulk_actions_edit( $actions = array() ) {
+        unset( $actions['edit'] );
+
+        $actions['export'] = esc_html__( 'Export', '@@text_domain' );
+
+        return $actions;
+    }
+
+    /**
+     * Prepare to bulk export blocks.
+     *
+     * @param string $redirect redirect url after export.
+     * @param string $action action name.
+     * @param array  $post_ids post ids to export.
+     *
+     * @return string
+     */
+    public function handle_bulk_actions_edit( $redirect, $action, $post_ids ) {
+        if ( 'export' !== $action ) {
+            return $redirect;
+        }
+
+        lazyblocks()->tools()->export_json( $post_ids, 'blocks' );
+
+        return $redirect;
+    }
+
+    /**
      * Add featured image in lazyblocks list
      *
      * @param array $columns columns of the table.
      *
      * @return array
      */
-    public function add_lazyblocks_columns( $columns = array() ) {
-        $columns = array_merge(
-            // insert after checkbox.
-            array_slice( $columns, 0, 1 ),
-            array(
-                'lazyblocks_post_icon' => esc_html__( 'Icon', '@@text_domain' ),
-            ),
-            // insert after title.
-            array_slice( $columns, 1, 1 ),
-            array(
-                'lazyblocks_post_category' => esc_html__( 'Category', '@@text_domain' ),
-            ),
-            array_slice( $columns, 1 )
+    public function manage_posts_columns( $columns = array() ) {
+        $columns = array(
+            'cb'                          => $columns['cb'],
+            'lazyblocks_post_icon'        => esc_html__( 'Icon', '@@text_domain' ),
+            'title'                       => $columns['title'],
+            'lazyblocks_post_category'    => esc_html__( 'Category', '@@text_domain' ),
+            'lazyblocks_post_description' => esc_html__( 'Description', '@@text_domain' ),
         );
 
         return $columns;
@@ -417,7 +504,7 @@ class LazyBlocks_Blocks {
      *
      * @param bool $column_name column name.
      */
-    public function manage_lazyblocks_columns( $column_name = false ) {
+    public function manage_posts_custom_column( $column_name = false ) {
         global $post;
 
         if ( 'lazyblocks_post_icon' === $column_name ) {
@@ -450,6 +537,11 @@ class LazyBlocks_Blocks {
 
                 echo esc_html( $category );
             }
+        }
+
+        if ( 'lazyblocks_post_description' === $column_name ) {
+            $description = $this->get_meta_value( 'lazyblocks_description' );
+            echo esc_html( $description );
         }
     }
 

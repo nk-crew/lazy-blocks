@@ -52,7 +52,7 @@ class Templates extends Component {
         };
 
         this.renderExportContent = this.renderExportContent.bind( this );
-        this.downloadJSON = this.downloadJSON.bind( this );
+        this.getDownloadJSONUrl = this.getDownloadJSONUrl.bind( this );
         this.getPHPStringCode = this.getPHPStringCode.bind( this );
         this.copyPHPStringCode = this.copyPHPStringCode.bind( this );
     }
@@ -152,15 +152,13 @@ class Templates extends Component {
                     </Fragment>
                 ) : (
                     <div className="lzb-export-buttons">
-                        <button
+                        <a
                             className="button button-primary"
-                            onClick={ () => {
-                                this.downloadJSON( type );
-                            } }
                             disabled={ nothingSelected }
+                            href={ this.getDownloadJSONUrl( type ) }
                         >
                             { __( 'Export JSON', '@@text_domain' ) }
-                        </button>
+                        </a>
                         <button
                             className="button"
                             onClick={ () => {
@@ -178,39 +176,17 @@ class Templates extends Component {
         );
     }
 
-    downloadJSON( type = 'blocks' ) {
+    getDownloadJSONUrl( type = 'blocks' ) {
         const typeLabel = type.charAt( 0 ).toUpperCase() + type.slice( 1 );
-
-        let result = [];
+        let url = window.location.href;
 
         data[ type ].forEach( ( item ) => {
             if ( ! this.state[ `disabled${ typeLabel }` ][ item.data.id ] ) {
-                result.push( item.data );
+                url += `&lazyblocks_export_${ type }[]=${ item.data.id }`;
             }
         } );
 
-        if ( result ) {
-            result = JSON.stringify( result, null, 2 );
-
-            const blob = new window.Blob( [ result ], { type: 'json' } );
-            const a = document.createElement( 'a' );
-            const date = new Date();
-
-            a.download = `lzb-export-${ type }-${ date.getFullYear() }-${ date.getMonth() + 1 }-${ date.getDate() }.json`;
-            a.href = URL.createObjectURL( blob );
-            a.dataset.downloadurl = [ 'json', a.download, a.href ].join( ':' );
-            a.style.display = 'none';
-
-            document.body.appendChild( a );
-
-            a.click();
-
-            document.body.removeChild( a );
-
-            setTimeout( () => {
-                URL.revokeObjectURL( a.href );
-            }, 1500 );
-        }
+        return url;
     }
 
     /**

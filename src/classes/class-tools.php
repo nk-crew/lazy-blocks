@@ -26,6 +26,9 @@ class LazyBlocks_Tools {
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
+        // export json on get request.
+        add_action( 'admin_init', array( $this, 'maybe_export_json' ) );
+
         // enqueue script on Tools page.
         add_action( 'admin_footer', array( $this, 'admin_enqueue_scripts' ) );
 
@@ -289,6 +292,83 @@ class LazyBlocks_Tools {
     }
 
     /**
+     * Export JSON.
+     */
+    public function maybe_export_json() {
+        $block_id  = filter_input( INPUT_GET, 'lazyblocks_export_block', FILTER_SANITIZE_NUMBER_INT );
+        $block_ids = filter_input_array(
+            INPUT_GET,
+            array(
+                'lazyblocks_export_blocks' => array(
+                    'filter' => FILTER_SANITIZE_NUMBER_INT,
+                    'flags'  => FILTER_REQUIRE_ARRAY,
+                ),
+            )
+        );
+        $block_ids = $block_ids['lazyblocks_export_blocks'];
+
+        $template_ids = filter_input_array(
+            INPUT_GET,
+            array(
+                'lazyblocks_export_templates' => array(
+                    'filter' => FILTER_SANITIZE_NUMBER_INT,
+                    'flags'  => FILTER_REQUIRE_ARRAY,
+                ),
+            )
+        );
+        $template_ids = $template_ids['lazyblocks_export_templates'];
+
+        if ( isset( $block_id ) && current_user_can( 'read_lazyblock', $block_id ) ) {
+            $this->export_json( array( $block_id ) );
+        } elseif ( isset( $block_ids ) && ! empty( $block_ids ) && current_user_can( 'read_lazyblock', $block_ids[0] ) ) {
+            $this->export_json( $block_ids );
+        } elseif ( isset( $template_ids ) && ! empty( $template_ids ) && current_user_can( 'read_lazyblock', $template_ids[0] ) ) {
+            $this->export_json( $template_ids, 'templates' );
+        }
+    }
+
+    /**
+     * Export JSON.
+     *
+     * @param array  $items blocks/templates to export.
+     * @param string $type export type (blocks or templates).
+     */
+    public function export_json( $items, $type = 'blocks' ) {
+        $result = array();
+
+        // fix string ids to int.
+        foreach ( $items as $k => $id ) {
+            $items[ $k ] = (int) $id;
+        }
+
+        if ( 'blocks' === $type ) {
+            $blocks = lazyblocks()->blocks()->get_blocks( true );
+
+            foreach ( $blocks as $block ) {
+                if ( in_array( $block['id'], $items, true ) ) {
+                    unset( $block['edit_url'] );
+                    $result[] = $block;
+                }
+            }
+        } elseif ( 'templates' === $type ) {
+            $templates = lazyblocks()->templates()->get_templates( true );
+
+            foreach ( $templates as $template ) {
+                if ( in_array( $template['id'], $items, true ) ) {
+                    $result[] = $template;
+                }
+            }
+        }
+
+        header( 'Content-Description: File Transfer' );
+        header( 'Content-disposition: attachment; filename=lzb-export-' . $type . '-' . date_i18n( 'Y-m-d' ) . '.json' );
+        header( 'Content-type: application/json; charset=utf-8' );
+        echo wp_json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
+
+        die();
+    }
+
+    /**
      * Import block.
      *
      * @param array $data - new block data.
@@ -314,6 +394,8 @@ class LazyBlocks_Tools {
                 } else {
                     if ( 'slug' === $k ) {
                         $val = substr( $val, strpos( $val, '/' ) + 1 );
+                    } elseif ( 'keywords' === $k ) {
+                        $val = implode( ',', $val );
                     }
 
                     $meta[ $meta_prefix . $k ] = $val;

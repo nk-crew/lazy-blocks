@@ -210,6 +210,13 @@ class LazyBlocks {
     }
 
     /**
+     * Get lazyblocks tools object.
+     */
+    public function tools() {
+        return $this->tools;
+    }
+
+    /**
      * Add lazyblocks block.
      *
      * @param array $data - block data.
