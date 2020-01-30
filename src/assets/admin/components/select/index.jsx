@@ -15,6 +15,12 @@ export default class Select extends Component {
                 menuPlacement="auto"
                 className="lazyblocks-component-select"
                 styles={ {
+                    menu: ( styles ) => {
+                        return {
+                            ...styles,
+                            zIndex: 2,
+                        };
+                    },
                     control: ( styles, props ) => {
                         return {
                             ...styles,
