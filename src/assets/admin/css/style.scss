@@ -510,17 +510,12 @@
  * Admin pages.
  */
 .post-type-lazyblocks {
-    .column-lazyblocks_post_icon {
-        width: 30px;
-        text-align: center;
-    }
-
     .lzb-admin-block-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 35px;
-        height: 35px;
+        width: 42px;
+        height: 42px;
         font-size: 16px;
         color: #4f5052;
         background: #e8e8e8;
@@ -530,6 +525,38 @@
             width: auto;
             height: 1em;
             font-size: 1em;
+        }
+    }
+
+    .wp-list-table {
+        th.column-lazyblocks_post_icon {
+            width: 42px;
+            text-align: center;
+        }
+        th.column-lazyblocks_post_category {
+            width: 200px;
+        }
+
+        @media screen and (max-width: 782px) {
+            /* Hide column on mobile device */
+            th.column-lazyblocks_post_icon {
+                display: none;
+            }
+            tr:not(.inline-edit-row):not(.no-items) {
+                td.column-lazyblocks_post_icon {
+                    float: left;
+                    // stylelint-disable-next-line declaration-no-important
+                    width: 42px !important;
+                    min-width: 42px;
+                }
+                td.column-lazyblocks_post_icon::before {
+                    content: none;
+                }
+                td.column-title {
+                    overflow: hidden;
+                    clear: right;
+                }
+            }
         }
     }
 }

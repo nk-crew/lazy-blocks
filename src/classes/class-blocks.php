@@ -421,12 +421,13 @@ class LazyBlocks_Blocks {
         global $post;
 
         if ( 'lazyblocks_post_icon' === $column_name ) {
-            $icon = $this->get_meta_value( 'lazyblocks_icon' );
+            $icon      = $this->get_meta_value( 'lazyblocks_icon' );
+            $admin_url = get_edit_post_link( $post->ID );
 
             if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
-                echo '<span class="lzb-admin-block-icon"><span class="dashicons ' . esc_attr( $icon ) . '"></span></span>';
+                echo '<a class="lzb-admin-block-icon" href="' . esc_url( $admin_url ) . '"><span class="dashicons ' . esc_attr( $icon ) . '"></span></a>';
             } elseif ( $icon ) {
-                echo '<span class="lzb-admin-block-icon">' . wp_kses( $icon, $this->kses_svg ) . '</span>';
+                echo '<a class="lzb-admin-block-icon" href="' . esc_url( $admin_url ) . '">' . wp_kses( $icon, $this->kses_svg ) . '</a>';
             }
         }
 
