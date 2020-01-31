@@ -76,12 +76,32 @@ class LazyBlocks_Tools {
     }
 
     /**
+     * Clear block data to export.
+     * Remove `edit_url`
+     *
+     * @param array $block block data.
+     *
+     * @return array
+     */
+    public function clean_block_to_export( $block ) {
+        $db_blocks = lazyblocks()->blocks()->get_blocks( true );
+
+        foreach ( $db_blocks as $db_block ) {
+            if ( $db_block['id'] === $block['id'] ) {
+                unset( $block['edit_url'] );
+            }
+        }
+
+        return $block;
+    }
+
+    /**
      * Clear PHP string code.
      *
      * @param string $string code string.
      * @return string
      */
-    public function clear_php_string_code( $string ) {
+    public function clean_php_string_code( $string ) {
         $str_replace  = array(
             '  '      => '    ',
             'array (' => 'array(',
@@ -109,6 +129,8 @@ class LazyBlocks_Tools {
      * @return string
      */
     public function get_block_php_string_code( $block ) {
+        $block = $this->clean_block_to_export( $block );
+
         $result = '';
 
         $result .= "\nlazyblocks()->add_block( ";
@@ -116,7 +138,7 @@ class LazyBlocks_Tools {
         $result .= var_export( $block, true );
         $result .= " );\n";
 
-        return $this->clear_php_string_code( $result );
+        return $this->clean_php_string_code( $result );
     }
 
     /**
@@ -133,7 +155,7 @@ class LazyBlocks_Tools {
         $result .= var_export( $template, true );
         $result .= " );\n";
 
-        return $this->clear_php_string_code( $result );
+        return $this->clean_php_string_code( $result );
     }
 
     /**
@@ -346,8 +368,7 @@ class LazyBlocks_Tools {
 
             foreach ( $blocks as $block ) {
                 if ( in_array( $block['id'], $items, true ) ) {
-                    unset( $block['edit_url'] );
-                    $result[] = $block;
+                    $result[] = $this->clean_block_to_export( $block );
                 }
             }
         } elseif ( 'templates' === $type ) {
