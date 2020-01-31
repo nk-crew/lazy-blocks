@@ -91,7 +91,7 @@ class LazyBlocks_Blocks {
      * Handlebars php.
      */
     public function prepare_handlebars() {
-        require_once lazyblocks()->plugin_path . 'vendor/Handlebars/Autoloader.php';
+        require_once lazyblocks()->plugin_path() . 'vendor/Handlebars/Autoloader.php';
 
         Handlebars\Autoloader::register();
 
@@ -321,7 +321,7 @@ class LazyBlocks_Blocks {
                 'show_in_admin_bar' => true,
                 'show_in_rest'      => true,
                 // phpcs:ignore
-                'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( lazyblocks()->plugin_path . 'assets/svg/icon-lazyblocks.svg' ) ),
+                'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( lazyblocks()->plugin_path() . 'assets/svg/icon-lazyblocks.svg' ) ),
                 'menu_position'     => 80,
                 'capabilities'      => array(
                     'edit_post'          => 'edit_lazyblock',
@@ -1020,7 +1020,7 @@ class LazyBlocks_Blocks {
         // enqueue block css.
         wp_enqueue_style(
             'lazyblocks-gutenberg',
-            lazyblocks()->plugin_url . 'assets/css/style.min.css',
+            lazyblocks()->plugin_url() . 'assets/css/style.min.css',
             array(),
             '@@plugin_version'
         );
@@ -1028,7 +1028,7 @@ class LazyBlocks_Blocks {
         // enqueue block js.
         wp_enqueue_script(
             'lazyblocks-gutenberg',
-            lazyblocks()->plugin_url . 'assets/js/index.min.js',
+            lazyblocks()->plugin_url() . 'assets/js/index.min.js',
             array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
             '@@plugin_version',
             true

@@ -196,7 +196,7 @@ class LazyBlocks_Tools {
         // Lazyblocks Tools.
         wp_enqueue_script(
             'lazyblocks-tools',
-            lazyblocks()->plugin_url . 'assets/admin/tools/index.min.js',
+            lazyblocks()->plugin_url() . 'assets/admin/tools/index.min.js',
             array( 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
             '@@plugin_version',
             true

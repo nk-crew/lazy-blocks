@@ -37,7 +37,7 @@ class LazyBlocks_Control_Range extends LazyBlocks_Control {
     public function register_assets() {
         wp_register_script(
             'lazyblocks-control-range',
-            lazyblocks()->plugin_url . 'controls/range/script.min.js',
+            lazyblocks()->plugin_url() . 'controls/range/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
             '@@plugin_version',
             true

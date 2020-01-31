@@ -35,7 +35,7 @@ class LazyBlocks_Control_CodeEditor extends LazyBlocks_Control {
     public function register_assets() {
         wp_register_script(
             'lazyblocks-control-code-editor',
-            lazyblocks()->plugin_url . 'controls/code_editor/script.min.js',
+            lazyblocks()->plugin_url() . 'controls/code_editor/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
             '@@plugin_version',
             true

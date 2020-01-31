@@ -51,7 +51,7 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
     public function register_assets() {
         wp_register_script(
             'lazyblocks-control-repeater',
-            lazyblocks()->plugin_url . 'controls/repeater/script.min.js',
+            lazyblocks()->plugin_url() . 'controls/repeater/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
             '@@plugin_version',
             true

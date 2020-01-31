@@ -272,7 +272,7 @@ class LazyBlocks_Templates {
         // Lazyblocks Templates.
         wp_enqueue_script(
             'lazyblocks-templates',
-            lazyblocks()->plugin_url . 'assets/admin/templates/index.min.js',
+            lazyblocks()->plugin_url() . 'assets/admin/templates/index.min.js',
             array( 'wp-blocks', 'wp-block-library', 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
             '@@plugin_version',
             true
