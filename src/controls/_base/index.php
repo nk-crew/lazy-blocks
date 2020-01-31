@@ -15,35 +15,36 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class LazyBlocks_Control {
     /**
-     * Name.
+     * Control unique name.
      *
      * @var string
      */
     public $name;
 
     /**
-     * SVG Icon.
+     * Control icon SVG.
+     * You may use these icons https://material.io/resources/icons/?icon=accessibility&style=outline .
      *
      * @var string
      */
     public $icon = '';
 
     /**
-     * Type.
+     * Control value type [string, number, boolean].
      *
      * @var string
      */
     public $type = 'string';
 
     /**
-     * Title.
+     * Control label.
      *
      * @var string
      */
     public $label;
 
     /**
-     * Category.
+     * Category name.
      *
      * @var string
      */
