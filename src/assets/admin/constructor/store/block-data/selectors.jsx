@@ -17,8 +17,10 @@ export function getSelectedControl( state ) {
         const blockData = state.data;
 
         if ( blockData.controls && blockData.controls[ state.selectedControlId ] ) {
+            const controlData = getControlTypeData( blockData.controls[ state.selectedControlId ].type );
             return {
-                ...cloneDeep( getControlTypeData( blockData.controls[ state.selectedControlId ].type ) ),
+                ...cloneDeep( controlData ),
+                ...( controlData.attributes ? cloneDeep( controlData.attributes ) : {} ),
                 ...blockData.controls[ state.selectedControlId ],
             };
         }
