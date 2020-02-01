@@ -41,6 +41,7 @@ Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You ca
   * Gallery
   * File
   * Rich Text (WYSIWYG)
+  * Classic Editor (WYSIWYG)
   * Code Editor
   * Inner Blocks
   * Select

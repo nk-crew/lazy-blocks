@@ -51,6 +51,7 @@ class LazyBlocks_Controls {
             'gallery',
             'file',
             'rich_text',
+            'classic_editor',
             'code_editor',
             'inner_blocks',
 

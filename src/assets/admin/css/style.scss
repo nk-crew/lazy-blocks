@@ -371,6 +371,30 @@
     }
 }
 
+// Classic Editor control
+.lzb-gutenberg-classic-editor {
+    .block-library-classic__toolbar {
+        position: relative;
+        display: block;
+        top: 0;
+        margin: 0;
+        transform: none;
+
+        &:empty {
+            display: none;
+        }
+
+        div.mce-toolbar-grp {
+            border-bottom: none;
+        }
+    }
+    .block-library-rich-text__tinymce {
+        padding: 20px;
+        border: 1px solid #e2e4e7;
+        outline: none;
+    }
+}
+
 // repeater
 .lzb-gutenberg-repeater-item {
     position: relative;
