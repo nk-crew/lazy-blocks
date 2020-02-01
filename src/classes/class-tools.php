@@ -42,8 +42,8 @@ class LazyBlocks_Tools {
     public function admin_menu() {
         $page = add_submenu_page(
             'edit.php?post_type=lazyblocks',
-            esc_html__( 'Export/Import', '@@text_domain' ),
-            esc_html__( 'Export/Import', '@@text_domain' ),
+            esc_html__( 'Export / Import', '@@text_domain' ),
+            esc_html__( 'Export / Import', '@@text_domain' ),
             'manage_options',
             'lazyblocks_tools',
             array( $this, 'render_tools_page' )
@@ -58,7 +58,7 @@ class LazyBlocks_Tools {
     public function render_tools_page() {
         ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline"><?php echo esc_html__( 'Export/Import', '@@text_domain' ); ?></h1>
+            <h1 class="wp-heading-inline"><?php echo esc_html__( 'Export / Import', '@@text_domain' ); ?></h1>
 
             <div id="poststuff">
                 <div class="lazyblocks-tools-page">
