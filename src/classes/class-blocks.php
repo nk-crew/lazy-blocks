@@ -298,6 +298,7 @@ class LazyBlocks_Blocks {
         );
 
         // custom action for extending default helpers by 3rd-party.
+        do_action( 'lzb/handlebars/object', $this->handlebars );
         do_action( 'lzb_handlebars_object', $this->handlebars );
     }
 

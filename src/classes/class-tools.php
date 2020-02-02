@@ -425,7 +425,7 @@ class LazyBlocks_Tools {
 
             lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
 
-            do_action( 'lzb_import_block', $post_id, $data );
+            do_action( 'lzb/import/block', $post_id, $data );
 
             return $post_id;
         }
@@ -469,7 +469,7 @@ class LazyBlocks_Tools {
             // phpcs:ignore
             add_post_meta( $post_id, 'lzb_template_data', urlencode( json_encode( $template_data ) ) );
 
-            do_action( 'lzb_import_template', $post_id, $template_data );
+            do_action( 'lzb/import/template', $post_id, $template_data );
 
             return $post_id;
         }
