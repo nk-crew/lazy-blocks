@@ -30,6 +30,24 @@ class LazyBlocks_Controls {
     }
 
     /**
+     * Get all controls categories.
+     *
+     * @return array
+     */
+    public function get_controls_categories() {
+        return apply_filters(
+            'lzb/controls/categories',
+            array(
+                'basic'    => __( 'Basic', '@@text_domain' ),
+                'content'  => __( 'Content', '@@text_domain' ),
+                'choice'   => __( 'Choice', '@@text_domain' ),
+                'advanced' => __( 'Advanced', '@@text_domain' ),
+                'layout'   => __( 'Layout', '@@text_domain' ),
+            )
+        );
+    }
+
+    /**
      * Include controls.
      */
     private function include_controls() {

@@ -21,7 +21,6 @@ class LazyBlocks_Control_TextArea extends LazyBlocks_Control {
         $this->icon       = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.66667 6.30769V10.9231C8.38333 10.9231 7.33333 9.88462 7.33333 8.61538C7.33333 7.34615 8.38333 6.30769 9.66667 6.30769ZM19 4H9.66667C7.08833 4 5 6.06538 5 8.61538C5 11.1654 7.08833 13.2308 9.66667 13.2308V19H12V6.30769H14.3333V19H16.6667V6.30769H19V4Z" fill="currentColor"/></svg>';
         $this->type       = 'string';
         $this->label      = __( 'Text Area', '@@text_domain' );
-        $this->category   = __( 'Basic', '@@text_domain' );
         $this->attributes = array(
             'placeholder'      => '',
             'characters_limit' => '',

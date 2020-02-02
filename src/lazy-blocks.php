@@ -236,10 +236,11 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
                     'lazyblocks-constructor',
                     'lazyblocksConstructorData',
                     array(
-                        'post_id'            => isset( $post->ID ) ? $post->ID : 0,
-                        'allowed_mime_types' => get_allowed_mime_types(),
-                        'controls'           => $this->controls()->get_controls(),
-                        'icons'              => $this->icons()->get_all(),
+                        'post_id'             => isset( $post->ID ) ? $post->ID : 0,
+                        'allowed_mime_types'  => get_allowed_mime_types(),
+                        'controls'            => $this->controls()->get_controls(),
+                        'controls_categories' => $this->controls()->get_controls_categories(),
+                        'icons'               => $this->icons()->get_all(),
                     )
                 );
 

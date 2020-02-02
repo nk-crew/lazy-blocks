@@ -19,6 +19,7 @@ const {
 
 const {
     controls,
+    controls_categories: allCategories,
 } = window.lazyblocksConstructorData;
 
 const hiddenIconCategories = {};
@@ -44,7 +45,7 @@ class TypeRow extends Component {
         } = data;
 
         const searchString = this.state.search.toLowerCase();
-        const allCategories = {};
+        const availableCategories = {};
 
         const types = Object.keys( controls ).filter( ( k ) => {
             const iconName = controls[ k ].name;
@@ -78,7 +79,7 @@ class TypeRow extends Component {
                 }
             }
 
-            allCategories[ controls[ k ].category ] = 1;
+            availableCategories[ controls[ k ].category ] = 1;
 
             return {
                 name: controls[ k ].name,
@@ -119,11 +120,11 @@ class TypeRow extends Component {
                                     placeholder={ __( 'Type to Search...', '@@text_domain' ) }
                                     autoComplete="off"
                                 />
-                                { Object.keys( allCategories ).map( ( cat ) => {
+                                { Object.keys( availableCategories ).map( ( cat ) => {
                                     return (
                                         <PanelBody
                                             key={ cat }
-                                            title={ cat }
+                                            title={ allCategories[ cat ] || cat }
                                             initialOpen={ ! hiddenIconCategories[ cat ] }
                                             onToggle={ () => {
                                                 hiddenIconCategories[ cat ] = typeof hiddenIconCategories[ cat ] === 'undefined' ? true : ! hiddenIconCategories[ cat ];

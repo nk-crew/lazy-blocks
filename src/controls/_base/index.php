@@ -48,7 +48,7 @@ class LazyBlocks_Control {
      *
      * @var string
      */
-    public $category;
+    public $category = 'basic';
 
     /**
      * Default Restrictions.
@@ -116,11 +116,6 @@ class LazyBlocks_Control {
             $this->default_attributes,
             (array) $this->attributes
         );
-
-        // No category specified.
-        if ( ! $this->category ) {
-            $this->category = __( 'Basic', '@@text_domain' );
-        }
 
         // Filters.
         add_filter( 'lzb/controls/all', array( $this, 'get_control_data' ) );
