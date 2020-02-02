@@ -92,6 +92,7 @@ export class PreviewServerCallback extends Component {
             .then( ( response ) => {
                 if ( this.isStillMounted && fetchRequest === this.currentFetchRequest ) {
                     onBeforeChange();
+                    doAction( 'lzb.components.PreviewServerCallback.onBeforeChange', this.props );
                     doAction( 'lazyblocks.components.PreviewServerCallback.onBeforeChange', this.props );
 
                     if ( response && response.success ) {
@@ -100,6 +101,7 @@ export class PreviewServerCallback extends Component {
                             previousResponse: response.response,
                         }, () => {
                             onChange();
+                            doAction( 'lzb.components.PreviewServerCallback.onChange', this.props );
                             doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                         } );
                     } else if ( response && ! response.success && response.error_code ) {
@@ -109,6 +111,7 @@ export class PreviewServerCallback extends Component {
                                 previousResponse: null,
                             }, () => {
                                 onChange();
+                                doAction( 'lzb.components.PreviewServerCallback.onChange', this.props );
                                 doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                             } );
                         } else if ( 'lazy_block_no_render_callback' === response.error_code ) {
@@ -118,6 +121,7 @@ export class PreviewServerCallback extends Component {
                                 allowRender: false,
                             }, () => {
                                 onChange();
+                                doAction( 'lzb.components.PreviewServerCallback.onChange', this.props );
                                 doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                             } );
                         }
@@ -127,6 +131,7 @@ export class PreviewServerCallback extends Component {
             .catch( ( response ) => {
                 if ( this.isStillMounted && fetchRequest === this.currentFetchRequest ) {
                     onBeforeChange();
+                    doAction( 'lzb.components.PreviewServerCallback.onBeforeChange', this.props );
                     doAction( 'lazyblocks.components.PreviewServerCallback.onBeforeChange', this.props );
 
                     this.setState( {
@@ -136,6 +141,7 @@ export class PreviewServerCallback extends Component {
                         },
                     }, () => {
                         onChange();
+                        doAction( 'lzb.editor.PreviewServerCallback.onChange', this.props );
                         doAction( 'lazyblocks.components.PreviewServerCallback.onChange', this.props );
                     } );
                 }

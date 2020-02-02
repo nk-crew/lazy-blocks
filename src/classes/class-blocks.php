@@ -1180,18 +1180,18 @@ class LazyBlocks_Blocks {
         $result  = null;
 
         // apply filter for block attributes.
-        $attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block );
+        $attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block, $context );
         // phpcs:ignore
         $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $content, $block );
         // phpcs:ignore
-        $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block );
+        $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block, $context );
 
         // apply filter for custom output callback.
-        $result = apply_filters( 'lzb/block_render/callback', $result, $attributes );
+        $result = apply_filters( 'lzb/block_render/callback', $result, $attributes, $context );
         // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
         // phpcs:ignore
-        $result = apply_filters( $block['slug'] . '/callback', $result, $attributes );
+        $result = apply_filters( $block['slug'] . '/callback', $result, $attributes, $context );
 
         // custom callback and handlebars html.
         if ( ! $result && isset( $block['code'] ) ) {
@@ -1213,11 +1213,11 @@ class LazyBlocks_Blocks {
         }
 
         // add wrapper.
-        $allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $result && 'frontend' === $context, $attributes );
+        $allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $result && 'frontend' === $context, $attributes, $context );
         // phpcs:ignore
         $allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $allow_wrapper, $attributes );
         // phpcs:ignore
-        $allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes );
+        $allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes, $context );
 
         if ( $allow_wrapper ) {
             $html_atts = '';
