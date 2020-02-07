@@ -113,12 +113,6 @@ The manual installation method involves downloading our LazyBlocks plugin and up
   * fixed select component z-index
   * fixed document tabs margin
   * fixed overflow and dropdowns sidebar
-* xxxxx
-* xxxxx
-* xxxxx
-* xxxxx
-* xxxxx
-* xxxxx
 
 = 1.8.2 =
 
