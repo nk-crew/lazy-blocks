@@ -26,30 +26,36 @@ Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You ca
 * Create custom blocks with output code
 * Create custom blocks for meta custom fields
 * Handlebars used for blocks output
-* Export to PHP
+* Export / Import blocks
 * Show controls in block content / inspector
 * Controls available:
-  * Repeater
-  * Text
-  * Textarea
-  * Number
-  * Range
-  * URL
-  * Email
-  * Password
-  * Image
-  * Gallery
-  * File
-  * Rich Text (WYSIWYG)
-  * Classic Editor (WYSIWYG)
-  * Code Editor
-  * Inner Blocks
-  * Select
-  * Checkbox
-  * Radio
-  * Toggle
-  * Color Picker
-  * Date Time
+  * Basic
+    * Text
+    * Textarea
+    * Number
+    * Range
+    * URL
+    * Email
+    * Password
+  * Content
+    * Image
+    * Gallery
+    * File
+    * Rich Text
+    * Classic Editor
+    * Code Editor
+    * Inner Blocks
+  * Choice
+    * Select
+    * Radio
+    * Checkbox
+    * Toggle
+  * Advanced
+    * Color Picker
+    * Date Time Picker
+  * Layout
+    * Repeater
+  * Custom Controls <https://lazyblocks.com/documentation/examples/create-custom-control/>
 
 ## Installation
 
@@ -67,11 +73,52 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Screenshots
 
-1. Blocks constructor
-2. Posts templates
-3. Block in Gutenberg editor
+1. Blocks Constructor
+2. Custom Blocks with Example Controls
+3. Posts Templates
 
 ## Changelog
+
+= 2.0.0 =
+
+* added custom controls API <https://lazyblocks.com/documentation/examples/create-custom-control/>
+* added Export / Import JSON for blocks and templates <https://lazyblocks.com/documentation/export-blocks/>
+* added error messages to File, Image and Gallery controls
+* added Width option to controls
+* added alongside option to Checkbox and Toggle controls
+* added Example Block after plugin activation
+* added Classic Editor control <https://lazyblocks.com/documentation/blocks-controls/classic-editor-wysiwyg/>
+* added possibility to include plugin code in themes and 3rd-party plugins <https://lazyblocks.com/documentation/examples/include-lazy-blocks-within-theme-or-plugin/>
+* changed block icons to Material SVG <https://material.io/resources/icons/>
+* fixed change value in Rich Text and Code Editor
+* fixed errors when no specified block icon or title
+* fixed Rich Text control styles
+* fixed PHP errors when control type is not defined
+* fixed height of Select component
+* fixed file control Upload button error, when no allowed mime types selected
+* fixed possible PHP warnings when control meta used, but array item doesn't exist
+* fixed URL control paddings
+* fixed constructor admin list mobile devices styles
+* fixed required notice position
+* removed Multiple option from Radio control
+* constructor
+  * improved UI
+  * added Duplicate and Delete buttons on controls
+  * added icons to Controls
+  * added control placeholder if label is not specified
+  * added control `no label` if label is not specified
+  * improved placement settings (changed select to buttons)
+  * improved date time settings (changed select to buttons)
+  * fixed select component style
+  * fixed select component z-index
+  * fixed document tabs margin
+  * fixed overflow and dropdowns sidebar
+* xxxxx
+* xxxxx
+* xxxxx
+* xxxxx
+* xxxxx
+* xxxxx
 
 = 1.8.2 =
 
@@ -161,7 +208,7 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 = 1.4.2 =
 
-* added `lzb_handlebars_object` action inside `init`
+* added `lzb/handlebars/object` action inside `init`
 * trim class attribute value on frontend output
 * fixed loading Templates admin page and select initialization when more then 1 template added
 * fixed Range control with Save in Meta option
