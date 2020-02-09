@@ -32,7 +32,7 @@ class LazyBlocks_Control_Checkbox extends LazyBlocks_Control {
 
         // Filters.
         add_filter( 'lzb/prepare_block_attribute', array( $this, 'filter_lzb_prepare_block_attribute' ), 10, 2 );
-        add_filter( 'lzb/get_meta', array( $this, 'filter_get_lzb_meta_default' ) );
+        add_filter( 'lzb/get_meta', array( $this, 'filter_get_lzb_meta_default' ), 10, 4 );
 
         parent::__construct();
     }
