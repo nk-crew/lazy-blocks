@@ -79,6 +79,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.1 =
+
+* fixed checkbox and toggle controls meta filter php error
+
 = 2.0.0 =
 
 * added custom controls API <https://lazyblocks.com/documentation/examples/create-custom-control/>
