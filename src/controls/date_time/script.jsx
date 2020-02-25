@@ -38,14 +38,14 @@ addFilter( 'lzb.editor.control.date_time.render', 'lzb.editor', ( render, props 
             { /date/.test( props.data.date_time_picker ) ? (
                 <DatePicker
                     locale={ settings.l10n.locale }
-                    value={ props.getValue() }
+                    currentDate={ props.getValue() }
                     onChange={ props.onChange }
                 />
             ) : '' }
             { /time/.test( props.data.date_time_picker ) ? (
                 <TimePicker
                     is12Hour={ is12HourTime }
-                    value={ props.getValue() }
+                    currentTime={ props.getValue() }
                     onChange={ props.onChange }
                 />
             ) : '' }
