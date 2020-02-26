@@ -288,11 +288,11 @@ options.blocks.forEach( ( item ) => {
                     };
 
                     // get control data from filter.
-                    let controlResult = applyFilters( `lzb.editor.control.${ control.type }.render`, '', controlData );
+                    let controlResult = applyFilters( `lzb.editor.control.${ control.type }.render`, '', controlData, this.props );
 
                     if ( controlResult ) {
                         let controlNotice = '';
-                        controlResult = applyFilters( 'lzb.editor.control.render', controlResult, controlData );
+                        controlResult = applyFilters( 'lzb.editor.control.render', controlResult, controlData, this.props );
 
                         // show error for required fields
                         if (
