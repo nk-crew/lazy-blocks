@@ -65,6 +65,7 @@ class Control extends Component {
             isSelected,
             addControl,
             removeControl,
+            controls,
         } = this.props;
 
         const {
@@ -82,6 +83,17 @@ class Control extends Component {
         let controlName = name;
         if ( 'true' === save_in_meta ) {
             controlName = save_in_meta_name || name;
+        }
+
+        let isUseOnce = false;
+
+        // restrict once per block.
+        if ( ! isUseOnce && controlTypeData && controlTypeData.restrictions.once && controls ) {
+            Object.keys( controls ).forEach( ( i ) => {
+                if ( controlTypeData.name === controls[ i ].type ) {
+                    isUseOnce = true;
+                }
+            } );
         }
 
         // Item with filter
@@ -105,21 +117,23 @@ class Control extends Component {
                         ) : '' }
                     </span>
                     <span className="lzb-constructor-controls-item-label-buttons">
-                        <button
-                            onClick={ ( e ) => {
-                                e.preventDefault();
-                                e.stopPropagation();
+                        { ! isUseOnce ? (
+                            <button
+                                onClick={ ( e ) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
 
-                                const newData = merge( {}, data );
+                                    const newData = merge( {}, data );
 
-                                newData.label += ' ' + __( '(copy)', '@@text_domain' );
-                                newData.name += '-copy';
+                                    newData.label += ' ' + __( '(copy)', '@@text_domain' );
+                                    newData.name += '-copy';
 
-                                addControl( newData, id );
-                            } }
-                        >
-                            { __( 'Duplicate', '@@text_domain' ) }
-                        </button>
+                                    addControl( newData, id );
+                                } }
+                            >
+                                { __( 'Duplicate', '@@text_domain' ) }
+                            </button>
+                        ) : '' }
                         <button
                             className="lzb-constructor-controls-item-label-buttons-remove"
                             onClick={ ( e ) => {
