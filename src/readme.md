@@ -79,6 +79,13 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.2 =
+
+* fixed Date Time Picker control displaying selected value
+* fixed Classic Editor control rendering bug when used in multiple blocks
+* fixed Allow Null value save in Select control
+* hide "duplicate" button from Inner Blocks control in constructor
+
 = 2.0.1 =
 
 * fixed checkbox and toggle controls meta filter php error
