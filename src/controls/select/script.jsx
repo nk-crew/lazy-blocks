@@ -25,7 +25,7 @@ addFilter( 'lzb.editor.control.select.render', 'lzb.editor', ( render, props ) =
     if ( props.data.allow_null && 'true' === props.data.allow_null ) {
         choices = [
             {
-                value: null,
+                value: '',
                 label: __( '-- Select --', '@@text_domain' ),
             },
             ...choices,
