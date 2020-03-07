@@ -798,6 +798,13 @@ class LazyBlocks_Blocks {
             foreach ( $all_blocks as $block ) {
                 $icon = $this->get_meta_value( 'lazyblocks_icon', $block->ID );
 
+                // add default icon.
+                if ( ! $icon ) {
+                    // phpcs:ignore
+                    $icon = file_get_contents( lazyblocks()->plugin_path() . 'assets/svg/icon-lazyblocks.svg' );
+                    $icon = str_replace( 'fill="white"', 'fill="currentColor"', $icon );
+                }
+
                 if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
                     $icon = esc_attr( str_replace( 'dashicons-', 'dashicons dashicons-', $icon ) );
                 } elseif ( $icon ) {
