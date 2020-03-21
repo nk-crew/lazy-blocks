@@ -327,7 +327,7 @@ class LazyBlocks_Tools {
                 ),
             )
         );
-        $block_ids = $block_ids['lazyblocks_export_blocks'];
+        $block_ids = is_array( $block_ids ) && isset( $block_ids['lazyblocks_export_blocks'] ) ? $block_ids['lazyblocks_export_blocks'] : array();
 
         $template_ids = filter_input_array(
             INPUT_GET,
@@ -338,7 +338,7 @@ class LazyBlocks_Tools {
                 ),
             )
         );
-        $template_ids = $template_ids['lazyblocks_export_templates'];
+        $template_ids = is_array( $template_ids ) && isset( $template_ids['lazyblocks_export_templates'] ) ? $template_ids['lazyblocks_export_templates'] : array();
 
         if ( isset( $block_id ) && current_user_can( 'read_lazyblock', $block_id ) ) {
             $this->export_json( array( $block_id ) );
