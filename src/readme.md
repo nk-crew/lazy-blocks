@@ -79,6 +79,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.4 =
+
+* fixed possible PHP 7.4 error because of admin Tools export checks
+
 = 2.0.3 =
 
 * fixed error when no icon specified to custom block
