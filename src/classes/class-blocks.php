@@ -712,16 +712,26 @@ class LazyBlocks_Blocks {
             /* Get the meta value of the custom field key. */
             $meta_value = get_post_meta( $post_id, $meta, true );
 
+            $meta_value_to_check     = $meta_value;
+            $new_meta_value_to_check = $new_meta_value;
+
+            if ( is_array( $meta_value_to_check ) ) {
+                $meta_value_to_check = wp_json_encode( $meta_value_to_check );
+            }
+            if ( is_array( $new_meta_value_to_check ) ) {
+                $new_meta_value_to_check = wp_json_encode( $new_meta_value_to_check );
+            }
+
             /* If a new meta value was added and there was no previous value, add it. */
-            if ( $new_meta_value && '' === $meta_value ) {
+            if ( $new_meta_value_to_check && '' === $meta_value_to_check ) {
                 add_post_meta( $post_id, $meta, $new_meta_value, true );
 
                 /* If the new meta value does not match the old value, update it. */
-            } elseif ( $new_meta_value && $new_meta_value !== $meta_value ) {
+            } elseif ( $new_meta_value_to_check && $new_meta_value_to_check !== $meta_value_to_check ) {
                 update_post_meta( $post_id, $meta, $new_meta_value );
 
                 /* If there is no new meta value but an old value exists, delete it. */
-            } elseif ( '' === $new_meta_value && $meta_value ) {
+            } elseif ( '' === $new_meta_value_to_check && $meta_value_to_check ) {
                 delete_post_meta( $post_id, $meta, $meta_value );
             }
         }
