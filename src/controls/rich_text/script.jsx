@@ -26,9 +26,9 @@ addFilter( 'lzb.editor.control.rich_text.render', 'lzb.editor', ( render, props 
             className="lzb-gutenberg-rich-text"
         >
             <RichText
+                inlineToolbar
                 format="string"
                 multiline={ props.data.multiline === 'true' ? 'p' : false }
-                inlineToolbar={ true }
                 value={ props.getValue() }
                 onChange={ ( val ) => {
                     props.onChange( val );

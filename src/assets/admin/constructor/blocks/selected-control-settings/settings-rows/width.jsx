@@ -47,8 +47,9 @@ export default class WidthRow extends Component {
                             return (
                                 <Button
                                     key={ w }
-                                    isDefault
+                                    isSecondary
                                     isPrimary={ isActive }
+                                    isSmall
                                     onClick={ () => {
                                         updateData( { width: `${ w }` } );
                                     } }

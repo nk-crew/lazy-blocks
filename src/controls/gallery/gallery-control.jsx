@@ -109,7 +109,12 @@ class GalleryControl extends Component {
                                         } }
                                     />
                                     <div className="lzb-gutenberg-gallery-button">
-                                        <Button isDefault={ true }>{ __( 'Edit Gallery', '@@text_domain' ) }</Button>
+                                        <Button
+                                            isSecondary
+                                            isSmall
+                                        >
+                                            { __( 'Edit Gallery', '@@text_domain' ) }
+                                        </Button>
                                     </div>
                                     { value.map( ( img ) => (
                                         <div className="lzb-gutenberg-gallery-item" key={ img.id || img.url }>

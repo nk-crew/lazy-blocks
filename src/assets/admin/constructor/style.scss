@@ -2,7 +2,7 @@
 
 .post-type-lazyblocks {
     // editor background.
-    .edit-post-layout__content {
+    .block-editor-editor-skeleton__content {
         background-color: $color_gray_lighten;
     }
 
@@ -51,6 +51,18 @@
                 content: none;
             }
         }
+    }
+
+    // remove outline from block.
+    .block-editor-block-list__block::before,
+    .block-editor-block-contextual-toolbar,
+    .block-editor-block-list__insertion-point {
+        display: none;
+    }
+
+    // Remove writing container.
+    .block-editor-writing-flow__click-redirect {
+        display: none;
     }
 }
 
@@ -109,11 +121,4 @@
         margin-bottom: 15px;
         color: $color_dark_lighten;
     }
-}
-
-// remove outline from block.
-[data-type="lzb-constructor/main"] .editor-block-list__block-edit::before,
-[data-type="lzb-constructor/main"] .editor-block-contextual-toolbar,
-[data-type="lzb-constructor/main"] .editor-block-list__insertion-point {
-    display: none;
 }

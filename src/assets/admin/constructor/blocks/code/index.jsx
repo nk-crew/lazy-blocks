@@ -107,7 +107,8 @@ export default class CustomCodeSettings extends Component {
 
                 <BaseControl>
                     <Button
-                        isDefault
+                        isSecondary
+                        isSmall
                         onClick={ () => {
                             if ( ! showInfo ) {
                                 this.setState( { showInfo: true } );

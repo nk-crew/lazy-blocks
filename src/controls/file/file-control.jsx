@@ -122,7 +122,8 @@ class FileControl extends Component {
                             </div>
                             <div className="lzb-gutenberg-file-button">
                                 <Button
-                                    isDefault={ true }
+                                    isSecondary
+                                    isSmall
                                     onClick={ () => {
                                         this.setState( { hasError: false } );
                                         onChange( '' );

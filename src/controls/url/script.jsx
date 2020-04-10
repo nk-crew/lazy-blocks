@@ -3,13 +3,11 @@ const {
 } = wp.hooks;
 
 const {
-    Dashicon,
-    IconButton,
     BaseControl,
 } = wp.components;
 
 const {
-    URLInput,
+    __experimentalLinkControl: LinkControl,
 } = wp.blockEditor;
 
 /**
@@ -21,17 +19,18 @@ addFilter( 'lzb.editor.control.url.render', 'lzb.editor', ( render, props ) => {
             label={ props.data.label }
             help={ props.data.help }
         >
-            <form
-                className="lzb-gutenberg-url"
-                onSubmit={ ( event ) => event.preventDefault() }>
-                <URLInput
-                    value={ props.getValue() }
-                    onChange={ props.onChange }
-                    autoFocus={ false }
+            <div className="lzb-gutenberg-url">
+                <LinkControl
+                    className="wp-block-navigation-link__inline-link-input"
+                    opensInNewTab={ false }
+                    value={ {
+                        url: props.getValue(),
+                    } }
+                    onChange={ ( { url: newURL = '' } ) => {
+                        props.onChange( newURL );
+                    } }
                 />
-                <Dashicon icon="admin-links" />
-                <IconButton icon="editor-break" label="Apply" type="submit" />
-            </form>
+            </div>
         </BaseControl>
     );
 } );

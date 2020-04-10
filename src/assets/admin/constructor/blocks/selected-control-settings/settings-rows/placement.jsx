@@ -43,9 +43,10 @@ export default class PlacementRow extends Component {
                     <div />
                     <ButtonGroup>
                         <Button
-                            isDefault
+                            isSecondary
                             isPrimary={ 'content' === placement || 'both' === placement }
                             disabled={ placementRestrictions.indexOf( 'content' ) === -1 }
+                            isSmall
                             onClick={ () => {
                                 let newPlacement = 'content';
 
@@ -65,9 +66,10 @@ export default class PlacementRow extends Component {
                             { __( 'Content', '@@text_domain' ) }
                         </Button>
                         <Button
-                            isDefault
+                            isSecondary
                             isPrimary={ 'inspector' === placement || 'both' === placement }
                             disabled={ placementRestrictions.indexOf( 'inspector' ) === -1 }
+                            isSmall
                             onClick={ () => {
                                 let newPlacement = 'inspector';
 

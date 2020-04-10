@@ -188,7 +188,8 @@ class RepeaterControl extends Component {
                     ) : '' }
                     <div className="lzb-gutenberg-repeater-options">
                         <Button
-                            isDefault={ true }
+                            isSecondary
+                            isSmall
                             disabled={ controlData.rows_max && count >= controlData.rows_max }
                             onClick={ () => {
                                 addRow();

@@ -174,7 +174,8 @@ export default class ChoicesRow extends Component {
                     <div>
                         <Button
                             onClick={ self.addChoice }
-                            isDefault
+                            isSecondary
+                            isSmall
                         >
                             { __( '+ Add Choice', '@@text_domain' ) }
                         </Button>

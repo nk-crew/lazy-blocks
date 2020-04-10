@@ -39,6 +39,7 @@ addFilter( 'lzb.editor.control.select.render', 'lzb.editor', ( render, props ) =
             multiple={ 'true' === props.data.multiple }
             help={ props.data.help }
             value={ props.getValue() }
+            className="lzb-gutenberg-select"
             onChange={ ( val ) => {
                 props.onChange( val );
             } }

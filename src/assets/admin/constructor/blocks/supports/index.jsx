@@ -5,7 +5,8 @@ const { Component, Fragment } = wp.element;
 const {
     Notice,
     BaseControl,
-    ToggleControl,
+    Button,
+    CheckboxControl,
     Disabled,
 } = wp.components;
 
@@ -36,25 +37,25 @@ export default class SupportsSettings extends Component {
 
         return (
             <Fragment>
-                <ToggleControl
+                <CheckboxControl
                     label={ __( 'Multiple', '@@text_domain' ) }
                     help={ __( 'Allow use block multiple times on the page.', '@@text_domain' ) }
                     checked={ supportsMultiple }
                     onChange={ ( value ) => updateData( { supports_multiple: value } ) }
                 />
-                <ToggleControl
+                <CheckboxControl
                     label={ __( 'Class Name', '@@text_domain' ) }
                     help={ __( 'Additional field to add custom class name.', '@@text_domain' ) }
                     checked={ supportsClassname }
                     onChange={ ( value ) => updateData( { supports_classname: value } ) }
                 />
-                <ToggleControl
+                <CheckboxControl
                     label={ __( 'Anchor', '@@text_domain' ) }
                     help={ __( 'Additional field to add block ID attribute.', '@@text_domain' ) }
                     checked={ supportsAnchor }
                     onChange={ ( value ) => updateData( { supports_anchor: value } ) }
                 />
-                <ToggleControl
+                <CheckboxControl
                     label={ __( 'Inserter', '@@text_domain' ) }
                     help={ __( 'Show block in blocks inserter.', '@@text_domain' ) }
                     checked={ supportsInserter }
@@ -112,14 +113,15 @@ export default class SupportsSettings extends Component {
                             <p>
                                 { __( 'Install GhostKit plugin to use the following settings.', '@@text_domain' ) }
                             </p>
-                            <a
-                                className="components-button is-button is-default is-small"
+                            <Button
+                                isPrimary
+                                isSmall
                                 href="https://wordpress.org/plugins/ghostkit/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
                                 { __( 'Install', '@@text_domain' ) }
-                            </a>
+                            </Button>
                         </Notice>
                     </BaseControl>
                 ) : '' }
@@ -133,19 +135,19 @@ export default class SupportsSettings extends Component {
                     </BaseControl>
                 ) : '' }
                 <GktWrap>
-                    <ToggleControl
+                    <CheckboxControl
                         label={ __( 'Spacings', '@@text_domain' ) }
                         help={ __( 'Change block margins and paddings.', '@@text_domain' ) }
                         checked={ supportsGktSpacings }
                         onChange={ ( value ) => updateData( { supports_ghostkit_spacings: value } ) }
                     />
-                    <ToggleControl
+                    <CheckboxControl
                         label={ __( 'Display', '@@text_domain' ) }
                         help={ __( 'Display / Hide blocks on different screen sizes.', '@@text_domain' ) }
                         checked={ supportsGktDisplay }
                         onChange={ ( value ) => updateData( { supports_ghostkit_display: value } ) }
                     />
-                    <ToggleControl
+                    <CheckboxControl
                         label={ __( 'Animate on Scroll', '@@text_domain' ) }
                         help={ __( 'Display block with animation on scroll.', '@@text_domain' ) }
                         checked={ supportsGktScrollReveal }

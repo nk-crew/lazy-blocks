@@ -96,6 +96,7 @@ class TypeRow extends Component {
                     label={ __( 'Type', '@@text_domain' ) }
                 >
                     <Dropdown
+                        className="lzb-constructor-type-toggle-dropdown"
                         renderToggle={ ( { isOpen, onToggle } ) => {
                             const controlTypeData = getControlTypeData( type );
                             return (

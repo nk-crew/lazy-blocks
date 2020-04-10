@@ -93,7 +93,8 @@ class ImageControl extends Component {
                             />
                             <div className="lzb-gutenberg-image-button">
                                 <Button
-                                    isDefault={ true }
+                                    isSecondary
+                                    isSmall
                                     onClick={ () => {
                                         this.setState( { hasError: false } );
                                         onChange( '' );

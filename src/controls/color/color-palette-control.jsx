@@ -94,7 +94,7 @@ export default function ColorPalette( { colors, disableAlpha = true, disableCust
                     type="button"
                     onClick={ () => onChange( undefined ) }
                     isSmall
-                    isDefault
+                    isSecondary
                 >
                     { __( 'Clear', '@@text_domain' ) }
                 </Button>
