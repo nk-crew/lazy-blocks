@@ -79,6 +79,13 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.5 =
+
+* added WordPress 5.4 compatibility
+* added 12 hours format for Time Picker automatically based on WordPress settings
+* removed the possibility to disable both date and time in Date Time Picker control
+* fixed inability to remove all controls from block
+
 = 2.0.4 =
 
 * fixed possible PHP 7.4 error because of admin Tools export checks
