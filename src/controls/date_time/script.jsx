@@ -119,7 +119,7 @@ addFilter( 'lzb.constructor.control.date_time.settings', 'lzb.constructor', ( re
                         if ( 'date_time' === dateTimePicker ) {
                             result = 'time';
                         } else if ( 'date' === dateTimePicker ) {
-                            result = '';
+                            result = 'date';
                         } else if ( 'time' === dateTimePicker ) {
                             result = 'date_time';
                         }
@@ -141,7 +141,7 @@ addFilter( 'lzb.constructor.control.date_time.settings', 'lzb.constructor', ( re
                         if ( 'date_time' === dateTimePicker ) {
                             result = 'date';
                         } else if ( 'time' === dateTimePicker ) {
-                            result = '';
+                            result = 'time';
                         } else if ( 'date' === dateTimePicker ) {
                             result = 'date_time';
                         }
