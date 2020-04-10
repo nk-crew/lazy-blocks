@@ -17,7 +17,8 @@ const {
     ButtonGroup,
     Button,
     Popover,
-    DateTimePicker: WPDateTimePicker,
+    DatePicker,
+    TimePicker,
 } = wp.components;
 
 /**
@@ -38,7 +39,8 @@ class DateTimePicker extends Component {
             onChange,
             label,
             help,
-            is12Hour = false,
+            allowTimePicker = true,
+            allowDatePicker = true,
         } = this.props;
 
         const {
@@ -47,6 +49,23 @@ class DateTimePicker extends Component {
 
         const settings = getSettings();
         const resolvedFormat = settings.formats.datetime || 'F j, Y g:i a';
+
+        // To know if the current timezone is a 12 hour time with look for an "a" in the time format.
+        // We also make sure this a is not escaped by a "/".
+        const is12Hour = /a(?!\\)/i.test(
+            settings.formats.time
+                .toLowerCase() // Test only the lower case a
+                .replace( /\\\\/g, '' ) // Replace "//" with empty strings
+                .split( '' ).reverse().join( '' ) // Reverse the string and test for "a" not followed by a slash
+        );
+
+        let buttonLabel = __( 'Select Date', '@@text_domain' );
+
+        if ( allowTimePicker && allowDatePicker ) {
+            buttonLabel = __( 'Select Date and Time', '@@text_domain' );
+        } else if ( allowTimePicker ) {
+            buttonLabel = __( 'Select Time', '@@text_domain' );
+        }
 
         return (
             <BaseControl
@@ -59,18 +78,27 @@ class DateTimePicker extends Component {
                         isSmall
                         onClick={ () => this.setState( { isPickerOpen: ! isPickerOpen } ) }
                     >
-                        { value ? dateI18n( resolvedFormat, value ) : __( 'Select Date', '@@text_domain' ) }
+                        { value ? dateI18n( resolvedFormat, value ) : buttonLabel }
                     </Button>
                     { isPickerOpen ? (
                         <Popover
                             onClose={ () => this.setState( { isPickerOpen: false } ) }
                         >
-                            <WPDateTimePicker
-                                label={ label }
-                                currentDate={ value }
-                                onChange={ onChange }
-                                is12Hour={ is12Hour }
-                            />
+                            <div className="components-datetime">
+                                { allowTimePicker ? (
+                                    <TimePicker
+                                        currentTime={ value }
+                                        onChange={ onChange }
+                                        is12Hour={ is12Hour }
+                                    />
+                                ) : '' }
+                                { allowDatePicker ? (
+                                    <DatePicker
+                                        currentDate={ value }
+                                        onChange={ onChange }
+                                    />
+                                ) : '' }
+                            </div>
                         </Popover>
                     ) : '' }
                 </div>
@@ -83,10 +111,18 @@ class DateTimePicker extends Component {
  * Control render in editor.
  */
 addFilter( 'lzb.editor.control.date_time.render', 'lzb.editor', ( render, props ) => {
+    const {
+        label,
+        help,
+        date_time_picker: dateTimePicker,
+    } = props.data;
+
     return (
         <DateTimePicker
-            label={ props.data.label }
-            help={ props.data.help }
+            label={ label }
+            help={ help }
+            allowTimePicker={ /time/.test( dateTimePicker ) }
+            allowDatePicker={ /date/.test( dateTimePicker ) }
             value={ props.getValue() }
             onChange={ props.onChange }
         />
