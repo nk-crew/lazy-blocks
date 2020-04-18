@@ -176,7 +176,7 @@ class RepeaterControl extends Component {
                                     this.setState( { activeItem: newIndex } );
                                 }
                             } }
-                            useDragHandle={ true }
+                            useDragHandle
                             helperContainer={ () => {
                                 if ( this.sortRef && this.sortRef.current && this.sortRef.current.container ) {
                                     return this.sortRef.current.container;

@@ -93,7 +93,7 @@ addFilter( 'lzb.constructor.control.file.settings', 'lzb.constructor', ( render,
                 help={ __( 'If nothing selected, all file types will be allowed to use.', '@@text_domain' ) }
             >
                 <Select
-                    isMulti={ true }
+                    isMulti
                     options={ options }
                     value={ ( () => {
                         if ( data.allowed_mime_types && Array.isArray( data.allowed_mime_types ) ) {

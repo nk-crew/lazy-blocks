@@ -317,7 +317,7 @@ export default class IconPicker extends Component {
                                 aria-expanded={ isOpen }
                                 onClick={ onToggle }
                                 svg={ value }
-                                alwaysRender={ true }
+                                alwaysRender
                             />
                         </div>
                     </Tooltip>

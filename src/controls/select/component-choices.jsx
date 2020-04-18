@@ -161,7 +161,7 @@ export default class ChoicesRow extends Component {
                             onSortEnd={ ( { oldIndex, newIndex } ) => {
                                 self.resortChoice( oldIndex, newIndex );
                             } }
-                            useDragHandle={ true }
+                            useDragHandle
                             helperContainer={ () => {
                                 if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
                                     return self.sortRef.current.container;

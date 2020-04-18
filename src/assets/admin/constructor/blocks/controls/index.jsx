@@ -135,7 +135,7 @@ class ControlsSettings extends Component {
                     onSortEnd={ ( { oldIndex, newIndex } ) => {
                         resortControl( items[ oldIndex ].id, items[ newIndex ].id );
                     } }
-                    useDragHandle={ true }
+                    useDragHandle
                     helperClass="lzb-constructor-controls-item-dragging"
                     helperContainer={ function() {
                         if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
