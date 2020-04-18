@@ -58,17 +58,20 @@ function reducer( state = { data: false }, action ) {
             state.data.controls &&
             state.data.controls[ action.id ]
         ) {
+            // We can't just use merge() here, as it will merge inner arrays
+            // but we always need to override it.
             return {
                 ...state,
-                data: merge(
-                    {},
-                    state.data,
-                    {
-                        controls: {
-                            [ action.id ]: action.data,
+                data: {
+                    ...( state.data || {} ),
+                    controls: {
+                        ...( state.data.controls || {} ),
+                        [ action.id ]: {
+                            ...( state.data.controls[ action.id ] || {} ),
+                            ...action.data,
                         },
-                    }
-                ),
+                    },
+                },
             };
         }
 
