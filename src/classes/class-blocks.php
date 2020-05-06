@@ -83,7 +83,7 @@ class LazyBlocks_Blocks {
             add_filter( 'block_categories', array( $this, 'block_categories' ) );
 
             add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
-            add_action( 'init', array( $this, 'register_block_render' ) );
+            add_action( 'init', array( $this, 'register_block_render' ), 20 );
         }
     }
 
