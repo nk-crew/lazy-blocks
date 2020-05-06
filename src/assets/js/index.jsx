@@ -103,8 +103,8 @@ options.blocks.forEach( ( item ) => {
             }
 
             // filter control value.
-            val = applyFilters( `lzb.editor.control.${ control.type }.updateValue`, val, control );
-            val = applyFilters( 'lzb.editor.control.updateValue', val, control );
+            val = applyFilters( `lzb.editor.control.${ control.type }.updateValue`, val, control, childIndex );
+            val = applyFilters( 'lzb.editor.control.updateValue', val, control, childIndex );
 
             const result = {};
             result[ name ] = val;
@@ -129,8 +129,8 @@ options.blocks.forEach( ( item ) => {
             }
 
             // filter control value.
-            result = applyFilters( `lzb.editor.control.${ control.type }.getValue`, result, control );
-            result = applyFilters( 'lzb.editor.control.getValue', result, control );
+            result = applyFilters( `lzb.editor.control.${ control.type }.getValue`, result, control, childIndex );
+            result = applyFilters( 'lzb.editor.control.getValue', result, control, childIndex );
 
             return result;
         }
@@ -299,6 +299,7 @@ options.blocks.forEach( ( item ) => {
                             label,
                         },
                         placement,
+                        childIndex,
                         uniqueId: k,
                         getValue: ( optionalControl = control, optionalChildIndex = childIndex ) => this.getControlValue( optionalControl, optionalChildIndex ),
                         onChange: ( val ) => {

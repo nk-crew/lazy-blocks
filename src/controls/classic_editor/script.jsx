@@ -23,7 +23,7 @@ addFilter( 'lzb.editor.control.classic_editor.render', 'lzb.editor', ( render, p
             onChange={ ( val ) => {
                 props.onChange( val );
             } }
-            editorId={ props.placement + blockProps.clientId + props.uniqueId }
+            editorId={ props.placement + blockProps.clientId + props.uniqueId + ( props.childIndex || 0 ) }
         />
     </BaseControl>
 ) );
