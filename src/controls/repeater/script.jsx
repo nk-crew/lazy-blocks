@@ -25,7 +25,7 @@ const {
  * Control render in editor.
  */
 addFilter( 'lzb.editor.control.repeater.render', 'lzb.editor', ( render, props ) => {
-    const val = props.getValue();
+    const val = props.getValue() || [];
 
     return (
         <RepeaterControl
