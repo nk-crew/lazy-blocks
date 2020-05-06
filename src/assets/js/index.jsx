@@ -179,10 +179,29 @@ options.blocks.forEach( ( item ) => {
                 if ( control.required && 'true' === control.required ) {
                     thereIsRequired = true;
 
-                    const val = this.getControlValue( control );
+                    // Child controls.
+                    if ( control.child_of ) {
+                        if ( item.controls[ control.child_of ] ) {
+                            const childs = this.getControlValue( item.controls[ control.child_of ] );
 
-                    if ( ! this.isControlValueValid( val, control ) ) {
-                        shouldLock += 1;
+                            if ( childs && childs.length ) {
+                                childs.forEach( ( childData, childIndex ) => {
+                                    const val = this.getControlValue( control, childIndex );
+
+                                    if ( ! this.isControlValueValid( val, control ) ) {
+                                        shouldLock += 1;
+                                    }
+                                } );
+                            }
+                        }
+
+                        // Single controls.
+                    } else {
+                        const val = this.getControlValue( control );
+
+                        if ( ! this.isControlValueValid( val, control ) ) {
+                            shouldLock += 1;
+                        }
                     }
                 }
             } );
