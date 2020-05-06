@@ -14,7 +14,6 @@
         display: block;
         margin-top: 0;
         margin-bottom: .5em;
-        vertical-align: baseline;
     }
     textarea.lzb-textarea,
     select.lzb-select,
@@ -239,12 +238,12 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
     padding: 0;
     // stylelint-disable-next-line
     margin: 0 -5px !important;
     list-style-type: none;
     cursor: pointer;
-    align-content: flex-start;
 
     // fix flex items shrink.
     &::after {

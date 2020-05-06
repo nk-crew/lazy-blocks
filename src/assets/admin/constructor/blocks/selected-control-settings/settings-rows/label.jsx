@@ -10,8 +10,8 @@ const {
 } = wp.components;
 
 export default class LabelRow extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.generateUniqueName = this.generateUniqueName.bind( this );
     }
@@ -35,7 +35,7 @@ export default class LabelRow extends Component {
             name: slugify( label, {
                 replacement: '-',
                 lower: true,
-                remove: /[^\w\s$0-9-*+~.\$(_)#&\|'"!:;@/\\]/g,
+                remove: /[^\w\s$0-9-*+~.$(_)#&|'"!:;@/\\]/g,
             } ),
         } );
     }

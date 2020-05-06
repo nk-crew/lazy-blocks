@@ -24,9 +24,11 @@ const {
     allowed_mime_types: wpAllowedMimeTypes,
 } = window.lazyblocksConstructorData || window.lazyblocksGutenberg;
 
+/* eslint-disable react/no-unused-state */
+
 class FileControl extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             hasError: false,
@@ -117,7 +119,7 @@ class FileControl extends Component {
                                 </div>
                                 <div className="lzb-gutenberg-file-item-content">
                                     <div className="lzb-gutenberg-file-item-content-title">{ value.title }</div>
-                                    <div className="lzb-gutenberg-file-item-content-filename">{ value.url.replace( /^.*[\\\/]/, '' ) }</div>
+                                    <div className="lzb-gutenberg-file-item-content-filename">{ value.url.replace( /^.*[\\/]/, '' ) }</div>
                                 </div>
                             </div>
                             <div className="lzb-gutenberg-file-button">

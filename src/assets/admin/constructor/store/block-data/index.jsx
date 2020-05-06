@@ -8,4 +8,6 @@ const {
     registerStore,
 } = wp.data;
 
-registerStore( 'lazy-blocks/block-data', { reducer, selectors, actions, controls, resolvers } );
+registerStore( 'lazy-blocks/block-data', {
+    reducer, selectors, actions, controls, resolvers,
+} );

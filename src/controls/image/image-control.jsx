@@ -22,9 +22,11 @@ const {
 
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
+/* eslint-disable react/no-unused-state */
+
 class ImageControl extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             hasError: false,

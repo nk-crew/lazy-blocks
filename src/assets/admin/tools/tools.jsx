@@ -8,6 +8,8 @@ import * as clipboard from 'clipboard-polyfill';
  */
 import './style.scss';
 
+import Copied from '../components/copied';
+
 /**
  * Internal Dependencies
  */
@@ -33,14 +35,12 @@ const {
     ToggleControl,
 } = wp.components;
 
-import Copied from '../components/copied';
-
 /**
  * Component
  */
 class Templates extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             showBlocksPHP: false,
@@ -55,125 +55,6 @@ class Templates extends Component {
         this.getDownloadJSONUrl = this.getDownloadJSONUrl.bind( this );
         this.getPHPStringCode = this.getPHPStringCode.bind( this );
         this.copyPHPStringCode = this.copyPHPStringCode.bind( this );
-    }
-
-    renderExportContent( type = 'blocks' ) {
-        const typeLabel = type.charAt( 0 ).toUpperCase() + type.slice( 1 );
-        const nothingSelected = Object.keys( this.state[ `disabled${ typeLabel }` ] ).length === data[ type ].length;
-
-        return (
-            <Fragment>
-                <div className="lzb-export-select-items">
-                    <BaseControl>
-                        <ToggleControl
-                            label={ __( 'Select all', '@@text_domain' ) }
-                            checked={ Object.keys( this.state[ `disabled${ typeLabel }` ] ).length === 0 }
-                            onChange={ () => {
-                                const newDisabled = {};
-
-                                // disable all
-                                if ( Object.keys( this.state[ `disabled${ typeLabel }` ] ).length === 0 ) {
-                                    data[ type ].forEach( ( item ) => {
-                                        newDisabled[ item.data.id ] = true;
-                                    } );
-                                }
-
-                                this.setState( {
-                                    [ `disabled${ typeLabel }` ]: newDisabled,
-                                } );
-                            } }
-                        />
-                        { data[ type ].map( ( item ) => {
-                            const isSelected = ! this.state[ `disabled${ typeLabel }` ][ item.data.id ];
-
-                            return (
-                                <ToggleControl
-                                    key={ item.data.id }
-                                    label={ (
-                                        <Fragment>
-                                            { 'blocks' === type ? (
-                                                <Fragment>
-                                                    { item.data.icon && /^dashicons/.test( item.data.icon ) ? (
-                                                        <span className={ item.data.icon } />
-                                                    ) : '' }
-                                                    { item.data.icon && ! /^dashicons/.test( item.data.icon ) ? (
-                                                        <span dangerouslySetInnerHTML={ { __html: item.data.icon } } />
-                                                    ) : '' }
-                                                    { ' ' }
-                                                </Fragment>
-                                            ) : '' }
-                                            { item.data.title }
-                                        </Fragment>
-                                    ) }
-                                    checked={ isSelected }
-                                    onChange={ () => {
-                                        const newDisabled = {
-                                            ...this.state[ `disabled${ typeLabel }` ],
-                                        };
-
-                                        if ( isSelected && ! newDisabled[ item.data.id ] ) {
-                                            newDisabled[ item.data.id ] = true;
-                                        } else if ( ! isSelected && typeof newDisabled[ item.data.id ] !== 'undefined' ) {
-                                            delete newDisabled[ item.data.id ];
-                                        }
-
-                                        this.setState( {
-                                            [ `disabled${ typeLabel }` ]: newDisabled,
-                                        } );
-                                    } }
-                                />
-                            );
-                        } ) }
-                    </BaseControl>
-                </div>
-
-                { this.state[ `show${ typeLabel }PHP` ] ? (
-                    <Fragment>
-                        <div className="lzb-export-textarea">
-                            <TextareaControl
-                                className="lzb-export-code"
-                                readOnly
-                                value={ this.getPHPStringCode( type ) }
-                            />
-                        </div>
-                        <div className="lzb-export-buttons">
-                            <button
-                                className="button"
-                                onClick={ () => {
-                                    this.copyPHPStringCode( type );
-                                } }
-                            >
-                                { __( 'Copy to Clipboard', '@@text_domain' ) }
-                                { this.state[ `copied${ typeLabel }` ] ? (
-                                    <Copied />
-                                ) : '' }
-                            </button>
-                        </div>
-                    </Fragment>
-                ) : (
-                    <div className="lzb-export-buttons">
-                        <a
-                            className="button button-primary"
-                            disabled={ nothingSelected }
-                            href={ this.getDownloadJSONUrl( type ) }
-                        >
-                            { __( 'Export JSON', '@@text_domain' ) }
-                        </a>
-                        <button
-                            className="button"
-                            onClick={ () => {
-                                this.setState( {
-                                    [ `show${ typeLabel }PHP` ]: true,
-                                } );
-                            } }
-                            disabled={ nothingSelected }
-                        >
-                            { __( 'Generate PHP', '@@text_domain' ) }
-                        </button>
-                    </div>
-                ) }
-            </Fragment>
-        );
     }
 
     getDownloadJSONUrl( type = 'blocks' ) {
@@ -232,6 +113,129 @@ class Templates extends Component {
         }, 350 );
     }
 
+    renderExportContent( type = 'blocks' ) {
+        const typeLabel = type.charAt( 0 ).toUpperCase() + type.slice( 1 );
+        const nothingSelected = Object.keys( this.state[ `disabled${ typeLabel }` ] ).length === data[ type ].length;
+
+        return (
+            <Fragment>
+                <div className="lzb-export-select-items">
+                    <BaseControl>
+                        <ToggleControl
+                            label={ __( 'Select all', '@@text_domain' ) }
+                            checked={ 0 === Object.keys( this.state[ `disabled${ typeLabel }` ] ).length }
+                            onChange={ () => {
+                                const newDisabled = {};
+
+                                // disable all
+                                if ( 0 === Object.keys( this.state[ `disabled${ typeLabel }` ] ).length ) {
+                                    data[ type ].forEach( ( item ) => {
+                                        newDisabled[ item.data.id ] = true;
+                                    } );
+                                }
+
+                                this.setState( {
+                                    [ `disabled${ typeLabel }` ]: newDisabled,
+                                } );
+                            } }
+                        />
+                        { data[ type ].map( ( item ) => {
+                            const isSelected = ! this.state[ `disabled${ typeLabel }` ][ item.data.id ];
+
+                            return (
+                                <ToggleControl
+                                    key={ item.data.id }
+                                    label={ (
+                                        <Fragment>
+                                            { 'blocks' === type ? (
+                                                <Fragment>
+                                                    { item.data.icon && /^dashicons/.test( item.data.icon ) ? (
+                                                        <span className={ item.data.icon } />
+                                                    ) : '' }
+                                                    { item.data.icon && ! /^dashicons/.test( item.data.icon ) ? (
+                                                        // eslint-disable-next-line react/no-danger
+                                                        <span dangerouslySetInnerHTML={ { __html: item.data.icon } } />
+                                                    ) : '' }
+                                                    { ' ' }
+                                                </Fragment>
+                                            ) : '' }
+                                            { item.data.title }
+                                        </Fragment>
+                                    ) }
+                                    checked={ isSelected }
+                                    onChange={ () => {
+                                        const newDisabled = {
+                                            // eslint-disable-next-line react/no-access-state-in-setstate
+                                            ...this.state[ `disabled${ typeLabel }` ],
+                                        };
+
+                                        if ( isSelected && ! newDisabled[ item.data.id ] ) {
+                                            newDisabled[ item.data.id ] = true;
+                                        } else if ( ! isSelected && 'undefined' !== typeof newDisabled[ item.data.id ] ) {
+                                            delete newDisabled[ item.data.id ];
+                                        }
+
+                                        this.setState( {
+                                            [ `disabled${ typeLabel }` ]: newDisabled,
+                                        } );
+                                    } }
+                                />
+                            );
+                        } ) }
+                    </BaseControl>
+                </div>
+
+                { this.state[ `show${ typeLabel }PHP` ] ? (
+                    <Fragment>
+                        <div className="lzb-export-textarea">
+                            <TextareaControl
+                                className="lzb-export-code"
+                                readOnly
+                                value={ this.getPHPStringCode( type ) }
+                            />
+                        </div>
+                        <div className="lzb-export-buttons">
+                            { /* eslint-disable-next-line react/button-has-type */ }
+                            <button
+                                className="button"
+                                onClick={ () => {
+                                    this.copyPHPStringCode( type );
+                                } }
+                            >
+                                { __( 'Copy to Clipboard', '@@text_domain' ) }
+                                { this.state[ `copied${ typeLabel }` ] ? (
+                                    <Copied />
+                                ) : '' }
+                            </button>
+                        </div>
+                    </Fragment>
+                ) : (
+                    <div className="lzb-export-buttons">
+                        <a
+                            className="button button-primary"
+                            disabled={ nothingSelected }
+                            href={ this.getDownloadJSONUrl( type ) }
+                        >
+                            { __( 'Export JSON', '@@text_domain' ) }
+                        </a>
+                        { /* eslint-disable-next-line react/button-has-type */ }
+                        <button
+                            className="button"
+                            onClick={ () => {
+                                this.setState( {
+                                    [ `show${ typeLabel }PHP` ]: true,
+                                } );
+                            } }
+                            disabled={ nothingSelected }
+                        >
+                            { __( 'Generate PHP', '@@text_domain' ) }
+                        </button>
+                    </div>
+                ) }
+            </Fragment>
+        );
+    }
+
     render() {
         return (
             <div className="metabox-holder">
@@ -281,6 +285,7 @@ class Templates extends Component {
                                         <input type="hidden" name="lzb_tools_import_nonce" value={ data.nonce } />
 
                                         <div className="lzb-export-buttons">
+                                            { /* eslint-disable-next-line react/button-has-type */ }
                                             <button className="button button-primary">
                                                 { __( 'Import', '@@text_domain' ) }
                                             </button>

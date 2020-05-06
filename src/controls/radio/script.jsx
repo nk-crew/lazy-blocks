@@ -18,17 +18,15 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.radio.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <RadioControl
-            label={ props.data.label }
-            help={ props.data.help }
-            selected={ props.getValue() }
-            options={ props.data.choices }
-            onChange={ props.onChange }
-        />
-    );
-} );
+addFilter( 'lzb.editor.control.radio.render', 'lzb.editor', ( render, props ) => (
+    <RadioControl
+        label={ props.data.label }
+        help={ props.data.help }
+        selected={ props.getValue() }
+        options={ props.data.choices }
+        onChange={ props.onChange }
+    />
+) );
 
 /**
  * Control value valid in editor.

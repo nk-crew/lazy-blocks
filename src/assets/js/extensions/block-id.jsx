@@ -37,8 +37,8 @@ const usedIds = {};
  */
 const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
     class newEdit extends Component {
-        constructor() {
-            super( ...arguments );
+        constructor( ...args ) {
+            super( ...args );
 
             const {
                 attributes,
@@ -46,7 +46,7 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
             } = this.props;
 
             // fix duplicated classes after block clone.
-            if ( clientId && attributes.blockId && typeof usedIds[ attributes.blockId ] === 'undefined' ) {
+            if ( clientId && attributes.blockId && 'undefined' === typeof usedIds[ attributes.blockId ] ) {
                 usedIds[ attributes.blockId ] = clientId;
             }
 
@@ -56,6 +56,7 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
         componentDidMount() {
             this.maybeCreateBlockId();
         }
+
         componentDidUpdate() {
             this.maybeCreateBlockId();
         }
@@ -80,12 +81,12 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
 
                 // check if ID already exist.
                 let tryCount = 10;
-                while ( ! newBlockId || ( typeof usedIds[ newBlockId ] !== 'undefined' && usedIds[ newBlockId ] !== clientId && tryCount > 0 ) ) {
+                while ( ! newBlockId || ( 'undefined' !== typeof usedIds[ newBlockId ] && usedIds[ newBlockId ] !== clientId && 0 < tryCount ) ) {
                     newBlockId = shorthash.unique( clientId );
-                    tryCount--;
+                    tryCount -= 1;
                 }
 
-                if ( newBlockId && typeof usedIds[ newBlockId ] === 'undefined' ) {
+                if ( newBlockId && 'undefined' === typeof usedIds[ newBlockId ] ) {
                     usedIds[ newBlockId ] = clientId;
                 }
 
@@ -105,11 +106,9 @@ const withUniqueBlockId = createHigherOrderComponent( ( BlockEdit ) => {
         }
     }
 
-    return withSelect( ( select, ownProps ) => {
-        return {
-            blockSettings: getBlockType( ownProps.name ),
-        };
-    } )( newEdit );
+    return withSelect( ( select, ownProps ) => ( {
+        blockSettings: getBlockType( ownProps.name ),
+    } ) )( newEdit );
 }, 'withUniqueBlockId' );
 
 addFilter( 'editor.BlockEdit', 'lazyblocks/uniqueBlockId', withUniqueBlockId );

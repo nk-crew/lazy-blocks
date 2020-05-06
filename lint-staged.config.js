@@ -1,8 +1,15 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const micromatch = require( 'micromatch' );
 
 function excludeVendor( lint ) {
     return ( filenames ) => {
-        return `${ lint } ${ micromatch( filenames, '!src/**/vendor/**/*' ).join( ' ' ) }`;
+        const files = micromatch( filenames, '!**/vendor/**/*' );
+
+        if ( files && files.length ) {
+            return `${ lint } ${ files.join( ' ' ) }`;
+        }
+
+        return [];
     };
 }
 

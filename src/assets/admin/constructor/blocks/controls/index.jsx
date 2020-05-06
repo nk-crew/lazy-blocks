@@ -1,5 +1,4 @@
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
-
 import classnames from 'classnames/dedupe';
 
 import './editor.scss';
@@ -31,11 +30,14 @@ const constructorData = window.lazyblocksConstructorData;
 
 const DragHandle = SortableHandle( () => (
     <span className="lzb-constructor-controls-item-handler">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6.99L9 14L11 14L11 6.99L14 6.99L10 3L6 6.99L9 6.99Z" fill="currentColor" /><path d="M15 18.01L15 11L13 11L13 18.01L10 18.01L14 22L18 18.01L15 18.01Z" fill="currentColor" /></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6.99L9 14L11 14L11 6.99L14 6.99L10 3L6 6.99L9 6.99Z" fill="currentColor" />
+            <path d="M15 18.01L15 11L13 11L13 18.01L10 18.01L14 22L18 18.01L15 18.01Z" fill="currentColor" />
+        </svg>
     </span>
 ) );
 
-const SortableItem = SortableElement( ( data ) =>
+const SortableItem = SortableElement( ( data ) => (
     <Control
         { ...{
             ...data,
@@ -44,29 +46,29 @@ const SortableItem = SortableElement( ( data ) =>
             },
         } }
     />
-);
-const SortableList = SortableContainer( ( { items } ) => {
-    return (
-        <div className="lzb-constructor-controls-items-sortable">
-            { items.map( ( value, index ) => (
-                <SortableItem
-                    key={ `lzb-constructor-controls-items-sortable-${ value.id }` }
-                    index={ index }
-                    { ...value }
-                />
-            ) ) }
-        </div>
-    );
-} );
+) );
+const SortableList = SortableContainer( ( { items } ) => (
+    <div className="lzb-constructor-controls-items-sortable">
+        { items.map( ( value, index ) => (
+            <SortableItem
+                key={ `lzb-constructor-controls-items-sortable-${ value.id }` }
+                index={ index }
+                { ...value }
+            />
+        ) ) }
+    </div>
+) );
 
 let initialActiveTab = '';
 
 class ControlsSettings extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
+            // eslint-disable-next-line react/no-unused-state
             placement: 'content',
+            // eslint-disable-next-line react/no-unused-state
             collapsedId: '',
         };
 
@@ -102,11 +104,11 @@ class ControlsSettings extends Component {
             const controlPlacement = controlData.placement || 'content';
 
             if ( childOf !== controlData.child_of ) {
-                return '';
+                return;
             }
 
             if ( ! controlData.child_of && placement !== controlPlacement && 'both' !== controlPlacement ) {
-                return '';
+                return;
             }
 
             items.push( {
@@ -137,7 +139,7 @@ class ControlsSettings extends Component {
                     } }
                     useDragHandle
                     helperClass="lzb-constructor-controls-item-dragging"
-                    helperContainer={ function() {
+                    helperContainer={ () => {
                         if ( self.sortRef && self.sortRef.current && self.sortRef.current.container ) {
                             return self.sortRef.current.container;
                         }
@@ -149,6 +151,7 @@ class ControlsSettings extends Component {
                     } }
                 />
                 <Tooltip text={ childOf ? __( 'Add Child Control', '@@text_domain' ) : __( 'Add Control', '@@text_domain' ) }>
+                    { /* eslint-disable-next-line react/button-has-type */ }
                     <button
                         className="lzb-constructor-controls-item-appender"
                         onClick={ () => {
@@ -193,7 +196,7 @@ class ControlsSettings extends Component {
         Object.keys( controls ).forEach( ( id ) => {
             const controlData = controls[ id ];
 
-            if ( ! controlData.child_of && controlData.placement === 'nowhere' ) {
+            if ( ! controlData.child_of && 'nowhere' === controlData.placement ) {
                 thereIsHidden = true;
             }
         } );
@@ -224,6 +227,7 @@ class ControlsSettings extends Component {
                 case 'nowhere':
                     nowhereControlsCount += 1;
                     break;
+                // no default
                 }
             } );
 
@@ -245,9 +249,7 @@ class ControlsSettings extends Component {
                     tabs={ placementTabs }
                 >
                     {
-                        ( tab ) => {
-                            return self.printControls( '', tab.name );
-                        }
+                        ( tab ) => self.printControls( '', tab.name )
                     }
                 </TabPanel>
             </div>

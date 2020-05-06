@@ -9,8 +9,8 @@ const {
 const { apiFetch } = wp;
 
 export default class ConditionSettings extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             postTypes: false,
@@ -56,21 +56,17 @@ export default class ConditionSettings extends Component {
                         isMulti
                         placeholder={ __( 'In all posts by default', '@@text_domain' ) }
                         options={
-                            Object.keys( this.state.postTypes ).map( ( type ) => {
-                                return {
-                                    value: type,
-                                    label: this.state.postTypes[ type ],
-                                };
-                            } )
+                            Object.keys( this.state.postTypes ).map( ( type ) => ( {
+                                value: type,
+                                label: this.state.postTypes[ type ],
+                            } ) )
                         }
                         value={ ( () => {
                             if ( conditionPostTypes && conditionPostTypes.length ) {
-                                const result = conditionPostTypes.map( ( val ) => {
-                                    return {
-                                        value: val,
-                                        label: this.state.postTypes[ val ] || val,
-                                    };
-                                } );
+                                const result = conditionPostTypes.map( ( val ) => ( {
+                                    value: val,
+                                    label: this.state.postTypes[ val ] || val,
+                                } ) );
                                 return result;
                             }
                             return [];

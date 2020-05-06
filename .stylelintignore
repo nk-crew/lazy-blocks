@@ -1,1 +1,7 @@
-**/vendor/*
+**/*.js
+**/*.jsx
+**/*.min.css
+**/*.build.css
+node_modules
+vendor
+vendors

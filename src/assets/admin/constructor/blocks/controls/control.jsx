@@ -2,6 +2,9 @@
 import classnames from 'classnames/dedupe';
 import * as clipboard from 'clipboard-polyfill';
 
+import Copied from '../../../components/copied';
+import getControlTypeData from '../../../utils/get-control-type-data';
+
 const {
     merge,
 } = window.lodash;
@@ -20,12 +23,9 @@ const {
     withSelect,
 } = wp.data;
 
-import Copied from '../../../components/copied';
-import getControlTypeData from '../../../utils/get-control-type-data';
-
 class Control extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             collapsedChilds: false,
@@ -37,7 +37,7 @@ class Control extends Component {
     }
 
     toggleCollapseChilds() {
-        this.setState( { collapsedChilds: ! this.state.collapsedChilds } );
+        this.setState( ( prevState ) => ( { collapsedChilds: ! prevState.collapsedChilds } ) );
     }
 
     copyName( name ) {
@@ -106,6 +106,7 @@ class Control extends Component {
                 role="none"
             >
                 <div className="lzb-constructor-controls-item-icon">
+                    { /* eslint-disable-next-line react/no-danger */ }
                     <span dangerouslySetInnerHTML={ { __html: controlTypeData.icon } } />
                     <DragHandle />
                 </div>
@@ -118,6 +119,7 @@ class Control extends Component {
                     </span>
                     <span className="lzb-constructor-controls-item-label-buttons">
                         { ! isUseOnce ? (
+                            // eslint-disable-next-line react/button-has-type
                             <button
                                 onClick={ ( e ) => {
                                     e.preventDefault();
@@ -125,7 +127,7 @@ class Control extends Component {
 
                                     const newData = merge( {}, data );
 
-                                    newData.label += ' ' + __( '(copy)', '@@text_domain' );
+                                    newData.label += ` ${ __( '(copy)', '@@text_domain' ) }`;
                                     newData.name += '-copy';
 
                                     addControl( newData, id );
@@ -134,6 +136,7 @@ class Control extends Component {
                                 { __( 'Duplicate', '@@text_domain' ) }
                             </button>
                         ) : '' }
+                        { /* eslint-disable-next-line react/button-has-type */ }
                         <button
                             className="lzb-constructor-controls-item-label-buttons-remove"
                             onClick={ ( e ) => {
@@ -151,6 +154,7 @@ class Control extends Component {
                     </span>
                 </div>
                 { ! data.child_of && controlName ? (
+                    // eslint-disable-next-line react/button-has-type
                     <button
                         className="lzb-constructor-controls-item-name"
                         onClick={ ( e ) => {

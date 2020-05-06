@@ -1,4 +1,4 @@
-import ColorPalette from './color-palette-control.jsx';
+import ColorPalette from './color-palette-control';
 
 const { Component, Fragment } = wp.element;
 
@@ -55,8 +55,8 @@ export default compose( [
     withInstanceId,
     withSelect( ( select, ownProps ) => {
         const settings = select( 'core/block-editor' ).getSettings();
-        const colors = ownProps.colors === undefined ?
-            settings.colors : ownProps.colors;
+        const colors = ownProps.colors === undefined
+            ? settings.colors : ownProps.colors;
 
         return {
             colors,

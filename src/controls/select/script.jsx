@@ -19,7 +19,7 @@ const {
  * Control render in editor.
  */
 addFilter( 'lzb.editor.control.select.render', 'lzb.editor', ( render, props ) => {
-    let choices = props.data.choices;
+    let { choices } = props.data;
 
     // allow null.
     if ( props.data.allow_null && 'true' === props.data.allow_null ) {

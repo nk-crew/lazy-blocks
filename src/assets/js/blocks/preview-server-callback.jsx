@@ -31,7 +31,7 @@ const {
  * Based on ServerSideRender
  * https://github.com/WordPress/gutenberg/blob/master/packages/components/src/server-side-render/index.js
  */
-export class PreviewServerCallback extends Component {
+export default class PreviewServerCallback extends Component {
     constructor( props ) {
         super( props );
         this.state = {
@@ -49,10 +49,6 @@ export class PreviewServerCallback extends Component {
         this.fetch = debounce( 500, this.fetch );
     }
 
-    componentWillUnmount() {
-        this.isStillMounted = false;
-    }
-
     componentDidUpdate( prevProps ) {
         const prevAttributes = prevProps.attributes;
         const curAttributes = this.props.attributes;
@@ -60,6 +56,10 @@ export class PreviewServerCallback extends Component {
         if ( this.state.allowRender && ! deepEqual( prevAttributes, curAttributes ) ) {
             this.fetch( this.props );
         }
+    }
+
+    componentWillUnmount() {
+        this.isStillMounted = false;
     }
 
     fetch( props ) {
@@ -79,7 +79,7 @@ export class PreviewServerCallback extends Component {
 
         // Store the latest fetch request so that when we process it, we can
         // check if it is the current request, to avoid race conditions on slow networks.
-        const fetchRequest = this.currentFetchRequest = apiFetch( {
+        const fetchRequest = apiFetch( {
             path: 'lazy-blocks/v1/block-render',
             method: 'POST',
             data: {
@@ -146,7 +146,8 @@ export class PreviewServerCallback extends Component {
                     } );
                 }
             } );
-        return fetchRequest;
+
+        this.currentFetchRequest = fetchRequest;
     }
 
     render() {
@@ -182,5 +183,3 @@ export class PreviewServerCallback extends Component {
         );
     }
 }
-
-export default PreviewServerCallback;

@@ -1,4 +1,6 @@
 
+import getControlTypeData from '../../../../utils/get-control-type-data';
+
 import LabelRow from './label';
 import NameRow from './name';
 import TypeRow from './type';
@@ -10,7 +12,6 @@ import PlacementRow from './placement';
 import WidthRow from './width';
 import HideIfNotSelectedRow from './hide-if-not-selected';
 import SaveInMetaRow from './save-in-meta';
-import getControlTypeData from '../../../../utils/get-control-type-data';
 
 const { Component } = wp.element;
 
@@ -42,7 +43,7 @@ export default class settingsRows extends Component {
             let allow = true;
 
             // check restrictions.
-            if ( controlTypeData && typeof controlTypeData.restrictions[ `${ i }_settings` ] !== 'undefined' ) {
+            if ( controlTypeData && 'undefined' !== typeof controlTypeData.restrictions[ `${ i }_settings` ] ) {
                 allow = controlTypeData.restrictions[ `${ i }_settings` ];
             }
 
@@ -55,8 +56,9 @@ export default class settingsRows extends Component {
                 break;
             case 'width':
             case 'hide_if_not_selected':
-                allow = ! data.placement || data.placement === 'content' || data.placement === 'both';
+                allow = ! data.placement || 'content' === data.placement || 'both' === data.placement;
                 break;
+            // no default
             }
 
             // don't show.

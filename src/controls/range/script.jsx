@@ -15,21 +15,19 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.range.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <RangeControl
-            label={ props.data.label }
-            min={ props.data.min }
-            max={ props.data.max }
-            step={ props.data.step }
-            help={ props.data.help }
-            value={ props.getValue() }
-            onChange={ ( val ) => {
-                props.onChange( parseFloat( val ) );
-            } }
-        />
-    );
-} );
+addFilter( 'lzb.editor.control.range.render', 'lzb.editor', ( render, props ) => (
+    <RangeControl
+        label={ props.data.label }
+        min={ props.data.min }
+        max={ props.data.max }
+        step={ props.data.step }
+        help={ props.data.help }
+        value={ props.getValue() }
+        onChange={ ( val ) => {
+            props.onChange( parseFloat( val ) );
+        } }
+    />
+) );
 
 /**
  * Control settings render in constructor.

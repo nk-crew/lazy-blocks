@@ -25,8 +25,8 @@ const {
  * Date Time Picker.
  */
 class DateTimePicker extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             isPickerOpen: false,
@@ -56,7 +56,8 @@ class DateTimePicker extends Component {
             settings.formats.time
                 .toLowerCase() // Test only the lower case a
                 .replace( /\\\\/g, '' ) // Replace "//" with empty strings
-                .split( '' ).reverse().join( '' ) // Reverse the string and test for "a" not followed by a slash
+                .split( '' ).reverse()
+                .join( '' ) // Reverse the string and test for "a" not followed by a slash
         );
 
         let buttonLabel = __( 'Select Date', '@@text_domain' );

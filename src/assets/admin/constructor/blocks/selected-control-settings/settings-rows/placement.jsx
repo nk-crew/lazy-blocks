@@ -27,7 +27,7 @@ export default class PlacementRow extends Component {
         // check restrictions.
         let placementRestrictions = [];
 
-        if ( controlTypeData && typeof controlTypeData.restrictions.placement_settings !== 'undefined' ) {
+        if ( controlTypeData && 'undefined' !== typeof controlTypeData.restrictions.placement_settings ) {
             placementRestrictions = controlTypeData.restrictions.placement_settings;
         }
 
@@ -45,7 +45,7 @@ export default class PlacementRow extends Component {
                         <Button
                             isSecondary
                             isPrimary={ 'content' === placement || 'both' === placement }
-                            disabled={ placementRestrictions.indexOf( 'content' ) === -1 }
+                            disabled={ -1 === placementRestrictions.indexOf( 'content' ) }
                             isSmall
                             onClick={ () => {
                                 let newPlacement = 'content';
@@ -68,7 +68,7 @@ export default class PlacementRow extends Component {
                         <Button
                             isSecondary
                             isPrimary={ 'inspector' === placement || 'both' === placement }
-                            disabled={ placementRestrictions.indexOf( 'inspector' ) === -1 }
+                            disabled={ -1 === placementRestrictions.indexOf( 'inspector' ) }
                             isSmall
                             onClick={ () => {
                                 let newPlacement = 'inspector';

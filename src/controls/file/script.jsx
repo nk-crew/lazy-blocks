@@ -1,5 +1,6 @@
-import FileControl from './file-control';
 import Select from '../../assets/admin/components/select';
+
+import FileControl from './file-control';
 
 const { __ } = wp.i18n;
 
@@ -19,35 +20,33 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.file.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <FileControl
-            label={ props.data.label }
-            help={ props.data.help }
-            allowedMimeTypes={ props.data.allowed_mime_types }
-            value={ props.getValue() }
-            onChange={ ( val ) => {
-                const result = val ? {
-                    alt: val.alt || '',
-                    title: val.title || '',
-                    caption: val.caption || '',
-                    id: val.id || '',
-                    link: val.link || '',
-                    url: val.url || '',
-                } : '';
+addFilter( 'lzb.editor.control.file.render', 'lzb.editor', ( render, props ) => (
+    <FileControl
+        label={ props.data.label }
+        help={ props.data.help }
+        allowedMimeTypes={ props.data.allowed_mime_types }
+        value={ props.getValue() }
+        onChange={ ( val ) => {
+            const result = val ? {
+                alt: val.alt || '',
+                title: val.title || '',
+                caption: val.caption || '',
+                id: val.id || '',
+                link: val.link || '',
+                url: val.url || '',
+            } : '';
 
-                props.onChange( result );
-            } }
-        />
-    );
-} );
+            props.onChange( result );
+        } }
+    />
+) );
 
 /**
  * getValue filter in editor.
  */
 addFilter( 'lzb.editor.control.file.getValue', 'lzb.editor', ( value ) => {
     // change string value to array.
-    if ( typeof value === 'string' ) {
+    if ( 'string' === typeof value ) {
         try {
             value = JSON.parse( decodeURI( value ) );
         } catch ( e ) {
@@ -63,7 +62,7 @@ addFilter( 'lzb.editor.control.file.getValue', 'lzb.editor', ( value ) => {
  */
 addFilter( 'lzb.editor.control.file.updateValue', 'lzb.editor', ( value ) => {
     // change array value to string.
-    if ( typeof value === 'object' || Array.isArray( value ) ) {
+    if ( 'object' === typeof value || Array.isArray( value ) ) {
         value = encodeURI( JSON.stringify( value ) );
     }
 
@@ -79,12 +78,10 @@ addFilter( 'lzb.constructor.control.file.settings', 'lzb.constructor', ( render,
         data,
     } = props;
 
-    const options = Object.keys( wpAllowedMimeTypes ).map( ( typeName ) => {
-        return {
-            label: typeName,
-            value: typeName,
-        };
-    } );
+    const options = Object.keys( wpAllowedMimeTypes ).map( ( typeName ) => ( {
+        label: typeName,
+        value: typeName,
+    } ) );
 
     return (
         <PanelBody>
@@ -97,12 +94,10 @@ addFilter( 'lzb.constructor.control.file.settings', 'lzb.constructor', ( render,
                     options={ options }
                     value={ ( () => {
                         if ( data.allowed_mime_types && Array.isArray( data.allowed_mime_types ) ) {
-                            const result = data.allowed_mime_types.map( ( val ) => {
-                                return {
-                                    value: val,
-                                    label: val,
-                                };
-                            } );
+                            const result = data.allowed_mime_types.map( ( val ) => ( {
+                                value: val,
+                                label: val,
+                            } ) );
                             return result;
                         }
                         return [];

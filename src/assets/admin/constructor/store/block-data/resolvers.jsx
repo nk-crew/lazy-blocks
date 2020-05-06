@@ -1,6 +1,6 @@
 import * as actions from './actions';
 
-export function * getBlockData() {
+export function* getBlockData() {
     const postId = window.lazyblocksConstructorData.post_id;
 
     const query = `/lazy-blocks/v1/get-block-data/?post_id=${ postId }`;

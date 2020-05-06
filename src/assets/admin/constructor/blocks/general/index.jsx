@@ -22,8 +22,8 @@ const {
 } = wp.data;
 
 class GeneralSettings extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.maybeAddSlug = this.maybeAddSlug.bind( this );
         this.isSlugValid = this.isSlugValid.bind( this );
@@ -47,7 +47,7 @@ class GeneralSettings extends Component {
         const newSlug = slugify( postTitle, {
             replacement: '-',
             lower: true,
-            remove: /[^\w\s$0-9-*+~.\$(_)#&\|'"!:;@/\\]/g,
+            remove: /[^\w\s$0-9-*+~.$(_)#&|'"!:;@/\\]/g,
         } );
 
         updateData( {
@@ -140,7 +140,7 @@ class GeneralSettings extends Component {
                         <Select
                             isCreatable
                             placeholder={ __( 'Select category', '@@text_domain' ) }
-                            value={ categoriesOpts.filter( option => option.value === category ) }
+                            value={ categoriesOpts.filter( ( option ) => option.value === category ) }
                             options={ categoriesOpts }
                             onChange={ ( { value } ) => updateData( { category: value } ) }
                         />
@@ -156,12 +156,10 @@ class GeneralSettings extends Component {
                             placeholder={ __( 'Enter up to 3 keywords', '@@text_domain' ) }
                             value={ ( () => {
                                 if ( keywords ) {
-                                    const result = keywords.split( ',' ).map( ( val ) => {
-                                        return {
-                                            value: val,
-                                            label: val,
-                                        };
-                                    } );
+                                    const result = keywords.split( ',' ).map( ( val ) => ( {
+                                        value: val,
+                                        label: val,
+                                    } ) );
                                     return result;
                                 }
                                 return [];
@@ -174,10 +172,12 @@ class GeneralSettings extends Component {
                                     let i = 0;
                                     value.forEach( ( optionData ) => {
                                         if ( optionData && i < limitNum ) {
-                                            i++;
+                                            i += 1;
+
                                             if ( result ) {
                                                 result += ',';
                                             }
+
                                             result += optionData.value;
                                         }
                                     } );

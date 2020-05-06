@@ -15,17 +15,15 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.color.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <ColorControl
-            label={ props.data.label }
-            help={ props.data.help }
-            alpha={ props.data.alpha === 'true' }
-            value={ props.getValue() }
-            onChange={ props.onChange }
-        />
-    );
-} );
+addFilter( 'lzb.editor.control.color.render', 'lzb.editor', ( render, props ) => (
+    <ColorControl
+        label={ props.data.label }
+        help={ props.data.help }
+        alpha={ 'true' === props.data.alpha }
+        value={ props.getValue() }
+        onChange={ props.onChange }
+    />
+) );
 
 /**
  * Control settings render in constructor.

@@ -11,13 +11,13 @@ function resort( data, id, newId, insertBefore = true ) {
     Object.keys( data ).forEach( ( key ) => {
         if ( key !== id ) {
             if ( insertBefore && key === newId ) {
-                newControls[ id ] = Object.assign( {}, data[ id ] );
+                newControls[ id ] = { ...data[ id ] };
             }
 
-            newControls[ key ] = Object.assign( {}, data[ key ] );
+            newControls[ key ] = { ...data[ key ] };
 
             if ( ! insertBefore && key === newId ) {
-                newControls[ id ] = Object.assign( {}, data[ id ] );
+                newControls[ id ] = { ...data[ id ] };
             }
         } else {
             insertBefore = false;
@@ -52,11 +52,11 @@ function reducer( state = { data: false }, action ) {
         break;
     case 'UPDATE_CONTROL_DATA':
         if (
-            action.id &&
-            action.data &&
-            state.data &&
-            state.data.controls &&
-            state.data.controls[ action.id ]
+            action.id
+            && action.data
+            && state.data
+            && state.data.controls
+            && state.data.controls[ action.id ]
         ) {
             // We can't just use merge() here, as it will merge inner arrays
             // but we always need to override it.
@@ -83,7 +83,7 @@ function reducer( state = { data: false }, action ) {
             } = state.data;
 
             let newId = getUID();
-            while ( typeof controls[ `control_${ newId }` ] !== 'undefined' ) {
+            while ( 'undefined' !== typeof controls[ `control_${ newId }` ] ) {
                 newId = getUID();
             }
             newId = `control_${ newId }`;
@@ -113,10 +113,10 @@ function reducer( state = { data: false }, action ) {
         break;
     case 'REMOVE_CONTROL':
         if (
-            action.id &&
-            state.data &&
-            state.data.controls &&
-            state.data.controls[ action.id ]
+            action.id
+            && state.data
+            && state.data.controls
+            && state.data.controls[ action.id ]
         ) {
             return {
                 ...state,
@@ -130,11 +130,11 @@ function reducer( state = { data: false }, action ) {
         break;
     case 'RESORT_CONTROL':
         if (
-            action.id &&
-            action.newId &&
-            action.id !== action.newId &&
-            state.data &&
-            state.data.controls
+            action.id
+            && action.newId
+            && action.id !== action.newId
+            && state.data
+            && state.data.controls
         ) {
             const newControls = resort( state.data.controls, action.id, action.newId );
 

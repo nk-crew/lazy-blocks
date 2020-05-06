@@ -16,8 +16,8 @@ const {
 } = wp.components;
 
 export default class CustomCodeSettings extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             showInfo: false,
@@ -37,7 +37,7 @@ export default class CustomCodeSettings extends Component {
         return (
             <CodeEditor
                 mode={ data.code_use_php ? 'php' : 'html' }
-                onChange={ value => updateData( { [ metaName ]: value } ) }
+                onChange={ ( value ) => updateData( { [ metaName ]: value } ) }
                 value={ data[ metaName ] }
                 maxLines={ 20 }
                 minLines={ 5 }
@@ -85,7 +85,7 @@ export default class CustomCodeSettings extends Component {
 
         return (
             <div className="lzb-constructor-custom-code-settings">
-                { tabs.length > 1 ? (
+                { 1 < tabs.length ? (
                     <BaseControl>
                         <TabPanel
                             className="lazyblocks-control-tabs"
@@ -93,9 +93,7 @@ export default class CustomCodeSettings extends Component {
                             tabs={ tabs }
                         >
                             {
-                                ( tab ) => {
-                                    return this.getEditor( tab.name );
-                                }
+                                ( tab ) => this.getEditor( tab.name )
                             }
                         </TabPanel>
                     </BaseControl>
@@ -125,14 +123,19 @@ export default class CustomCodeSettings extends Component {
                                 } }
                             >
                                 <p className="description">
-                                    { __( 'Simple text field example see here:', '@@text_domain' ) } <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
+                                    { __( 'Simple text field example see here:', '@@text_domain' ) }
+                                    { ' ' }
+                                    <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
                                 </p>
                                 <hr />
                                 <p className="description">
                                     { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.', '@@text_domain' ) }
                                 </p>
                                 <p className="description">
-                                    { __( 'Note 2: supported custom PHP callback to output block', '@@text_domain' ) } <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>.
+                                    { __( 'Note 2: supported custom PHP callback to output block', '@@text_domain' ) }
+                                    { ' ' }
+                                    <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>
+                                    .
                                 </p>
                             </Popover>
                         ) : '' }
@@ -145,7 +148,7 @@ export default class CustomCodeSettings extends Component {
                     <CheckboxControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ data.code_single_output }
-                        onChange={ value => updateData( { code_single_output: value } ) }
+                        onChange={ ( value ) => updateData( { code_single_output: value } ) }
                     />
                 </BaseControl>
 
@@ -163,7 +166,7 @@ export default class CustomCodeSettings extends Component {
                             },
                         ] }
                         value={ data.code_use_php ? 'php' : 'html' }
-                        onChange={ value => updateData( { code_use_php: value === 'php' } ) }
+                        onChange={ ( value ) => updateData( { code_use_php: 'php' === value } ) }
                     />
                 </BaseControl>
 
@@ -187,7 +190,7 @@ export default class CustomCodeSettings extends Component {
                             },
                         ] }
                         value={ data.code_show_preview }
-                        onChange={ value => updateData( { code_show_preview: value } ) }
+                        onChange={ ( value ) => updateData( { code_show_preview: value } ) }
                     />
                 </BaseControl>
             </div>

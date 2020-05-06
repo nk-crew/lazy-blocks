@@ -14,18 +14,16 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.checkbox.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <BaseControl label={ props.data.label }>
-            <CheckboxControl
-                label={ props.data.alongside_text }
-                checked={ !! props.getValue() }
-                help={ props.data.help }
-                onChange={ props.onChange }
-            />
-        </BaseControl>
-    );
-} );
+addFilter( 'lzb.editor.control.checkbox.render', 'lzb.editor', ( render, props ) => (
+    <BaseControl label={ props.data.label }>
+        <CheckboxControl
+            label={ props.data.alongside_text }
+            checked={ !! props.getValue() }
+            help={ props.data.help }
+            onChange={ props.onChange }
+        />
+    </BaseControl>
+) );
 
 /**
  * Control settings render in constructor.

@@ -53,7 +53,7 @@ addFilter( 'lzb.editor.control.repeater.render', 'lzb.editor', ( render, props )
                 </Fragment>
             ) }
             removeRow={ ( i ) => {
-                if ( i > -1 ) {
+                if ( -1 < i ) {
                     val.splice( i, 1 );
                     props.onChange( val );
                 }
@@ -75,7 +75,7 @@ addFilter( 'lzb.editor.control.repeater.render', 'lzb.editor', ( render, props )
  */
 addFilter( 'lzb.editor.control.repeater.getValue', 'lzb.editor', ( value ) => {
     // change string value to array.
-    if ( typeof value === 'string' ) {
+    if ( 'string' === typeof value ) {
         try {
             value = JSON.parse( decodeURI( value ) );
         } catch ( e ) {
@@ -91,7 +91,7 @@ addFilter( 'lzb.editor.control.repeater.getValue', 'lzb.editor', ( value ) => {
  */
 addFilter( 'lzb.editor.control.repeater.updateValue', 'lzb.editor', ( value ) => {
     // change array value to string.
-    if ( typeof value === 'object' || Array.isArray( value ) ) {
+    if ( 'object' === typeof value || Array.isArray( value ) ) {
         value = encodeURI( JSON.stringify( value ) );
     }
 
@@ -102,8 +102,8 @@ addFilter( 'lzb.editor.control.repeater.updateValue', 'lzb.editor', ( value ) =>
  * Repeater item with childs render
  */
 class ControlsRepeaterItem extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             collapsedChilds: false,
@@ -113,7 +113,7 @@ class ControlsRepeaterItem extends Component {
     }
 
     toggleCollapseChilds() {
-        this.setState( { collapsedChilds: ! this.state.collapsedChilds } );
+        this.setState( ( prevState ) => ( { collapsedChilds: ! prevState.collapsedChilds + 1 } ) );
     }
 
     render() {
@@ -133,7 +133,7 @@ class ControlsRepeaterItem extends Component {
             const controlData = controls[ thisId ];
 
             if ( controlData.child_of === id ) {
-                childItemsNum++;
+                childItemsNum += 1;
             }
         } );
 
@@ -146,6 +146,7 @@ class ControlsRepeaterItem extends Component {
 
         return (
             <Fragment>
+                { /* eslint-disable-next-line react/button-has-type */ }
                 <button
                     className={ classnames( 'lzb-constructor-controls-item-repeater-toggle', collapsedChilds ? 'lzb-constructor-controls-item-repeater-toggle-collapsed' : '' ) }
                     onClick={ ( e ) => {
@@ -172,14 +173,12 @@ class ControlsRepeaterItem extends Component {
 /**
  * Control lists item render in constructor.
  */
-addFilter( 'lzb.constructor.controls.repeater.item', 'lzb.constructor', ( render, props ) => {
-    return (
-        <Fragment>
-            { render }
-            <ControlsRepeaterItem { ...props } />
-        </Fragment>
-    );
-} );
+addFilter( 'lzb.constructor.controls.repeater.item', 'lzb.constructor', ( render, props ) => (
+    <Fragment>
+        { render }
+        <ControlsRepeaterItem { ...props } />
+    </Fragment>
+) );
 
 /**
  * Control settings render in constructor.

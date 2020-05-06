@@ -1,13 +1,13 @@
 {
     "require-dev": {
-      "wp-coding-standards/wpcs": "^2.2.0",
-      "phpcompatibility/phpcompatibility-wp": "^2.1.0",
-      "wp-cli/i18n-command": "^2.2.0",
-      "dealerdirect/phpcodesniffer-composer-installer": "^0.5"
+        "wp-coding-standards/wpcs": "^2.2.1",
+        "phpcompatibility/phpcompatibility-wp": "^2.1.0",
+        "wp-cli/i18n-command": "^2.2.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2"
     },
     "scripts": {
-      "phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
-      "phpcbf": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-      "wp": "\"vendor/wp-cli/wp-cli/bin/wp\""
+        "phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+        "phpcbf": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+        "wp": "\"vendor/wp-cli/wp-cli/bin/wp\""
     }
-  }
+}

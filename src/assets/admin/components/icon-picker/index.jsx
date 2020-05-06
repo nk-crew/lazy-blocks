@@ -6,7 +6,9 @@ import 'react-virtualized/styles.css';
  * External dependencies
  */
 import classnames from 'classnames/dedupe';
-import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from 'react-virtualized';
+import {
+    List, CellMeasurer, CellMeasurerCache, AutoSizer,
+} from 'react-virtualized';
 
 const {
     Component,
@@ -55,8 +57,8 @@ const hiddenIconCategories = {};
  * Dropdown
  */
 class IconPickerDropdown extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.cellMCache = new CellMeasurerCache( {
             defaultHeight: 65,
@@ -106,14 +108,14 @@ class IconPickerDropdown extends Component {
         Object.keys( icons ).forEach( ( categoryName ) => {
             const categoryIcons = icons[ categoryName ];
             const { hiddenCategories } = this.state;
-            const showCategory = typeof hiddenCategories[ categoryName ] !== 'undefined' ? hiddenCategories[ categoryName ] : true;
+            const showCategory = 'undefined' !== typeof hiddenCategories[ categoryName ] ? hiddenCategories[ categoryName ] : true;
             const searchString = this.state.search.toLowerCase();
 
             // prepare all icons.
             const allIcons = Object.keys( categoryIcons ).filter( ( iconName ) => {
                 if (
-                    ! searchString ||
-                    ( searchString && iconName.indexOf( searchString.toLowerCase() ) > -1 )
+                    ! searchString
+                    || ( searchString && -1 < iconName.indexOf( searchString.toLowerCase() ) )
                 ) {
                     return true;
                 }
@@ -166,16 +168,19 @@ class IconPickerDropdown extends Component {
                                     repaints the whole element, so this wrapping span hides that.
                                 */ }
                                 <span aria-hidden="true">
-                                    { showCategory ?
-                                        <SVG className="components-panel__arrow" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <G><Path fill="none" d="M0,0h24v24H0V0z" /></G>
-                                            <G><Path d="M12,8l-6,6l1.41,1.41L12,10.83l4.59,4.58L18,14L12,8z" /></G>
-                                        </SVG> :
-                                        <SVG className="components-panel__arrow" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <G><Path fill="none" d="M0,0h24v24H0V0z" /></G>
-                                            <G><Path d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z" /></G>
-                                        </SVG>
-                                    }
+                                    { showCategory
+                                        ? (
+                                            <SVG className="components-panel__arrow" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <G><Path fill="none" d="M0,0h24v24H0V0z" /></G>
+                                                <G><Path d="M12,8l-6,6l1.41,1.41L12,10.83l4.59,4.58L18,14L12,8z" /></G>
+                                            </SVG>
+                                        )
+                                        : (
+                                            <SVG className="components-panel__arrow" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <G><Path fill="none" d="M0,0h24v24H0V0z" /></G>
+                                                <G><Path d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z" /></G>
+                                            </SVG>
+                                        ) }
                                 </span>
                                 { categoryName.charAt( 0 ).toUpperCase() + categoryName.slice( 1 ) }
                             </Button>
@@ -209,7 +214,7 @@ class IconPickerDropdown extends Component {
         } );
 
         // No icons.
-        if ( rows.length === 1 ) {
+        if ( 1 === rows.length ) {
             rows.push( {
                 key: 'icons',
                 render: __( 'No icons found.', '@@text_domain' ),
@@ -344,6 +349,7 @@ IconPicker.Preview = ( props ) => {
     if ( /^dashicons/.test( svg ) ) {
         result = <span className={ `dashicons ${ svg }` } />;
     } else if ( svg ) {
+        // eslint-disable-next-line react/no-danger
         result = <span dangerouslySetInnerHTML={ { __html: svg } } />;
     }
 

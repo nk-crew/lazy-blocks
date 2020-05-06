@@ -68,25 +68,19 @@ export default class SupportsSettings extends Component {
                         isMulti
                         placeholder={ __( 'Select align options', '@@text_domain' ) }
                         options={
-                            [ 'wide', 'full', 'left', 'center', 'right' ].map( ( alignName ) => {
-                                return {
-                                    value: alignName,
-                                    label: alignName,
-                                };
-                            } )
+                            [ 'wide', 'full', 'left', 'center', 'right' ].map( ( alignName ) => ( {
+                                value: alignName,
+                                label: alignName,
+                            } ) )
                         }
                         value={ ( () => {
                             if ( supportsAlign && supportsAlign.length ) {
                                 const result = supportsAlign
-                                    .filter( ( val ) => {
-                                        return val !== 'none';
-                                    } )
-                                    .map( ( val ) => {
-                                        return {
-                                            value: val,
-                                            label: val,
-                                        };
-                                    } );
+                                    .filter( ( val ) => 'none' !== val )
+                                    .map( ( val ) => ( {
+                                        value: val,
+                                        label: val,
+                                    } ) );
                                 return result;
                             }
                             return [];

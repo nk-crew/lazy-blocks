@@ -1,6 +1,9 @@
 import './store';
 
 // Internal Dependencies
+import DocumentTabs from '../components/document-tabs';
+import Box from '../components/box';
+
 import GeneralSettings from './blocks/general';
 import SupportsSettings from './blocks/supports';
 import ConditionSettings from './blocks/condition';
@@ -9,8 +12,6 @@ import SelectedControlSettings from './blocks/selected-control-settings';
 import CustomCodeSettings from './blocks/code';
 
 import '../components/tab-panel';
-import DocumentTabs from '../components/document-tabs';
-import Box from '../components/box';
 
 const { isEqual } = window.lodash;
 
@@ -63,7 +64,7 @@ class ConstructorBlock extends Component {
             updateBlockData,
         } = this.props;
 
-        if ( ! blockData || typeof blockData.slug === 'undefined' ) {
+        if ( ! blockData || 'undefined' === typeof blockData.slug ) {
             return (
                 <div className="lzb-constructor-loading">
                     <Spinner />
@@ -154,7 +155,7 @@ registerBlockType( 'lzb-constructor/main', {
 
     edit: ConstructorBlockWithSelect,
 
-    save: function() {
+    save() {
         return null;
     },
 } );
@@ -170,7 +171,7 @@ subscribe( () => {
 
     const newBlockList = getBlockList();
     const blockListChanged = newBlockList !== blockList;
-    const isValidList = newBlockList.length === 1 && newBlockList[ 0 ] && newBlockList[ 0 ].name === 'lzb-constructor/main';
+    const isValidList = 1 === newBlockList.length && newBlockList[ 0 ] && 'lzb-constructor/main' === newBlockList[ 0 ].name;
     blockList = newBlockList;
 
     if ( blockListChanged && ! isValidList ) {
@@ -205,10 +206,10 @@ subscribe( () => {
 } );
 
 // de-select active control when click outside.
-$( document ).on( 'click', function( e ) {
+$( document ).on( 'click', ( e ) => {
     const $this = $( e.target );
     const selectedControlId = wp.data.select( 'lazy-blocks/block-data' ).getSelectedControlId();
-    const clearSelectedControl = wp.data.dispatch( 'lazy-blocks/block-data' ).clearSelectedControl;
+    const { clearSelectedControl } = wp.data.dispatch( 'lazy-blocks/block-data' );
 
     if ( ! selectedControlId ) {
         return;
@@ -256,16 +257,16 @@ subscribe( () => {
     }
 
     if ( isSavingPost || isAutosavingPost || ! defaultBlockData ) {
-        defaultBlockData = Object.assign( {}, blockData );
+        defaultBlockData = { ...blockData };
         return;
     }
 
     clearTimeout( editorRefreshTimeout );
     editorRefreshTimeout = setTimeout( () => {
         // isEqual can't determine that resorted objects are not equal.
-        const changedControls = defaultBlockData.controls &&
-                                blockData.controls &&
-                                ! isEqual( Object.keys( defaultBlockData.controls ), Object.keys( blockData.controls ) );
+        const changedControls = defaultBlockData.controls
+                                && blockData.controls
+                                && ! isEqual( Object.keys( defaultBlockData.controls ), Object.keys( blockData.controls ) );
 
         if ( changedControls || ! isEqual( defaultBlockData, blockData ) ) {
             wp.data.dispatch( 'core/editor' ).editPost( { edited: true } );

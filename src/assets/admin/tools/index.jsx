@@ -5,7 +5,7 @@
 /**
  * Internal dependencies
  */
-import Tools from './tools.jsx';
+import Tools from './tools';
 
 window.addEventListener( 'load', () => {
     wp.element.render(

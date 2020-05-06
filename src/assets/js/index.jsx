@@ -3,11 +3,12 @@ import classnames from 'classnames/dedupe';
 import { throttle } from 'throttle-debounce';
 
 // Internal Dependencies
-import './blocks/free.jsx';
-import './extensions/block-id.jsx';
+import './blocks/free';
+import './extensions/block-id';
 
-import PreviewServerCallback from './blocks/preview-server-callback.jsx';
 import getControlTypeData from '../admin/utils/get-control-type-data';
+
+import PreviewServerCallback from './blocks/preview-server-callback';
 
 let options = window.lazyblocksGutenberg;
 if ( ! options || ! options.blocks || ! options.blocks.length ) {
@@ -62,8 +63,8 @@ const {
 // each registered block.
 options.blocks.forEach( ( item ) => {
     class LazyBlock extends Component {
-        constructor() {
-            super( ...arguments );
+        constructor( ...args ) {
+            super( ...args );
 
             this.isControlValueValid = this.isControlValueValid.bind( this );
             this.maybeLockPostSaving = throttle( 500, this.maybeLockPostSaving.bind( this ) );
@@ -76,18 +77,95 @@ options.blocks.forEach( ( item ) => {
         componentDidMount() {
             this.maybeLockPostSaving();
         }
+
         componentDidUpdate() {
             this.maybeLockPostSaving();
         }
 
-        isControlValueValid( val, control ) {
-            let isValid = '' !== val && typeof val !== 'undefined';
+        onControlChange( val, control, childIndex ) {
+            const {
+                setAttributes,
+            } = this.props;
 
-            // custom validation filter.
-            isValid = applyFilters( `lzb.editor.control.${ control.type }.isValueValid`, isValid, val, control );
-            isValid = applyFilters( 'lzb.editor.control.isValueValid', isValid, val, control );
+            let { name } = control;
 
-            return isValid;
+            // prepare child items.
+            if ( control.child_of && item.controls[ control.child_of ] && -1 < childIndex ) {
+                const childs = this.getControlValue( item.controls[ control.child_of ] );
+
+                if ( childs && 'undefined' !== typeof childs[ childIndex ] ) {
+                    childs[ childIndex ][ control.name ] = val;
+                    val = childs;
+                }
+
+                control = item.controls[ control.child_of ];
+                name = control.name;
+            }
+
+            // filter control value.
+            val = applyFilters( `lzb.editor.control.${ control.type }.updateValue`, val, control );
+            val = applyFilters( 'lzb.editor.control.updateValue', val, control );
+
+            const result = {};
+            result[ name ] = val;
+
+            setAttributes( result );
+        }
+
+        getControlValue( control, childIndex ) {
+            const {
+                attributes,
+            } = this.props;
+
+            let result = attributes[ control.name ];
+
+            // prepare child items.
+            if ( control.child_of && item.controls[ control.child_of ] && -1 < childIndex ) {
+                const childs = this.getControlValue( item.controls[ control.child_of ] );
+
+                if ( childs && 'undefined' !== typeof childs[ childIndex ] && 'undefined' !== typeof childs[ childIndex ][ control.name ] ) {
+                    result = childs[ childIndex ][ control.name ];
+                }
+            }
+
+            // filter control value.
+            result = applyFilters( `lzb.editor.control.${ control.type }.getValue`, result, control );
+            result = applyFilters( 'lzb.editor.control.getValue', result, control );
+
+            return result;
+        }
+
+        /**
+         * Get controls
+         *
+         * @param {String|Boolean} childOf - parent control name.
+         *
+         * @return {Object} controls list.
+         */
+        // eslint-disable-next-line class-methods-use-this
+        getControls( childOf = '' ) {
+            const result = {};
+
+            Object.keys( item.controls ).forEach( ( k ) => {
+                let control = item.controls[ k ];
+                const controlTypeData = getControlTypeData( control.type );
+
+                if ( controlTypeData && controlTypeData.attributes ) {
+                    control = {
+                        ...cloneDeep( controlTypeData.attributes ),
+                        ...control,
+                    };
+                }
+
+                if (
+                    ( ! childOf && ! control.child_of )
+                    || ( childOf && control.child_of === childOf )
+                ) {
+                    result[ k ] = control;
+                }
+            } );
+
+            return result;
         }
 
         maybeLockPostSaving() {
@@ -115,96 +193,22 @@ options.blocks.forEach( ( item ) => {
             }
 
             // lock or unlock post saving depending on required controls values.
-            if ( shouldLock > 0 ) {
+            if ( 0 < shouldLock ) {
                 this.props.lockPostSaving();
             } else {
                 this.props.unlockPostSaving();
             }
         }
 
-        getControlValue( control, childIndex ) {
-            const {
-                attributes,
-            } = this.props;
+        // eslint-disable-next-line class-methods-use-this
+        isControlValueValid( val, control ) {
+            let isValid = '' !== val && 'undefined' !== typeof val;
 
-            let result = attributes[ control.name ];
+            // custom validation filter.
+            isValid = applyFilters( `lzb.editor.control.${ control.type }.isValueValid`, isValid, val, control );
+            isValid = applyFilters( 'lzb.editor.control.isValueValid', isValid, val, control );
 
-            // prepare child items.
-            if ( control.child_of && item.controls[ control.child_of ] && childIndex > -1 ) {
-                const childs = this.getControlValue( item.controls[ control.child_of ] );
-
-                if ( childs && typeof childs[ childIndex ] !== 'undefined' && typeof childs[ childIndex ][ control.name ] !== 'undefined' ) {
-                    result = childs[ childIndex ][ control.name ];
-                }
-            }
-
-            // filter control value.
-            result = applyFilters( `lzb.editor.control.${ control.type }.getValue`, result, control );
-            result = applyFilters( 'lzb.editor.control.getValue', result, control );
-
-            return result;
-        }
-
-        onControlChange( val, control, childIndex ) {
-            const {
-                setAttributes,
-            } = this.props;
-
-            let name = control.name;
-
-            // prepare child items.
-            if ( control.child_of && item.controls[ control.child_of ] && childIndex > -1 ) {
-                const childs = this.getControlValue( item.controls[ control.child_of ] );
-
-                if ( childs && typeof childs[ childIndex ] !== 'undefined' ) {
-                    childs[ childIndex ][ control.name ] = val;
-                    val = childs;
-                }
-
-                control = item.controls[ control.child_of ];
-                name = control.name;
-            }
-
-            // filter control value.
-            val = applyFilters( `lzb.editor.control.${ control.type }.updateValue`, val, control );
-            val = applyFilters( 'lzb.editor.control.updateValue', val, control );
-
-            const result = {};
-            result[ name ] = val;
-
-            setAttributes( result );
-        }
-
-        /**
-         * Get controls
-         *
-         * @param {String|Boolean} childOf - parent control name.
-         *
-         * @return {Object} controls list.
-         */
-        getControls( childOf = '' ) {
-            const result = {};
-
-            Object.keys( item.controls ).forEach( ( k ) => {
-                let control = item.controls[ k ];
-                const controlTypeData = getControlTypeData( control.type );
-
-                if ( controlTypeData && controlTypeData.attributes ) {
-                    control = {
-                        ...cloneDeep( controlTypeData.attributes ),
-                        ...control,
-                    };
-                }
-
-                if (
-                    ( ! childOf && ! control.child_of ) ||
-                    ( childOf && control.child_of === childOf )
-                ) {
-                    result[ k ] = control;
-                }
-            } );
-
-            return result;
+            return isValid;
         }
 
         /**
@@ -224,9 +228,9 @@ options.blocks.forEach( ( item ) => {
             Object.keys( controls ).forEach( ( k ) => {
                 const control = controls[ k ];
 
-                let placementCheck = control.type && control.placement !== 'nowhere' &&
-                ( control.placement === 'both' || control.placement === placement );
-                let label = control.label;
+                let placementCheck = control.type && 'nowhere' !== control.placement
+                && ( 'both' === control.placement || control.placement === placement );
+                let { label } = control;
 
                 const controlTypeData = getControlTypeData( control.type );
 
@@ -234,29 +238,29 @@ options.blocks.forEach( ( item ) => {
                 if ( controlTypeData && controlTypeData.restrictions ) {
                     // Restrict placement.
                     if (
-                        placementCheck &&
-                        controlTypeData.restrictions.placement_settings
+                        placementCheck
+                        && controlTypeData.restrictions.placement_settings
                     ) {
-                        placementCheck = controlTypeData.restrictions.placement_settings.indexOf( placement ) > -1;
+                        placementCheck = -1 < controlTypeData.restrictions.placement_settings.indexOf( placement );
                     }
 
                     // Restrict hide if not selected.
                     if (
-                        placementCheck &&
-                        placement === 'content' &&
-                        control.placement === 'content' &&
-                        controlTypeData.restrictions.hide_if_not_selected_settings &&
-                        control.hide_if_not_selected &&
-                        'true' === control.hide_if_not_selected
+                        placementCheck
+                        && 'content' === placement
+                        && 'content' === control.placement
+                        && controlTypeData.restrictions.hide_if_not_selected_settings
+                        && control.hide_if_not_selected
+                        && 'true' === control.hide_if_not_selected
                     ) {
                         placementCheck = this.props.isLazyBlockSelected;
                     }
 
                     // Restrict required mark
                     if (
-                        controlTypeData.restrictions.required_settings &&
-                        control.required &&
-                        'true' === control.required
+                        controlTypeData.restrictions.required_settings
+                        && control.required
+                        && 'true' === control.required
                     ) {
                         label = (
                             <Fragment>
@@ -277,9 +281,7 @@ options.blocks.forEach( ( item ) => {
                         },
                         placement,
                         uniqueId: k,
-                        getValue: ( optionalControl = control, optionalChildIndex = childIndex ) => {
-                            return this.getControlValue( optionalControl, optionalChildIndex );
-                        },
+                        getValue: ( optionalControl = control, optionalChildIndex = childIndex ) => this.getControlValue( optionalControl, optionalChildIndex ),
                         onChange: ( val ) => {
                             this.onControlChange( val, control, childIndex );
                         },
@@ -296,10 +298,10 @@ options.blocks.forEach( ( item ) => {
 
                         // show error for required fields
                         if (
-                            controlTypeData &&
-                            controlTypeData.restrictions.required_settings &&
-                            control.required &&
-                            'true' === control.required
+                            controlTypeData
+                            && controlTypeData.restrictions.required_settings
+                            && control.required
+                            && 'true' === control.required
                         ) {
                             const val = this.getControlValue( control, childIndex );
 
@@ -332,7 +334,7 @@ options.blocks.forEach( ( item ) => {
             } );
 
             // additional element for better formatting in inspector.
-            if ( placement === 'inspector' && result.length ) {
+            if ( 'inspector' === placement && result.length ) {
                 result = <PanelBody>{ result }</PanelBody>;
             }
 
@@ -385,6 +387,7 @@ options.blocks.forEach( ( item ) => {
             case 'never':
                 showPreview = false;
                 break;
+            // no default
             }
 
             return (
@@ -400,6 +403,7 @@ options.blocks.forEach( ( item ) => {
                                 <span className={ item.icon } />
                             ) : '' }
                             { item.icon && ! /^dashicons/.test( item.icon ) ? (
+                                // eslint-disable-next-line react/no-danger
                                 <span dangerouslySetInnerHTML={ { __html: item.icon } } />
                             ) : '' }
 
@@ -476,6 +480,7 @@ options.blocks.forEach( ( item ) => {
     if ( item.icon && /^dashicons/.test( item.icon ) ) {
         registerIcon = item.icon.replace( /^dashicons dashicons-/, '' ) || 'marker';
     } else if ( item.icon ) {
+        // eslint-disable-next-line react/no-danger
         registerIcon = <span dangerouslySetInnerHTML={ { __html: item.icon } } />;
     }
 

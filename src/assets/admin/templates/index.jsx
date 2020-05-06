@@ -5,7 +5,7 @@
 /**
  * Internal dependencies
  */
-import Templates from './templates.jsx';
+import Templates from './templates';
 
 // register core Gutenberg blocks.
 if ( wp.blockLibrary && wp.blockLibrary.registerCoreBlocks ) {

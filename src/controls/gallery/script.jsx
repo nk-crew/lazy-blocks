@@ -7,36 +7,32 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.gallery.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <GalleryControl
-            label={ props.data.label }
-            help={ props.data.help }
-            value={ props.getValue() }
-            onChange={ ( val ) => {
-                const result = val.map( ( image ) => {
-                    return {
-                        alt: image.alt || '',
-                        title: image.title || '',
-                        caption: image.caption || '',
-                        id: image.id || '',
-                        link: image.link || '',
-                        url: image.url || '',
-                    };
-                } );
+addFilter( 'lzb.editor.control.gallery.render', 'lzb.editor', ( render, props ) => (
+    <GalleryControl
+        label={ props.data.label }
+        help={ props.data.help }
+        value={ props.getValue() }
+        onChange={ ( val ) => {
+            const result = val.map( ( image ) => ( {
+                alt: image.alt || '',
+                title: image.title || '',
+                caption: image.caption || '',
+                id: image.id || '',
+                link: image.link || '',
+                url: image.url || '',
+            } ) );
 
-                props.onChange( result );
-            } }
-        />
-    );
-} );
+            props.onChange( result );
+        } }
+    />
+) );
 
 /**
  * getValue filter in editor.
  */
 addFilter( 'lzb.editor.control.gallery.getValue', 'lzb.editor', ( value ) => {
     // change string value to array.
-    if ( typeof value === 'string' ) {
+    if ( 'string' === typeof value ) {
         try {
             value = JSON.parse( decodeURI( value ) );
         } catch ( e ) {
@@ -52,7 +48,7 @@ addFilter( 'lzb.editor.control.gallery.getValue', 'lzb.editor', ( value ) => {
  */
 addFilter( 'lzb.editor.control.gallery.updateValue', 'lzb.editor', ( value ) => {
     // change array value to string.
-    if ( typeof value === 'object' || Array.isArray( value ) ) {
+    if ( 'object' === typeof value || Array.isArray( value ) ) {
         value = encodeURI( JSON.stringify( value ) );
     }
 

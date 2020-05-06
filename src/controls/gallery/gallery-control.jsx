@@ -23,9 +23,11 @@ const {
 
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
+/* eslint-disable react/no-unused-state */
+
 class GalleryControl extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             hasError: false,

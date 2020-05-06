@@ -26,6 +26,7 @@ class DocumentTabs extends Component {
                 <div className="components-panel__header edit-post-sidebar-header edit-post-sidebar__panel-tabs">
                     <ul>
                         <li>
+                            { /* eslint-disable-next-line react/button-has-type */ }
                             <button
                                 onClick={ () => {
                                     activateTab( 'block' );
@@ -37,6 +38,7 @@ class DocumentTabs extends Component {
                             </button>
                         </li>
                         <li>
+                            { /* eslint-disable-next-line react/button-has-type */ }
                             <button
                                 onClick={ () => {
                                     activateTab( 'control' );
@@ -80,7 +82,7 @@ export default compose( [
         }
 
         return {
-            activeTab: activeTab,
+            activeTab,
         };
     } ),
     withDispatch( ( dispatch ) => {
@@ -93,7 +95,7 @@ export default compose( [
             activateTab( name ) {
                 activeTab = name;
 
-                if ( name === 'block' ) {
+                if ( 'block' === name ) {
                     clearSelectedControl();
                 } else {
                     selectControl( 'NO_CONTROL_ID_JUST_SELECT_TAB' );

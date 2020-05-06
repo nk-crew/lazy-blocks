@@ -15,7 +15,7 @@ const {
  * Control render in editor.
  */
 addFilter( 'lzb.editor.control.number.render', 'lzb.editor', ( render, props ) => {
-    const maxlength = props.data.characters_limit ? parseInt( props.data.characters_limit ) : '';
+    const maxlength = props.data.characters_limit ? parseInt( props.data.characters_limit, 10 ) : '';
 
     return (
         <TextControl

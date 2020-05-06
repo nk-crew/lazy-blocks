@@ -15,7 +15,7 @@ const DragHandle = SortableHandle( () => (
     </div>
 ) );
 
-const SortableItem = SortableElement( ( data ) =>
+const SortableItem = SortableElement( ( data ) => (
     <div className="lzb-constructor-controls-item-settings-choices-item">
         <TextControl
             placeholder={ __( 'Label', '@@text_domain' ) }
@@ -25,9 +25,10 @@ const SortableItem = SortableElement( ( data ) =>
         <TextControl
             placeholder={ __( 'Value', '@@text_domain' ) }
             value={ data.value }
-            onChange={ ( value ) => data.updateChoice( { value: value } ) }
+            onChange={ ( value ) => data.updateChoice( { value } ) }
         />
         <DragHandle />
+        { /* eslint-disable-next-line react/button-has-type */ }
         <button
             className="lzb-constructor-controls-item-settings-choices-item-remove"
             onClick={ () => data.removeChoice() }
@@ -35,20 +36,19 @@ const SortableItem = SortableElement( ( data ) =>
             <span className="dashicons dashicons-minus" />
         </button>
     </div>
-);
-const SortableList = SortableContainer( ( { items } ) => {
-    return (
-        <div className="lzb-constructor-controls-item-settings-choices-items">
-            { items.map( ( value, index ) => (
-                <SortableItem key={ `lzb-constructor-controls-item-settings-choices-item-${ index }` } index={ index } { ...value } />
-            ) ) }
-        </div>
-    );
-} );
+) );
+const SortableList = SortableContainer( ( { items } ) => (
+    <div className="lzb-constructor-controls-item-settings-choices-items">
+        { items.map( ( value, index ) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <SortableItem key={ `lzb-constructor-controls-item-settings-choices-item-${ index }` } index={ index } { ...value } />
+        ) ) }
+    </div>
+) );
 
 export default class ChoicesRow extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.sortRef = wp.element.createRef();
 

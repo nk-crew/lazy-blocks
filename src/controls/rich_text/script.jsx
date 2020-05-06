@@ -17,26 +17,24 @@ const {
 /**
  * Control render in editor.
  */
-addFilter( 'lzb.editor.control.rich_text.render', 'lzb.editor', ( render, props ) => {
-    return (
-        <BaseControl
-            key={ props.data.name }
-            label={ props.data.label }
-            help={ props.data.help }
-            className="lzb-gutenberg-rich-text"
-        >
-            <RichText
-                inlineToolbar
-                format="string"
-                multiline={ props.data.multiline === 'true' ? 'p' : false }
-                value={ props.getValue() }
-                onChange={ ( val ) => {
-                    props.onChange( val );
-                } }
-            />
-        </BaseControl>
-    );
-} );
+addFilter( 'lzb.editor.control.rich_text.render', 'lzb.editor', ( render, props ) => (
+    <BaseControl
+        key={ props.data.name }
+        label={ props.data.label }
+        help={ props.data.help }
+        className="lzb-gutenberg-rich-text"
+    >
+        <RichText
+            inlineToolbar
+            format="string"
+            multiline={ 'true' === props.data.multiline ? 'p' : false }
+            value={ props.getValue() }
+            onChange={ ( val ) => {
+                props.onChange( val );
+            } }
+        />
+    </BaseControl>
+) );
 
 /**
  * Control settings render in constructor.

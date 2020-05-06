@@ -21,14 +21,15 @@ const DragHandle = SortableHandle( () => (
         } }
         role="button"
     >
-        <span className="dashicons dashicons-menu"></span>
+        <span className="dashicons dashicons-menu" />
     </Button>
 ) );
 
-const SortableItem = SortableElement( ( data ) =>
+const SortableItem = SortableElement( ( data ) => (
     <div className="lzb-gutenberg-repeater-item">
+        { /* eslint-disable-next-line react/button-has-type */ }
         <button
-            className={ 'lzb-gutenberg-repeater-btn' + ( data.active ? ' lzb-gutenberg-repeater-btn-active' : '' ) }
+            className={ `lzb-gutenberg-repeater-btn${ data.active ? ' lzb-gutenberg-repeater-btn-active' : '' }` }
             onClick={ data.onToggle }
         >
             { data.title }
@@ -36,24 +37,29 @@ const SortableItem = SortableElement( ( data ) =>
             <span className="lzb-gutenberg-repeater-btn-arrow dashicons dashicons-arrow-right-alt2" />
         </button>
         { ! data.controlData.rows_min || data.count > data.controlData.rows_min ? (
-            <button className="lzb-gutenberg-repeater-btn-remove" onClick={ data.onRemove }><span className="dashicons dashicons-no-alt" /></button>
+            // eslint-disable-next-line react/button-has-type
+            <button
+                className="lzb-gutenberg-repeater-btn-remove"
+                onClick={ data.onRemove }
+            >
+                <span className="dashicons dashicons-no-alt" />
+            </button>
         ) : '' }
         { data.active ? data.renderContent() : '' }
     </div>
-);
-const SortableList = SortableContainer( ( { items } ) => {
-    return (
-        <div className="lzb-gutenberg-repeater-items">
-            { items.map( ( value, index ) => (
-                <SortableItem key={ `repeater-item-${ index }` } index={ index } { ...value } />
-            ) ) }
-        </div>
-    );
-} );
+) );
+const SortableList = SortableContainer( ( { items } ) => (
+    <div className="lzb-gutenberg-repeater-items">
+        { items.map( ( value, index ) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <SortableItem key={ `repeater-item-${ index }` } index={ index } { ...value } />
+        ) ) }
+    </div>
+) );
 
 class RepeaterControl extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         const {
             controlData,
@@ -84,10 +90,10 @@ class RepeaterControl extends Component {
         } = this.props;
 
         // add rows to meet Minimum requirements
-        if ( controlData.rows_min && controlData.rows_min > 0 && controlData.rows_min > count ) {
+        if ( controlData.rows_min && 0 < controlData.rows_min && controlData.rows_min > count ) {
             const needToAdd = controlData.rows_min - count;
 
-            for ( let i = 0; i < needToAdd; i++ ) {
+            for ( let i = 0; i < needToAdd; i += 1 ) {
                 addRow();
             }
         }
@@ -110,7 +116,7 @@ class RepeaterControl extends Component {
         if ( innerControls ) {
             Object.keys( innerControls ).forEach( ( k ) => {
                 const val = innerControls[ k ].val || '';
-                const data = innerControls[ k ].data;
+                const { data } = innerControls[ k ];
 
                 title = title.replace( new RegExp( `{{${ data.name }}}`, 'g' ), val );
             } );
@@ -131,12 +137,12 @@ class RepeaterControl extends Component {
         } = this.props;
 
         const items = [];
-        for ( let i = 0; i < count; i++ ) {
-            const active = this.state.activeItem === -2 || this.state.activeItem === i;
+        for ( let i = 0; i < count; i += 1 ) {
+            const active = -2 === this.state.activeItem || this.state.activeItem === i;
 
             items.push( {
                 title: this.getRowTitle( i ),
-                active: active,
+                active,
                 count,
                 controlData,
                 onToggle: ( e ) => {
@@ -152,13 +158,11 @@ class RepeaterControl extends Component {
                     e.stopPropagation();
                     removeRow( i );
                 },
-                renderContent: () => {
-                    return (
-                        <div className="lzb-gutenberg-repeater-item-content">
-                            { renderRow( i ) }
-                        </div>
-                    );
-                },
+                renderContent: () => (
+                    <div className="lzb-gutenberg-repeater-item-content">
+                        { renderRow( i ) }
+                    </div>
+                ),
             } );
         }
 
@@ -172,7 +176,7 @@ class RepeaterControl extends Component {
                             onSortEnd={ ( { oldIndex, newIndex } ) => {
                                 resortRow( oldIndex, newIndex );
 
-                                if ( this.state.activeItem > -1 ) {
+                                if ( -1 < this.state.activeItem ) {
                                     this.setState( { activeItem: newIndex } );
                                 }
                             } }
@@ -197,14 +201,14 @@ class RepeaterControl extends Component {
                         >
                             { controlData.rows_add_button_label || __( '+ Add Row', '@@text_domain' ) }
                         </Button>
-                        { 'true' === controlData.rows_collapsible && items.length && items.length > 1 ? (
+                        { 'true' === controlData.rows_collapsible && items.length && 1 < items.length ? (
                             <Tooltip text={ __( 'Toggle all rows', '@@text_domain' ) }>
                                 <div>
                                     { /* For some reason Tooltip is not working without this <div> */ }
                                     <ToggleControl
-                                        checked={ this.state.activeItem === -2 ? true : false }
+                                        checked={ -2 === this.state.activeItem }
                                         onChange={ () => {
-                                            this.setState( { activeItem: this.state.activeItem === -2 ? -1 : -2 } );
+                                            this.setState( ( prevState ) => ( { activeItem: prevState.activeItem ? -1 : -2 } ) );
                                         } }
                                     />
                                 </div>

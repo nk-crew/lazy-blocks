@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import CreatableSelect from 'react-select/Creatable';
 import ReactSelect from 'react-select';
 
@@ -15,58 +16,42 @@ export default class Select extends Component {
                 menuPlacement="auto"
                 className="lazyblocks-component-select"
                 styles={ {
-                    menu: ( styles ) => {
-                        return {
-                            ...styles,
-                            zIndex: 2,
-                        };
-                    },
-                    control: ( styles, props ) => {
-                        return {
-                            ...styles,
-                            minHeight: 32,
+                    menu: ( styles ) => ( {
+                        ...styles,
+                        zIndex: 2,
+                    } ),
+                    control: ( styles, props ) => ( {
+                        ...styles,
+                        minHeight: 32,
+                        borderColor: props.isFocused ? '#007cba' : '#7e8993',
+                        boxShadow: props.isFocused ? '0 0 0 1px #007cba' : '',
+                        ':hover': {
                             borderColor: props.isFocused ? '#007cba' : '#7e8993',
-                            boxShadow: props.isFocused ? '0 0 0 1px #007cba' : '',
-                            ':hover': {
-                                borderColor: props.isFocused ? '#007cba' : '#7e8993',
-                            },
-                        };
-                    },
-                    input: ( styles ) => {
-                        return {
-                            ...styles,
-                            margin: 0,
-                        };
-                    },
-                    dropdownIndicator: ( styles ) => {
-                        return {
-                            ...styles,
-                            padding: 5,
-                        };
-                    },
-                    clearIndicator: ( styles ) => {
-                        return {
-                            ...styles,
-                            padding: 5,
-                        };
-                    },
-                    multiValue: ( styles ) => {
-                        return {
-                            ...styles,
-                        };
-                    },
-                    multiValueLabel: ( styles ) => {
-                        return {
-                            ...styles,
-                            padding: 0,
-                        };
-                    },
-                    multiValueRemove: ( styles ) => {
-                        return {
-                            ...styles,
-                            padding: 0,
-                        };
-                    },
+                        },
+                    } ),
+                    input: ( styles ) => ( {
+                        ...styles,
+                        margin: 0,
+                    } ),
+                    dropdownIndicator: ( styles ) => ( {
+                        ...styles,
+                        padding: 5,
+                    } ),
+                    clearIndicator: ( styles ) => ( {
+                        ...styles,
+                        padding: 5,
+                    } ),
+                    multiValue: ( styles ) => ( {
+                        ...styles,
+                    } ),
+                    multiValueLabel: ( styles ) => ( {
+                        ...styles,
+                        padding: 0,
+                    } ),
+                    multiValueRemove: ( styles ) => ( {
+                        ...styles,
+                        padding: 0,
+                    } ),
                 } }
                 { ...{
                     ...this.props,

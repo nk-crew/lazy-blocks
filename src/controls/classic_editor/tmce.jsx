@@ -19,12 +19,12 @@ function isTmceEmpty( editor ) {
     // <p><br data-mce-bogus="1"></p>
     // avoid expensive checks for large documents
     const body = editor.getBody();
-    if ( body.childNodes.length > 1 ) {
+    if ( 1 < body.childNodes.length ) {
         return false;
-    } else if ( body.childNodes.length === 0 ) {
+    } if ( 0 === body.childNodes.length ) {
         return true;
     }
-    if ( body.childNodes[ 0 ].childNodes.length > 1 ) {
+    if ( 1 < body.childNodes[ 0 ].childNodes.length ) {
         return false;
     }
     return /^\n?$/.test( body.innerText || body.textContent );
@@ -46,16 +46,11 @@ export default class ClassicEdit extends Component {
             suffix,
         } );
 
-        if ( document.readyState === 'complete' ) {
+        if ( 'complete' === document.readyState ) {
             this.initialize();
         } else {
             window.addEventListener( 'DOMContentLoaded', this.initialize );
         }
-    }
-
-    componentWillUnmount() {
-        window.addEventListener( 'DOMContentLoaded', this.initialize );
-        wp.oldEditor.remove( `editor-${ this.props.editorId }` );
     }
 
     componentDidUpdate( prevProps ) {
@@ -69,18 +64,9 @@ export default class ClassicEdit extends Component {
         }
     }
 
-    initialize() {
-        const { editorId } = this.props;
-        const { settings } = window.wpEditorL10n.tinymce;
-        wp.oldEditor.initialize( `editor-${ editorId }`, {
-            tinymce: {
-                ...settings,
-                inline: true,
-                content_css: false,
-                fixed_toolbar_container: `#toolbar-${ editorId }`,
-                setup: this.onSetup,
-            },
-        } );
+    componentWillUnmount() {
+        window.addEventListener( 'DOMContentLoaded', this.initialize );
+        wp.oldEditor.remove( `editor-${ this.props.editorId }` );
     }
 
     onSetup( editor ) {
@@ -122,8 +108,8 @@ export default class ClassicEdit extends Component {
 
         editor.on( 'keydown', ( event ) => {
             if (
-                ( event.keyCode === BACKSPACE || event.keyCode === DELETE ) &&
-                isTmceEmpty( editor )
+                ( event.keyCode === BACKSPACE || event.keyCode === DELETE )
+                && isTmceEmpty( editor )
             ) {
                 // delete the block
                 this.props.onReplace( [] );
@@ -142,10 +128,10 @@ export default class ClassicEdit extends Component {
         } );
 
         // Show the second, third, etc. toolbars when the `kitchensink` button is removed by a plugin.
-        editor.on( 'init', function() {
+        editor.on( 'init', () => {
             if (
-                editor.settings.toolbar1 &&
-                editor.settings.toolbar1.indexOf( 'kitchensink' ) === -1
+                editor.settings.toolbar1
+                && -1 === editor.settings.toolbar1.indexOf( 'kitchensink' )
             ) {
                 editor.dom.addClass( ref, 'has-advanced-toolbar' );
             }
@@ -169,17 +155,32 @@ export default class ClassicEdit extends Component {
         } );
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    onToolbarKeyDown( event ) {
+        // Prevent WritingFlow from kicking in and allow arrows navigation on the toolbar.
+        event.stopPropagation();
+        // Prevent Mousetrap from moving focus to the top toolbar when pressing `alt+f10` on this block toolbar.
+        event.nativeEvent.stopImmediatePropagation();
+    }
+
     focus() {
         if ( this.editor ) {
             this.editor.focus();
         }
     }
 
-    onToolbarKeyDown( event ) {
-        // Prevent WritingFlow from kicking in and allow arrows navigation on the toolbar.
-        event.stopPropagation();
-        // Prevent Mousetrap from moving focus to the top toolbar when pressing `alt+f10` on this block toolbar.
-        event.nativeEvent.stopImmediatePropagation();
+    initialize() {
+        const { editorId } = this.props;
+        const { settings } = window.wpEditorL10n.tinymce;
+        wp.oldEditor.initialize( `editor-${ editorId }`, {
+            tinymce: {
+                ...settings,
+                inline: true,
+                content_css: false,
+                fixed_toolbar_container: `#toolbar-${ editorId }`,
+                setup: this.onSetup,
+            },
+        } );
     }
 
     render() {
@@ -196,7 +197,7 @@ export default class ClassicEdit extends Component {
             <div
                 key="toolbar"
                 id={ `toolbar-${ editorId }` }
-                ref={ ( ref ) => ( this.ref = ref ) }
+                ref={ ( ref ) => { this.ref = ref; } }
                 className="block-library-classic__toolbar"
                 onClick={ this.focus }
                 data-placeholder={ __( 'Classic', '@@text_domain' ) }
