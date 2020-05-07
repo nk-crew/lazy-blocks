@@ -80,7 +80,7 @@ class LazyBlocks_Blocks {
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
             // add custom block categories.
-            add_filter( 'block_categories', array( $this, 'block_categories' ) );
+            add_filter( 'block_categories', array( $this, 'block_categories' ), 100 );
 
             add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
             add_action( 'init', array( $this, 'register_block_render' ), 20 );
