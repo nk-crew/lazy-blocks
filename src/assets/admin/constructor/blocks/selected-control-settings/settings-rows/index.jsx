@@ -49,7 +49,6 @@ export default class settingsRows extends Component {
 
             // conditions to show rows.
             switch ( i ) {
-            case 'required':
             case 'placement':
             case 'save_in_meta':
                 allow = allow && ! data.child_of;
