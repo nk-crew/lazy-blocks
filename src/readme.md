@@ -79,6 +79,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.7 =
+
+* fixed JS build error
+
 = 2.0.6 =
 
 * added support for required fields inside repeater
