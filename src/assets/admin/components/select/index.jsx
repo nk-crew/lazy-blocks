@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-unresolved
-import CreatableSelect from 'react-select/Creatable';
+import CreatableSelect from 'react-select/creatable';
 import ReactSelect from 'react-select';
 
 // Import CSS
