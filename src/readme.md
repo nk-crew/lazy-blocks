@@ -79,6 +79,15 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.6 =
+
+* added support for required fields inside repeater
+* prevent possible bugs with adding custom blocks using PHP (register blocks inside `init` hook with priority = 20)
+* fixed repeater and Classic Control usage when all rows opened
+* fixed repeater control undefined value error
+* fixed custom categories registration conflict with 3rd-party plugins
+* fixed update control array data in Constructor (can't clear)
+
 = 2.0.5 =
 
 * added WordPress 5.4 compatibility
