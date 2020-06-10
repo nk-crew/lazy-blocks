@@ -79,6 +79,12 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.8 =
+
+* added help link to "Save in Meta" control option
+* added higher priority for registering post templates (possible fix for custom post types)
+* fixed custom fields support conflict with constructor interface
+
 = 2.0.7 =
 
 * fixed JS build error
