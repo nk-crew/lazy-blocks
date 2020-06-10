@@ -22,7 +22,7 @@ class LazyBlocks_Templates {
         add_action( 'init', array( $this, 'register_post_type' ) );
 
         // add template to posts.
-        add_action( 'init', array( $this, 'add_template_to_posts' ) );
+        add_action( 'init', array( $this, 'add_template_to_posts' ), 100 );
 
         // enqueue Gutenberg on templates screen.
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
