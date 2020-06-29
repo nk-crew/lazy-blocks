@@ -79,6 +79,10 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.0.9 =
+
+* added reset button to URL control
+
 = 2.0.8 =
 
 * added help link to "Save in Meta" control option
