@@ -6,19 +6,19 @@ Available filenames for translation:
 
 JSON content example:
 
-  {
-      "domain": "lazy-blocks",
-      "locale_data": {
-          "lazy-blocks": {
-              "": {
-                  "domain": "lazy-blocks"
-              },
-              "Alongside Text": [
-                  "Alongside Text Translated"
-              ],
-              "Checked": [
-                  "Checked Translated"
-              ]
+      {
+          "domain": "lazy-blocks",
+          "locale_data": {
+              "lazy-blocks": {
+                  "": {
+                      "domain": "lazy-blocks"
+                  },
+                  "Alongside Text": [
+                      "Alongside Text Translated"
+                  ],
+                  "Checked": [
+                      "Checked Translated"
+                  ]
+              }
           }
       }
-  }
