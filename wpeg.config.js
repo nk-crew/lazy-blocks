@@ -45,6 +45,7 @@ cfg.compile_js_files_src = [
 // Compile JSX files.
 cfg.compile_jsx_files_src = [
     '{src}/*assets/js/index.jsx',
+    '{src}/*assets/js/translation.jsx',
     '{src}/*assets/admin/constructor/index.jsx',
     '{src}/*assets/admin/templates/index.jsx',
     '{src}/*assets/admin/tools/index.jsx',
