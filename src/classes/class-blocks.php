@@ -1054,6 +1054,8 @@ class LazyBlocks_Blocks {
             array(),
             '@@plugin_version'
         );
+        wp_style_add_data( 'lazyblocks-gutenberg', 'rtl', 'replace' );
+        wp_style_add_data( 'lazyblocks-gutenberg', 'suffix', '.min' );
 
         // enqueue block js.
         wp_enqueue_script(

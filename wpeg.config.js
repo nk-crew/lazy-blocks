@@ -35,6 +35,7 @@ cfg.compile_scss_files_src = [
     '{src}/**/*.scss',
     '!{src}/**/vendor/**/*',
 ];
+cfg.compile_scss_files_rtl = true;
 
 // Compile JS files.
 cfg.compile_js_files_src = [
