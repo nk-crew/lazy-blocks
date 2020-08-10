@@ -17,8 +17,8 @@
 }
 
 .lzb-constructor-controls-item-wrap-selected > .lzb-constructor-controls-item {
-    border-color: $color_main;
-    box-shadow: 0 0 0 1px $color_main;
+    border-color: $blue-wordpress-700;
+    box-shadow: 0 0 0 1px $blue-wordpress-700;
 }
 
 .lzb-constructor-controls-item-wrap,
@@ -151,7 +151,7 @@
             }
         }
         .lzb-constructor-controls-item-label-buttons-remove {
-            color: $color_red;
+            color: $alert-red;
         }
     }
 

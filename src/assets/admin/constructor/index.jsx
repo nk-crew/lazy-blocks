@@ -115,7 +115,7 @@ class ConstructorBlock extends Component {
                         updateData={ updateBlockData }
                     />
                     <h2>{ __( 'Code', '@@text_domain' ) }</h2>
-                    <Box>
+                    <Box no-paddings>
                         <CustomCodeSettings
                             data={ blockData }
                             updateData={ updateBlockData }

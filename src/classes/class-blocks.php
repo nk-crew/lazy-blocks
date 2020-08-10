@@ -590,7 +590,7 @@ class LazyBlocks_Blocks {
         'lazyblocks_supports_inserter'               => 'true',
         'lazyblocks_supports_align'                  => array( 'wide', 'full' ),
 
-        // GhostKit Extensions.
+        // Ghost Kit Extensions.
         'lazyblocks_supports_ghostkit_spacings'      => 'false',
         'lazyblocks_supports_ghostkit_display'       => 'false',
         'lazyblocks_supports_ghostkit_scroll_reveal' => 'false',
@@ -944,11 +944,11 @@ class LazyBlocks_Blocks {
     public function get_blocks_categories( $db_only = false ) {
         $blocks             = $this->get_blocks( $db_only );
         $default_categories = array(
-            'common',
-            'embed',
-            'formatting',
-            'layout',
+            'text',
+            'media',
+            'design',
             'widgets',
+            'embed',
             'reusable',
         );
 
@@ -1146,7 +1146,7 @@ class LazyBlocks_Blocks {
             'default' => '',
         );
 
-        // GhostKit.
+        // Ghost Kit.
         $attributes['ghostkitSpacings'] = array(
             'type'    => 'object',
             'default' => '',

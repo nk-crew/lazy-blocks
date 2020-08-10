@@ -4,15 +4,19 @@ import './editor.scss';
 
 const { __ } = wp.i18n;
 
-const { Component } = wp.element;
+const {
+    Component,
+} = wp.element;
 
 const {
+    PanelBody,
     BaseControl,
     SelectControl,
     CheckboxControl,
+    RadioControl,
     Button,
-    Popover,
     TabPanel,
+    Notice,
 } = wp.components;
 
 export default class CustomCodeSettings extends Component {
@@ -85,42 +89,39 @@ export default class CustomCodeSettings extends Component {
 
         return (
             <div className="lzb-constructor-custom-code-settings">
-                { 1 < tabs.length ? (
+                <PanelBody>
+                    { 1 < tabs.length ? (
+                        <BaseControl>
+                            <TabPanel
+                                className="lazyblocks-control-tabs"
+                                activeClass="is-active"
+                                tabs={ tabs }
+                            >
+                                {
+                                    ( tab ) => this.getEditor( tab.name )
+                                }
+                            </TabPanel>
+                        </BaseControl>
+                    ) : (
+                        <BaseControl>
+                            { this.getEditor( 'frontend' ) }
+                        </BaseControl>
+                    ) }
                     <BaseControl>
-                        <TabPanel
-                            className="lazyblocks-control-tabs"
-                            activeClass="is-active"
-                            tabs={ tabs }
-                        >
-                            {
-                                ( tab ) => this.getEditor( tab.name )
-                            }
-                        </TabPanel>
-                    </BaseControl>
-                ) : (
-                    <BaseControl>
-                        { this.getEditor( 'frontend' ) }
-                    </BaseControl>
-                ) }
-
-                <BaseControl>
-                    <Button
-                        isSecondary
-                        isSmall
-                        onClick={ () => {
-                            if ( ! showInfo ) {
-                                this.setState( { showInfo: true } );
-                            }
-                        } }
-                    >
-                        { __( 'How to use?', '@@text_domain' ) }
-                        { showInfo ? (
-                            <Popover
-                                className="lzb-constructor-custom-code-settings-popover"
-                                focusOnMount={ false }
-                                onClickOutside={ () => {
-                                    this.setState( { showInfo: false } );
+                        { ! showInfo ? (
+                            <Button
+                                isLink
+                                onClick={ () => {
+                                    this.setState( { showInfo: true } );
                                 } }
+                            >
+                                { __( 'How to use?', '@@text_domain' ) }
+                            </Button>
+                        ) : (
+                            <Notice
+                                status="info"
+                                isDismissible={ false }
+                                className="lzb-constructor-notice"
                             >
                                 <p className="description">
                                     { __( 'Simple text field example see here:', '@@text_domain' ) }
@@ -137,62 +138,66 @@ export default class CustomCodeSettings extends Component {
                                     <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>
                                     .
                                 </p>
-                            </Popover>
-                        ) : '' }
-                    </Button>
-                </BaseControl>
+                            </Notice>
+                        ) }
+                    </BaseControl>
+                </PanelBody>
 
-                <BaseControl
-                    label={ __( 'Single output code for Frontend and Editor', '@@text_domain' ) }
-                >
-                    <CheckboxControl
-                        label={ __( 'Yes', '@@text_domain' ) }
-                        checked={ data.code_single_output }
-                        onChange={ ( value ) => updateData( { code_single_output: value } ) }
-                    />
-                </BaseControl>
+                <PanelBody>
+                    <BaseControl>
+                        <CheckboxControl
+                            label={ __( 'Single output code for Frontend and Editor', '@@text_domain' ) }
+                            checked={ data.code_single_output }
+                            onChange={ ( value ) => updateData( { code_single_output: value } ) }
+                        />
+                    </BaseControl>
+                </PanelBody>
 
-                <BaseControl
-                    label={ __( 'Output Method', '@@text_domain' ) }
-                >
-                    <SelectControl
-                        options={ [
-                            {
-                                label: __( 'HTML + Handlebars', '@@text_domain' ),
-                                value: 'html',
-                            }, {
-                                label: __( 'PHP', '@@text_domain' ),
-                                value: 'php',
-                            },
-                        ] }
-                        value={ data.code_use_php ? 'php' : 'html' }
-                        onChange={ ( value ) => updateData( { code_use_php: 'php' === value } ) }
-                    />
-                </BaseControl>
+                <PanelBody>
+                    <BaseControl
+                        label={ __( 'Output Method', '@@text_domain' ) }
+                    >
+                        <RadioControl
+                            options={ [
+                                {
+                                    label: __( 'HTML + Handlebars', '@@text_domain' ),
+                                    value: 'html',
+                                }, {
+                                    label: __( 'PHP', '@@text_domain' ),
+                                    value: 'php',
+                                },
+                            ] }
+                            selected={ data.code_use_php ? 'php' : 'html' }
+                            onChange={ ( value ) => updateData( { code_use_php: 'php' === value } ) }
+                        />
+                    </BaseControl>
+                </PanelBody>
 
-                <BaseControl
-                    label={ __( 'Show block preview in editor', '@@text_domain' ) }
-                >
-                    <SelectControl
-                        options={ [
-                            {
-                                label: __( 'Always', '@@text_domain' ),
-                                value: 'always',
-                            }, {
-                                label: __( 'Within `selected` block only', '@@text_domain' ),
-                                value: 'selected',
-                            }, {
-                                label: __( 'Within `unselected` block only', '@@text_domain' ),
-                                value: 'unselected',
-                            }, {
-                                label: __( 'Never', '@@text_domain' ),
-                                value: 'never',
-                            },
-                        ] }
-                        value={ data.code_show_preview }
-                        onChange={ ( value ) => updateData( { code_show_preview: value } ) }
-                    />
-                </BaseControl>
+                <PanelBody>
+                    <BaseControl
+                        label={ __( 'Show block preview in editor', '@@text_domain' ) }
+                    >
+                        <SelectControl
+                            options={ [
+                                {
+                                    label: __( 'Always', '@@text_domain' ),
+                                    value: 'always',
+                                }, {
+                                    label: __( 'Within `selected` block only', '@@text_domain' ),
+                                    value: 'selected',
+                                }, {
+                                    label: __( 'Within `unselected` block only', '@@text_domain' ),
+                                    value: 'unselected',
+                                }, {
+                                    label: __( 'Never', '@@text_domain' ),
+                                    value: 'never',
+                                },
+                            ] }
+                            value={ data.code_show_preview }
+                            onChange={ ( value ) => updateData( { code_show_preview: value } ) }
+                        />
+                    </BaseControl>
+                </PanelBody>
             </div>
         );
     }

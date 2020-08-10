@@ -121,6 +121,7 @@ class GeneralSettings extends Component {
                         <Notice
                             status="error"
                             isDismissible={ false }
+                            className="lzb-constructor-notice"
                         >
                             { __( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block', '@@text_domain' ) }
                         </Notice>

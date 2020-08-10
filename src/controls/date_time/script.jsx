@@ -147,9 +147,9 @@ addFilter( 'lzb.constructor.control.date_time.settings', 'lzb.constructor', ( re
         <PanelBody>
             <ButtonGroup>
                 <Button
-                    isSecondary
                     isSmall
                     isPrimary={ /date/.test( dateTimePicker ) }
+                    isPressed={ /date/.test( dateTimePicker ) }
                     onClick={ () => {
                         let result = 'date';
 
@@ -169,9 +169,9 @@ addFilter( 'lzb.constructor.control.date_time.settings', 'lzb.constructor', ( re
                     { __( 'Date', '@@text_domain' ) }
                 </Button>
                 <Button
-                    isSecondary
                     isSmall
                     isPrimary={ /time/.test( dateTimePicker ) }
+                    isPressed={ /time/.test( dateTimePicker ) }
                     onClick={ () => {
                         let result = 'time';
 

@@ -2,7 +2,8 @@
 
 .post-type-lazyblocks {
     // editor background.
-    .block-editor-editor-skeleton__content {
+    .block-editor-editor-skeleton__content,
+    .interface-interface-skeleton__content {
         background-color: $color_gray_lighten;
     }
 
@@ -15,14 +16,16 @@
     }
 
     // hide right sidebar tabs, as we select constructor block by default.
-    .components-panel__header.edit-post-sidebar-header {
+    .components-panel__header.edit-post-sidebar-header,
+    .components-panel__header.edit-post-sidebar__panel-tabs {
         display: none;
     }
     .edit-post-settings-sidebar__panel-block .editor-block-inspector__card {
         display: none;
     }
     .block-editor-block-list__breadcrumb,
-    .block-editor-block-card {
+    .block-editor-block-card,
+    .interface-interface-skeleton__footer {
         display: none;
     }
 
@@ -63,6 +66,11 @@
     // Remove writing container.
     .block-editor-writing-flow__click-redirect {
         display: none;
+    }
+
+    // Remove focus outline.
+    [data-type="lzb-constructor/main"]:not([contenteditable]):focus::after {
+        box-shadow: none;
     }
 }
 
@@ -120,5 +128,21 @@
     .components-base-control .components-base-control__help {
         margin-bottom: 15px;
         color: $color_dark_lighten;
+    }
+
+    label {
+        font-size: inherit;
+        font-weight: 400;
+    }
+}
+
+// Notice
+.lzb-constructor-notice {
+    margin-top: 20px;
+    margin-right: 0;
+    margin-left: 0;
+
+    &.is-info {
+        background-color: $blue-medium-100;
     }
 }

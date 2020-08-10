@@ -43,8 +43,8 @@ export default class PlacementRow extends Component {
                     <div />
                     <ButtonGroup>
                         <Button
-                            isSecondary
                             isPrimary={ 'content' === placement || 'both' === placement }
+                            isPressed={ 'content' === placement || 'both' === placement }
                             disabled={ -1 === placementRestrictions.indexOf( 'content' ) }
                             isSmall
                             onClick={ () => {
@@ -66,8 +66,8 @@ export default class PlacementRow extends Component {
                             { __( 'Content', '@@text_domain' ) }
                         </Button>
                         <Button
-                            isSecondary
                             isPrimary={ 'inspector' === placement || 'both' === placement }
+                            isPressed={ 'inspector' === placement || 'both' === placement }
                             disabled={ -1 === placementRestrictions.indexOf( 'inspector' ) }
                             isSmall
                             onClick={ () => {

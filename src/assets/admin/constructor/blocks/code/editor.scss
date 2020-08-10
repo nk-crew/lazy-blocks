@@ -4,23 +4,13 @@
     margin-bottom: -15px;
 
     p.description {
-        margin-top: 10px;
+        margin-top: 0;
         margin-bottom: 10px;
+        font-family: inherit;
+        font-size: 1em;
     }
 
     .lazyblocks-control-tabs {
         margin-top: -15px;
-    }
-
-    hr {
-        margin: 10px -20px;
-        background-color: $color_gray_lighten;
-    }
-}
-
-.lzb-constructor-custom-code-settings-popover {
-    .components-popover__content {
-        width: 500px;
-        padding: 20px;
     }
 }

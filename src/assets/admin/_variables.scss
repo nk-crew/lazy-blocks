@@ -1,5 +1,8 @@
-$color_main: #007cba !default;
-$color_red: #d1343c !default;
+/**
+ * WordPress.
+ */
+@import "../../../node_modules/@wordpress/base-styles/colors.native";
+@import "../../../node_modules/@wordpress/base-styles/variables";
 
 $radius: 3px !default;
 $radius_large: 4px !default;

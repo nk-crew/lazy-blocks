@@ -331,6 +331,7 @@ options.blocks.forEach( ( item ) => {
                                         key={ `notice-${ control.name }` }
                                         status="warning"
                                         isDismissible={ false }
+                                        className="lzb-constructor-notice"
                                     >
                                         { __( 'This field is required', '@@text_domain' ) }
                                     </Notice>

@@ -100,12 +100,15 @@ export default class SupportsSettings extends Component {
                         } }
                     />
                 </BaseControl>
-                <h3>{ __( 'GhostKit Extensions', '@@text_domain' ) }</h3>
+                <h3>{ __( 'Ghost Kit Extensions', '@@text_domain' ) }</h3>
                 { ! window.GHOSTKIT ? (
                     <BaseControl>
-                        <Notice isDismissible={ false }>
+                        <Notice
+                            isDismissible={ false }
+                            className="lzb-constructor-notice"
+                        >
                             <p>
-                                { __( 'Install GhostKit plugin to use the following settings.', '@@text_domain' ) }
+                                { __( 'Install Ghost Kit plugin to use the following settings.', '@@text_domain' ) }
                             </p>
                             <Button
                                 isPrimary
@@ -121,7 +124,11 @@ export default class SupportsSettings extends Component {
                 ) : '' }
                 { window.GHOSTKIT && ( supportsGktSpacings || supportsGktDisplay ) && ! supportsClassname ? (
                     <BaseControl>
-                        <Notice isDismissible={ false } status="error">
+                        <Notice
+                            status="error"
+                            isDismissible={ false }
+                            className="lzb-constructor-notice"
+                        >
                             <p>
                                 { __( 'To use these extensions required "Class Name" support.', '@@text_domain' ) }
                             </p>
