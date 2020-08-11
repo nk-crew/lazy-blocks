@@ -570,7 +570,7 @@ class LazyBlocks_Blocks {
         'lazyblocks_icon'                            => '',
         'lazyblocks_description'                     => '',
         'lazyblocks_keywords'                        => '',
-        'lazyblocks_category'                        => 'common',
+        'lazyblocks_category'                        => 'text',
 
         'lazyblocks_code_show_preview'               => 'always',
         'lazyblocks_code_single_output'              => 'false',
