@@ -693,14 +693,14 @@ class LazyBlocks_Blocks {
                     'lazyblocks_code_frontend_css' === $meta
                 ) {
                     // phpcs:ignore
-                    $new_meta_value = wp_unslash( $data[ $meta ] );
+                    $new_meta_value = wp_slash( $data[ $meta ] );
                 } else {
                     // Get the posted data and sanitize it for use as an HTML class.
                     if ( is_array( $data[ $meta ] ) ) {
                         // phpcs:ignore
-                        $new_meta_value = $this->sanitize_array( wp_unslash( $data[ $meta ] ) );
+                        $new_meta_value = $this->sanitize_array( wp_slash( $data[ $meta ] ) );
                     } else {
-                        $new_meta_value = sanitize_text_field( wp_unslash( $data[ $meta ] ) );
+                        $new_meta_value = sanitize_text_field( wp_slash( $data[ $meta ] ) );
                     }
                 }
             }
