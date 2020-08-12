@@ -13,6 +13,7 @@ const {
     BaseControl,
     SelectControl,
     CheckboxControl,
+    RadioControl,
 } = wp.components;
 
 /**
@@ -93,6 +94,29 @@ addFilter( 'lzb.constructor.control.select.settings', 'lzb.constructor', ( rende
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.multiple }
                         onChange={ ( value ) => updateData( { multiple: value ? 'true' : 'false' } ) }
+                    />
+                </BaseControl>
+            </PanelBody>
+            <PanelBody>
+                <BaseControl
+                    label={ __( 'Output Format', '@@text_domain' ) }
+                    help={ __( 'Allows you to change attribute output format', '@@text_domain' ) }
+                >
+                    <RadioControl
+                        options={ [
+                            {
+                                label: __( 'Value', '@@text_domain' ),
+                                value: '',
+                            }, {
+                                label: __( 'Label', '@@text_domain' ),
+                                value: 'label',
+                            }, {
+                                label: __( 'Both (Array)', '@@text_domain' ),
+                                value: 'array',
+                            },
+                        ] }
+                        selected={ data.output_format || '' }
+                        onChange={ ( value ) => updateData( { output_format: value } ) }
                     />
                 </BaseControl>
             </PanelBody>
