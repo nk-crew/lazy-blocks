@@ -312,11 +312,17 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
      */
     // phpcs:ignore
     function get_lzb_meta( $name, $id = null ) {
+        // global variable used to fix `get_lzb_meta` call inside block preview in editor.
+        global $lzb_preview_block_data;
+
         $control_data = null;
 
         if ( null === $id ) {
             global $post;
-            $id = $post->ID;
+
+            if ( isset( $post->ID ) ) {
+                $id = $post->ID;
+            }
         }
 
         // Find control data by meta name.
@@ -343,7 +349,18 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             }
         }
 
-        $result = get_post_meta( $id, $name, true );
+        $result = null;
+
+        if ( $id ) {
+            $result = get_post_meta( $id, $name, true );
+        } elseif (
+            isset( $lzb_preview_block_data ) &&
+            is_array( $lzb_preview_block_data ) &&
+            isset( $control_data['name'] ) &&
+            isset( $lzb_preview_block_data['block_attributes'][ $control_data['name'] ] )
+        ) {
+            $result = $lzb_preview_block_data['block_attributes'][ $control_data['name'] ];
+        }
 
         // set default.
         if ( ! $result && isset( $control_data['default'] ) && $control_data['default'] ) {
