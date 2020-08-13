@@ -1,4 +1,3 @@
-
 import getControlTypeData from '../../../../utils/get-control-type-data';
 
 import LabelRow from './label';

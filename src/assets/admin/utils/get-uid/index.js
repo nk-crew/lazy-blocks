@@ -1,4 +1,3 @@
-
 // generate unique id.
 // thanks to https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 export default function getUID() {

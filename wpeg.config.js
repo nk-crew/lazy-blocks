@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const pkg = require( 'json-file' ).read( './package.json' ).data;
 
 const cfg = {};
@@ -26,8 +27,8 @@ cfg.template_files_variables = {
 // Copy files.
 cfg.copy_files_src = [
     '{src}/**/*',
-    '!{src}/**/*.{js,jsx,scss}',
-    '{src}/**/vendor/**/*.{js,jsx,scss}',
+    '!{src}/**/*.{js,scss}',
+    '{src}/**/vendor/**/*.{js,scss}',
 ];
 
 // Compile SCSS files.
@@ -39,18 +40,12 @@ cfg.compile_scss_files_rtl = true;
 
 // Compile JS files.
 cfg.compile_js_files_src = [
-    '{src}/**/*.js',
-    '!{src}/**/vendor/**/*',
-];
-
-// Compile JSX files.
-cfg.compile_jsx_files_src = [
-    '{src}/*assets/js/index.jsx',
-    '{src}/*assets/js/translation.jsx',
-    '{src}/*assets/admin/constructor/index.jsx',
-    '{src}/*assets/admin/templates/index.jsx',
-    '{src}/*assets/admin/tools/index.jsx',
-    '{src}/*controls/**/*.jsx',
+    '{src}/*assets/js/index.js',
+    '{src}/*assets/js/translation.js',
+    '{src}/*assets/admin/constructor/index.js',
+    '{src}/*assets/admin/templates/index.js',
+    '{src}/*assets/admin/tools/index.js',
+    '{src}/*controls/**/*.js',
 ];
 
 // Correct line endings files.
@@ -68,11 +63,9 @@ cfg.zip_files = [
 ];
 
 // Watch files.
-cfg.watch_files = [ '{src}/**/*', '!{src}/**/*.{jsx,js,scss}' ];
+cfg.watch_files = [ '{src}/**/*', '!{src}/**/*.{js,scss}' ];
 
 cfg.watch_js_files = [ '{src}/**/*.js', '!{src}/*vendor/**/*' ];
-
-cfg.watch_jsx_files = [ '{src}/**/*.jsx', '{src}/**/*.scss', '!{src}/*vendor/**/*' ];
 
 cfg.watch_scss_files = '{src}/**/*.scss';
 
