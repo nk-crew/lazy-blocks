@@ -148,6 +148,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             require_once $this->plugin_path() . '/classes/class-tools.php';
             require_once $this->plugin_path() . '/classes/class-rest.php';
             require_once $this->plugin_path() . '/classes/class-dummy.php';
+            require_once $this->plugin_path() . '/classes/class-force-gutenberg.php';
         }
 
         /**
