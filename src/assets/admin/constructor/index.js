@@ -22,7 +22,10 @@ const $ = window.jQuery;
 
 const {
     registerBlockType,
+    createBlock,
 } = wp.blocks;
+
+const { registerPlugin } = wp.plugins;
 
 const { __ } = wp.i18n;
 
@@ -36,9 +39,6 @@ const { compose } = wp.compose;
 const {
     withSelect,
     withDispatch,
-    dispatch,
-    select,
-    subscribe,
 } = wp.data;
 
 const {
@@ -128,14 +128,14 @@ class ConstructorBlock extends Component {
 }
 
 const ConstructorBlockWithSelect = compose( [
-    withSelect( () => {
+    withSelect( ( select ) => {
         const blockData = select( 'lazy-blocks/block-data' ).getBlockData();
 
         return {
             blockData,
         };
     } ),
-    withDispatch( () => ( {
+    withDispatch( ( dispatch ) => ( {
         updateBlockData( data ) {
             dispatch( 'lazy-blocks/block-data' ).updateBlockData( data );
         },
@@ -158,51 +158,6 @@ registerBlockType( 'lzb-constructor/main', {
     save() {
         return null;
     },
-} );
-
-// Add default block to post if doesn't exist.
-const getBlockList = () => wp.data.select( 'core/block-editor' ).getBlocks();
-let blockList = getBlockList();
-let blocksRestoreBusy = false;
-subscribe( () => {
-    if ( blocksRestoreBusy ) {
-        return;
-    }
-
-    const newBlockList = getBlockList();
-    const blockListChanged = newBlockList !== blockList;
-    const isValidList = 1 === newBlockList.length && newBlockList[ 0 ] && 'lzb-constructor/main' === newBlockList[ 0 ].name;
-    blockList = newBlockList;
-
-    if ( blockListChanged && ! isValidList ) {
-        blocksRestoreBusy = true;
-        wp.data.dispatch( 'core/block-editor' ).resetBlocks( [] );
-        wp.data.dispatch( 'core/block-editor' ).insertBlocks(
-            wp.blocks.createBlock( 'lzb-constructor/main' )
-        );
-        blocksRestoreBusy = false;
-    }
-} );
-
-// always select main block.
-subscribe( () => {
-    const selectedBlock = wp.data.select( 'core/block-editor' ).getSelectedBlock();
-    const blocks = wp.data.select( 'core/block-editor' ).getBlocks();
-
-    if ( selectedBlock && 'lzb-constructor/main' === selectedBlock.name ) {
-        return;
-    }
-
-    let selectBlockId = '';
-    blocks.forEach( ( blockData ) => {
-        if ( 'lzb-constructor/main' === blockData.name ) {
-            selectBlockId = blockData.clientId;
-        }
-    } );
-
-    if ( selectBlockId ) {
-        wp.data.dispatch( 'core/block-editor' ).selectBlock( selectBlockId );
-    }
 } );
 
 // de-select active control when click outside.
@@ -244,63 +199,241 @@ $( document ).on( 'click', ( e ) => {
     clearSelectedControl();
 } );
 
-// check if block data changed.
-let defaultBlockData = false;
-let editorRefreshTimeout = false;
-subscribe( () => {
-    const isSavingPost = select( 'core/editor' ).isSavingPost();
-    const isAutosavingPost = select( 'core/editor' ).isAutosavingPost();
-    const blockData = select( 'lazy-blocks/block-data' ).getBlockData();
+class UpdateEditor extends Component {
+    componentDidMount() {
+        const {
+            isSavingPost,
+            isAutosavingPost,
+        } = this.props;
 
-    if ( ! blockData || ! Object.keys( blockData ).length ) {
-        return;
+        this.defaultBlockData = false;
+        this.editorRefreshTimeout = false;
+
+        this.wasSavingPost = isSavingPost;
+        this.wasAutosavingPost = isAutosavingPost;
+
+        this.update();
     }
 
-    if ( isSavingPost || isAutosavingPost || ! defaultBlockData ) {
-        defaultBlockData = { ...blockData };
-        return;
+    componentDidUpdate() {
+        this.update();
     }
 
-    clearTimeout( editorRefreshTimeout );
-    editorRefreshTimeout = setTimeout( () => {
-        // isEqual can't determine that resorted objects are not equal.
-        const changedControls = defaultBlockData.controls
-                                && blockData.controls
-                                && ! isEqual( Object.keys( defaultBlockData.controls ), Object.keys( blockData.controls ) );
+    /**
+     * Run when something changed in editor.
+     */
+    update() {
+        this.changeToVisualMode();
+        this.addBlock();
+        this.alwaysSelectBlock();
+        this.checkIfPostEdited();
+        this.saveMetaOnPostUpdate();
+    }
 
-        if ( changedControls || ! isEqual( defaultBlockData, blockData ) ) {
-            wp.data.dispatch( 'core/editor' ).editPost( { edited: true } );
+    /**
+     * Force change gutenberg edit mode to Visual.
+     */
+    changeToVisualMode() {
+        const {
+            editorSettings,
+            editorMode,
+            switchEditorMode,
+        } = this.props;
+
+        if ( ! editorSettings.richEditingEnabled ) {
+            return;
         }
-    }, 150 );
-} );
 
-// save lazy block meta data on post save.
-let wasSavingPost = select( 'core/editor' ).isSavingPost();
-let wasAutosavingPost = select( 'core/editor' ).isAutosavingPost();
-subscribe( () => {
-    const isSavingPost = select( 'core/editor' ).isSavingPost();
-    const isAutosavingPost = select( 'core/editor' ).isAutosavingPost();
-    const shouldUpdate = wasSavingPost && ! isSavingPost && ! wasAutosavingPost;
-
-    // Save current state for next inspection.
-    wasSavingPost = isSavingPost;
-    wasAutosavingPost = isAutosavingPost;
-
-    if ( shouldUpdate ) {
-        const postId = select( 'core/editor' ).getCurrentPostId();
-        const blockData = select( 'lazy-blocks/block-data' ).getBlockData();
-
-        apiFetch( {
-            path: '/lazy-blocks/v1/update-block-data/',
-            method: 'POST',
-            data: {
-                data: blockData,
-                post_id: postId,
-            },
-        } )
-            .catch( ( response ) => {
-                // eslint-disable-next-line
-                console.log( response );
-            } );
+        if ( 'text' === editorMode ) {
+            switchEditorMode();
+        }
     }
+
+    /**
+     * Add default block to post if doesn't exist.
+     */
+    addBlock() {
+        if ( this.blocksRestoreBusy ) {
+            return;
+        }
+
+        const {
+            resetBlocks,
+            insertBlocks,
+            blocks,
+        } = this.props;
+
+        const isValidList = 1 === blocks.length && blocks[ 0 ] && 'lzb-constructor/main' === blocks[ 0 ].name;
+
+        if ( ! isValidList ) {
+            this.blocksRestoreBusy = true;
+            resetBlocks( [] );
+            insertBlocks(
+                createBlock( 'lzb-constructor/main' )
+            );
+            this.blocksRestoreBusy = false;
+        }
+    }
+
+    /**
+     * Always select block.
+     */
+    alwaysSelectBlock() {
+        const {
+            selectedBlock,
+            blocks,
+            selectBlock,
+        } = this.props;
+
+        // if selected block, do nothing.
+        if ( selectedBlock && 'lzb-constructor/main' === selectedBlock.name ) {
+            return;
+        }
+
+        // check if selected post title, also do nothing.
+        if ( $( '.editor-post-title__block.is-selected' ).length ) {
+            return;
+        }
+
+        let selectBlockId = '';
+        blocks.forEach( ( blockData ) => {
+            if ( 'lzb-constructor/main' === blockData.name ) {
+                selectBlockId = blockData.clientId;
+            }
+        } );
+
+        if ( selectBlockId ) {
+            selectBlock( selectBlockId );
+        }
+    }
+
+    /**
+     * Check if post meta data edited and allow to update the post.
+     */
+    checkIfPostEdited() {
+        const {
+            isSavingPost,
+            isAutosavingPost,
+            blockData,
+            editPost,
+        } = this.props;
+
+        if ( ! blockData || ! Object.keys( blockData ).length ) {
+            return;
+        }
+
+        if ( isSavingPost || isAutosavingPost || ! this.defaultBlockData ) {
+            this.defaultBlockData = { ...blockData };
+            return;
+        }
+
+        clearTimeout( this.editorRefreshTimeout );
+        this.editorRefreshTimeout = setTimeout( () => {
+            // isEqual can't determine that resorted objects are not equal.
+            const changedControls = this.defaultBlockData.controls
+                                    && blockData.controls
+                                    && ! isEqual( Object.keys( this.defaultBlockData.controls ), Object.keys( blockData.controls ) );
+
+            if ( changedControls || ! isEqual( this.defaultBlockData, blockData ) ) {
+                editPost( { edited: true } );
+            }
+        }, 150 );
+    }
+
+    /**
+     * Save meta data on post save.
+     */
+    saveMetaOnPostUpdate() {
+        const {
+            isSavingPost,
+            isAutosavingPost,
+            postId,
+            blockData,
+        } = this.props;
+
+        const shouldUpdate = this.wasSavingPost && ! isSavingPost && ! this.wasAutosavingPost;
+
+        // Save current state for next inspection.
+        this.wasSavingPost = isSavingPost;
+        this.wasAutosavingPost = isAutosavingPost;
+
+        if ( shouldUpdate ) {
+            apiFetch( {
+                path: '/lazy-blocks/v1/update-block-data/',
+                method: 'POST',
+                data: {
+                    data: blockData,
+                    post_id: postId,
+                },
+            } )
+                .catch( ( response ) => {
+                    // eslint-disable-next-line
+                    console.log( response );
+                } );
+        }
+    }
+
+    render() {
+        return null;
+    }
+}
+
+registerPlugin( 'lazy-blocks-constructor', {
+    render: compose(
+        withSelect( ( select ) => {
+            const {
+                isSavingPost,
+                isAutosavingPost,
+                getCurrentPostId,
+                getEditorSettings,
+            } = select( 'core/editor' );
+
+            const {
+                getSelectedBlock,
+                getBlocks,
+            } = select( 'core/block-editor' );
+
+            const {
+                getEditorMode,
+            } = select( 'core/edit-post' );
+
+            const {
+                getBlockData,
+            } = select( 'lazy-blocks/block-data' );
+
+            return {
+                isSavingPost: isSavingPost(),
+                isAutosavingPost: isAutosavingPost(),
+                selectedBlock: getSelectedBlock(),
+                editorSettings: getEditorSettings(),
+                editorMode: getEditorMode(),
+                blocks: getBlocks(),
+                postId: getCurrentPostId(),
+                blockData: getBlockData(),
+            };
+        } ),
+        withDispatch( ( dispatch ) => {
+            const {
+                selectBlock,
+                insertBlocks,
+                resetBlocks,
+            } = dispatch( 'core/block-editor' );
+
+            const {
+                editPost,
+            } = dispatch( 'core/editor' );
+
+            const {
+                switchEditorMode,
+            } = dispatch( 'core/edit-post' );
+
+            return {
+                selectBlock,
+                insertBlocks,
+                resetBlocks,
+                editPost,
+                switchEditorMode,
+            };
+        } ),
+    )( UpdateEditor ),
 } );
