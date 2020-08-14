@@ -134,6 +134,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
          */
         public function add_actions() {
             add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+            add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_scripts' ) );
             add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_script_translations' ), 9 );
         }
 
@@ -222,34 +223,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
          * Enqueue admin styles and scripts.
          */
         public function admin_enqueue_scripts() {
-            global $post;
-            global $post_type;
             global $wp_locale;
-
-            if ( 'lazyblocks' === $post_type ) {
-                wp_enqueue_script(
-                    'lazyblocks-constructor',
-                    $this->plugin_url() . 'assets/admin/constructor/index.min.js',
-                    array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
-                    '@@plugin_version',
-                    true
-                );
-                wp_localize_script(
-                    'lazyblocks-constructor',
-                    'lazyblocksConstructorData',
-                    array(
-                        'post_id'             => isset( $post->ID ) ? $post->ID : 0,
-                        'allowed_mime_types'  => get_allowed_mime_types(),
-                        'controls'            => $this->controls()->get_controls(),
-                        'controls_categories' => $this->controls()->get_controls_categories(),
-                        'icons'               => $this->icons()->get_all(),
-                    )
-                );
-
-                wp_enqueue_style( 'lazyblocks-constructor', $this->plugin_url() . 'assets/admin/constructor/style.min.css', array(), '@@plugin_version' );
-                wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
-                wp_style_add_data( 'lazyblocks-constructor', 'suffix', '.min' );
-            }
 
             wp_enqueue_script( 'date_i18n', $this->plugin_url() . 'vendor/date_i18n/date_i18n.js', array(), '1.0.0', true );
 
@@ -272,6 +246,36 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             wp_enqueue_style( 'lazyblocks-admin', $this->plugin_url() . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
             wp_style_add_data( 'lazyblocks-admin', 'rtl', 'replace' );
             wp_style_add_data( 'lazyblocks-admin', 'suffix', '.min' );
+        }
+
+        /**
+         * Enqueue constructor styles and scripts.
+         */
+        public function constructor_enqueue_scripts() {
+            if ( 'lazyblocks' === get_post_type() ) {
+                wp_enqueue_script(
+                    'lazyblocks-constructor',
+                    $this->plugin_url() . 'assets/admin/constructor/index.min.js',
+                    array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
+                    '@@plugin_version',
+                    true
+                );
+                wp_localize_script(
+                    'lazyblocks-constructor',
+                    'lazyblocksConstructorData',
+                    array(
+                        'post_id'             => get_the_ID(),
+                        'allowed_mime_types'  => get_allowed_mime_types(),
+                        'controls'            => $this->controls()->get_controls(),
+                        'controls_categories' => $this->controls()->get_controls_categories(),
+                        'icons'               => $this->icons()->get_all(),
+                    )
+                );
+
+                wp_enqueue_style( 'lazyblocks-constructor', $this->plugin_url() . 'assets/admin/constructor/style.min.css', array(), '@@plugin_version' );
+                wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
+                wp_style_add_data( 'lazyblocks-constructor', 'suffix', '.min' );
+            }
         }
 
         /**
