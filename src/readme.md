@@ -25,7 +25,10 @@ Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You ca
 
 * Create custom blocks with output code
 * Create custom blocks for meta custom fields
-* Handlebars used for blocks output
+* Multiple output methods allowed
+  * Custom PHP
+  * Custom HTML + Handlebars
+  * Template files in theme folder
 * Export / Import blocks
 * Show controls in block content / inspector
 * Controls available:
@@ -78,6 +81,28 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 3. Posts Templates
 
 ## Changelog
+
+= 2.1.0 =
+
+* added support for WordPress 5.5
+* added support for theme template files <https://lazyblocks.com/documentation/blocks-code/theme-template/>
+* added Output Format option for Select and Radio controls
+  * You can output Label
+  * You can output array with Value and Label
+* added RTL support
+* added code to force enable Gutenberg editor on "lazyblocks" post type pages
+* added code for blocks constructor pages, that force enables it and inserts
+* added support for "Frame" and "Custom CSS" Ghost Kit extensions
+* added "PRO Survey" link in the admin menu to get help from users
+* changed default category to "text"
+  * Don't forget to update categories for all your blocks
+  * Since WordPress 5.5 added new categories: Text, Media, Design
+  * Removed categories: Common, Formatting, Layout
+* fixed errors in editor preview, when using `get_lzb_meta` function (now it is working as on frontend)
+* fixed slashes save in lazyblocks meta data (fixes custom code slashes)
+* fixed block code editor content when switching between Frontend and Editor tabs
+* fixed JS error when opened "lazyblocks" list admin page
+* minor improvements
 
 = 2.0.10 =
 
