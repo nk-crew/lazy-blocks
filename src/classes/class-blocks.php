@@ -594,6 +594,8 @@ class LazyBlocks_Blocks {
         'lazyblocks_supports_ghostkit_spacings'      => 'false',
         'lazyblocks_supports_ghostkit_display'       => 'false',
         'lazyblocks_supports_ghostkit_scroll_reveal' => 'false',
+        'lazyblocks_supports_ghostkit_frame'         => 'false',
+        'lazyblocks_supports_ghostkit_custom_css'    => 'false',
 
         'lazyblocks_condition_post_types'            => '',
     );
@@ -884,6 +886,8 @@ class LazyBlocks_Blocks {
                             'spacings'     => $this->get_meta_value( 'lazyblocks_supports_ghostkit_spacings', $block->ID ),
                             'display'      => $this->get_meta_value( 'lazyblocks_supports_ghostkit_display', $block->ID ),
                             'scrollReveal' => $this->get_meta_value( 'lazyblocks_supports_ghostkit_scroll_reveal', $block->ID ),
+                            'frame'        => $this->get_meta_value( 'lazyblocks_supports_ghostkit_frame', $block->ID ),
+                            'customCSS'    => $this->get_meta_value( 'lazyblocks_supports_ghostkit_custom_css', $block->ID ),
                         ),
                     ),
                     'controls'       => $controls,

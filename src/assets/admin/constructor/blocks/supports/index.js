@@ -27,6 +27,8 @@ export default class SupportsSettings extends Component {
             supports_ghostkit_spacings: supportsGktSpacings,
             supports_ghostkit_display: supportsGktDisplay,
             supports_ghostkit_scroll_reveal: supportsGktScrollReveal,
+            supports_ghostkit_frame: supportsGktFrame,
+            supports_ghostkit_custom_css: supportsGktCustomCSS,
         } = data;
 
         let GktWrap = 'div';
@@ -122,7 +124,7 @@ export default class SupportsSettings extends Component {
                         </Notice>
                     </BaseControl>
                 ) : '' }
-                { window.GHOSTKIT && ( supportsGktSpacings || supportsGktDisplay ) && ! supportsClassname ? (
+                { window.GHOSTKIT && ( supportsGktSpacings || supportsGktDisplay || supportsGktFrame || supportsGktCustomCSS ) && ! supportsClassname ? (
                     <BaseControl>
                         <Notice
                             status="error"
@@ -153,6 +155,18 @@ export default class SupportsSettings extends Component {
                         help={ __( 'Display block with animation on scroll.', '@@text_domain' ) }
                         checked={ supportsGktScrollReveal }
                         onChange={ ( value ) => updateData( { supports_ghostkit_scroll_reveal: value } ) }
+                    />
+                    <CheckboxControl
+                        label={ __( 'Frame', '@@text_domain' ) }
+                        help={ __( 'Add border and box shadow to block.', '@@text_domain' ) }
+                        checked={ supportsGktFrame }
+                        onChange={ ( value ) => updateData( { supports_ghostkit_frame: value } ) }
+                    />
+                    <CheckboxControl
+                        label={ __( 'Custom CSS', '@@text_domain' ) }
+                        help={ __( 'Write custom CSS on each inserted blocks.', '@@text_domain' ) }
+                        checked={ supportsGktCustomCSS }
+                        onChange={ ( value ) => updateData( { supports_ghostkit_custom_css: value } ) }
                     />
                 </GktWrap>
             </Fragment>
