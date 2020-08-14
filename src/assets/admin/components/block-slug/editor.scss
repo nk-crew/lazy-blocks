@@ -7,8 +7,8 @@
     > .lazyblocks-component-block-slug-prefix {
         padding: 7px 8px;
         line-height: normal;
-        color: #32373c;
-        background-color: $color_gray;
+        color: #fff;
+        background-color: $gray-900;
         border-top-left-radius: 3px;
         border-bottom-left-radius: 3px;
     }
@@ -18,6 +18,7 @@
 
         input {
             margin-left: 0;
+            border-left: none;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
         }
