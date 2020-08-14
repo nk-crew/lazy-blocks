@@ -5,8 +5,13 @@ import './editor.scss';
 const { __ } = wp.i18n;
 
 const {
+    Fragment,
     Component,
 } = wp.element;
+
+const {
+    withSelect,
+} = wp.data;
 
 const {
     PanelBody,
@@ -19,7 +24,7 @@ const {
     Notice,
 } = wp.components;
 
-export default class CustomCodeSettings extends Component {
+class CustomCodeSettings extends Component {
     constructor( ...args ) {
         super( ...args );
 
@@ -40,8 +45,8 @@ export default class CustomCodeSettings extends Component {
 
         return (
             <CodeEditor
-                mode={ data.code_use_php ? 'php' : 'html' }
                 key={ metaName + data.code_output_method }
+                mode={ data.code_output_method }
                 onChange={ ( value ) => updateData( { [ metaName ]: value } ) }
                 value={ data[ metaName ] }
                 maxLines={ 20 }
@@ -55,6 +60,7 @@ export default class CustomCodeSettings extends Component {
         const {
             data,
             updateData,
+            currentTheme,
         } = this.props;
 
         const {
@@ -91,70 +97,6 @@ export default class CustomCodeSettings extends Component {
         return (
             <div className="lzb-constructor-custom-code-settings">
                 <PanelBody>
-                    { 1 < tabs.length ? (
-                        <BaseControl>
-                            <TabPanel
-                                className="lazyblocks-control-tabs"
-                                activeClass="is-active"
-                                tabs={ tabs }
-                            >
-                                {
-                                    ( tab ) => this.getEditor( tab.name )
-                                }
-                            </TabPanel>
-                        </BaseControl>
-                    ) : (
-                        <BaseControl>
-                            { this.getEditor( 'frontend' ) }
-                        </BaseControl>
-                    ) }
-                    <BaseControl>
-                        { ! showInfo ? (
-                            <Button
-                                isLink
-                                onClick={ () => {
-                                    this.setState( { showInfo: true } );
-                                } }
-                            >
-                                { __( 'How to use?', '@@text_domain' ) }
-                            </Button>
-                        ) : (
-                            <Notice
-                                status="info"
-                                isDismissible={ false }
-                                className="lzb-constructor-notice"
-                            >
-                                <p className="description">
-                                    { __( 'Simple text field example see here:', '@@text_domain' ) }
-                                    { ' ' }
-                                    <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
-                                </p>
-                                <hr />
-                                <p className="description">
-                                    { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.', '@@text_domain' ) }
-                                </p>
-                                <p className="description">
-                                    { __( 'Note 2: supported custom PHP callback to output block', '@@text_domain' ) }
-                                    { ' ' }
-                                    <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>
-                                    .
-                                </p>
-                            </Notice>
-                        ) }
-                    </BaseControl>
-                </PanelBody>
-
-                <PanelBody>
-                    <BaseControl>
-                        <CheckboxControl
-                            label={ __( 'Single output code for Frontend and Editor', '@@text_domain' ) }
-                            checked={ data.code_single_output }
-                            onChange={ ( value ) => updateData( { code_single_output: value } ) }
-                        />
-                    </BaseControl>
-                </PanelBody>
-
-                <PanelBody>
                     <BaseControl
                         label={ __( 'Output Method', '@@text_domain' ) }
                     >
@@ -166,13 +108,114 @@ export default class CustomCodeSettings extends Component {
                                 }, {
                                     label: __( 'PHP', '@@text_domain' ),
                                     value: 'php',
+                                }, {
+                                    label: __( 'Theme Template', '@@text_domain' ),
+                                    value: 'template',
                                 },
                             ] }
-                            selected={ data.code_use_php ? 'php' : 'html' }
-                            onChange={ ( value ) => updateData( { code_use_php: 'php' === value } ) }
+                            selected={ data.code_output_method || 'html' }
+                            onChange={ ( value ) => updateData( { code_output_method: value } ) }
                         />
                     </BaseControl>
                 </PanelBody>
+
+                { /* Code Editor */ }
+                { 'template' !== data.code_output_method ? (
+                    <Fragment>
+                        <PanelBody>
+                            { 1 < tabs.length ? (
+                                <BaseControl>
+                                    <TabPanel
+                                        className="lazyblocks-control-tabs"
+                                        activeClass="is-active"
+                                        tabs={ tabs }
+                                    >
+                                        {
+                                            ( tab ) => this.getEditor( tab.name )
+                                        }
+                                    </TabPanel>
+                                </BaseControl>
+                            ) : (
+                                <BaseControl>
+                                    { this.getEditor( 'frontend' ) }
+                                </BaseControl>
+                            ) }
+                            <BaseControl>
+                                { ! showInfo ? (
+                                    <Button
+                                        isLink
+                                        onClick={ () => {
+                                            this.setState( { showInfo: true } );
+                                        } }
+                                    >
+                                        { __( 'How to use?', '@@text_domain' ) }
+                                    </Button>
+                                ) : (
+                                    <Notice
+                                        status="info"
+                                        isDismissible={ false }
+                                        className="lzb-constructor-notice"
+                                    >
+                                        <p className="description">
+                                            { __( 'Simple text field example see here:', '@@text_domain' ) }
+                                            { ' ' }
+                                            <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
+                                        </p>
+                                        <hr />
+                                        <p className="description">
+                                            { __( 'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.', '@@text_domain' ) }
+                                        </p>
+                                        <p className="description">
+                                            { __( 'Note 2: supported custom PHP callback to output block', '@@text_domain' ) }
+                                            { ' ' }
+                                            <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>
+                                            .
+                                        </p>
+                                    </Notice>
+                                ) }
+                            </BaseControl>
+                        </PanelBody>
+
+                        <PanelBody>
+                            <BaseControl>
+                                <CheckboxControl
+                                    label={ __( 'Single output code for Frontend and Editor', '@@text_domain' ) }
+                                    checked={ data.code_single_output }
+                                    onChange={ ( value ) => updateData( { code_single_output: value } ) }
+                                />
+                            </BaseControl>
+                        </PanelBody>
+                    </Fragment>
+                ) : '' }
+
+                { /* Information about Theme Template usage */ }
+                { 'template' === data.code_output_method && currentTheme && currentTheme.stylesheet ? (
+                    <PanelBody>
+                        <Notice
+                            status="info"
+                            isDismissible={ false }
+                            className="lzb-constructor-notice lzb-constructor-notice-theme-template"
+                        >
+                            <p className="description">
+                                { __( 'To output block code, Lazy Blocks will look for template file in your theme directory:', '@@text_domain' ) }
+                            </p>
+                            <code>
+                                { `/wp-content/themes/${ currentTheme.stylesheet }/blocks/` }
+                                <span>
+                                    { `lazyblock-${ data.slug }` }
+                                </span>
+                                /block.php
+                            </code>
+                            <p className="description">
+                                { __( 'Read more:', '@@text_domain' ) }
+                                { ' ' }
+                                <a href="https://lazyblocks.com/documentation/blocks-code/theme-template/" target="_blank" rel="noopener noreferrer">
+                                    { __( 'How to use theme template', '@@text_domain' ) }
+                                </a>
+                            </p>
+                        </Notice>
+                    </PanelBody>
+                ) : '' }
 
                 <PanelBody>
                     <BaseControl
@@ -203,3 +246,13 @@ export default class CustomCodeSettings extends Component {
         );
     }
 }
+
+export default withSelect( ( select ) => {
+    const {
+        getCurrentTheme,
+    } = select( 'core' );
+
+    return {
+        currentTheme: getCurrentTheme(),
+    };
+} )( CustomCodeSettings );

@@ -574,7 +574,7 @@ class LazyBlocks_Blocks {
 
         'lazyblocks_code_show_preview'               => 'always',
         'lazyblocks_code_single_output'              => 'false',
-        'lazyblocks_code_use_php'                    => 'false',
+        'lazyblocks_code_output_method'              => 'html',
 
         'lazyblocks_code_editor_html'                => '',
         'lazyblocks_code_editor_callback'            => '',
@@ -789,6 +789,20 @@ class LazyBlocks_Blocks {
         if ( null === $this->user_blocks ) {
             $this->user_blocks = array();
         }
+
+        // Fix deprecated 'use_php' and new 'output_method' code data.
+        if ( isset( $data['code'] ) && ! isset( $data['code']['output_method'] ) ) {
+            if ( isset( $data['code']['use_php'] ) && $data['code']['use_php'] ) {
+                $data['code']['output_method'] = 'php';
+            } else {
+                $data['code']['output_method'] = 'html';
+            }
+
+            if ( isset( $data['code']['use_php'] ) ) {
+                unset( $data['code']['use_php'] );
+            }
+        }
+
         $this->user_blocks[] = $data;
     }
 
@@ -874,6 +888,7 @@ class LazyBlocks_Blocks {
                     ),
                     'controls'       => $controls,
                     'code'           => array(
+                        'output_method'     => $this->get_meta_value( 'lazyblocks_code_output_method', $block->ID ),
                         'editor_html'       => $this->get_meta_value( 'lazyblocks_code_editor_html', $block->ID ),
                         'editor_callback'   => '',
                         'editor_css'        => $this->get_meta_value( 'lazyblocks_code_editor_css', $block->ID ),
@@ -882,7 +897,6 @@ class LazyBlocks_Blocks {
                         'frontend_css'      => $this->get_meta_value( 'lazyblocks_code_frontend_css', $block->ID ),
                         'show_preview'      => $this->get_meta_value( 'lazyblocks_code_show_preview', $block->ID ),
                         'single_output'     => $this->get_meta_value( 'lazyblocks_code_single_output', $block->ID ),
-                        'use_php'           => $this->get_meta_value( 'lazyblocks_code_use_php', $block->ID ),
                     ),
                     'condition'      => $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) ? $this->get_meta_value( 'lazyblocks_condition_post_types', $block->ID ) : array(),
                     'edit_url'       => get_edit_post_link( $block->ID ),
@@ -1225,16 +1239,45 @@ class LazyBlocks_Blocks {
         // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/callback', $result, $attributes, $context );
 
-        // custom callback and handlebars html.
+        // Custom output.
         if ( ! $result && isset( $block['code'] ) ) {
-            if ( isset( $block['code'][ $context . '_callback' ] ) && ! empty( $block['code'][ $context . '_callback' ] ) && is_callable( $block['code'][ $context . '_callback' ] ) ) {
+            // Theme template file.
+            if ( isset( $block['code']['output_method'] ) && 'template' === $block['code']['output_method'] ) {
+                ob_start();
+                $template_slug        = str_replace( '/', '-', $attributes['lazyblock']['slug'] );
+                $template_path_editor = '/blocks/' . $template_slug . '/editor.php';
+                $template_path        = '/blocks/' . $template_slug . '/block.php';
+                $template_args        = array(
+                    'attributes' => $attributes,
+                    'block'      => $block,
+                    'context'    => $context,
+                );
+
+                // Editor template.
+                if ( 'editor' === $context && $this->template_exists( $template_path_editor, $template_args ) ) {
+                    $this->include_template( $template_path_editor, $template_args );
+
+                    // Frontend template.
+                } elseif ( $this->template_exists( $template_path, $template_args ) ) {
+                    $this->include_template( $template_path, $template_args );
+
+                    // Template not found.
+                } else {
+                    $this->include_template( lazyblocks()->plugin_path . 'templates/template-not-found.php', $template_args );
+                }
+
+                $result = ob_get_clean();
+
+                // Callback function.
+            } elseif ( isset( $block['code'][ $context . '_callback' ] ) && ! empty( $block['code'][ $context . '_callback' ] ) && is_callable( $block['code'][ $context . '_callback' ] ) ) {
                 ob_start();
                 call_user_func( $block['code'][ $context . '_callback' ], $attributes );
-                $result = ob_get_contents();
-                ob_end_clean();
+                $result = ob_get_clean();
+
+                // Custom code.
             } elseif ( isset( $block['code'][ $context . '_html' ] ) && ! empty( $block['code'][ $context . '_html' ] ) ) {
                 // PHP output.
-                if ( isset( $block['code']['use_php'] ) && $block['code']['use_php'] ) {
+                if ( isset( $block['code']['output_method'] ) && 'php' === $block['code']['output_method'] ) {
                     $result = $this->php_eval( $block['code'][ $context . '_html' ], $attributes );
 
                     // Handlebars.
@@ -1284,5 +1327,49 @@ class LazyBlocks_Blocks {
         }
 
         return $result;
+    }
+
+    /**
+     * Check if template exists.
+     *
+     * @param string $template_name file name.
+     * @param array  $args args for template.
+     */
+    public function template_exists( $template_name, $args = array() ) {
+        if ( ! empty( $args ) && is_array( $args ) ) {
+	        // phpcs:ignore
+            extract( $args );
+        }
+
+        // template in theme folder.
+        $template = locate_template( array( $template_name ) );
+
+        // Allow 3rd party plugin filter template file from their plugin.
+        $template = apply_filters( 'lzb/template_exists', $template, $template_name, $args );
+
+        return file_exists( $template );
+    }
+
+    /**
+     * Include template
+     *
+     * @param string $template_name file name.
+     * @param array  $args args for template.
+     */
+    public function include_template( $template_name, $args = array() ) {
+        if ( ! empty( $args ) && is_array( $args ) ) {
+	        // phpcs:ignore
+            extract( $args );
+        }
+
+        // template in theme folder.
+        $template = locate_template( array( $template_name ) );
+
+        // Allow 3rd party plugin filter template file from their plugin.
+        $template = apply_filters( 'lzb/include_template', $template, $template_name, $args );
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
 }

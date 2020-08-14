@@ -200,7 +200,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
             return $this->error( 'lazy_block_invalid', esc_html__( 'Invalid block.', '@@text_domain' ) );
         }
 
-        if ( isset( $block['code']['single_output'] ) && $block['code']['single_output'] ) {
+        if ( isset( $block['code']['output_method'] ) && 'template' !== $block['code']['output_method'] && isset( $block['code']['single_output'] ) && $block['code']['single_output'] ) {
             $block_context = 'frontend';
         }
 

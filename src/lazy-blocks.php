@@ -142,6 +142,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
          * Set plugin Dependencies.
          */
         private function include_dependencies() {
+            require_once $this->plugin_path() . '/classes/class-migration.php';
             require_once $this->plugin_path() . '/classes/class-icons.php';
             require_once $this->plugin_path() . '/classes/class-controls.php';
             require_once $this->plugin_path() . '/classes/class-blocks.php';
