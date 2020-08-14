@@ -41,6 +41,7 @@ export default class CustomCodeSettings extends Component {
         return (
             <CodeEditor
                 mode={ data.code_use_php ? 'php' : 'html' }
+                key={ metaName + data.code_output_method }
                 onChange={ ( value ) => updateData( { [ metaName ]: value } ) }
                 value={ data[ metaName ] }
                 maxLines={ 20 }
