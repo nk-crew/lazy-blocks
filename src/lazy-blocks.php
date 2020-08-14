@@ -218,6 +218,15 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
                 'manage_options',
                 'https://lazyblocks.com/documentation/getting-started/'
             );
+
+            // PRO plugin survive link.
+            add_submenu_page(
+                'edit.php?post_type=lazyblocks',
+                esc_html__( 'PRO Survey', '@@text_domain' ),
+                esc_html__( 'PRO Survey', '@@text_domain' ),
+                'manage_options',
+                'https://forms.gle/oopKhfBanaehVM7aA'
+            );
         }
 
         /**
