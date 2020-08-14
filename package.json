@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "@wordpress/base-styles": "^2.0.1",
+    "ace-builds": "^1.4.12",
     "array-move": "^3.0.0",
-    "brace": "^0.11.1",
     "classnames": "^2.2.6",
     "clipboard-polyfill": "^3.0.1",
     "deep-equal": "^2.0.3",
