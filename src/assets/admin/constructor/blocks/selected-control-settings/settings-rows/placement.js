@@ -32,7 +32,7 @@ export default class PlacementRow extends Component {
         }
 
         if ( ! placementRestrictions.length ) {
-            return '';
+            return null;
         }
 
         return (

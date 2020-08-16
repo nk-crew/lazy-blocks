@@ -61,7 +61,7 @@ export default class settingsRows extends Component {
 
             // don't show.
             if ( ! allow ) {
-                return '';
+                return null;
             }
 
             return (

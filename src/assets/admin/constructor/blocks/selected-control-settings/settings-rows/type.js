@@ -134,7 +134,7 @@ class TypeRow extends Component {
                                     >
                                         { types.map( ( thisType ) => {
                                             if ( thisType.category !== cat ) {
-                                                return '';
+                                                return null;
                                             }
 
                                             return (
