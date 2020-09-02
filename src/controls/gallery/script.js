@@ -20,6 +20,7 @@ addFilter( 'lzb.editor.control.gallery.render', 'lzb.editor', ( render, props ) 
                 id: image.id || '',
                 link: image.link || '',
                 url: image.url || '',
+                sizes: image.sizes || '',
             } ) );
 
             props.onChange( result );
