@@ -833,6 +833,9 @@ class LazyBlocks_Blocks {
                     'paged'          => -1,
                 )
             );
+
+            $all_controls = lazyblocks()->controls()->get_controls();
+
             foreach ( $all_blocks as $block ) {
                 $icon = $this->get_meta_value( 'lazyblocks_icon', $block->ID );
 
@@ -856,7 +859,18 @@ class LazyBlocks_Blocks {
                     $keywords = array();
                 }
 
-                $controls       = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
+                $controls = $this->get_meta_value( 'lazyblocks_controls', $block->ID );
+
+                // prepare default control data.
+                foreach ( $controls as $k => $control ) {
+                    if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) && isset( $all_controls[ $control['type'] ]['attributes'] ) ) {
+                        $controls[ $k ] = array_merge(
+                            $all_controls[ $control['type'] ]['attributes'],
+                            $control
+                        );
+                    }
+                }
+
                 $align          = (array) $this->get_meta_value( 'lazyblocks_supports_align', $block->ID );
                 $align_none_key = array_search( 'none', $align, true );
 
