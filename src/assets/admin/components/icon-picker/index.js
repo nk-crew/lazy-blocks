@@ -74,10 +74,9 @@ class IconPickerDropdown extends Component {
     }
 
     componentDidUpdate() {
-        // for some reason react-virtualized recalculates fine only when use timeout.
-        setTimeout( () => {
+        if ( this.cellMCache ) {
             this.cellMCache.clearAll();
-        }, 10 );
+        }
     }
 
     getDropdownContent() {
