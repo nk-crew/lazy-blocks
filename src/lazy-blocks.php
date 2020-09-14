@@ -106,6 +106,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             $this->tools     = new LazyBlocks_Tools();
 
             add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+            add_action( 'admin_menu', array( $this, 'maybe_hide_menu_item' ), 12 );
         }
 
         /**
@@ -227,6 +228,17 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
                 'manage_options',
                 'https://forms.gle/oopKhfBanaehVM7aA'
             );
+        }
+
+        /**
+         * Maybe hide admin menu item.
+         */
+        public function maybe_hide_menu_item() {
+            $show_menu_item = apply_filters( 'lzb/show_admin_menu', true );
+
+            if ( ! $show_menu_item ) {
+                remove_menu_page( 'edit.php?post_type=lazyblocks' );
+            }
         }
 
         /**
