@@ -82,6 +82,13 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.1.1 =
+
+* added possibility to hide admin menu item using php filter <https://lazyblocks.com/documentation/php-filters/lzb-show_admin_menu/>
+* improved icon picker cache method
+* fixed controls default values loading while rendering (for example, default value of Checkbox control now will be `false`)
+* minor changes
+
 = 2.1.0 =
 
 * added support for WordPress 5.5
