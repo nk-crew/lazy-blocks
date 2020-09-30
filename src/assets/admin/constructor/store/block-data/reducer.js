@@ -45,7 +45,12 @@ function reducer( state = { data: false }, action ) {
         if ( action.data && state ) {
             return {
                 ...state,
-                data: merge( {}, state.data, action.data ),
+
+                // We can't use `marge` function as arrays like `supports_align` should be replaced, not merged.
+                data: {
+                    ...( state.data || {} ),
+                    ...( action.data || {} ),
+                },
             };
         }
 
