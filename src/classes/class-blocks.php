@@ -1344,6 +1344,13 @@ class LazyBlocks_Blocks {
             $result = '<div' . $html_atts . '>' . $result . '</div>';
         }
 
+        // add filter for block output.
+        $result = apply_filters( 'lzb/block_render/output', $result, $attributes, $context );
+        // phpcs:ignore
+        $result = apply_filters( $block['slug'] . '/' . $context . '_output', $result, $attributes );
+        // phpcs:ignore
+        $result = apply_filters( $block['slug'] . '/output', $result, $attributes, $context );
+
         return $result;
     }
 
