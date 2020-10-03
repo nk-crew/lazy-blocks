@@ -1370,6 +1370,13 @@ class LazyBlocks_Blocks {
         $template = locate_template( array( $template_name ) );
 
         // Allow 3rd party plugin filter template file from their plugin.
+        $template = apply_filters( 'lzb/block_render/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['context'] );
+        // phpcs:ignore
+        $template = apply_filters( $args['block']['slug'] . '/' . $args['context'] . '_template_exists', $template, $template_name, $args['attributes'], $args['block'] );
+        // phpcs:ignore
+        $template = apply_filters( $args['block']['slug'] . '/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['context'] );
+
+        // DEPRECATED.
         $template = apply_filters( 'lzb/template_exists', $template, $template_name, $args );
 
         return file_exists( $template );
@@ -1391,6 +1398,13 @@ class LazyBlocks_Blocks {
         $template = locate_template( array( $template_name ) );
 
         // Allow 3rd party plugin filter template file from their plugin.
+        $template = apply_filters( 'lzb/block_render/include_template', $template, $args['attributes'], $args['block'], $args['context'] );
+        // phpcs:ignore
+        $template = apply_filters( $args['block']['slug'] . '/' . $args['context'] . '_include_template', $template, $args['attributes'], $args['block'] );
+        // phpcs:ignore
+        $template = apply_filters( $args['block']['slug'] . '/include_template', $template, $args['attributes'], $args['block'], $args['context'] );
+
+        // DEPRECATED.
         $template = apply_filters( 'lzb/include_template', $template, $template_name, $args );
 
         if ( file_exists( $template ) ) {
