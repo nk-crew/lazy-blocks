@@ -25,13 +25,15 @@ const {
     doAction,
 } = wp.hooks;
 
+const { withSelect } = wp.data;
+
 /**
  * Block Editor custom PHP preview.
  *
  * Based on ServerSideRender
  * https://github.com/WordPress/gutenberg/blob/master/packages/components/src/server-side-render/index.js
  */
-export default class PreviewServerCallback extends Component {
+class PreviewServerCallback extends Component {
     constructor( props ) {
         super( props );
         this.state = {
@@ -66,12 +68,15 @@ export default class PreviewServerCallback extends Component {
         if ( ! this.isStillMounted ) {
             return;
         }
+
         if ( null !== this.state.response ) {
             this.setState( { response: null } );
         }
+
         const {
             block,
             attributes = null,
+            post_id: postId,
             urlQueryArgs = {},
             onBeforeChange = () => {},
             onChange = () => {},
@@ -85,6 +90,7 @@ export default class PreviewServerCallback extends Component {
             data: {
                 context: 'editor',
                 name: block,
+                post_id: postId || 0,
                 ...( null !== attributes ? { attributes } : {} ),
                 ...urlQueryArgs,
             },
@@ -183,3 +189,11 @@ export default class PreviewServerCallback extends Component {
         );
     }
 }
+
+export default withSelect( ( select ) => {
+    const { getCurrentPostId } = select( 'core/editor' );
+
+    return {
+        post_id: getCurrentPostId(),
+    };
+} )( PreviewServerCallback );

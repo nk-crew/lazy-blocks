@@ -173,7 +173,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     public function get_block( $request ) {
         global $post;
 
-        $post_id          = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+        $post_id          = $request->get_param( 'post_id' ) ? intval( $request->get_param( 'post_id' ) ) : 0;
         $block_context    = $request->get_param( 'context' );
         $block_name       = $request->get_param( 'name' );
         $block_attributes = $request->get_param( 'attributes' );
