@@ -4,6 +4,28 @@ const {
     addFilter,
 } = wp.hooks;
 
+const { __ } = wp.i18n;
+
+const {
+    Fragment,
+    Component,
+} = wp.element;
+
+const {
+    PanelBody,
+    BaseControl,
+    SelectControl,
+} = wp.components;
+
+const {
+    withInstanceId,
+    compose,
+} = wp.compose;
+
+const {
+    withSelect,
+} = wp.data;
+
 /**
  * Control render in editor.
  */
@@ -11,6 +33,7 @@ addFilter( 'lzb.editor.control.image.render', 'lzb.editor', ( render, props ) =>
     <ImageControl
         label={ props.data.label }
         help={ props.data.help }
+        previewSize={ props.data.preview_size }
         value={ props.getValue() }
         onChange={ ( val ) => {
             const result = val ? {
@@ -55,3 +78,78 @@ addFilter( 'lzb.editor.control.image.updateValue', 'lzb.editor', ( value ) => {
 
     return value;
 } );
+
+/**
+ * Control settings render in constructor.
+ */
+class AdditionalAttributes extends Component {
+    render() {
+        const {
+            imageSizes,
+            imageDimensions,
+            updateData,
+            data,
+        } = this.props;
+
+        return (
+            <Fragment>
+                <PanelBody>
+                    <BaseControl
+                        label={ __( 'Preview Size', '@@text_domain' ) }
+                    >
+                        <SelectControl
+                            options={ (
+                                imageSizes.map( ( sizeData ) => {
+                                    let sizeLabel = sizeData.name;
+
+                                    if ( imageDimensions[ sizeData.slug ] ) {
+                                        sizeLabel += ` (${ imageDimensions[ sizeData.slug ].width } × ${ imageDimensions[ sizeData.slug ].height })`;
+                                    }
+
+                                    return {
+                                        label: sizeLabel,
+                                        value: sizeData.slug,
+                                    };
+                                } )
+                            ) }
+                            value={ data.preview_size || 'medium' }
+                            onChange={ ( value ) => updateData( { preview_size: value } ) }
+                        />
+                    </BaseControl>
+                </PanelBody>
+            </Fragment>
+        );
+    }
+}
+
+const AdditionalAttributesWithSelect = compose( [
+    withInstanceId,
+    withSelect( ( select ) => {
+        const {
+            getEditorSettings,
+        } = select( 'core/editor' );
+
+        const editorSettings = getEditorSettings();
+        const imageSizes = editorSettings.imageSizes || [
+            {
+                name: __( 'Medium', '@@text_domain' ),
+                slug: 'medium',
+            },
+        ];
+        const imageDimensions = editorSettings.imageDimensions || {
+            medium: {
+                width: 300,
+                height: 300,
+            },
+        };
+
+        return {
+            imageSizes,
+            imageDimensions,
+        };
+    } ),
+] )( AdditionalAttributes );
+
+addFilter( 'lzb.constructor.control.image.settings', 'lzb.constructor', ( render, props ) => (
+    <AdditionalAttributesWithSelect { ...props } />
+) );

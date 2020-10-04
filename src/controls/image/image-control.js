@@ -20,6 +20,10 @@ const {
     mediaUpload,
 } = wp.editor;
 
+const {
+    withSelect,
+} = wp.data;
+
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 /* eslint-disable react/no-unused-state */
@@ -46,6 +50,7 @@ class ImageControl extends Component {
             label,
             value,
             help,
+            imagePreviewData,
             noticeOperations,
             noticeUI,
             onChange = () => {},
@@ -106,7 +111,9 @@ class ImageControl extends Component {
                                 </Button>
                             </div>
                             <div className="lzb-gutenberg-image-item" key={ value.id || value.url }>
-                                <img src={ value.url } alt={ value.alt } />
+                                { imagePreviewData.url ? (
+                                    <img src={ imagePreviewData.url } alt={ imagePreviewData.alt } />
+                                ) : '' }
                             </div>
                         </div>
                     ) : '' }
@@ -119,4 +126,35 @@ class ImageControl extends Component {
 export default compose( [
     withInstanceId,
     withNotices,
+    withSelect( ( select, ownProps ) => {
+        const {
+            getMedia,
+        } = select( 'core' );
+
+        const {
+            value,
+            previewSize,
+        } = ownProps;
+
+        let imagePreviewData = false;
+
+        if ( value && Object.keys( value ).length && value.id ) {
+            const mediaImg = getMedia( value.id ) || false;
+
+            if ( mediaImg ) {
+                imagePreviewData = {
+                    alt: mediaImg.alt_text,
+                    url: mediaImg.source_url,
+                };
+
+                if ( mediaImg.media_details && mediaImg.media_details.sizes && mediaImg.media_details.sizes[ previewSize ] ) {
+                    imagePreviewData.url = mediaImg.media_details.sizes[ previewSize ].source_url;
+                }
+            }
+        }
+
+        return {
+            imagePreviewData,
+        };
+    } ),
 ] )( ImageControl );

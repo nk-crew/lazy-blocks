@@ -25,6 +25,9 @@ class LazyBlocks_Control_Image extends LazyBlocks_Control {
         $this->restrictions = array(
             'default_settings' => false,
         );
+        $this->attributes   = array(
+            'preview_size' => 'medium',
+        );
 
         // Filters.
         add_filter( 'lzb/block_render/attributes', array( $this, 'filter_lzb_block_render_attributes' ), 10, 3 );

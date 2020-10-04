@@ -21,6 +21,10 @@ const {
     mediaUpload,
 } = wp.editor;
 
+const {
+    withSelect,
+} = wp.data;
+
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 /* eslint-disable react/no-unused-state */
@@ -47,6 +51,7 @@ class GalleryControl extends Component {
             label,
             value,
             help,
+            imagesPreviewData,
             noticeOperations,
             noticeUI,
             onChange = () => {},
@@ -120,7 +125,9 @@ class GalleryControl extends Component {
                                     </div>
                                     { value.map( ( img ) => (
                                         <div className="lzb-gutenberg-gallery-item" key={ img.id || img.url }>
-                                            <img src={ img.url } alt={ img.alt } />
+                                            { imagesPreviewData[ img.id ] && imagesPreviewData[ img.id ].url ? (
+                                                <img src={ imagesPreviewData[ img.id ].url } alt={ imagesPreviewData[ img.id ].alt } />
+                                            ) : '' }
                                         </div>
                                     ) ) }
                                 </div>
@@ -136,4 +143,39 @@ class GalleryControl extends Component {
 export default compose( [
     withInstanceId,
     withNotices,
+    withSelect( ( select, ownProps ) => {
+        const {
+            getMedia,
+        } = select( 'core' );
+
+        const {
+            value,
+            previewSize,
+        } = ownProps;
+
+        const imagesPreviewData = {};
+
+        if ( value && Object.keys( value ).length ) {
+            value.forEach( ( img ) => {
+                if ( ! imagesPreviewData[ img.id ] ) {
+                    const mediaImg = getMedia( img.id ) || false;
+
+                    if ( mediaImg ) {
+                        imagesPreviewData[ img.id ] = {
+                            alt: mediaImg.alt_text,
+                            url: mediaImg.source_url,
+                        };
+
+                        if ( mediaImg.media_details && mediaImg.media_details.sizes && mediaImg.media_details.sizes[ previewSize ] ) {
+                            imagesPreviewData[ img.id ].url = mediaImg.media_details.sizes[ previewSize ].source_url;
+                        }
+                    }
+                }
+            } );
+        }
+
+        return {
+            imagesPreviewData,
+        };
+    } ),
 ] )( GalleryControl );
