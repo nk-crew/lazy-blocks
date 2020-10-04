@@ -87,11 +87,12 @@ class LazyBlocks_Control_Image extends LazyBlocks_Control {
                     $data['sizes'] = $sizes;
                 }
 
-                $data['alt']     = get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true );
-                $data['caption'] = $attachment->post_excerpt;
-                $data['title']   = get_the_title( $attachment->ID );
-                $data['url']     = $attachment->guid;
-                $data['link']    = get_permalink( $attachment->ID );
+                $data['alt']         = get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true );
+                $data['caption']     = $attachment->post_excerpt;
+                $data['description'] = $attachment->post_content;
+                $data['title']       = get_the_title( $attachment->ID );
+                $data['url']         = $attachment->guid;
+                $data['link']        = get_permalink( $attachment->ID );
             }
         }
 

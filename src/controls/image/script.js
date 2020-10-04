@@ -40,6 +40,7 @@ addFilter( 'lzb.editor.control.image.render', 'lzb.editor', ( render, props ) =>
                 alt: val.alt || '',
                 title: val.title || '',
                 caption: val.caption || '',
+                description: val.description || '',
                 id: val.id || '',
                 link: val.link || '',
                 url: val.url || '',
