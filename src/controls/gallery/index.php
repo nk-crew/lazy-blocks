@@ -59,6 +59,46 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
     }
 
     /**
+     * Lets get actual image data from DB.
+     *
+     * @param array $data image data.
+     *
+     * @return array
+     */
+    public function maybe_update_image_data( $data ) {
+        if ( isset( $data['id'] ) ) {
+            $attachment_meta = wp_get_attachment_metadata( $data['id'] );
+
+            if ( ! empty( $attachment_meta ) ) {
+                $attachment = get_post( $data['id'] );
+
+                if ( isset( $attachment_meta['sizes'] ) ) {
+                    $sizes = array();
+
+                    foreach ( $attachment_meta['sizes'] as $name => $size ) {
+                        $sizes[ $name ] = array(
+                            'width'       => $size['width'],
+                            'height'      => $size['height'],
+                            'url'         => wp_get_attachment_image_url( $data['id'], $name ),
+                            'orientation' => $size['width'] >= $size['height'] ? 'landscape' : 'portrait',
+                        );
+                    }
+
+                    $data['sizes'] = $sizes;
+                }
+
+                $data['alt']     = get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true );
+                $data['caption'] = $attachment->post_excerpt;
+                $data['title']   = get_the_title( $attachment->ID );
+                $data['url']     = $attachment->guid;
+                $data['link']    = get_permalink( $attachment->ID );
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Change block render attribute to array.
      *
      * @param string $attributes - block attributes.
@@ -76,6 +116,16 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
         foreach ( $block['controls'] as $control ) {
             if ( $this->name === $control['type'] && isset( $attributes[ $control['name'] ] ) && is_string( $attributes[ $control['name'] ] ) ) {
                 $attributes[ $control['name'] ] = json_decode( rawurldecode( $attributes[ $control['name'] ] ), true );
+
+                if ( ! empty( $attributes[ $control['name'] ] ) ) {
+                    $new_result = array();
+
+                    foreach ( $attributes[ $control['name'] ] as $k => $val ) {
+                        $new_result[ $k ] = $this->maybe_update_image_data( $val );
+                    }
+
+                    $attributes[ $control['name'] ] = $new_result;
+                }
             }
         }
 
@@ -95,6 +145,18 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
     public function filter_get_lzb_meta_json( $result, $name, $id, $control ) {
         if ( ! $control || $this->name !== $control['type'] ) {
             return $result;
+        }
+
+        $result = json_decode( urldecode( $result ), true );
+
+        if ( ! empty( $result ) ) {
+            $new_result = array();
+
+            foreach ( $result as $k => $val ) {
+                $new_result[ $k ] = $this->maybe_update_image_data( $val );
+            }
+
+            $result = $new_result;
         }
 
         return json_decode( urldecode( $result ), true );
