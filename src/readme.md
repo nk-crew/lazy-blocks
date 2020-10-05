@@ -82,6 +82,16 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 
 ## Changelog
 
+= 2.2.0 =
+
+* added possibility to select image preview size for Image and Gallery controls (Medium size by default)
+* added possibility to filter block output using php filter <https://lazyblocks.com/documentation/php-filters/lzb-block_render-output/>
+* added description data in Image and Gallery controls
+* update image and gallery control data in block dynamically for output actual image data
+* improved block template path filters <https://lazyblocks.com/documentation/php-filters/lzb-block_render-include_template/>
+* fixed possibility to use Post data in block render preview
+* fixed constructor Align attribute duplications bug
+
 = 2.1.1 =
 
 * added possibility to hide admin menu item using php filter <https://lazyblocks.com/documentation/php-filters/lzb-show_admin_menu/>
