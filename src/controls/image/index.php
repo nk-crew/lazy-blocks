@@ -91,7 +91,7 @@ class LazyBlocks_Control_Image extends LazyBlocks_Control {
                 $data['caption']     = $attachment->post_excerpt;
                 $data['description'] = $attachment->post_content;
                 $data['title']       = get_the_title( $attachment->ID );
-                $data['url']         = $attachment->guid;
+                $data['url']         = wp_get_attachment_image_url( $attachment->ID, 'full' );
                 $data['link']        = get_permalink( $attachment->ID );
             }
         }
