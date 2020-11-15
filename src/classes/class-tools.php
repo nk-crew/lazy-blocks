@@ -219,7 +219,8 @@ class LazyBlocks_Tools {
 
         // Check file size.
         if ( empty( $_FILES['lzb_tools_import_json']['size'] ) ) {
-            return $this->add_notice( esc_html__( 'No file selected', '@@text_domain' ), 'warning' );
+            $this->add_notice( esc_html__( 'No file selected', '@@text_domain' ), 'warning' );
+            return;
         }
 
         // Get file data.
@@ -228,12 +229,14 @@ class LazyBlocks_Tools {
 
         // Check for errors.
         if ( $file['error'] ) {
-            return $this->add_notice( esc_html__( 'Error uploading file. Please try again', '@@text_domain' ), 'warning' );
+            $this->add_notice( esc_html__( 'Error uploading file. Please try again', '@@text_domain' ), 'warning' );
+            return;
         }
 
         // Check file type.
         if ( pathinfo( $file['name'], PATHINFO_EXTENSION ) !== 'json' ) {
-            return $this->add_notice( esc_html__( 'Incorrect file type', '@@text_domain' ), 'warning' );
+            $this->add_notice( esc_html__( 'Incorrect file type', '@@text_domain' ), 'warning' );
+            return;
         }
 
         // Read JSON.
@@ -243,7 +246,8 @@ class LazyBlocks_Tools {
 
         // Check if empty.
         if ( ! $json || ! is_array( $json ) ) {
-            return $this->add_notice( esc_html__( 'Import file empty', '@@text_domain' ), 'warning' );
+            $this->add_notice( esc_html__( 'Import file empty', '@@text_domain' ), 'warning' );
+            return;
         }
 
         // Remember imported ids.
