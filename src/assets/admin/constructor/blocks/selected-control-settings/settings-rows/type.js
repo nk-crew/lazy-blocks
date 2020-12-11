@@ -1,4 +1,5 @@
 import getControlTypeData from '../../../../utils/get-control-type-data';
+import Modal from '../../../../components/modal';
 
 const { __ } = wp.i18n;
 
@@ -9,7 +10,6 @@ const {
 const {
     PanelBody,
     BaseControl,
-    Dropdown,
     TextControl,
 } = wp.components;
 
@@ -29,6 +29,7 @@ class TypeRow extends Component {
         super( ...args );
 
         this.state = {
+            modalOpened: false,
             search: '',
         };
     }
@@ -39,6 +40,10 @@ class TypeRow extends Component {
             blockData,
             data,
         } = this.props;
+
+        const {
+            modalOpened,
+        } = this.state;
 
         const {
             type = '',
@@ -90,30 +95,30 @@ class TypeRow extends Component {
             };
         } );
 
+        const controlTypeData = getControlTypeData( type );
+
         return (
             <PanelBody>
                 <BaseControl
                     label={ __( 'Type', '@@text_domain' ) }
                 >
-                    <Dropdown
-                        className="lzb-constructor-type-toggle-dropdown"
-                        renderToggle={ ( { isOpen, onToggle } ) => {
-                            const controlTypeData = getControlTypeData( type );
-                            return (
-                                // eslint-disable-next-line react/button-has-type
-                                <button
-                                    aria-expanded={ isOpen }
-                                    onClick={ onToggle }
-                                    className="lzb-constructor-type-toggle"
-                                >
-                                    { /* eslint-disable-next-line react/no-danger */ }
-                                    <span dangerouslySetInnerHTML={ { __html: controlTypeData.icon } } />
-                                    { controlTypeData.label }
-                                    <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className="css-6q0nyr-Svg"><path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" /></svg>
-                                </button>
-                            );
-                        } }
-                        renderContent={ () => (
+                    { /* eslint-disable-next-line react/button-has-type */ }
+                    <button
+                        onClick={ () => this.setState( { modalOpened: ! modalOpened } ) }
+                        className="lzb-constructor-type-toggle"
+                    >
+                        { /* eslint-disable-next-line react/no-danger */ }
+                        <span dangerouslySetInnerHTML={ { __html: controlTypeData.icon } } />
+                        { controlTypeData.label }
+                        <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className="css-6q0nyr-Svg"><path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" /></svg>
+                    </button>
+
+                    { modalOpened ? (
+                        <Modal
+                            title={ __( 'Control Type', '@@text_domain' ) }
+                            position="top"
+                            onRequestClose={ () => this.setState( { modalOpened: ! modalOpened } ) }
+                        >
                             <div className="lzb-constructor-type-dropdown">
                                 <TextControl
                                     value={ this.state.search }
@@ -141,7 +146,10 @@ class TypeRow extends Component {
                                                 // eslint-disable-next-line react/button-has-type
                                                 <button
                                                     key={ cat + thisType.name }
-                                                    onClick={ () => updateData( { type: thisType.name } ) }
+                                                    onClick={ () => {
+                                                        updateData( { type: thisType.name } );
+                                                        this.setState( { modalOpened: false } );
+                                                    } }
                                                     disabled={ thisType.isDisabled }
                                                     className={ type === thisType.name ? 'is-active' : '' }
                                                 >
@@ -154,8 +162,8 @@ class TypeRow extends Component {
                                     </PanelBody>
                                 ) ) }
                             </div>
-                        ) }
-                    />
+                        </Modal>
+                    ) : '' }
                 </BaseControl>
             </PanelBody>
         );
