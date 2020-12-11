@@ -13,6 +13,10 @@
 }
 
 .lazyblocks-component-document-tabs .lazyblocks-component-document-tabs-content {
+    .components-base-control__label {
+        display: inline-block;
+        margin-bottom: 8px;
+    }
     .components-base-control__help {
         color: $color_dark_lighten_2;
     }
