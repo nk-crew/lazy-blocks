@@ -49,7 +49,7 @@ export default class ClassicEdit extends Component {
         if ( 'complete' === document.readyState ) {
             this.initialize();
         } else {
-            window.addEventListener( 'DOMContentLoaded', this.initialize );
+            document.addEventListener( 'readystatechange', this.initialize );
         }
     }
 
@@ -65,7 +65,7 @@ export default class ClassicEdit extends Component {
     }
 
     componentWillUnmount() {
-        window.addEventListener( 'DOMContentLoaded', this.initialize );
+        document.removeEventListener( 'readystatechange', this.initialize );
         wp.oldEditor.remove( `editor-${ this.props.editorId }` );
     }
 
