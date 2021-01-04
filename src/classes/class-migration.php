@@ -25,14 +25,7 @@ class LazyBlocks_Migration {
      *
      * @var string
      */
-    protected $initial_version = '';
-
-    /**
-     * The theme version as stored in the db.
-     *
-     * @var string
-     */
-    protected $previous_version;
+    protected $initial_version = '2.0.10';
 
     /**
      * LazyBlocks_Extend constructor.
@@ -49,8 +42,8 @@ class LazyBlocks_Migration {
      * Init.
      */
     public function init() {
-        // Migration code added after 2.0.10 plugin version.
-        $saved_version   = get_option( 'lzb_db_version', '2.0.10' );
+        // Migration code added after `$this->initial_version` plugin version.
+        $saved_version   = get_option( 'lzb_db_version', $this->initial_version );
         $current_version = $this->version;
 
         foreach ( $this->get_migrations() as $migration ) {
