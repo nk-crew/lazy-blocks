@@ -1,4 +1,5 @@
 import CreatableSelect from 'react-select/creatable';
+import AsyncSelect from 'react-select/async';
 import ReactSelect from 'react-select';
 import selectStyles from 'gutenberg-react-select-styles';
 
@@ -9,7 +10,13 @@ const { Component } = wp.element;
 
 export default class Select extends Component {
     render() {
-        const ThisSelect = this.props.isCreatable ? CreatableSelect : ReactSelect;
+        let ThisSelect = ReactSelect;
+
+        if ( this.props.isAsync ) {
+            ThisSelect = AsyncSelect;
+        } else if ( this.props.isCreatable ) {
+            ThisSelect = CreatableSelect;
+        }
 
         return (
             <ThisSelect
