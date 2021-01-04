@@ -30,7 +30,7 @@ const {
 
 const {
     icons,
-} = window.lazyblocksConstructorData;
+} = window.lazyblocksConstructorData || window.lazyblocksGutenberg;
 
 // we need this lazy loading component to prevent a huge lags while first loading SVG icons
 class Icon extends Component {

@@ -3,6 +3,7 @@ import classnames from 'classnames/dedupe';
 import { throttle } from 'throttle-debounce';
 
 // Internal Dependencies
+import '../admin/store';
 import './blocks/free';
 import './extensions/block-id';
 

@@ -1106,6 +1106,7 @@ class LazyBlocks_Blocks {
                 'post_type'          => $post_type,
                 'blocks'             => $blocks,
                 'controls'           => lazyblocks()->controls()->get_controls(),
+                'icons'              => lazyblocks()->icons()->get_all(),
                 'allowed_mime_types' => get_allowed_mime_types(),
             )
         );

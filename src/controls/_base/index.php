@@ -30,7 +30,7 @@ class LazyBlocks_Control {
     public $icon = '';
 
     /**
-     * Control value type [string, number, boolean].
+     * Control value type [string, number, boolean, array].
      *
      * @var string
      */

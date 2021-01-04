@@ -1,4 +1,5 @@
 import './store';
+import '../store';
 
 // Internal Dependencies
 import DocumentTabs from '../components/document-tabs';
