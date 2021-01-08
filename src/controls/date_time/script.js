@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import classnames from 'classnames/dedupe';
+
 const { Component } = wp.element;
 
 const { __ } = wp.i18n;
@@ -12,11 +17,11 @@ const {
 } = wp.date;
 
 const {
+    Dropdown,
     PanelBody,
     BaseControl,
     ButtonGroup,
     Button,
-    Popover,
     DatePicker,
     TimePicker,
 } = wp.components;
@@ -25,14 +30,6 @@ const {
  * Date Time Picker.
  */
 class DateTimePicker extends Component {
-    constructor( ...args ) {
-        super( ...args );
-
-        this.state = {
-            isPickerOpen: false,
-        };
-    }
-
     render() {
         const {
             value,
@@ -43,12 +40,7 @@ class DateTimePicker extends Component {
             allowDatePicker = true,
         } = this.props;
 
-        const {
-            isPickerOpen,
-        } = this.state;
-
         const settings = getSettings();
-        const resolvedFormat = settings.formats.datetime || 'F j, Y g:i a';
 
         // To know if the current timezone is a 12 hour time with look for an "a" in the time format.
         // We also make sure this a is not escaped by a "/".
@@ -61,11 +53,14 @@ class DateTimePicker extends Component {
         );
 
         let buttonLabel = __( 'Select Date', '@@text_domain' );
+        let resolvedFormat = settings.formats.date || 'F j, Y';
 
         if ( allowTimePicker && allowDatePicker ) {
             buttonLabel = __( 'Select Date and Time', '@@text_domain' );
+            resolvedFormat = settings.formats.datetime || 'F j, Y g:i a';
         } else if ( allowTimePicker ) {
             buttonLabel = __( 'Select Time', '@@text_domain' );
+            resolvedFormat = settings.formats.time || 'g:i a';
         }
 
         return (
@@ -74,25 +69,33 @@ class DateTimePicker extends Component {
                 help={ help }
             >
                 <div>
-                    <Button
-                        isSecondary
-                        isSmall
-                        onClick={ () => this.setState( { isPickerOpen: ! isPickerOpen } ) }
-                    >
-                        { value ? dateI18n( resolvedFormat, value ) : buttonLabel }
-                    </Button>
-                    { isPickerOpen ? (
-                        <Popover
-                            onClose={ () => this.setState( { isPickerOpen: false } ) }
-                        >
-                            <div className="components-datetime">
-                                { allowTimePicker ? (
-                                    <TimePicker
-                                        currentTime={ value }
-                                        onChange={ onChange }
-                                        is12Hour={ is12Hour }
-                                    />
-                                ) : '' }
+                    <Dropdown
+                        renderToggle={ ( { isOpen, onToggle } ) => (
+                            <Button
+                                isSecondary
+                                isSmall
+                                aria-expanded={ isOpen }
+                                onClick={ onToggle }
+                            >
+                                { value ? dateI18n( resolvedFormat, value ) : buttonLabel }
+                            </Button>
+                        ) }
+                        renderContent={ () => (
+                            <div
+                                className={
+                                    classnames(
+                                        'components-datetime',
+                                        'lzb-gutenberg-date-time-picker',
+                                        allowTimePicker ? 'lzb-gutenberg-date-time-picker-allowed-time' : '',
+                                        allowDatePicker ? 'lzb-gutenberg-date-time-picker-allowed-date' : ''
+                                    )
+                                }
+                            >
+                                <TimePicker
+                                    currentTime={ value }
+                                    onChange={ onChange }
+                                    is12Hour={ is12Hour }
+                                />
                                 { allowDatePicker ? (
                                     <DatePicker
                                         currentDate={ value }
@@ -100,8 +103,8 @@ class DateTimePicker extends Component {
                                     />
                                 ) : '' }
                             </div>
-                        </Popover>
-                    ) : '' }
+                        ) }
+                    />
                 </div>
             </BaseControl>
         );
