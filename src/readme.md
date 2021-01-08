@@ -1,78 +1,98 @@
-# Lazy Blocks - Gutenberg Blocks Constructor
+# Custom Blocks Constructor - Lazy Blocks
 
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
 * Requires at least: 5.5
-* Tested up to: 5.5
+* Tested up to: 5.6
 * Requires PHP: 5.5.9
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
-Custom blocks and custom meta fields without hard coding for Gutenberg.
+Easily create custom Gutenberg blocks and custom meta fields without hard coding.
 
 ## Description
 
-Lazy Blocks is a Gutenberg blocks visual constructor for WordPress users. You can create custom blocks as well as custom meta fields with output HTML. Add editor controls to your blocks using drag & drop visual constructor. Create post templates with predefined blocks (any post type).
+**Custom Blocks Plugin For WordPress**
+★★★★★<br>
 
-### Links
+**Developers magic wand for WordPress custom blocks.** We created <a href="https://lazyblocks.com/?utm_source=wporg&utm_medium=link&utm_campaign=demo" target="_blank">**Lazy Blocks WordPress plugin**</a>, to help every developer get access to the powerful tools they need to quickly run websites based on WordPress block editor (called Gutenberg).
 
-* [Site](https://lazyblocks.com/)
-* [Documentation](https://lazyblocks.com/documentation/getting-started/)
-* [GitHub](https://github.com/nk-o/lazy-blocks)
+<a href="https://lazyblocks.com/?utm_source=wporg&utm_medium=link&utm_campaign=demo" target="_blank">Official Site</a> | <a href="https://lazyblocks.com/documentation/getting-started/?utm_source=wporg&utm_medium=link&utm_campaign=docs" target="_blank">Documentation</a> | <a href="https://github.com/nk-o/lazy-blocks" target="_blank">GitHub</a>
 
-### Features
+Create custom blocks visually, add controls to your blocks using drag & drop, write blocks output using HTML or PHP code. You can create custom blocks as well as custom meta fields for specific post types. Furthermore, you are able to create post templates with predefined blocks for any post type.
 
-* Create custom blocks with output code
-* Create custom blocks for meta custom fields
+### 🚀 Easy To Start
+
+This everything you need to deploy your custom block in WordPress editor:
+
+**1. Configure Custom Block** <br> Give a name to your custom block, set icon, category, etc.
+
+**2. Add Controls** <br> Add control fields like simple text and complex image selectors.
+
+**3. Write Output Code** <br> Output code for your custom block with HTML and PHP support.
+
+### 🌟 Features
+
+* Custom blocks with output code
+* Custom blocks for posts meta fields
+* Large set of predefined controls
+* Show controls in block content / inspector
 * Multiple output methods allowed
   * Custom PHP
   * Custom HTML + Handlebars
   * Template files in theme folder
 * Export / Import blocks
-* Show controls in block content / inspector
-* Controls available:
-  * Basic
-    * Text
-    * Textarea
-    * Number
-    * Range
-    * URL
-    * Email
-    * Password
-  * Content
-    * Image
-    * Gallery
-    * File
-    * Rich Text
-    * Classic Editor
-    * Code Editor
-    * Inner Blocks
-  * Choice
-    * Select
-    * Radio
-    * Checkbox
-    * Toggle
-  * Advanced
-    * Color Picker
-    * Date Time Picker
-  * Layout
-    * Repeater
-  * Custom Controls <https://lazyblocks.com/documentation/examples/create-custom-control/>
+
+### 🔥 Controls
+
+To manage custom blocks attributes you need to use Controls. Lazy Blocks have a large set of controls predefined for you:
+
+* Basic
+  * Text
+  * Textarea
+  * Number
+  * Range
+  * URL
+  * Email
+  * Password
+* Content
+  * Image
+  * Gallery
+  * File
+  * Rich Text
+  * Classic Editor
+  * Code Editor
+  * Inner Blocks
+* Choice
+  * Select
+  * Radio
+  * Checkbox
+  * Toggle
+* Advanced
+  * Color Picker
+  * Date Time Picker
+* Layout
+  * Repeater
+* Custom Controls <a href="https://lazyblocks.com/documentation/examples/create-custom-control/?utm_source=wporg&utm_medium=link&utm_campaign=docs" target="_blank">[read our extended documentation](https://lazyblocks.com/documentation/examples/create-custom-control/)</a>
+
+### 🛠 Built For Developers
+
+Lazy Blocks built by developers, for developers and gives you unlimited freedom to create custom blocks. Furthermore, there are PHP filters and actions to customize every part of your custom blocks from the backend. Possibility to use PHP and theme templates system.
+
+Every UI part should be intuitive for simple custom blocks, but if you want to create something more complex, you may be required to <a href="https://lazyblocks.com/documentation/getting-started/?utm_source=wporg&utm_medium=link&utm_campaign=docs" target="_blank">read our extended documentation</a>.
 
 ## Installation
 
-Make sure you use WordPress 5.0.x. As alternative you need to install the [Gutenberg plugin](https://wordpress.org/plugins/gutenberg/) to use Lazy Blocks.
-
 ### Automatic installation
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of LazyBlocks, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of Lazy Blocks, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
-In the search field type LazyBlocks and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
+In the search field type “Lazy Blocks” and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
 
 ### Manual installation
 
-The manual installation method involves downloading our LazyBlocks plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+The manual installation method involves downloading our Lazy Blocks plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 ## Screenshots
 
@@ -85,11 +105,11 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 2.2.0 =
 
 * added possibility to select image preview size for Image and Gallery controls (Medium size by default)
-* added possibility to filter block output using php filter <https://lazyblocks.com/documentation/php-filters/lzb-block_render-output/>
+* added possibility to filter custom block output using php filter <https://lazyblocks.com/documentation/php-filters/lzb-block_render-output/>
 * added description data in Image and Gallery controls
-* update image and gallery control data in block dynamically for output actual image data
-* improved block template path filters <https://lazyblocks.com/documentation/php-filters/lzb-block_render-include_template/>
-* fixed possibility to use Post data in block render preview
+* update image and gallery control data in custom block dynamically for output actual image data
+* improved custom block template path filters <https://lazyblocks.com/documentation/php-filters/lzb-block_render-include_template/>
+* fixed possibility to use Post data in custom block render preview
 * fixed constructor Align attribute duplications bug
 
 = 2.1.1 =
@@ -108,16 +128,16 @@ The manual installation method involves downloading our LazyBlocks plugin and up
   * You can output array with Value and Label
 * added RTL support
 * added code to force enable Gutenberg editor on "lazyblocks" post type pages
-* added code for blocks constructor pages, that force enables it and inserts
+* added code for custom blocks constructor pages, that force enables it and inserts
 * added support for "Frame" and "Custom CSS" Ghost Kit extensions
 * added "PRO Survey" link in the admin menu to get help from users
 * changed default category to "text"
-  * Don't forget to update categories for all your blocks
+  * Don't forget to update categories for all your custom blocks
   * Since WordPress 5.5 added new categories: Text, Media, Design
   * Removed categories: Common, Formatting, Layout
 * fixed errors in editor preview, when using `get_lzb_meta` function (now it is working as on frontend)
 * fixed slashes save in lazyblocks meta data (fixes custom code slashes)
-* fixed block code editor content when switching between Frontend and Editor tabs
+* fixed custom block code editor content when switching between Frontend and Editor tabs
 * fixed JS error when opened "lazyblocks" list admin page
 * minor improvements
 
@@ -142,7 +162,7 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 2.0.6 =
 
 * added support for required fields inside repeater
-* prevent possible bugs with adding custom blocks using PHP (register blocks inside `init` hook with priority = 20)
+* prevent possible bugs with adding custom blocks using PHP (register custom blocks inside `init` hook with priority = 20)
 * fixed repeater and Classic Control usage when all rows opened
 * fixed repeater control undefined value error
 * fixed custom categories registration conflict with 3rd-party plugins
@@ -153,7 +173,7 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 * added WordPress 5.4 compatibility
 * added 12 hours format for Time Picker automatically based on WordPress settings
 * removed the possibility to disable both date and time in Date Time Picker control
-* fixed inability to remove all controls from block
+* fixed inability to remove all controls from custom block
 
 = 2.0.4 =
 
@@ -166,7 +186,7 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 2.0.2 =
 
 * fixed Date Time Picker control displaying selected value
-* fixed Classic Editor control rendering bug when used in multiple blocks
+* fixed Classic Editor control rendering bug when used in multiple custom blocks
 * fixed Allow Null value save in Select control
 * hide "duplicate" button from Inner Blocks control in constructor
 
@@ -177,7 +197,7 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 2.0.0 =
 
 * added custom controls API <https://lazyblocks.com/documentation/examples/create-custom-control/>
-* added Export / Import JSON for blocks and templates <https://lazyblocks.com/documentation/export-blocks/>
+* added Export / Import JSON for custom blocks and templates <https://lazyblocks.com/documentation/export-blocks/>
 * added error messages to File, Image and Gallery controls
 * added Width option to controls
 * added alongside option to Checkbox and Toggle controls
@@ -230,15 +250,15 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 * added filter for output attributes <https://lazyblocks.com/documentation/php-filters/#attributes>
 * improved Meta setting (use control name as meta if custom meta name is not defined)
 * fixed encoded values in Repeater controls
-* fixed possibility to add more than 1 InnerBlocks control per block
+* fixed possibility to add more than 1 InnerBlocks control per custom block
 
 = 1.7.0 =
 
 * added experimental Required option for top-level controls
-* added possibility to choose which blocks and template export on Tools page
+* added possibility to choose which custom blocks and template export on Tools page
 * changed Templates page to use React
 * changed Tools page to use React
-* fixed PHP error when className is not available in the block
+* fixed PHP error when className is not available in the custom block
 * fixed PHP warning when used multiple select options
 * minor changes
 
@@ -253,7 +273,7 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 1.6.1 =
 
 * fixed order of controls was not saved
-* fixed php error when no lazy blocks available
+* fixed php error when no custom blocks available
 * fixed selecting inner repeater controls
 * fixed control styles disappear while resorting
 * prevent control selection on drag handler click
@@ -262,32 +282,32 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 1.6.0 =
 
 * Improved Constructor UI
-  * Block setting moved to the right side (Inspector)
+  * Custom block setting moved to the right side (Inspector)
   * Control setting opens in Inspector when you select it
 * added alpha channel option to Color Picker control
 * added 'Save in Meta' support for Repeater field
-* added possibility to hide block previews in editor
+* added possibility to hide custom block previews in editor
 * added possibility to use single code output for both Frontend and Editor
 * added Select Multiple option
-* fixed block preview loading when returned empty string
-* fixed Keywords, Align and Condition block settings save when empty
+* fixed custom block preview loading when returned empty string
+* fixed Keywords, Align and Condition custom block settings save when empty
 
 = 1.5.1 =
 
 * added block slug validation in constructor
 * added slug creation if don't exist after block title added
-* fixed controls saving in new blocks
+* fixed controls saving in new custom blocks
 * fixed icon picker button styles in constructor
 
 = 1.5.0 =
 
 * changed Block Constructor page to Gutenberg
-* added option to hide controls if block is not selected
+* added option to hide controls if custom block is not selected
 * added Radio control
-* fixed duplicating of categories selector in blocks constructor
-* fixed block ID duplication
-* fixed block preview loading error
-* fixed block names some characters
+* fixed duplicating of categories selector in custom blocks constructor
+* fixed custom block ID duplication
+* fixed custom block preview loading error
+* fixed custom block names some characters
 * fixed custom post types publishing
 * fixed error if custom post type removed, but the template for this post is still available
 
@@ -307,41 +327,41 @@ The manual installation method involves downloading our LazyBlocks plugin and up
 = 1.4.1 =
 
 * added action to add Handlebars custom helpers (info in documentation)
-* added filter to disable frontend block wrapper of the block (info in documentation)
-* improved columns in admin list of lazy blocks
+* added filter to disable frontend block wrapper of the custom block (info in documentation)
+* improved columns in admin list of custom blocks
 * extended list of symbols that need to be removed from the block slug
 * fixed PHP output for frontend if HTML output is empty
 * fixed losing Frontend & Editor output data when added output PHP filters
 
 = 1.4.0 =
 
-* added support for blocks PHP preview rendering in Editor
+* added support for custom blocks PHP preview rendering in Editor
 * added toggle button in Repeater control to toggle all rows
-* added block slug validation and automatic creation in constructor
+* added custom block slug validation and automatic creation in constructor
 * added descriptions to additional block fields in constructor
-* added new attribute `blockUniqueClass` that will adds automatically on each Lazy block
+* added new attribute `blockUniqueClass` that will adds automatically on each custom block
 * added title on Image and Gallery attributes object
 * changed Editor rendering to AJAX also for Handlebars templates
-* changed output for lazy blocks - always added wrapper with block class
+* changed output for custom blocks - always added wrapper with block class
 
 = 1.3.2 =
 
-* added unique `blockUniqueClass` attribute to each lazy block attributes and in editor wrapper
+* added unique `blockUniqueClass` attribute to each custom block attributes and in editor wrapper
 
 = 1.3.1 =
 
-* added unique `blockId` attribute to each lazy block
+* added unique `blockId` attribute to each custom block
 * simplified enqueue in admin templates page
 * fixed do_shortcode wrong attributes output (reserved `data` and `hash` attributes)
 * fixed Range control saving value
 
 = 1.3.0 =
 
-* added filter for output frontend PHP of blocks ([read in documentation](https://lazyblocks.com/documentation/blocks-code/php/))
+* added filter for output frontend PHP of custom blocks ([read in documentation](https://lazyblocks.com/documentation/blocks-code/php/))
 * added Allow Null option to Select control
 * added Help option in controls
 * added Placeholder option in controls
-* added all existing categories in block categories selector
+* added all existing categories in custom block categories selector
 * fixed gallery control editable images
 * fixed dropzone position in image and gallery controls
 * fixed custom category title changing to slug
