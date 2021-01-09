@@ -23,6 +23,8 @@ class LazyBlocks_Admin {
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_scripts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_script_translations' ), 9 );
+
+        add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ) );
     }
 
     /**
@@ -128,6 +130,29 @@ class LazyBlocks_Admin {
 
         wp_enqueue_script( 'lazyblocks-translation', lazyblocks()->plugin_url() . 'assets/js/translation.min.js', array(), '@@plugin_version', false );
         wp_set_script_translations( 'lazyblocks-translation', '@@text_domain', lazyblocks()->plugin_path() . 'languages' );
+    }
+
+    /**
+     * Admin footer text.
+     *
+     * @param string $text The admin footer text.
+     *
+     * @return string
+     */
+    public function admin_footer_text( $text ) {
+        if ( ! function_exists( 'get_current_screen' ) ) {
+            return $text;
+        }
+
+        $screen = get_current_screen();
+
+        // Determine if the current page being viewed is "Lazy Blocks" related.
+        if ( isset( $screen->post_type ) && 'lazyblocks' === $screen->post_type ) {
+            // Use RegExp to append "Lazy Blocks" after the <a> element allowing translations to read correctly.
+            return preg_replace( '/(<a[\S\s]+?\/a>)/', '$1 ' . esc_attr__( 'and', '@@text_domain' ) . ' <a href="https://lazyblocks.com/" target="_blank">Lazy Blocks</a>', $text, 1 );
+        }
+
+        return $text;
     }
 }
 
