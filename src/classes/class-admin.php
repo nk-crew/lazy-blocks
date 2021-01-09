@@ -17,13 +17,14 @@ class LazyBlocks_Admin {
      * LazyBlocks_Admin constructor.
      */
     public function __construct() {
-        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+        add_action( 'admin_menu', array( $this, 'admin_menu' ), 11 );
         add_action( 'admin_menu', array( $this, 'maybe_hide_menu_item' ), 12 );
 
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_scripts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_script_translations' ), 9 );
 
+        add_action( 'in_admin_header', array( $this, 'in_admin_header' ) );
         add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ) );
     }
 
@@ -130,6 +131,94 @@ class LazyBlocks_Admin {
 
         wp_enqueue_script( 'lazyblocks-translation', lazyblocks()->plugin_url() . 'assets/js/translation.min.js', array(), '@@plugin_version', false );
         wp_set_script_translations( 'lazyblocks-translation', '@@text_domain', lazyblocks()->plugin_path() . 'languages' );
+    }
+
+    /**
+     * Admin navigation.
+     */
+    public function in_admin_header() {
+        if ( ! function_exists( 'get_current_screen' ) ) {
+            return;
+        }
+
+        $screen = get_current_screen();
+
+        // Determine if the current page being viewed is "Lazy Blocks" related.
+        if ( ! isset( $screen->post_type ) || 'lazyblocks' !== $screen->post_type ) {
+            return;
+        }
+
+        global $submenu, $submenu_file, $plugin_page;
+
+        $parent_slug = 'edit.php?post_type=lazyblocks';
+        $tabs        = array();
+
+        // Generate array of navigation items.
+        if ( isset( $submenu[ $parent_slug ] ) ) {
+            foreach ( $submenu[ $parent_slug ] as $i => $sub_item ) {
+
+                // Check user can access page.
+                if ( ! current_user_can( $sub_item[1] ) ) {
+                    continue;
+                }
+
+                // Ignore "Add New".
+                if ( 'post-new.php?post_type=lazyblocks' === $sub_item[2] ) {
+                    continue;
+                }
+
+                // Define tab.
+                $tab = array(
+                    'text' => $sub_item[0],
+                    'url'  => $sub_item[2],
+                );
+
+                // Convert submenu slug "test" to "$parent_slug&page=test".
+                if ( ! strpos( $sub_item[2], '.php' ) && 0 !== strpos( $sub_item[2], 'https://' ) ) {
+                    $tab['url'] = add_query_arg( array( 'page' => $sub_item[2] ), $parent_slug );
+                }
+
+                // Detect active state.
+                if ( $submenu_file === $sub_item[2] || $plugin_page === $sub_item[2] ) {
+                    $tab['is_active'] = true;
+                }
+
+                // Special case for "Add New" page.
+                if ( 0 === $i && 'post-new.php?post_type=lazyblocks' === $submenu_file ) {
+                    $tab['is_active'] = true;
+                }
+
+                $tabs[] = $tab;
+            }
+        }
+
+        // Bail early if set to false.
+        if ( false === $tabs ) {
+            return;
+        }
+
+        // phpcs:ignore
+        $logo_url = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( lazyblocks()->plugin_path() . 'assets/svg/icon-lazyblocks-black.svg' ) );
+
+        ?>
+        <div class="lzb-admin-toolbar">
+            <h2>
+                <img src="<?php echo $logo_url; // phpcs:ignore ?>" width="20" height="20">
+                <?php echo esc_html__( 'Lazy Blocks', '@@text_domain' ); ?>
+            </h2>
+            <?php
+            foreach ( $tabs as $tab ) {
+                printf(
+                    '<a class="lzb-admin-toolbar-tab%s" href="%s">%s</a>',
+                    ! empty( $tab['is_active'] ) ? ' is-active' : '',
+                    esc_url( $tab['url'] ),
+                    // phpcs:ignore
+                    $tab['text']
+                );
+            }
+            ?>
+        </div>
+        <?php
     }
 
     /**

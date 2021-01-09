@@ -312,8 +312,10 @@ class LazyBlocks_Blocks {
             'lazyblocks',
             array(
                 'labels'            => array(
-                    'name'          => __( 'Lazy Blocks', '@@text_domain' ),
-                    'singular_name' => __( 'Lazy Block', '@@text_domain' ),
+                    'menu_name'     => __( 'Lazy Blocks', '@@text_domain' ),
+                    'name'          => __( 'Blocks', '@@text_domain' ),
+                    'all_items'     => __( 'Blocks', '@@text_domain' ),
+                    'singular_name' => __( 'Block', '@@text_domain' ),
                 ),
                 'public'            => false,
                 'has_archive'       => false,
