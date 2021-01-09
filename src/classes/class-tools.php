@@ -29,6 +29,9 @@ class LazyBlocks_Tools {
         // export json on get request.
         add_action( 'admin_init', array( $this, 'maybe_export_json' ) );
 
+        // duplicate block on get request.
+        add_action( 'admin_init', array( $this, 'maybe_duplicate_block' ) );
+
         // enqueue script on Tools page.
         add_action( 'admin_footer', array( $this, 'admin_enqueue_scripts' ) );
 
@@ -475,6 +478,110 @@ class LazyBlocks_Tools {
         }
 
         return false;
+    }
+
+    /**
+     * Maybe Duplicate Block.
+     */
+    public function maybe_duplicate_block() {
+        $block_id          = filter_input( INPUT_GET, 'lazyblocks_duplicate_block', FILTER_SANITIZE_NUMBER_INT );
+        $block_id_complete = filter_input( INPUT_GET, 'lazyblocks_duplicate_complete', FILTER_SANITIZE_NUMBER_INT );
+
+        // Duplicate block.
+        if ( isset( $block_id ) && current_user_can( 'read_lazyblock', $block_id ) ) {
+            $this->duplicate_block( $block_id );
+        }
+
+        // Add notice for success duplicate.
+        if ( isset( $block_id_complete ) && $block_id_complete ) {
+            $post = get_post( $block_id_complete );
+
+            if ( isset( $post ) && $post ) {
+                // translators: %s - post title.
+                $text = sprintf( esc_html__( 'Added new block \'%s\'.', '@@text_domain' ), $post->post_title );
+                $this->add_notice( $text, 'success' );
+            }
+        }
+    }
+
+    /**
+     * Duplicate Block.
+     *
+     * @param int $block_id block ID to duplicate.
+     */
+    public function duplicate_block( $block_id ) {
+        // Check for nonce security.
+        // phpcs:ignore
+        $nonce = isset( $_GET[ 'lazyblocks_duplicate_block_nonce' ] ) ? $_GET[ 'lazyblocks_duplicate_block_nonce' ] : false;
+
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-duplicate-block-nonce' ) ) {
+            return;
+        }
+
+        global $wpdb;
+
+        $post            = get_post( $block_id );
+        $current_user    = wp_get_current_user();
+        $new_post_author = $current_user->ID;
+
+        if ( isset( $post ) && $post ) {
+            // New post data array.
+            $args = array(
+                'comment_status' => $post->comment_status,
+                'ping_status'    => $post->ping_status,
+                'post_author'    => $new_post_author,
+                'post_content'   => $post->post_content,
+                'post_excerpt'   => $post->post_excerpt,
+                'post_name'      => $post->post_name,
+                'post_parent'    => $post->post_parent,
+                'post_password'  => $post->post_password,
+                'post_status'    => 'draft',
+                'post_title'     => $post->post_title,
+                'post_type'      => $post->post_type,
+                'to_ping'        => $post->to_ping,
+                'menu_order'     => $post->menu_order,
+            );
+
+            // Insert new post.
+            $new_post_id = wp_insert_post( $args );
+
+            // Get all current post terms ad set them to the new post draft.
+            $taxonomies = get_object_taxonomies( $post->post_type );
+
+            foreach ( $taxonomies as $taxonomy ) {
+                $post_terms = wp_get_object_terms( $block_id, $taxonomy, array( 'fields' => 'slugs' ) );
+                wp_set_object_terms( $new_post_id, $post_terms, $taxonomy, false );
+            }
+
+            // Duplicate all post meta just in two SQL queries.
+            // phpcs:ignore
+            $post_meta_infos = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$block_id" );
+
+            if ( count( $post_meta_infos ) ) {
+                $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
+
+                foreach ( $post_meta_infos as $meta_info ) {
+                    $meta_key = $meta_info->meta_key;
+
+                    if ( '_wp_old_slug' === $meta_key ) {
+                        continue;
+                    }
+
+                    $meta_value      = addslashes( $meta_info->meta_value );
+                    $sql_query_sel[] = "SELECT $new_post_id, '$meta_key', '$meta_value'";
+                }
+
+                $sql_query .= implode( ' UNION ALL ', $sql_query_sel );
+
+                // phpcs:ignore
+                $wpdb->query( $sql_query );
+            }
+
+            // Redirect.
+            wp_safe_redirect( admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_duplicate_complete=' . $new_post_id ) );
+
+            exit;
+        }
     }
 
     /**

@@ -434,10 +434,25 @@ class LazyBlocks_Blocks {
             unset( $actions['inline hide-if-no-js'] );
         }
 
-        // add export link.
+        // add duplicate and export link.
         $actions = array_merge(
             array_slice( $actions, 0, 1 ),
             array(
+                'duplicate' => sprintf(
+                    '<a href="%1$s" aria-label="%2$s">%3$s</a>',
+                    add_query_arg(
+                        array(
+                            'lazyblocks_duplicate_block' => $post->ID,
+                            'lazyblocks_duplicate_block_nonce' => wp_create_nonce( 'lzb-duplicate-block-nonce' ),
+                        )
+                    ),
+                    sprintf(
+                        // translators: %1$ - post title.
+                        esc_html__( 'Duplicate “%1$s”', '@@text_domain' ),
+                        get_the_title( $post->ID )
+                    ),
+                    esc_html__( 'Duplicate', '@@text_domain' )
+                ),
                 'export' => sprintf(
                     '<a href="%1$s" aria-label="%2$s">%3$s</a>',
                     add_query_arg(
