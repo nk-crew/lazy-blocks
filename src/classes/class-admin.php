@@ -144,7 +144,11 @@ class LazyBlocks_Admin {
         $screen = get_current_screen();
 
         // Determine if the current page being viewed is "Lazy Blocks" related.
-        if ( ! isset( $screen->post_type ) || 'lazyblocks' !== $screen->post_type ) {
+        if (
+            ! isset( $screen->post_type ) ||
+            'lazyblocks' !== $screen->post_type ||
+            ( isset( $screen->is_block_editor ) && $screen->is_block_editor() )
+        ) {
             return;
         }
 
