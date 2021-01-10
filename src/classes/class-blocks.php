@@ -668,15 +668,16 @@ class LazyBlocks_Blocks {
      * Thanks: https://wordpress.stackexchange.com/questions/24736/wordpress-sanitize-array/26465
      *
      * @param array $array - array for sanitize.
+     * @param array $textarea_items - sanitize as textarea fields by name.
      *
      * @return array
      */
-    private function sanitize_array( $array ) {
+    private function sanitize_array( $array, $textarea_items = array() ) {
         foreach ( $array as $key => &$value ) {
             if ( is_array( $value ) ) {
-                $value = $this->sanitize_array( $value );
+                $value = $this->sanitize_array( $value, $textarea_items );
             } else {
-                if ( 'choices' === $key || 'help' === $key ) {
+                if ( in_array( $key, $textarea_items, true ) ) {
                     $value = sanitize_textarea_field( $value );
                 } else {
                     $value = sanitize_text_field( $value );
@@ -716,8 +717,11 @@ class LazyBlocks_Blocks {
                 } else {
                     // Get the posted data and sanitize it for use as an HTML class.
                     if ( is_array( $data[ $meta ] ) ) {
+                        $block_data_array_textarea = array( 'choices', 'help' );
+                        $block_data_array_textarea = apply_filters( 'lzb/block_save/array_attributes/textarea_items', $block_data_array_textarea, $data[ $meta ], $meta );
+
                         // phpcs:ignore
-                        $new_meta_value = $this->sanitize_array( wp_slash( $data[ $meta ] ) );
+                        $new_meta_value = $this->sanitize_array( wp_slash( $data[ $meta ] ), $block_data_array_textarea );
                     } else {
                         $new_meta_value = sanitize_text_field( wp_slash( $data[ $meta ] ) );
                     }
