@@ -102,6 +102,21 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.3.0 =
+
+* added possibility to duplicate blocks
+* added top toolbar to admin pages
+* improved Date Time picker
+  * always display TimePicker component (to let users manually set day, month and year)
+  * display only necessary parts of TimePicker component
+  * better format on button label
+* changed constructor Type selector to modal
+* fixed Classic control initialize problem in WordPress 5.6 update
+* fixed constructor disabled Update button
+* fixed constructor controls label margin
+* fixed compatibility with Amazon S3 Offload Media plugin (changed image and gallery controls image URL retrieve method)
+* minor changes
+
 = 2.2.0 =
 
 * added possibility to select image preview size for Image and Gallery controls (Medium size by default)
