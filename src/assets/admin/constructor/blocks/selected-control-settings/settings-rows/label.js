@@ -1,5 +1,7 @@
 import slugify from 'slugify';
 
+import getControlTypeData from '../../../../utils/get-control-type-data';
+
 const { __ } = wp.i18n;
 
 const { Component } = wp.element;
@@ -50,6 +52,9 @@ export default class LabelRow extends Component {
             label = '',
         } = data;
 
+        const controlTypeData = getControlTypeData( data.type );
+        const allowNameUpdate = controlTypeData.restrictions.name_settings;
+
         return (
             <PanelBody>
                 <TextControl
@@ -57,7 +62,7 @@ export default class LabelRow extends Component {
                     help={ __( 'This is the name which will appear on the block edit control', '@@text_domain' ) }
                     value={ label }
                     onChange={ ( value ) => updateData( { label: value } ) }
-                    onBlur={ this.generateUniqueName }
+                    onBlur={ allowNameUpdate ? this.generateUniqueName : () => {} }
                     autoFocus
                 />
             </PanelBody>

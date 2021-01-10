@@ -1144,7 +1144,11 @@ class LazyBlocks_Blocks {
         $attributes   = array();
 
         foreach ( $controls as $k => $control ) {
-            if ( isset( $control['child_of'] ) && $control['child_of'] === $child_of ) {
+            if (
+                isset( $control['child_of'] ) &&
+                $control['child_of'] === $child_of &&
+                $control['name']
+            ) {
                 $attribute_data = array(
                     'type'    => 'string',
                     'default' => isset( $control['default'] ) ? $control['default'] : null,

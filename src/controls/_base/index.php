@@ -58,6 +58,8 @@ class LazyBlocks_Control {
     public $default_restrictions = array(
         'once'                          => false,
         'as_child'                      => true,
+        'name_settings'                 => true,
+        'label_settings'                => true,
         'default_settings'              => true,
         'help_settings'                 => true,
         'placement_settings'            => array( 'content', 'inspector' ),
