@@ -183,6 +183,15 @@
         }
     }
 }
+.lzb-date-time-picker-toggle.components-button {
+    padding: 7px 0;
+    text-decoration: none;
+
+    svg {
+        width: 20px;
+        margin-right: 5px;
+    }
+}
 
 // Color Picker control
 .lzb-gutenberg-color {
