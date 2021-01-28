@@ -272,11 +272,6 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             $result = $lzb_preview_block_data['block_attributes'][ $control_data['name'] ];
         }
 
-        // set default.
-        if ( ! $result && isset( $control_data['default'] ) && $control_data['default'] ) {
-            $result = $control_data['default'];
-        }
-
         return apply_filters( 'lzb/get_meta', $result, $name, $id, $control_data );
     }
 

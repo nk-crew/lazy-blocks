@@ -76,9 +76,6 @@ class LazyBlocks_Blocks {
         add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'manage_posts_columns' ) );
         add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 
-        // add meta.
-        add_action( 'init', array( $this, 'register_block_meta' ) );
-
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
             // add custom block categories.
@@ -1059,40 +1056,6 @@ class LazyBlocks_Blocks {
     }
 
     /**
-     * Register blocks meta if exists.
-     */
-    public function register_block_meta() {
-        $blocks       = $this->get_blocks();
-        $all_controls = lazyblocks()->controls()->get_controls();
-
-        foreach ( $blocks as $block ) {
-            $controls = $block['controls'];
-
-            if ( isset( $controls ) && is_array( $controls ) && ! empty( $controls ) ) {
-                foreach ( $controls as $control ) {
-                    $type = 'string';
-
-                    if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) ) {
-                        $type = $all_controls[ $control['type'] ]['type'];
-                    }
-
-                    if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
-                        register_meta(
-                            'post',
-                            isset( $control['save_in_meta_name'] ) && $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'],
-                            array(
-                                'show_in_rest' => true,
-                                'single'       => true,
-                                'type'         => $type,
-                            )
-                        );
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Add Gutenberg block assets.
      */
     public function register_block() {
@@ -1236,18 +1199,37 @@ class LazyBlocks_Blocks {
     // phpcs:enable
 
     /**
-     * Register block attributes and custom frontend render callback if exists.
+     * Register block attributes, meta data, and custom frontend render callback if exists.
      */
     public function register_block_render() {
         $blocks = $this->get_blocks();
 
         foreach ( $blocks as $block ) {
+            $attributes = $this->prepare_block_attributes( $block['controls'], '', $block );
+
             $data = array(
-                'attributes'      => $this->prepare_block_attributes( $block['controls'], '', $block ),
+                'attributes'      => $attributes,
                 'render_callback' => array( $this, 'render_callback' ),
             );
 
+            // Register block type.
             register_block_type( $block['slug'], $data );
+
+            // Register meta.
+            foreach ( $attributes as $attribute ) {
+                if ( isset( $attribute['meta'] ) && $attribute['meta'] ) {
+                    register_meta(
+                        'post',
+                        $attribute['meta'],
+                        array(
+                            'show_in_rest' => true,
+                            'single'       => true,
+                            'type'         => $attribute['type'],
+                            'default'      => $attribute['default'],
+                        )
+                    );
+                }
+            }
         }
     }
 

@@ -32,7 +32,6 @@ class LazyBlocks_Control_Toggle extends LazyBlocks_Control {
 
         // Filters.
         add_filter( 'lzb/prepare_block_attribute', array( $this, 'filter_lzb_prepare_block_attribute' ), 10, 2 );
-        add_filter( 'lzb/get_meta', array( $this, 'filter_get_lzb_meta_default' ), 10, 4 );
 
         parent::__construct();
     }
@@ -82,28 +81,6 @@ class LazyBlocks_Control_Toggle extends LazyBlocks_Control {
         }
 
         return $attribute_data;
-    }
-
-    /**
-     * Change get_lzb_meta output to boolean.
-     *
-     * @param string $result - meta data.
-     * @param string $name - meta name.
-     * @param mixed  $id - post id.
-     * @param mixed  $control - control data.
-     *
-     * @return array filtered meta.
-     */
-    public function filter_get_lzb_meta_default( $result, $name, $id, $control ) {
-        if ( ! $control || $this->name !== $control['type'] || ! isset( $control['checked'] ) ) {
-            return $result;
-        }
-
-        if ( ! isset( $result ) || ! is_bool( $result ) ) {
-            $result = 'true' === $control['checked'];
-        }
-
-        return $result;
     }
 }
 
