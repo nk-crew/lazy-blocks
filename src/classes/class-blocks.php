@@ -1265,6 +1265,12 @@ class LazyBlocks_Blocks {
         // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/callback', $result, $attributes, $context );
 
+        // Custom render name.
+        $custom_render_name = $context . '_html';
+        if ( isset( $block['code']['output_method'] ) && isset( $block['code']['single_output'] ) && $block['code']['single_output'] ) {
+            $custom_render_name = 'frontend_html';
+        }
+
         // Custom output.
         if ( ! $result && isset( $block['code'] ) ) {
             // Theme template file.
@@ -1301,14 +1307,14 @@ class LazyBlocks_Blocks {
                 $result = ob_get_clean();
 
                 // Custom code.
-            } elseif ( isset( $block['code'][ $context . '_html' ] ) && ! empty( $block['code'][ $context . '_html' ] ) ) {
+            } elseif ( isset( $block['code'][ $custom_render_name ] ) && ! empty( $block['code'][ $custom_render_name ] ) ) {
                 // PHP output.
                 if ( isset( $block['code']['output_method'] ) && 'php' === $block['code']['output_method'] ) {
-                    $result = $this->php_eval( $block['code'][ $context . '_html' ], $attributes );
+                    $result = $this->php_eval( $block['code'][ $custom_render_name ], $attributes );
 
                     // Handlebars.
                 } else {
-                    $result = $this->handlebars->render( $block['code'][ $context . '_html' ], $attributes );
+                    $result = $this->handlebars->render( $block['code'][ $custom_render_name ], $attributes );
                 }
             }
         }
