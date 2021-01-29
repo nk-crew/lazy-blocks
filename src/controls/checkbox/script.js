@@ -1,5 +1,7 @@
 const { __ } = wp.i18n;
 
+const { Fragment } = wp.element;
+
 const {
     addFilter,
 } = wp.hooks;
@@ -35,22 +37,26 @@ addFilter( 'lzb.constructor.control.checkbox.settings', 'lzb.constructor', ( ren
     } = props;
 
     return (
-        <PanelBody>
-            <TextControl
-                label={ __( 'Alongside Text', '@@text_domain' ) }
-                help={ __( 'Displays text alongside the checkbox', '@@text_domain' ) }
-                value={ data.alongside_text }
-                onChange={ ( value ) => updateData( { alongside_text: value } ) }
-            />
-            <BaseControl
-                label={ __( 'Checked', '@@text_domain' ) }
-            >
-                <CheckboxControl
-                    label={ __( 'Yes', '@@text_domain' ) }
-                    checked={ 'true' === data.checked }
-                    onChange={ ( value ) => updateData( { checked: value ? 'true' : 'false' } ) }
+        <Fragment>
+            <PanelBody>
+                <TextControl
+                    label={ __( 'Alongside Text', '@@text_domain' ) }
+                    help={ __( 'Displays text alongside the checkbox', '@@text_domain' ) }
+                    value={ data.alongside_text }
+                    onChange={ ( value ) => updateData( { alongside_text: value } ) }
                 />
-            </BaseControl>
-        </PanelBody>
+            </PanelBody>
+            <PanelBody>
+                <BaseControl
+                    label={ __( 'Checked', '@@text_domain' ) }
+                >
+                    <CheckboxControl
+                        label={ __( 'Yes', '@@text_domain' ) }
+                        checked={ 'true' === data.checked }
+                        onChange={ ( value ) => updateData( { checked: value ? 'true' : 'false' } ) }
+                    />
+                </BaseControl>
+            </PanelBody>
+        </Fragment>
     );
 } );
