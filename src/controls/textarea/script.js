@@ -8,7 +8,6 @@ const {
 
 const {
     PanelBody,
-    BaseControl,
     TextareaControl,
     TextControl,
 } = wp.components;
@@ -50,18 +49,15 @@ addFilter( 'lzb.constructor.control.textarea.settings', 'lzb.constructor', ( ren
                 />
             </PanelBody>
             <PanelBody>
-                <BaseControl
+                <TextControl
                     label={ __( 'Characters Limit', '@@text_domain' ) }
                     help={ __( 'Maximum number of characters allowed. Leave blank to no limit.', '@@text_domain' ) }
-                >
-                    <TextControl
-                        value={ data.characters_limit ? parseInt( data.characters_limit, 10 ) : '' }
-                        type="number"
-                        min={ 0 }
-                        max={ 524288 }
-                        onChange={ ( value ) => updateData( { characters_limit: `${ value }` } ) }
-                    />
-                </BaseControl>
+                    value={ data.characters_limit ? parseInt( data.characters_limit, 10 ) : '' }
+                    type="number"
+                    min={ 0 }
+                    max={ 524288 }
+                    onChange={ ( value ) => updateData( { characters_limit: `${ value }` } ) }
+                />
             </PanelBody>
         </Fragment>
     );

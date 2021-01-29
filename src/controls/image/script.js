@@ -7,13 +7,11 @@ const {
 const { __ } = wp.i18n;
 
 const {
-    Fragment,
     Component,
 } = wp.element;
 
 const {
     PanelBody,
-    BaseControl,
     SelectControl,
 } = wp.components;
 
@@ -93,32 +91,27 @@ class AdditionalAttributes extends Component {
         } = this.props;
 
         return (
-            <Fragment>
-                <PanelBody>
-                    <BaseControl
-                        label={ __( 'Preview Size', '@@text_domain' ) }
-                    >
-                        <SelectControl
-                            options={ (
-                                imageSizes.map( ( sizeData ) => {
-                                    let sizeLabel = sizeData.name;
+            <PanelBody>
+                <SelectControl
+                    label={ __( 'Preview Size', '@@text_domain' ) }
+                    options={ (
+                        imageSizes.map( ( sizeData ) => {
+                            let sizeLabel = sizeData.name;
 
-                                    if ( imageDimensions[ sizeData.slug ] ) {
-                                        sizeLabel += ` (${ imageDimensions[ sizeData.slug ].width } × ${ imageDimensions[ sizeData.slug ].height })`;
-                                    }
+                            if ( imageDimensions[ sizeData.slug ] ) {
+                                sizeLabel += ` (${ imageDimensions[ sizeData.slug ].width } × ${ imageDimensions[ sizeData.slug ].height })`;
+                            }
 
-                                    return {
-                                        label: sizeLabel,
-                                        value: sizeData.slug,
-                                    };
-                                } )
-                            ) }
-                            value={ data.preview_size || 'medium' }
-                            onChange={ ( value ) => updateData( { preview_size: value } ) }
-                        />
-                    </BaseControl>
-                </PanelBody>
-            </Fragment>
+                            return {
+                                label: sizeLabel,
+                                value: sizeData.slug,
+                            };
+                        } )
+                    ) }
+                    value={ data.preview_size || 'medium' }
+                    onChange={ ( value ) => updateData( { preview_size: value } ) }
+                />
+            </PanelBody>
         );
     }
 }
