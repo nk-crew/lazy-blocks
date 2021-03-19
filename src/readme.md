@@ -102,6 +102,15 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.3.1 =
+
+* added compatibility with WordPress 5.7
+* added possibility to display default meta value (without hard code, using native WordPress 5.5+ API)
+* improved date time picker styles
+* improved constructor controls rendering code
+* fixed double classes rendering in editor, when Single Output code enabled
+* minor changes
+
 = 2.3.0 =
 
 * added possibility to duplicate blocks
