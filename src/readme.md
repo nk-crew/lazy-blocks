@@ -3,7 +3,7 @@
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
 * Requires at least: 5.5
-* Tested up to: 5.6
+* Tested up to: 5.7
 * Requires PHP: 5.5.9
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
