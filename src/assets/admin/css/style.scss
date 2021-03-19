@@ -169,6 +169,8 @@
 
 // Date Time Picker control
 .lzb-gutenberg-date-time-picker {
+    min-width: 230px;
+
     &:not(.lzb-gutenberg-date-time-picker-allowed-date) {
         .components-datetime__time > fieldset:nth-of-type(1) {
             display: none;
