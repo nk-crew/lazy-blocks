@@ -356,7 +356,7 @@ class LazyBlocks_Blocks {
      * Remove custom fields support from lazy blocks constructor page.
      * Some plugins adds support for custom fields to all post types, but we don't need it in our constructor.
      *
-     * @link https://github.com/nk-o/lazy-blocks/issues/141
+     * @link https://github.com/nk-crew/lazy-blocks/issues/141
      */
     public function remove_custom_fields_support() {
         remove_post_type_support( 'lazyblocks', 'custom-fields' );

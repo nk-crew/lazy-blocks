@@ -18,7 +18,7 @@ Easily create custom Gutenberg blocks and custom meta fields without hard coding
 
 **Developers magic wand for WordPress custom blocks.** We created <a href="https://lazyblocks.com/?utm_source=wporg&utm_medium=link&utm_campaign=demo" target="_blank">**Lazy Blocks WordPress plugin**</a>, to help every developer get access to the powerful tools they need to quickly run websites based on WordPress block editor (called Gutenberg).
 
-<a href="https://lazyblocks.com/?utm_source=wporg&utm_medium=link&utm_campaign=demo" target="_blank">Official Site</a> | <a href="https://lazyblocks.com/documentation/getting-started/?utm_source=wporg&utm_medium=link&utm_campaign=docs" target="_blank">Documentation</a> | <a href="https://github.com/nk-o/lazy-blocks" target="_blank">GitHub</a>
+<a href="https://lazyblocks.com/?utm_source=wporg&utm_medium=link&utm_campaign=demo" target="_blank">Official Site</a> | <a href="https://lazyblocks.com/documentation/getting-started/?utm_source=wporg&utm_medium=link&utm_campaign=docs" target="_blank">Documentation</a> | <a href="https://github.com/nk-crew/lazy-blocks" target="_blank">GitHub</a>
 
 Create custom blocks visually, add controls to your blocks using drag & drop, write blocks output using HTML or PHP code. You can create custom blocks as well as custom meta fields for specific post types. Furthermore, you are able to create post templates with predefined blocks for any post type.
 
