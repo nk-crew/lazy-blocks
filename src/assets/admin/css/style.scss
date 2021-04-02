@@ -163,8 +163,18 @@
 }
 
 // Select control
-.lzb-gutenberg-select select {
-    max-width: none;
+.lzb-gutenberg-select {
+    select {
+        max-width: none;
+    }
+    select[multiple].components-select-control__input {
+        height: auto;
+        padding-right: 8px;
+
+        + .components-input-control__suffix {
+            display: none;
+        }
+    }
 }
 
 // Date Time Picker control
