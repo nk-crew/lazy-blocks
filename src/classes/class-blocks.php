@@ -1205,6 +1205,14 @@ class LazyBlocks_Blocks {
         $blocks = $this->get_blocks();
 
         foreach ( $blocks as $block ) {
+            // Check if slug valid.
+            $name_after_slug = explode( '/', $block['slug'] );
+            $name_after_slug = isset( $name_after_slug[1] ) ? $name_after_slug[1] : '';
+
+            if ( ! $block['slug'] || ! $name_after_slug ) {
+                continue;
+            }
+
             $attributes = $this->prepare_block_attributes( $block['controls'], '', $block );
 
             $data = array(
