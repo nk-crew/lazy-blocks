@@ -15,11 +15,10 @@
     "css-lint-fix": "stylelint --fix --syntax scss \"src/**/*.scss\"",
     "js-lint": "eslint --ext .js src/",
     "js-lint-fix": "eslint --ext .js --fix src/",
-    "lint-staged": "lint-staged",
     "make-pot": "composer wp -- i18n make-pot ./src ./src/languages/lazy-blocks.pot --skip-audit --exclude=vendor,vendors,node_modules --headers='{\"Last-Translator\":\"nK\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-o/lazyblocks/issues\"}'",
     "make-json": "po2json ./src/languages/lazy-blocks.pot ./src/languages/lazy-blocks.json --format=jed1.x --pretty --domain=@@text_domain",
     "update:packages": "npm i -g npm-check-updates && npm-check-updates -u && npm install",
-    "postinstall": "composer install"
+    "postinstall": "npx simple-git-hooks && composer install"
   },
   "devDependencies": {
     "@babel/node": "^7.13.10",
@@ -30,12 +29,12 @@
     "@svgr/webpack": "^5.5.0",
     "base64-inline-loader": "^1.1.1",
     "eslint-config-nk": "^0.0.19",
-    "husky": "^5.1.3",
     "json-file": "^0.1.0",
     "lint-staged": "^10.5.4",
     "md5": "^2.3.0",
     "micromatch": "^4.0.2",
     "po2json": "^0.4.5",
+    "simple-git-hooks": "^2.3.1",
     "stylelint-config-nk": "^0.0.12",
     "wpeg": "^1.2.0"
   },
