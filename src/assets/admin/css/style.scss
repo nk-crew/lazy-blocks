@@ -449,14 +449,16 @@
 }
 
 // repeater
+.components-base-control__label + .lzb-gutenberg-repeater {
+    margin-top: 8px;
+}
 .lzb-gutenberg-repeater-item {
     position: relative;
     background-color: #fff;
-    border: 1px solid #7e8993;
-    border-radius: 3px;
+    border-bottom: 1px solid rgba(#888, .25);
 
-    + .lzb-gutenberg-repeater-item {
-        margin-top: 5px;
+    &:last-child {
+        border-bottom: none;
     }
 
     > div {
@@ -467,84 +469,110 @@
     .lzb-gutenberg-repeater-btn {
         position: relative;
         width: 100%;
-        padding: 10px 15px;
+        padding: 15px;
+        padding-left: 25px;
         margin-bottom: -1px;
         text-align: left;
         cursor: pointer;
         background: none;
         border: none;
-        border-bottom: 1px solid #7e8993;
-
-        > .lzb-gutenberg-repeater-btn-arrow {
-            position: absolute;
-            display: block;
-            top: 50%;
-            right: 10px;
-            height: .8em;
-            font-size: .8em;
-            line-height: .8em;
-            transition: .2s transform;
-            transform: translateY(-50%);
-        }
-        &.lzb-gutenberg-repeater-btn-active > .lzb-gutenberg-repeater-btn-arrow {
-            transform: translateY(-50%) rotate(90deg);
-        }
+        outline: none;
     }
 
+    // Button Arrow.
+    .lzb-gutenberg-repeater-btn-arrow {
+        position: absolute;
+        display: block;
+        top: 50%;
+        right: 0;
+        font-size: 1.7em;
+        border-radius: 50%;
+        transform: translateY(-50%);
+
+        svg {
+            display: block;
+            width: 1em;
+            height: 1em;
+            fill: currentColor;
+        }
+    }
+    &:hover .lzb-gutenberg-repeater-btn-arrow {
+        background-color: rgba(#888, .1);
+    }
+    .lzb-gutenberg-repeater-btn-active .lzb-gutenberg-repeater-btn-arrow {
+        color: #fff;
+        background-color: #1e1e1e;
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    // Button Remove.
     .lzb-gutenberg-repeater-btn-remove {
         position: absolute;
         display: block;
-        top: -7px;
-        right: -7px;
-        width: 17px;
-        height: 17px;
+        top: 12px;
+        right: 30px;
+        width: 1.13em;
+        height: 1.13em;
         padding: 0;
-        font-size: .8em;
-        line-height: .8em;
-        color: #fff;
+        font-size: 1.5em;
         cursor: pointer;
-        background-color: #ea2c22;
+        background: none;
         border: none;
         border-radius: 50%;
         opacity: 0;
-        transition: .2s opacity;
-        transform: none;
 
-        > .dashicons {
-            width: 17px;
-            height: 17px;
-            font-size: 1em;
-            line-height: 17px;
+        > svg {
+            display: block;
+            width: 1em;
+            height: 1em;
+            margin: 0 auto;
+            fill: currentColor;
         }
     }
     &:hover .lzb-gutenberg-repeater-btn-remove {
         opacity: 1;
     }
+    .lzb-gutenberg-repeater-btn-remove:hover,
+    .lzb-gutenberg-repeater-btn-remove:focus {
+        color: #ea2c22;
+    }
 
+    // Button Drag.
     .lzb-gutenberg-repeater-btn-drag {
         position: absolute;
-        display: flex;
+        display: block;
         top: 50%;
-        right: 35px;
+        left: 0;
+        height: auto;
+        padding: 0;
         margin: 0;
+        font-size: 1.3em;
         cursor: move;
-        opacity: 0;
-        transition: .2s opacity;
+        opacity: .3;
         transform: translateY(-50%);
-        will-change: opacity;
+
+        svg {
+            display: block;
+            width: 1em;
+            height: 1em;
+            margin-left: -3px;
+        }
     }
     &:hover .lzb-gutenberg-repeater-btn-drag {
-        opacity: .1;
+        opacity: .7;
     }
-    .lzb-gutenberg-repeater-btn-drag:hover {
-        opacity: .5;
+    .lzb-gutenberg-repeater-btn-drag:hover,
+    .lzb-gutenberg-repeater-btn-drag:focus,
+    .lzb-gutenberg-repeater-btn-active .lzb-gutenberg-repeater-btn-drag {
+        color: inherit;
+        opacity: 1;
     }
 
     // Repeater item content with columns support
     .lzb-gutenberg-repeater-item-content {
         display: flex;
         flex-wrap: wrap;
-        padding: 15px;
+        padding-bottom: 13px;
         margin: 0;
 
         .components-notice {
@@ -556,6 +584,7 @@
             width: 100%;
             padding-right: 0;
             padding-left: 0;
+            border: none;
         }
     }
 }
