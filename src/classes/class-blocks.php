@@ -423,8 +423,8 @@ class LazyBlocks_Blocks {
      *
      * @return array
      */
-    public function post_row_actions( $actions = array(), $post ) {
-        if ( 'lazyblocks' !== $post->post_type ) {
+    public function post_row_actions( $actions = array(), $post = null ) {
+        if ( ! $post || 'lazyblocks' !== $post->post_type ) {
             return $actions;
         }
 
@@ -1106,7 +1106,7 @@ class LazyBlocks_Blocks {
      *
      * @return array.
      */
-    public function prepare_block_attributes( $controls, $child_of = '', $block ) {
+    public function prepare_block_attributes( $controls, $child_of = '', $block = null ) {
         $all_controls = lazyblocks()->controls()->get_controls();
         $attributes   = array();
 
