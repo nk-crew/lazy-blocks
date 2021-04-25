@@ -261,15 +261,15 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 
         $result = null;
 
-        if ( $id ) {
-            $result = get_post_meta( $id, $name, true );
-        } elseif (
+        if (
             isset( $lzb_preview_block_data ) &&
             is_array( $lzb_preview_block_data ) &&
             isset( $control_data['name'] ) &&
             isset( $lzb_preview_block_data['block_attributes'][ $control_data['name'] ] )
         ) {
             $result = $lzb_preview_block_data['block_attributes'][ $control_data['name'] ];
+        } elseif ( $id ) {
+            $result = get_post_meta( $id, $name, true );
         }
 
         return apply_filters( 'lzb/get_meta', $result, $name, $id, $control_data );
