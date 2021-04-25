@@ -69,7 +69,7 @@
     }
 
     // Remove focus outline.
-    [data-type="lzb-constructor/main"]:not([contenteditable]):focus::after {
+    .block-editor-block-list__layout [data-type="lzb-constructor/main"]:not([contenteditable]):focus::after {
         box-shadow: none;
     }
 }
