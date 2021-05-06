@@ -209,8 +209,8 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
     lazyblocks();
 
     // Activation / Deactivation hooks.
-    register_deactivation_hook( __FILE__, array( lazyblocks(), 'activation_hook' ) );
-    register_activation_hook( __FILE__, array( lazyblocks(), 'deactivation_hook' ) );
+    register_activation_hook( __FILE__, array( lazyblocks(), 'activation_hook' ) );
+    register_deactivation_hook( __FILE__, array( lazyblocks(), 'deactivation_hook' ) );
 
     /**
      * Function to get meta value with some improvements for Lazyblocks metas.
