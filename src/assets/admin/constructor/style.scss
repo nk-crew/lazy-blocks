@@ -143,7 +143,7 @@
     margin-left: 0;
 
     &.is-info {
-        background-color: $blue-medium-100;
+        background-color: rgba(lighten($blue-500, 10%), .1);
     }
     p:last-child {
         // stylelint-disable-next-line

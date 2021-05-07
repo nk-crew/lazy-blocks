@@ -89,7 +89,7 @@
         transition: .15s background-color ease-in-out, .15s box-shadow ease-in-out;
 
         &.is-active {
-            box-shadow: 0 0 0 2px $blue-wordpress-700;
+            box-shadow: 0 0 0 2px $blue-500;
         }
 
         &:hover {
