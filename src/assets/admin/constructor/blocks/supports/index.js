@@ -6,7 +6,7 @@ const {
     Notice,
     BaseControl,
     Button,
-    CheckboxControl,
+    ToggleControl,
     Disabled,
 } = wp.components;
 
@@ -39,25 +39,25 @@ export default class SupportsSettings extends Component {
 
         return (
             <Fragment>
-                <CheckboxControl
+                <ToggleControl
                     label={ __( 'Multiple', '@@text_domain' ) }
                     help={ __( 'Allow use block multiple times on the page.', '@@text_domain' ) }
                     checked={ supportsMultiple }
                     onChange={ ( value ) => updateData( { supports_multiple: value } ) }
                 />
-                <CheckboxControl
+                <ToggleControl
                     label={ __( 'Class Name', '@@text_domain' ) }
                     help={ __( 'Additional field to add custom class name.', '@@text_domain' ) }
                     checked={ supportsClassname }
                     onChange={ ( value ) => updateData( { supports_classname: value } ) }
                 />
-                <CheckboxControl
+                <ToggleControl
                     label={ __( 'Anchor', '@@text_domain' ) }
                     help={ __( 'Additional field to add block ID attribute.', '@@text_domain' ) }
                     checked={ supportsAnchor }
                     onChange={ ( value ) => updateData( { supports_anchor: value } ) }
                 />
-                <CheckboxControl
+                <ToggleControl
                     label={ __( 'Inserter', '@@text_domain' ) }
                     help={ __( 'Show block in blocks inserter.', '@@text_domain' ) }
                     checked={ supportsInserter }
@@ -138,31 +138,31 @@ export default class SupportsSettings extends Component {
                     </BaseControl>
                 ) : '' }
                 <GktWrap>
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Spacings', '@@text_domain' ) }
                         help={ __( 'Change block margins and paddings.', '@@text_domain' ) }
                         checked={ supportsGktSpacings }
                         onChange={ ( value ) => updateData( { supports_ghostkit_spacings: value } ) }
                     />
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Display', '@@text_domain' ) }
                         help={ __( 'Display / Hide blocks on different screen sizes.', '@@text_domain' ) }
                         checked={ supportsGktDisplay }
                         onChange={ ( value ) => updateData( { supports_ghostkit_display: value } ) }
                     />
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Animate on Scroll', '@@text_domain' ) }
                         help={ __( 'Display block with animation on scroll.', '@@text_domain' ) }
                         checked={ supportsGktScrollReveal }
                         onChange={ ( value ) => updateData( { supports_ghostkit_scroll_reveal: value } ) }
                     />
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Frame', '@@text_domain' ) }
                         help={ __( 'Add border and box shadow to block.', '@@text_domain' ) }
                         checked={ supportsGktFrame }
                         onChange={ ( value ) => updateData( { supports_ghostkit_frame: value } ) }
                     />
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Custom CSS', '@@text_domain' ) }
                         help={ __( 'Write custom CSS on each inserted blocks.', '@@text_domain' ) }
                         checked={ supportsGktCustomCSS }

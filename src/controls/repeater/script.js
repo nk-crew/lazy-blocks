@@ -14,7 +14,7 @@ const {
     PanelBody,
     BaseControl,
     TextControl,
-    CheckboxControl,
+    ToggleControl,
 } = wp.components;
 
 const {
@@ -232,13 +232,13 @@ addFilter( 'lzb.constructor.control.repeater.settings', 'lzb.constructor', ( ren
                 <BaseControl
                     label={ __( 'Collapsible Rows', '@@text_domain' ) }
                 >
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.rows_collapsible }
                         onChange={ ( value ) => updateData( { rows_collapsible: value ? 'true' : 'false' } ) }
                     />
                     { 'true' === data.rows_collapsible ? (
-                        <CheckboxControl
+                        <ToggleControl
                             label={ __( 'Collapsed by Default', '@@text_domain' ) }
                             checked={ 'true' === data.rows_collapsed }
                             onChange={ ( value ) => updateData( { rows_collapsed: value ? 'true' : 'false' } ) }

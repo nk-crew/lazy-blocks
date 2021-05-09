@@ -1,5 +1,3 @@
-import slugify from 'slugify';
-
 import BlockSlugControl from '../../../components/block-slug';
 import IconPicker from '../../../components/icon-picker';
 import Select from '../../../components/select';
@@ -9,7 +7,6 @@ const { Component, Fragment } = wp.element;
 const {
     PanelBody,
     BaseControl,
-    TextControl,
     TextareaControl,
     Notice,
 } = wp.components;
@@ -18,41 +15,13 @@ const { compose } = wp.compose;
 
 const {
     withSelect,
-    withDispatch,
 } = wp.data;
 
 class GeneralSettings extends Component {
     constructor( ...args ) {
         super( ...args );
 
-        this.maybeAddSlug = this.maybeAddSlug.bind( this );
         this.isSlugValid = this.isSlugValid.bind( this );
-    }
-
-    maybeAddSlug() {
-        const {
-            data,
-            updateData,
-            postTitle,
-        } = this.props;
-
-        const {
-            slug,
-        } = data;
-
-        if ( slug || ! postTitle ) {
-            return;
-        }
-
-        const newSlug = slugify( postTitle, {
-            replacement: '-',
-            lower: true,
-            remove: /[^\w\s$0-9-*+~.$(_)#&|'"!:;@/\\]/g,
-        } );
-
-        updateData( {
-            slug: newSlug,
-        } );
     }
 
     isSlugValid() {
@@ -72,8 +41,6 @@ class GeneralSettings extends Component {
             data,
             updateData,
             categories,
-            postTitle,
-            updatePostTitle,
         } = this.props;
 
         const {
@@ -103,14 +70,6 @@ class GeneralSettings extends Component {
 
         return (
             <Fragment>
-                <PanelBody>
-                    <TextControl
-                        label={ __( 'Title', '@@text_domain' ) }
-                        value={ postTitle }
-                        onChange={ ( value ) => updatePostTitle( value ) }
-                        onBlur={ () => this.maybeAddSlug() }
-                    />
-                </PanelBody>
                 <PanelBody>
                     <BlockSlugControl
                         label={ __( 'Slug', '@@text_domain' ) }
@@ -203,23 +162,10 @@ class GeneralSettings extends Component {
 
 export default compose( [
     withSelect( ( select ) => {
-        const { getEditedPostAttribute } = select( 'core/editor' );
         const categories = select( 'core/blocks' ).getCategories();
 
         return {
-            postTitle: getEditedPostAttribute( 'title' ),
             categories,
-        };
-    } ),
-    withDispatch( ( dispatch ) => {
-        const {
-            editPost,
-        } = dispatch( 'core/editor' );
-
-        return {
-            updatePostTitle( title ) {
-                editPost( { title } );
-            },
         };
     } ),
 ] )( GeneralSettings );

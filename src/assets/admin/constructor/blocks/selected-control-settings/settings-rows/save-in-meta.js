@@ -6,7 +6,7 @@ const {
     PanelBody,
     BaseControl,
     Button,
-    CheckboxControl,
+    ToggleControl,
     TextControl,
 } = wp.components;
 
@@ -35,7 +35,7 @@ export default class SaveInMetaRow extends Component {
                             </Button>
                         ) }
                     >
-                        <CheckboxControl
+                        <ToggleControl
                             label={ __( 'Yes', '@@text_domain' ) }
                             checked={ 'true' === data.save_in_meta }
                             onChange={ ( value ) => updateData( { save_in_meta: value ? 'true' : 'false' } ) }

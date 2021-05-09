@@ -5,7 +5,7 @@ const { Component } = wp.element;
 const {
     PanelBody,
     BaseControl,
-    CheckboxControl,
+    ToggleControl,
 } = wp.components;
 
 export default class RequiredRow extends Component {
@@ -20,7 +20,7 @@ export default class RequiredRow extends Component {
                 <BaseControl
                     label={ __( 'Required', '@@text_domain' ) }
                 >
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         help={ __( 'Experimental feature, may not work as expected.', '@@text_domain' ) }
                         checked={ 'true' === data.required }

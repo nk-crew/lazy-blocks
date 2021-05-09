@@ -31,8 +31,12 @@ const constructorData = window.lazyblocksConstructorData;
 const DragHandle = SortableHandle( () => (
     <span className="lzb-constructor-controls-item-handler">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 6.99L9 14L11 14L11 6.99L14 6.99L10 3L6 6.99L9 6.99Z" fill="currentColor" />
-            <path d="M15 18.01L15 11L13 11L13 18.01L10 18.01L14 22L18 18.01L15 18.01Z" fill="currentColor" />
+            <path d="M10 4.99976H8V6.99976H10V4.99976Z" fill="currentColor" />
+            <path d="M10 10.9998H8V12.9998H10V10.9998Z" fill="currentColor" />
+            <path d="M10 16.9998H8V18.9998H10V16.9998Z" fill="currentColor" />
+            <path d="M16 4.99976H14V6.99976H16V4.99976Z" fill="currentColor" />
+            <path d="M16 10.9998H14V12.9998H16V10.9998Z" fill="currentColor" />
+            <path d="M16 16.9998H14V18.9998H16V16.9998Z" fill="currentColor" />
         </svg>
     </span>
 ) );
@@ -181,11 +185,27 @@ class ControlsSettings extends Component {
         const placementTabs = [
             {
                 name: 'content',
-                title: __( 'Content', '@@text_domain' ),
+                title: (
+                    <Fragment>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                            <rect x="7" y="7" width="8" height="10" rx="0.5" fill="currentColor" />
+                        </svg>
+                        { __( 'Content Controls', '@@text_domain' ) }
+                    </Fragment>
+                ),
                 className: 'lazyblocks-control-tabs-tab',
             }, {
                 name: 'inspector',
-                title: __( 'Inspector', '@@text_domain' ),
+                title: (
+                    <Fragment>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                            <rect x="13" y="7" width="4" height="10" rx="0.5" fill="currentColor" />
+                        </svg>
+                        { __( 'Inspector Controls', '@@text_domain' ) }
+                    </Fragment>
+                ),
                 className: 'lazyblocks-control-tabs-tab',
             },
         ];

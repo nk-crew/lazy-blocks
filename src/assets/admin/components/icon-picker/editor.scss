@@ -28,22 +28,22 @@
 
     &.lazyblocks-component-icon-picker-preview {
         cursor: pointer;
-        border: 1px solid transparent;
-        transition: .15s background-color, .15s border-color;
+        border: none;
+        transition: .15s background-color, .15s box-shadow;
 
         &:hover,
         &.hover {
-            background-color: $color_gray_lighten;
-            border-color: $color_gray_lighten;
+            box-shadow: rgba(0, 0, 0, .2) 0 0 0 1px, rgba(0, 0, 0, .1) 0 2px 4px 0;
         }
-        &.hover:hover {
-            background-color: $color_gray;
-            border-color: $color_gray;
+        &.hover:hover,
+        &.lazyblocks-component-icon-picker-button-active {
+            box-shadow: rgba(0, 0, 0, .4) 0 0 0 1px;
         }
 
         &.lazyblocks-component-icon-picker-button-active {
-            background-color: #fff;
-            border-color: $blue-500;
+            color: #fff;
+            background-color: $blue-wordpress;
+            box-shadow: $blue-wordpress 0 0 0 1px, rgba($blue-wordpress, .1) 0 2px 4px 0;
         }
     }
 }

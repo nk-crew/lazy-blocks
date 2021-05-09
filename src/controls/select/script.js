@@ -12,7 +12,7 @@ const {
     PanelBody,
     BaseControl,
     SelectControl,
-    CheckboxControl,
+    ToggleControl,
     RadioControl,
 } = wp.components;
 
@@ -78,7 +78,7 @@ addFilter( 'lzb.constructor.control.select.settings', 'lzb.constructor', ( rende
                     label={ __( 'Allow Null', '@@text_domain' ) }
                     help={ __( 'Allows you to reset selected option value to null', '@@text_domain' ) }
                 >
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.allow_null }
                         onChange={ ( value ) => updateData( { allow_null: value ? 'true' : 'false' } ) }
@@ -90,7 +90,7 @@ addFilter( 'lzb.constructor.control.select.settings', 'lzb.constructor', ( rende
                     label={ __( 'Multiple', '@@text_domain' ) }
                     help={ __( 'Allows you to select multiple values', '@@text_domain' ) }
                 >
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.multiple }
                         onChange={ ( value ) => updateData( { multiple: value ? 'true' : 'false' } ) }

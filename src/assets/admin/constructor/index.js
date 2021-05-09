@@ -5,6 +5,7 @@ import '../store';
 import DocumentTabs from '../components/document-tabs';
 import Box from '../components/box';
 
+import TitleSettings from './blocks/title';
 import GeneralSettings from './blocks/general';
 import SupportsSettings from './blocks/supports';
 import ConditionSettings from './blocks/condition';
@@ -108,12 +109,14 @@ class ConstructorBlock extends Component {
                     </DocumentTabs>
                 </InspectorControls>
                 <div className="lzb-constructor">
-                    <h2>{ __( 'Controls', '@@text_domain' ) }</h2>
+                    <TitleSettings
+                        data={ blockData }
+                        updateData={ updateBlockData }
+                    />
                     <ControlsSettings
                         data={ blockData }
                         updateData={ updateBlockData }
                     />
-                    <h2>{ __( 'Code', '@@text_domain' ) }</h2>
                     <Box no-paddings>
                         <CustomCodeSettings
                             data={ blockData }

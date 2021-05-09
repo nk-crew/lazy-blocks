@@ -6,7 +6,7 @@ const {
 
 const {
     PanelBody,
-    CheckboxControl,
+    ToggleControl,
     BaseControl,
 } = wp.components;
 
@@ -47,7 +47,7 @@ addFilter( 'lzb.constructor.control.rich_text.settings', 'lzb.constructor', ( re
 
     return (
         <PanelBody>
-            <CheckboxControl
+            <ToggleControl
                 label={ __( 'Multiline', '@@text_domain' ) }
                 checked={ 'true' === data.multiline }
                 onChange={ ( value ) => updateData( { multiline: value ? 'true' : 'false' } ) }

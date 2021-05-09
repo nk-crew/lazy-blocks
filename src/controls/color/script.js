@@ -9,7 +9,7 @@ const {
 const {
     PanelBody,
     BaseControl,
-    CheckboxControl,
+    ToggleControl,
 } = wp.components;
 
 /**
@@ -40,7 +40,7 @@ addFilter( 'lzb.constructor.control.color.settings', 'lzb.constructor', ( render
                 label={ __( 'Alpha Channel', '@@text_domain' ) }
                 help={ __( 'Will be added option that allow you to set semi-transparent colors with rgba', '@@text_domain' ) }
             >
-                <CheckboxControl
+                <ToggleControl
                     label={ __( 'Yes', '@@text_domain' ) }
                     checked={ 'true' === data.alpha }
                     onChange={ ( value ) => updateData( { alpha: value ? 'true' : 'false' } ) }

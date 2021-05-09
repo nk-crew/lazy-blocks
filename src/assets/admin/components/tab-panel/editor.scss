@@ -5,24 +5,28 @@
  */
 .lazyblocks-control-tabs {
     > .components-tab-panel__tabs {
-        display: flex;
+        display: inline-flex;
         flex-wrap: wrap;
+        padding: 2px;
         margin-bottom: 15px;
-        border-bottom: 1px solid $color_gray;
+        background-color: $color_gray;
+        border-radius: $radius_box;
 
         // single tab
         > .lazyblocks-control-tabs-tab {
             height: auto;
-            padding: 15px 20px;
+            padding: 7px 15px;
             margin: 0;
-            margin-bottom: -1px;
-            color: #555d66;
+            color: $color_dark_darken;
             cursor: pointer;
             background: none;
             border: none;
-            border-bottom: 2px solid transparent;
-            border-radius: 0;
-            outline-offset: -1px;
+            border-radius: $radius_box - 2px;
+            box-shadow: 0 0 0 transparent;
+
+            + .lazyblocks-control-tabs-tab {
+                margin-left: 2px;
+            }
 
             &.lazyblocks-control-tabs-tab-hidden:not(.is-active) {
                 display: none;
@@ -32,13 +36,19 @@
                 display: block;
                 width: auto;
                 height: 1.4em;
+                margin-right: .3em;
             }
 
             &.is-active {
                 position: relative;
                 font-weight: 600;
-                border-bottom: 2px solid $blue-500;
+                background-color: #fff;
+                box-shadow: rgba(0, 0, 0, .05) 0 0 0 1px, rgba(0, 0, 0, .05) 0 1px 2px 0;
                 z-index: 1;
+
+                svg {
+                    color: $blue-50;
+                }
             }
         }
     }

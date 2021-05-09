@@ -18,7 +18,7 @@ class LazyBlocks_Control_Checkbox extends LazyBlocks_Control {
      */
     public function __construct() {
         $this->name         = 'checkbox';
-        $this->icon         = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM17.99 9L16.58 7.58L9.99 14.17L7.41 11.6L5.99 13.01L9.99 17L17.99 9Z" fill="currentColor"/></svg>';
+        $this->icon         = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z" stroke="currentColor" stroke-width="1.5"/><path d="M15.94 8.59219L10.6727 15.6762L7.61835 13.4051" stroke="currentColor" stroke-width="1.5"/></svg>';
         $this->type         = 'boolean';
         $this->label        = __( 'Checkbox', '@@text_domain' );
         $this->category     = 'choice';

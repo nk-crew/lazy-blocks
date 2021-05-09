@@ -18,7 +18,7 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
      */
     public function __construct() {
         $this->name         = 'repeater';
-        $this->icon         = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 15V19H5V15H19ZM20 13H4C3.45 13 3 13.45 3 14V20C3 20.55 3.45 21 4 21H20C20.55 21 21 20.55 21 20V14C21 13.45 20.55 13 20 13ZM7 18.5C6.18 18.5 5.5 17.83 5.5 17C5.5 16.17 6.18 15.5 7 15.5C7.82 15.5 8.5 16.17 8.5 17C8.5 17.83 7.83 18.5 7 18.5ZM19 5V9H5V5H19ZM20 3H4C3.45 3 3 3.45 3 4V10C3 10.55 3.45 11 4 11H20C20.55 11 21 10.55 21 10V4C21 3.45 20.55 3 20 3ZM7 8.5C6.18 8.5 5.5 7.83 5.5 7C5.5 6.17 6.18 5.5 7 5.5C7.82 5.5 8.5 6.18 8.5 7C8.5 7.82 7.83 8.5 7 8.5Z" fill="currentColor"/></svg>';
+        $this->icon         = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.2 3.75H17.8C18.6009 3.75 19.25 4.30964 19.25 5V9C19.25 9.69036 18.6009 10.25 17.8 10.25H6.2C5.39918 10.25 4.75 9.69036 4.75 9V5C4.75 4.30964 5.39918 3.75 6.2 3.75Z" stroke="currentColor" stroke-width="1.5"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 7.75H7V6.25H8.5V7.75Z" fill="currentColor"/><path d="M6.2 13.75H17.8C18.6009 13.75 19.25 14.3096 19.25 15V19C19.25 19.6904 18.6009 20.25 17.8 20.25H6.2C5.39918 20.25 4.75 19.6904 4.75 19V15C4.75 14.3096 5.39918 13.75 6.2 13.75Z" stroke="currentColor" stroke-width="1.5"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 17.75H7V16.25H8.5V17.75Z" fill="currentColor"/></svg>';
         $this->type         = 'string';
         $this->label        = __( 'Repeater', '@@text_domain' );
         $this->category     = 'layout';

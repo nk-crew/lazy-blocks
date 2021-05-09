@@ -12,7 +12,7 @@ const {
     PanelBody,
     BaseControl,
     RadioControl,
-    CheckboxControl,
+    ToggleControl,
 } = wp.components;
 
 /**
@@ -58,7 +58,7 @@ addFilter( 'lzb.constructor.control.radio.settings', 'lzb.constructor', ( render
                     label={ __( 'Allow Null', '@@text_domain' ) }
                     help={ __( 'Allows you to reset selected option value to null', '@@text_domain' ) }
                 >
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.allow_null }
                         onChange={ ( value ) => updateData( { allow_null: value ? 'true' : 'false' } ) }

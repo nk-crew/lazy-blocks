@@ -11,7 +11,6 @@ const {
     BaseControl,
     TextControl,
     ToggleControl,
-    CheckboxControl,
 } = wp.components;
 
 /**
@@ -51,7 +50,7 @@ addFilter( 'lzb.constructor.control.toggle.settings', 'lzb.constructor', ( rende
                 <BaseControl
                     label={ __( 'Checked', '@@text_domain' ) }
                 >
-                    <CheckboxControl
+                    <ToggleControl
                         label={ __( 'Yes', '@@text_domain' ) }
                         checked={ 'true' === data.checked }
                         onChange={ ( value ) => updateData( { checked: value ? 'true' : 'false' } ) }
