@@ -162,6 +162,15 @@
     }
 }
 
+// Fix for long words.
+.lazyblock .lzb-content-title h6,
+.lzb-content-controls .components-base-control__label,
+.lzb-content-controls .components-base-control__help,
+.lzb-inspector-controls .components-base-control__label,
+.lzb-inspector-controls .components-base-control__help {
+    word-break: break-word;
+}
+
 // Select control
 .lzb-gutenberg-select {
     select {
