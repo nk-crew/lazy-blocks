@@ -1,4 +1,5 @@
 import slugify from 'slugify';
+import TextareaAutosize from 'react-autosize-textarea';
 
 import './editor.scss';
 
@@ -6,11 +7,8 @@ const { __ } = wp.i18n;
 
 const {
     Component,
+    createRef,
 } = wp.element;
-
-const {
-    TextControl,
-} = wp.components;
 
 const { compose } = wp.compose;
 
@@ -19,10 +17,13 @@ const {
     withDispatch,
 } = wp.data;
 
+const REGEXP_NEWLINES = /[\r\n]+/g;
+
 class TitleSettings extends Component {
     constructor( ...args ) {
         super( ...args );
 
+        this.textareaRef = createRef();
         this.maybeAddSlug = this.maybeAddSlug.bind( this );
     }
 
@@ -61,10 +62,13 @@ class TitleSettings extends Component {
 
         return (
             <div className="lzb-constructor-title">
-                <TextControl
+                <TextareaAutosize
+                    ref={ this.textareaRef }
                     placeholder={ __( 'Block Name', '@@text_domain' ) }
                     value={ postTitle }
-                    onChange={ ( value ) => updatePostTitle( value ) }
+                    onChange={ ( e ) => {
+                        updatePostTitle( e.target.value.replace( REGEXP_NEWLINES, ' ' ) );
+                    } }
                     onBlur={ () => this.maybeAddSlug() }
                 />
             </div>

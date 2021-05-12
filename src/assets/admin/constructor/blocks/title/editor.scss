@@ -10,7 +10,8 @@
     background: #fff;
     box-shadow: rgba(0, 0, 0, .1) 0 1px 3px 0, rgba(0, 0, 0, .06) 0 1px 2px 0;
 
-    .components-text-control__input {
+    textarea {
+        width: 100%;
         // stylelint-disable-next-line
         font-size: 40px !important;
         font-weight: 600;
