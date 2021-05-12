@@ -17,8 +17,8 @@
     "js-lint-fix": "eslint --ext .js --fix src/",
     "make-pot": "composer wp -- i18n make-pot ./src ./src/languages/lazy-blocks.pot --skip-audit --exclude=vendor,vendors,node_modules --headers='{\"Last-Translator\":\"nK\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-o/lazyblocks/issues\"}'",
     "make-json": "po2json ./src/languages/lazy-blocks.pot ./src/languages/lazy-blocks.json --format=jed1.x --pretty --domain=@@text_domain",
-    "update:packages": "npm i -g npm-check-updates && npm-check-updates -u && npm install",
-    "postinstall": "npx simple-git-hooks && composer install"
+    "update-git-hooks": "npx simple-git-hooks",
+    "postinstall": "composer install"
   },
   "devDependencies": {
     "@babel/node": "^7.13.13",
