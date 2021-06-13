@@ -114,6 +114,7 @@
         display: flex;
         flex-wrap: wrap;
         margin-right: -5px;
+        margin-bottom: 10px;
         margin-left: -5px;
 
         > div {
@@ -125,46 +126,92 @@
 
         > .components-base-control {
             min-width: 150px;
+            padding-left: 18px;
             margin-bottom: 0;
+
+            input {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            &:first-child input {
+                border-bottom-right-radius: 0;
+            }
+
+            + .components-base-control input {
+                border-top: none;
+                border-top-right-radius: 0;
+            }
+        }
+        .components-base-control__field {
+            margin-bottom: 0;
+        }
+
+        input::placeholder {
+            // stylelint-disable-next-line
+            color: #a0a0a0 !important;
         }
     }
 
     .lzb-constructor-controls-item-settings-choices-item-handler {
-        width: 25px;
-        min-width: 25px;
-        max-width: 25px;
-        padding-top: 7px;
-        text-align: right;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 0;
+        bottom: 0;
+        left: 5px;
+        width: 20px;
+        padding: 0;
+        // stylelint-disable-next-line
+        margin: 0 !important;
+        color: #fff;
+        text-align: center;
         cursor: grab;
-        opacity: .2;
-        transition: .2s opacity ease-in-out;
+        background-color: #1e1e1e;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        transition: .15s background-color ease-in-out;
 
         &:hover {
-            opacity: .4;
+            background-color: #007cba;
+        }
+
+        svg {
+            width: 1.5em;
+            height: 1.5em;
         }
     }
 
     .lzb-constructor-controls-item-settings-choices-item-remove {
         position: absolute;
-        top: 10px;
-        left: -2px;
-        width: 15px;
-        height: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 50%;
+        right: -5px;
+        width: 20px;
+        height: 20px;
         padding: 0;
-        color: #fff;
+        margin-top: -10px;
+        color: #1e1e1e;
         cursor: pointer;
-        background: $alert-red;
+        background-color: #fff;
         border: none;
+        border: 1px solid #1e1e1e;
         border-radius: 50%;
         opacity: 0;
-        transition: .2s opacity ease-in-out;
+        transition: .15s opacity ease-in-out, .15s color ease-in-out, .15s background-color ease-in-out, .15s border-color ease-in-out;
 
-        .dashicons {
-            width: 13px;
-            height: 13px;
-            margin-top: 1px;
-            font-size: 13px;
-            text-align: center;
+        svg {
+            width: 1em;
+            height: 1em;
+        }
+
+        &:hover,
+        &:focus {
+            color: #fff;
+            background-color: $alert-red;
+            border-color: $alert-red;
         }
     }
     .lzb-constructor-controls-item-settings-choices-item:hover .lzb-constructor-controls-item-settings-choices-item-remove {

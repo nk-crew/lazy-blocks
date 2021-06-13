@@ -46,7 +46,7 @@ function reducer( state = { data: false }, action ) {
             return {
                 ...state,
 
-                // We can't use `marge` function as arrays like `supports_align` should be replaced, not merged.
+                // We can't use `merge` function as arrays like `supports_align` should be replaced, not merged.
                 data: {
                     ...( state.data || {} ),
                     ...( action.data || {} ),
