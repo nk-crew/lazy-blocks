@@ -433,11 +433,8 @@
 // Classic Editor control
 .lzb-gutenberg-classic-editor {
     .block-library-classic__toolbar {
-        position: relative;
         display: block;
-        top: 0;
         margin: 0;
-        transform: none;
 
         &:empty {
             display: none;
