@@ -63,7 +63,7 @@ class LazyBlocks_Blocks {
 
         add_action( 'init', array( $this, 'remove_custom_fields_support' ), 150 );
 
-        add_filter( 'allowed_block_types', array( $this, 'allowed_block_types' ), 10, 2 );
+        add_filter( 'allowed_block_types_all', array( $this, 'allowed_block_types_all' ), 10, 2 );
 
         // custom post roles.
         add_action( 'admin_init', array( $this, 'add_role_caps' ) );
@@ -79,7 +79,7 @@ class LazyBlocks_Blocks {
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
             // add custom block categories.
-            add_filter( 'block_categories', array( $this, 'block_categories' ), 100 );
+            add_filter( 'block_categories_all', array( $this, 'block_categories_all' ), 100 );
 
             add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
             add_action( 'init', array( $this, 'register_block_render' ), 20 );
@@ -366,11 +366,11 @@ class LazyBlocks_Blocks {
      * Allowed blocks for lazyblocks post type.
      *
      * @param array  $allowed_block_types - blocks.
-     * @param object $post - post object.
+     * @param object $editor_context - editor context.
      * @return array
      */
-    public function allowed_block_types( $allowed_block_types, $post ) {
-        if ( 'lazyblocks' !== $post->post_type ) {
+    public function allowed_block_types_all( $allowed_block_types, $editor_context ) {
+        if ( ! empty( $editor_context->post ) && 'lazyblocks' !== $editor_context->post->post_type ) {
             return $allowed_block_types;
         }
         return array( 'lzb-constructor/main' );
@@ -1024,7 +1024,7 @@ class LazyBlocks_Blocks {
      * @param array $categories - available categories.
      * @return array
      */
-    public function block_categories( $categories ) {
+    public function block_categories_all( $categories ) {
         // lazyblocks core category.
         $categories[] = array(
             'slug'  => 'lazyblocks',

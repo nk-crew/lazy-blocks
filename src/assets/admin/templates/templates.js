@@ -264,7 +264,10 @@ class Templates extends Component {
                     category: block.category,
                     useOnce: block.supports && 'undefined' !== typeof block.supports.multiple ? block.supports.multiple : true,
                 };
-                blocksCategorizedObj[ block.category ].options.push( blocks[ block.name ] );
+
+                if ( blocksCategorizedObj[ block.category ] ) {
+                    blocksCategorizedObj[ block.category ].options.push( blocks[ block.name ] );
+                }
             }
         } );
 
