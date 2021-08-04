@@ -12,7 +12,13 @@ import WidthRow from './width';
 import HideIfNotSelectedRow from './hide-if-not-selected';
 import SaveInMetaRow from './save-in-meta';
 
-const { Component } = wp.element;
+const {
+    Component,
+} = wp.element;
+
+const {
+    applyFilters,
+} = wp.hooks;
 
 export default class settingsRows extends Component {
     render() {
@@ -21,7 +27,9 @@ export default class settingsRows extends Component {
             id,
         } = this.props;
 
-        const rows = {
+        const controlTypeData = getControlTypeData( data.type );
+
+        const rows = applyFilters( 'lzb.constructor.control.settings-rows', {
             label: LabelRow,
             name: NameRow,
             type: TypeRow,
@@ -33,9 +41,7 @@ export default class settingsRows extends Component {
             required: RequiredRow,
             hide_if_not_selected: HideIfNotSelectedRow,
             save_in_meta: SaveInMetaRow,
-        };
-
-        const controlTypeData = getControlTypeData( data.type );
+        }, this.props, controlTypeData );
 
         return Object.keys( rows ).map( ( i ) => {
             const Row = rows[ i ];
@@ -67,6 +73,7 @@ export default class settingsRows extends Component {
             return (
                 <Row
                     key={ `settings-row-${ id }-${ i }` }
+                    controlTypeData={ controlTypeData }
                     { ...this.props }
                 />
             );
