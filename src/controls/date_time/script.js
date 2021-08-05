@@ -112,6 +112,7 @@ class DateTimePicker extends Component {
                                     <DatePicker
                                         currentDate={ value }
                                         onChange={ onChange }
+                                        onMonthPreviewed={ () => {} }
                                     />
                                 ) : '' }
                             </div>
