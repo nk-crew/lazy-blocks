@@ -3,8 +3,9 @@
 .post-type-lazyblocks {
     // editor background.
     .block-editor-editor-skeleton__content,
-    .interface-interface-skeleton__content {
-        background-color: $color_gray_lighten;
+    .interface-interface-skeleton__content,
+    .editor-styles-wrapper {
+        background: $color_gray_lighten;
     }
 
     // hide post title.
@@ -36,7 +37,6 @@
         padding: 10px;
         margin-right: 0;
         margin-left: 0;
-        background: none;
 
         // change content width.
         .wp-block {
