@@ -30,18 +30,21 @@ export default class CodeEditor extends Component {
                 showGutter
                 highlightActiveLine={ false }
                 width="100%"
+                className="lazyblocks-component-code-editor"
+                { ...this.props }
+                editorProps={ {
+                    $blockScrolling: Infinity,
+                    ...this.props.editorProps || {},
+                } }
                 setOptions={ {
                     enableBasicAutocompletion: true,
                     enableLiveAutocompletion: true,
                     enableSnippets: true,
                     showLineNumbers: true,
                     tabSize: 2,
+                    useWorker: false,
+                    ...this.props.setOptions || {},
                 } }
-                editorProps={ {
-                    $blockScrolling: Infinity,
-                } }
-                className="lazyblocks-component-code-editor"
-                { ...this.props }
             />
         );
     }

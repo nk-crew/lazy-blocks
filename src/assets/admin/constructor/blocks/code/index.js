@@ -1,8 +1,13 @@
+import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
+
 import CodeEditor from '../../../components/code-editor';
 
 import './editor.scss';
 
-const { __ } = wp.i18n;
+const {
+    __,
+    sprintf,
+} = wp.i18n;
 
 const {
     Fragment,
@@ -11,6 +16,7 @@ const {
 
 const {
     withSelect,
+    select,
 } = wp.data;
 
 const {
@@ -23,6 +29,72 @@ const {
     TabPanel,
     Notice,
 } = wp.components;
+
+// Add autocompleter with control names.
+addCompleter( {
+    getCompletions( editor, session, pos, prefix, callback ) {
+        if ( 'lzb-editor-php' === editor.id ) {
+            const {
+                getBlockData,
+            } = select( 'lazy-blocks/block-data' );
+
+            const blockData = getBlockData();
+
+            if ( blockData.controls ) {
+                const result = [];
+
+                Object.keys( blockData.controls ).forEach( ( k ) => {
+                    const control = blockData.controls[ k ];
+
+                    if ( control.name && ! control.child_of ) {
+                        result.push( {
+                            caption: `$attributes['${ control.name }']`,
+                            value: `$attributes['${ control.name }']`,
+                            meta: sprintf( __( 'Control "%1$s"', '@@text_domain' ), control.label ),
+                        } );
+                    }
+                } );
+
+                if ( result.length ) {
+                    callback( null, result );
+                }
+            }
+        }
+    },
+    identifierRegexps: [ /\$/ ],
+} );
+addCompleter( {
+    getCompletions( editor, session, pos, prefix, callback ) {
+        if ( 'lzb-editor-html' === editor.id ) {
+            const {
+                getBlockData,
+            } = select( 'lazy-blocks/block-data' );
+
+            const blockData = getBlockData();
+
+            if ( blockData.controls ) {
+                const result = [];
+
+                Object.keys( blockData.controls ).forEach( ( k ) => {
+                    const control = blockData.controls[ k ];
+
+                    if ( control.name && ! control.child_of ) {
+                        result.push( {
+                            caption: `{{${ control.name }}}`,
+                            value: `{{${ control.name }}}`,
+                            meta: sprintf( __( 'Control "%1$s"', '@@text_domain' ), control.label ),
+                        } );
+                    }
+                } );
+
+                if ( result.length ) {
+                    callback( null, result );
+                }
+            }
+        }
+    },
+    identifierRegexps: [ /\{/ ],
+} );
 
 class CustomCodeSettings extends Component {
     constructor( ...args ) {
@@ -52,6 +124,9 @@ class CustomCodeSettings extends Component {
                 maxLines={ 20 }
                 minLines={ 5 }
                 height="300px"
+                editorProps={ {
+                    id: `lzb-editor-${ data.code_output_method }`,
+                } }
             />
         );
     }
@@ -253,10 +328,10 @@ class CustomCodeSettings extends Component {
     }
 }
 
-export default withSelect( ( select ) => {
+export default withSelect( ( $select ) => {
     const {
         getCurrentTheme,
-    } = select( 'core' );
+    } = $select( 'core' );
 
     return {
         currentTheme: getCurrentTheme(),
