@@ -577,10 +577,15 @@
         flex-wrap: wrap;
         padding-bottom: 13px;
         margin: 0;
+        margin-left: -15px;
 
         .components-notice {
             margin: 0;
             margin-top: 15px;
+        }
+
+        > div {
+            padding-left: 15px;
         }
 
         > .components-panel__body {
