@@ -18,10 +18,6 @@ const {
 } = wp.blockEditor;
 
 const {
-    mediaUpload,
-} = wp.editor;
-
-const {
     withSelect,
 } = wp.data;
 
@@ -55,6 +51,7 @@ class GalleryControl extends Component {
             noticeOperations,
             noticeUI,
             onChange = () => {},
+            mediaUpload,
         } = this.props;
 
         return (
@@ -145,6 +142,10 @@ export default compose( [
     withNotices,
     withSelect( ( select, ownProps ) => {
         const {
+            mediaUpload,
+        } = select( 'core/block-editor' ).getSettings();
+
+        const {
             getMedia,
         } = select( 'core' );
 
@@ -175,6 +176,7 @@ export default compose( [
         }
 
         return {
+            mediaUpload,
             imagesPreviewData,
         };
     } ),

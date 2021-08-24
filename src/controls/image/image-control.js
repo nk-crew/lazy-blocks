@@ -17,10 +17,6 @@ const {
 } = wp.blockEditor;
 
 const {
-    mediaUpload,
-} = wp.editor;
-
-const {
     withSelect,
 } = wp.data;
 
@@ -54,6 +50,7 @@ class ImageControl extends Component {
             noticeOperations,
             noticeUI,
             onChange = () => {},
+            mediaUpload,
         } = this.props;
 
         return (
@@ -89,7 +86,7 @@ class ImageControl extends Component {
                                         filesList: files,
                                         onFileChange: ( image ) => {
                                             this.setState( { hasError: false } );
-                                            onChange( image );
+                                            onChange( image[ 0 ] );
                                         },
                                         onError: ( message ) => {
                                             this.setState( { hasError: true } );
@@ -128,6 +125,10 @@ export default compose( [
     withNotices,
     withSelect( ( select, ownProps ) => {
         const {
+            mediaUpload,
+        } = select( 'core/block-editor' ).getSettings();
+
+        const {
             getMedia,
         } = select( 'core' );
 
@@ -154,6 +155,7 @@ export default compose( [
         }
 
         return {
+            mediaUpload,
             imagePreviewData,
         };
     } ),

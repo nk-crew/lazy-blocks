@@ -17,8 +17,8 @@ const {
 } = wp.blockEditor;
 
 const {
-    mediaUpload,
-} = wp.editor;
+    withSelect,
+} = wp.data;
 
 const {
     allowed_mime_types: wpAllowedMimeTypes,
@@ -52,6 +52,7 @@ class FileControl extends Component {
             noticeOperations,
             noticeUI,
             onChange = () => {},
+            mediaUpload,
         } = this.props;
 
         const ALLOWED_MEDIA_TYPES = [];
@@ -104,7 +105,7 @@ class FileControl extends Component {
                                         filesList: files,
                                         onFileChange: ( file ) => {
                                             this.setState( { hasError: false } );
-                                            onChange( file );
+                                            onChange( file[ 0 ] );
                                         },
                                         onError: ( message ) => {
                                             this.setState( { hasError: true } );
@@ -143,6 +144,15 @@ class FileControl extends Component {
 }
 
 export default compose( [
+    withSelect( ( select ) => {
+        const {
+            mediaUpload,
+        } = select( 'core/block-editor' ).getSettings();
+
+        return {
+            mediaUpload,
+        };
+    } ),
     withInstanceId,
     withNotices,
 ] )( FileControl );

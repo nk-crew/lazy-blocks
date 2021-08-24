@@ -1077,7 +1077,7 @@ class LazyBlocks_Blocks {
         wp_enqueue_script(
             'lazyblocks-gutenberg',
             lazyblocks()->plugin_url() . 'assets/js/index.min.js',
-            array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
+            array( 'wp-blocks', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
             '@@plugin_version',
             true
         );
