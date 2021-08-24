@@ -370,7 +370,7 @@ class LazyBlocks_Blocks {
      * @return array
      */
     public function allowed_block_types_all( $allowed_block_types, $editor_context ) {
-        if ( ! empty( $editor_context->post ) && 'lazyblocks' !== $editor_context->post->post_type ) {
+        if ( empty( $editor_context->post ) || 'lazyblocks' !== $editor_context->post->post_type ) {
             return $allowed_block_types;
         }
         return array( 'lzb-constructor/main' );
