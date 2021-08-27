@@ -1,4 +1,4 @@
-import arrayMove from 'array-move';
+import { arrayMoveImmutable } from 'array-move';
 import classnames from 'classnames/dedupe';
 
 import RepeaterControl from './repeater-control';
@@ -63,7 +63,7 @@ addFilter( 'lzb.editor.control.repeater.render', 'lzb.editor', ( render, props )
                 props.onChange( val );
             } }
             resortRow={ ( oldIndex, newIndex ) => {
-                const newVal = arrayMove( val, oldIndex, newIndex );
+                const newVal = arrayMoveImmutable( val, oldIndex, newIndex );
                 props.onChange( newVal );
             } }
         />

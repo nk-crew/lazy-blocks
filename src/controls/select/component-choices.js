@@ -1,5 +1,5 @@
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
+import { arrayMoveImmutable } from 'array-move';
 
 const { __ } = wp.i18n;
 const { Component } = wp.element;
@@ -127,7 +127,7 @@ export default class ChoicesRow extends Component {
             choices = [],
         } = data;
 
-        const newChoices = arrayMove( choices, oldIndex, newIndex );
+        const newChoices = arrayMoveImmutable( choices, oldIndex, newIndex );
 
         updateData( { choices: newChoices } );
     }
