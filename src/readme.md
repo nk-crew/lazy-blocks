@@ -102,6 +102,13 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.4.1 =
+
+* fixed 'wp-editor' deprecated error
+* fixed conflict with Widgets Gutenberg editor
+* fixed repeater sorting error
+* removed accepted list for file control Upload button since it is not working correctly in some cases
+
 = 2.4.0 =
 
 * added support for WordPress 5.8
