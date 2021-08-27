@@ -90,7 +90,9 @@ class FileControl extends Component {
                                 onChange( file );
                             } }
                             notices={ noticeUI }
-                            accept={ ALLOWED_MEDIA_TYPES }
+                            // Looks like we can't just use the ALLOWED_MEDIA_TYPES,
+                            // since it is not complete. https://wordpress.org/support/topic/file-note-respecting-allowed-mime-types/
+                            // accept={ ALLOWED_MEDIA_TYPES }
                             allowedTypes={ ALLOWED_MEDIA_TYPES }
                             disableMaxUploadErrorMessages
                             onError={ this.onUploadError }
