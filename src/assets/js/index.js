@@ -478,14 +478,22 @@ options.blocks.forEach( ( item ) => {
             const {
                 lockPostSaving,
                 unlockPostSaving,
-            } = dispatch( 'core/editor' );
+            } = dispatch( 'core/editor' ) || {};
 
             return {
                 lockPostSaving() {
-                    lockPostSaving( `lazyblock-${ ownProps.clientId }` );
+                    // We should check this because of Widget screen does not have this feature
+                    // https://github.com/WordPress/gutenberg/issues/33756
+                    if ( lockPostSaving ) {
+                        lockPostSaving( `lazyblock-${ ownProps.clientId }` );
+                    }
                 },
                 unlockPostSaving() {
-                    unlockPostSaving( `lazyblock-${ ownProps.clientId }` );
+                    // We should check this because of Widget screen does not have this feature
+                    // https://github.com/WordPress/gutenberg/issues/33756
+                    if ( unlockPostSaving ) {
+                        unlockPostSaving( `lazyblock-${ ownProps.clientId }` );
+                    }
                 },
             };
         } ),

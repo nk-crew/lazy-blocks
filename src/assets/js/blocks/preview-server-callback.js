@@ -191,9 +191,9 @@ class PreviewServerCallback extends Component {
 }
 
 export default withSelect( ( select ) => {
-    const { getCurrentPostId } = select( 'core/editor' );
+    const { getCurrentPostId } = select( 'core/editor' ) || {};
 
     return {
-        post_id: getCurrentPostId(),
+        post_id: getCurrentPostId ? getCurrentPostId() : 0,
     };
 } )( PreviewServerCallback );

@@ -120,10 +120,10 @@ const AdditionalAttributesWithSelect = compose( [
     withInstanceId,
     withSelect( ( select ) => {
         const {
-            getEditorSettings,
-        } = select( 'core/editor' );
+            getSettings,
+        } = select( 'core/block-editor' );
 
-        const editorSettings = getEditorSettings();
+        const editorSettings = getSettings();
         const imageSizes = editorSettings.imageSizes || [
             {
                 name: __( 'Medium', '@@text_domain' ),
