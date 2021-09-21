@@ -7,9 +7,14 @@ const {
 } = wp.hooks;
 
 const {
+    Fragment,
+} = wp.element;
+
+const {
     PanelBody,
     BaseControl,
     ToggleControl,
+    RadioControl,
 } = wp.components;
 
 /**
@@ -35,17 +40,39 @@ addFilter( 'lzb.constructor.control.color.settings', 'lzb.constructor', ( render
     } = props;
 
     return (
-        <PanelBody>
-            <BaseControl
-                label={ __( 'Alpha Channel', '@@text_domain' ) }
-                help={ __( 'Will be added option that allow you to set semi-transparent colors with rgba', '@@text_domain' ) }
-            >
-                <ToggleControl
-                    label={ __( 'Yes', '@@text_domain' ) }
-                    checked={ 'true' === data.alpha }
-                    onChange={ ( value ) => updateData( { alpha: value ? 'true' : 'false' } ) }
-                />
-            </BaseControl>
-        </PanelBody>
+        <Fragment>
+            <PanelBody>
+                <BaseControl
+                    label={ __( 'Alpha Channel', '@@text_domain' ) }
+                    help={ __( 'Will be added option that allow you to set semi-transparent colors with rgba', '@@text_domain' ) }
+                >
+                    <ToggleControl
+                        label={ __( 'Yes', '@@text_domain' ) }
+                        checked={ 'true' === data.alpha }
+                        onChange={ ( value ) => updateData( { alpha: value ? 'true' : 'false' } ) }
+                    />
+                </BaseControl>
+            </PanelBody>
+            <PanelBody>
+                <BaseControl
+                    label={ __( 'Output Format', '@@text_domain' ) }
+                    help={ __( 'Allows you to change attribute output format', '@@text_domain' ) }
+                >
+                    <RadioControl
+                        options={ [
+                            {
+                                label: __( 'Color', '@@text_domain' ),
+                                value: '',
+                            }, {
+                                label: __( 'Array (Color + Slug)', '@@text_domain' ),
+                                value: 'array',
+                            },
+                        ] }
+                        selected={ data.output_format || '' }
+                        onChange={ ( value ) => updateData( { output_format: value } ) }
+                    />
+                </BaseControl>
+            </PanelBody>
+        </Fragment>
     );
 } );
