@@ -552,6 +552,7 @@ class LazyBlocks_Blocks {
                 if ( function_exists( 'get_block_categories' ) ) {
                     $gutenberg_categories = get_block_categories( $post );
                 } elseif ( function_exists( 'gutenberg_get_block_categories' ) ) {
+                    /** @phpstan-ignore-next-line */
                     $gutenberg_categories = gutenberg_get_block_categories( $post );
                 }
 

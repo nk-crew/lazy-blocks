@@ -117,12 +117,12 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     /**
      * Get read block data permissions.
      *
-     * @return bool
+     * @return \WP_REST_Response|true
      */
     public function get_block_data_permission() {
         global $post;
 
-        $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+        $post_id = isset( $post['post_id'] ) ? intval( $post['post_id'] ) : 0;
 
         if ( 0 < $post_id ) {
             // phpcs:ignore
@@ -296,7 +296,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      *
      * @param mixed $code     error code.
      * @param mixed $response response data.
-     * @return mixed
+     * @return \WP_REST_Response
      */
     public function error( $code, $response ) {
         return new WP_REST_Response(
