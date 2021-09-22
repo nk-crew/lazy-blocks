@@ -102,6 +102,13 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.4.2 =
+
+* added option to use the color slug in the Color Picker control (see Output Format option)
+* fixed js errors in the widget screen
+* changed minimal WP version to 5.8
+* changed minimal PHP version to 7.4
+
 = 2.4.1 =
 
 * fixed 'wp-editor' deprecated error
