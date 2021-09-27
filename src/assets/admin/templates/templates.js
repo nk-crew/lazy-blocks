@@ -681,6 +681,7 @@ export default compose( [
     withSelect( ( select ) => ( {
         postTypes: select( 'core' ).getPostTypes( {
             show_ui: true,
+            per_page: -1,
         } ),
     } ) ),
 ] )( Templates );
