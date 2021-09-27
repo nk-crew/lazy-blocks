@@ -4,7 +4,7 @@
 * Tags: gutenberg, blocks, custom, meta, fields
 * Requires at least: 5.8
 * Tested up to: 5.8
-* Requires PHP: 7.4
+* Requires PHP: 7.2
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
@@ -102,12 +102,16 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.4.3 =
+
+* changed post types list limit in the templates editor ()
+* changed minimal PHP version to 7.2
+
 = 2.4.2 =
 
 * added option to use the color slug in the Color Picker control (see Output Format option)
 * fixed js errors in the widget screen
 * changed minimal WP version to 5.8
-* changed minimal PHP version to 7.4
 
 = 2.4.1 =
 
