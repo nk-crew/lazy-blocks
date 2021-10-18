@@ -293,7 +293,8 @@ class UpdateEditor extends Component {
         }
 
         // check if selected post title, also do nothing.
-        if ( $( '.editor-post-title__block.is-selected' ).length ) {
+        // `.editor-post-title.is-selected` is added since WP 5.9
+        if ( $( '.editor-post-title__block.is-selected, .editor-post-title.is-selected' ).length ) {
             return;
         }
 
