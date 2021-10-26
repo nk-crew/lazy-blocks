@@ -144,7 +144,7 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
      * @return array filtered meta.
      */
     public function filter_get_lzb_meta_json( $result, $name, $id, $control ) {
-        if ( ! $control || $this->name !== $control['type'] ) {
+        if ( ! $control || $this->name !== $control['type'] || ! is_string( $result ) ) {
             return $result;
         }
 
@@ -160,7 +160,7 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
             $result = $new_result;
         }
 
-        return json_decode( urldecode( $result ), true );
+        return $result;
     }
 }
 
