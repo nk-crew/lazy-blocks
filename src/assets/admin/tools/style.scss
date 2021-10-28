@@ -54,8 +54,10 @@
     .components-toggle-control {
         > .components-base-control__field {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
+        }
+
+        .components-form-toggle {
+            padding-top: 3px;
         }
 
         .components-form-toggle__on,
@@ -64,8 +66,9 @@
         }
         .components-toggle-control__label {
             display: inline-flex;
-            align-items: center;
+            align-items: flex-start;
             margin-left: 5px;
+            word-break: break-word;
 
             .dashicons,
             svg {
