@@ -41,7 +41,7 @@
     -->
 
     <!-- Include sniffs for PHP cross-version compatibility. -->
-    <config name="testVersion" value="5.5-"/>
+    <config name="testVersion" value="7.2-"/>
     <rule ref="PHPCompatibilityWP"/>
 
     <!-- Include the WordPress ruleset, with select exclusions. -->
