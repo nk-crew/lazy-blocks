@@ -249,6 +249,8 @@ class LazyBlocks_Tools {
             return $this->add_notice( esc_html__( 'Import file empty', '@@text_domain' ), 'warning' );
         }
 
+        $json = apply_filters( 'lzb/import_json', $json );
+
         // Remember imported ids.
         $imported_blocks    = array();
         $imported_templates = array();
@@ -265,7 +267,7 @@ class LazyBlocks_Tools {
                     }
 
                     // check if template.
-                } elseif ( isset( $data['data'] ) ) {
+                } elseif ( isset( $data['post_types'] ) ) {
                     $imported_id = $this->import_template( $data );
 
                     if ( $imported_id ) {
@@ -442,7 +444,7 @@ class LazyBlocks_Tools {
      * @param array $data - new template data.
      */
     private function import_template( $data ) {
-        if ( ! isset( $data['post_type'] ) ) {
+        if ( ! isset( $data['post_types'] ) || empty( $data['post_types'] ) ) {
             return false;
         }
 
@@ -450,9 +452,9 @@ class LazyBlocks_Tools {
 
         // check if template already exists.
         foreach ( $templates as $template ) {
-            if ( $template['post_type']['data']['post_type'] === $data['post_type'] ) {
+            if ( count( array_intersect( $data['post_types'], $template['post_types'] ) ) > 0 ) {
                 // translators: %s - post type.
-                $text = sprintf( esc_html__( 'Template for post type \'%s\' already exists.', '@@text_domain' ), $data['post_type'] );
+                $text = sprintf( esc_html__( 'Template for these post types \'%s\' already exists.', '@@text_domain' ), implode( ',', $data['post_types'] ) );
                 $this->add_notice( $text, 'warning' );
                 return false;
             }
@@ -467,12 +469,12 @@ class LazyBlocks_Tools {
         );
 
         if ( 0 < $post_id ) {
-            $template_data = isset( $data['data'] ) && ! empty( $data['data'] ) ? $data['data'] : array();
+            add_post_meta( $post_id, '_lzb_template_blocks', rawurlencode( wp_json_encode( $data['blocks'] ) ) );
+            add_post_meta( $post_id, '_lzb_template_convert_blocks_to_content', true );
+            add_post_meta( $post_id, '_lzb_template_lock', $data['template_lock'] );
+            add_post_meta( $post_id, '_lzb_template_post_types', $data['post_types'] );
 
-            // phpcs:ignore
-            add_post_meta( $post_id, 'lzb_template_data', urlencode( json_encode( $template_data ) ) );
-
-            do_action( 'lzb/import/template', $post_id, $template_data );
+            do_action( 'lzb/import/template', $post_id, $data );
 
             return $post_id;
         }

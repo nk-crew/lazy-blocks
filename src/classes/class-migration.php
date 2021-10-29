@@ -65,10 +65,61 @@ class LazyBlocks_Migration {
     public function get_migrations() {
         return array(
             array(
+                'version' => '2.5.0',
+                'cb'      => array( $this, 'v_2_5_0' ),
+            ),
+            array(
                 'version' => '2.1.0',
                 'cb'      => array( $this, 'v_2_1_0' ),
             ),
         );
+    }
+
+    /**
+     * Convert old templates to new one.
+     */
+    public function v_2_5_0() {
+        // get all lazyblocks_templates post types.
+        // Don't use WP_Query on the admin side https://core.trac.wordpress.org/ticket/18408 .
+        $templates = get_posts(
+            array(
+                'post_type'      => 'lazyblocks_templates',
+                // phpcs:ignore
+                'posts_per_page' => -1,
+                'showposts'      => -1,
+                'paged'          => -1,
+            )
+        );
+
+        if ( $templates ) {
+            foreach ( $templates as $template ) {
+                $data = get_post_meta( $template->ID, 'lzb_template_data', true );
+
+                if ( ! $data ) {
+                    continue;
+                }
+
+                $data = (array) json_decode( urldecode( $data ), true );
+
+                if ( isset( $data['blocks'] ) && is_array( $data['blocks'] ) ) {
+                    $result_blocks = array();
+
+                    foreach ( $data['blocks'] as $block ) {
+                        $result_blocks[] = array( $block['name'] );
+                    }
+
+                    update_post_meta( $template->ID, '_lzb_template_blocks', rawurlencode( wp_json_encode( $result_blocks ) ) );
+                    update_post_meta( $template->ID, '_lzb_template_convert_blocks_to_content', true );
+                }
+
+                update_post_meta( $template->ID, '_lzb_template_lock', $data['template_lock'] );
+                update_post_meta( $template->ID, '_lzb_template_post_types', array( $data['post_type'] ) );
+
+                delete_post_meta( $template->ID, 'lzb_template_data' );
+            }
+
+            wp_reset_postdata();
+        }
     }
 
     /**

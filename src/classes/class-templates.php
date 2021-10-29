@@ -17,18 +17,19 @@ class LazyBlocks_Templates {
      * LazyBlocks_Templates constructor.
      */
     public function __construct() {
-        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-
         add_action( 'init', array( $this, 'register_post_type' ) );
 
         // add template to posts.
-        add_action( 'init', array( $this, 'add_template_to_posts' ), 100 );
+        add_filter( 'register_post_type_args', array( $this, 'register_post_type_args' ), 20, 2 );
 
         // enqueue Gutenberg on templates screen.
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+        add_action( 'enqueue_block_editor_assets', array( $this, 'templates_editor_enqueue_scripts' ) );
 
-        // redirect from admin list page.
-        add_action( 'admin_init', array( $this, 'admin_list_redirect' ) );
+        // additional elements in blocks list table.
+        add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
+        add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
+        add_filter( 'manage_lazyblocks_templates_posts_columns', array( $this, 'manage_posts_columns' ) );
+        add_filter( 'manage_lazyblocks_templates_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
     }
 
     /**
@@ -54,7 +55,8 @@ class LazyBlocks_Templates {
         if ( null === $this->user_templates ) {
             $this->user_templates = array();
         }
-        $this->user_templates[] = $data;
+
+        $this->user_templates[] = apply_filters( 'lzb/add_user_template', $data );
     }
 
     /**
@@ -81,13 +83,18 @@ class LazyBlocks_Templates {
                     'paged'          => -1,
                 )
             );
+
             foreach ( $all_templates as $template ) {
-                $data = (array) json_decode( urldecode( get_post_meta( $template->ID, 'lzb_template_data', true ) ), true );
+                $post_types    = get_post_meta( $template->ID, '_lzb_template_post_types', true );
+                $template_lock = get_post_meta( $template->ID, '_lzb_template_lock', true );
+                $blocks        = (array) json_decode( urldecode( get_post_meta( $template->ID, '_lzb_template_blocks', true ) ), true );
 
                 $this->templates[] = array(
-                    'id'    => $template->ID,
-                    'title' => $template->post_title,
-                    'data'  => $data,
+                    'id'            => $template->ID,
+                    'title'         => $template->post_title,
+                    'post_types'    => $post_types,
+                    'template_lock' => $template_lock,
+                    'blocks'        => $blocks,
                 );
             }
         }
@@ -101,58 +108,40 @@ class LazyBlocks_Templates {
 
     /**
      * Add templates to posts.
+     *
+     * @param array  $args - post type args.
+     * @param string $post_type - post type.
+     *
+     * @return array
      */
-    public function add_template_to_posts() {
+    public function register_post_type_args( $args, $post_type ) {
         // get all templates.
         $all_templates = $this->get_templates();
 
         foreach ( $all_templates as $template ) {
-            $data = $template['data'];
-
-            if ( empty( $data ) ) {
+            if ( ! in_array( $post_type, $template['post_types'], true ) ) {
                 continue;
             }
 
-            $post_type_object = get_post_type_object( $data['post_type'] );
+            if ( ! empty( $template['blocks'] ) ) {
+                $args['template'] = $template['blocks'];
 
-            if ( ! $post_type_object ) {
-                continue;
+                if ( ! isset( $args['supports'] ) ) {
+                    $args['supports'] = array();
+                }
+                if ( ! in_array( 'custom-fields', $args['supports'], true ) ) {
+                    $args['supports'][] = 'custom-fields';
+                }
             }
 
-            $blocks = array();
-
-            foreach ( (array) $data['blocks'] as $block ) {
-                $blocks[] = array(
-                    $block['name'],
-                    array(
-                        // default data.
-                    ),
-                );
+            if ( $template['template_lock'] ) {
+                $args['template_lock'] = $template['template_lock'];
             }
 
-            if ( ! empty( $blocks ) ) {
-                $post_type_object->template = $blocks;
-                add_post_type_support( $data['post_type'], 'custom-fields' );
-            }
-
-            if ( isset( $data['template_lock'] ) && $data['template_lock'] ) {
-                $post_type_object->template_lock = $data['template_lock'];
-            }
+            return $args;
         }
-    }
 
-    /**
-     * Admin menu.
-     */
-    public function admin_menu() {
-        add_submenu_page(
-            'edit.php?post_type=lazyblocks',
-            esc_html__( 'Templates', '@@text_domain' ),
-            esc_html__( 'Templates', '@@text_domain' ),
-            'manage_options',
-            'lazyblocks_templates',
-            array( $this, 'render_templates_page' )
-        );
+        return $args;
     }
 
     /**
@@ -169,9 +158,7 @@ class LazyBlocks_Templates {
                 'public'       => false,
                 'has_archive'  => false,
                 'show_ui'      => true,
-
-                // adding to custom menu manually.
-                'show_in_menu' => false,
+                'show_in_menu' => 'edit.php?post_type=lazyblocks',
                 'show_in_rest' => true,
                 'capabilities' => array(
                     'edit_post'          => 'edit_lazyblock',
@@ -186,96 +173,200 @@ class LazyBlocks_Templates {
                 'rewrite'      => true,
                 'supports'     => array(
                     'title',
+                    'editor',
                     'revisions',
                     'custom-fields',
                 ),
             )
         );
 
+        // Actual template settings.
         register_meta(
             'post',
-            'lzb_template_data',
+            '_lzb_template_lock',
             array(
                 'object_subtype' => 'lazyblocks_templates',
-                'show_in_rest'   => true,
-                'single'         => true,
                 'type'           => 'string',
+                'default'        => '',
+                'single'         => true,
+                'show_in_rest'   => true,
+                'auth_callback'  => array( __CLASS__, 'rest_auth' ),
+            )
+        );
+        register_meta(
+            'post',
+            '_lzb_template_post_types',
+            array(
+                'object_subtype' => 'lazyblocks_templates',
+                'type'           => 'array',
+                'single'         => true,
+                'show_in_rest'   => array(
+                    'schema' => array(
+                        'type'  => 'array',
+                        'items' => array(
+                            'type' => 'string',
+                        ),
+                    ),
+                ),
+                'auth_callback'  => array( __CLASS__, 'rest_auth' ),
+            )
+        );
+        register_meta(
+            'post',
+            '_lzb_template_blocks',
+            array(
+                'object_subtype' => 'lazyblocks_templates',
+                'type'           => 'string',
+                'default'        => '',
+                'single'         => true,
+                'show_in_rest'   => true,
+                'auth_callback'  => array( __CLASS__, 'rest_auth' ),
+            )
+        );
+        register_meta(
+            'post',
+            '_lzb_template_convert_blocks_to_content',
+            array(
+                'object_subtype' => 'lazyblocks_templates',
+                'type'           => 'boolean',
+                'default'        => false,
+                'single'         => true,
+                'show_in_rest'   => true,
+                'auth_callback'  => array( __CLASS__, 'rest_auth' ),
             )
         );
     }
 
     /**
-     * Templates page
-     */
-    public function render_templates_page() {
-        ?>
-        <div class="wrap">
-            <h1 class="wp-heading-inline"><?php echo esc_html__( 'Templates', '@@text_domain' ); ?></h1>
-
-            <div id="poststuff">
-                <div class="lazyblocks-templates-page">
-                    <span class="spinner is-active"></span>
-                </div>
-            </div>
-        </div>
-        <style type="text/css">
-            .lazyblocks-templates-page > .spinner {
-                float: left;
-                margin-left: 0;
-            }
-        </style>
-        <?php
-    }
-
-    /**
-     * Redirect from templates list page.
-     */
-    public function admin_list_redirect() {
-        // phpcs:ignore
-        if ( ! isset( $_GET['post_type'] ) || empty( $_GET['post_type'] ) ) {
-            return;
-        }
-
-        // phpcs:ignore
-        if ( 'lazyblocks_templates' === $_GET['post_type'] ) {
-            wp_safe_redirect( 'edit.php?post_type=lazyblocks&page=lazyblocks_templates' );
-            exit();
-        }
-    }
-
-    /**
-     * Enqueue Gutenberg scripts to work with registered blocks on Templates page.
+     * Determines REST API authentication.
      *
-     * @param string $page_data Current page name.
+     * @param bool   $allowed Whether it is allowed.
+     * @param string $meta_key The meta key being checked.
+     * @param int    $post_id The post ID being checked.
+     * @param int    $user_id The user ID being checked.
+     *
+     * @return bool Whether the user can do it.
      */
-    public function admin_enqueue_scripts( $page_data ) {
-        if ( 'lazyblocks_page_lazyblocks_templates' !== $page_data ) {
-            return;
+    public static function rest_auth( $allowed, $meta_key, $post_id, $user_id ) {
+        return user_can( $user_id, 'edit_post', $post_id );
+    }
+
+    /**
+     * Disable month dropdown.
+     *
+     * @param array  $return disabled dropdown or no.
+     * @param object $post_type current post type name.
+     *
+     * @return array
+     */
+    public function disable_months_dropdown( $return, $post_type ) {
+        return 'lazyblocks_templates' === $post_type ? true : $return;
+    }
+
+    /**
+     * Remove unused actions from actions row.
+     *
+     * @param array  $actions actions for posts.
+     * @param object $post current post data.
+     *
+     * @return array
+     */
+    public function post_row_actions( $actions = array(), $post = null ) {
+        if ( ! $post || 'lazyblocks_templates' !== $post->post_type ) {
+            return $actions;
         }
 
-        $block_categories = array();
-        if ( function_exists( 'get_block_categories' ) ) {
-            $block_categories = get_block_categories( get_post() );
-        } elseif ( function_exists( 'gutenberg_get_block_categories' ) ) {
-            $block_categories = gutenberg_get_block_categories( get_post() );
+        // remove quick edit link.
+        if ( isset( $actions['inline hide-if-no-js'] ) ) {
+            unset( $actions['inline hide-if-no-js'] );
         }
 
-        wp_add_inline_script(
-            'wp-blocks',
-            sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( $block_categories ) ),
-            'after'
+        return $actions;
+    }
+
+    /**
+     * Add additional columns to templates.
+     *
+     * @param array $columns columns of the table.
+     *
+     * @return array
+     */
+    public function manage_posts_columns( $columns = array() ) {
+        $columns = array(
+            'cb'                             => $columns['cb'],
+            'title'                          => $columns['title'],
+            'lazyblocks_template_post_types' => esc_html__( 'Post Types', '@@text_domain' ),
+            'lazyblocks_template_lock'       => esc_html__( 'Template Lock', '@@text_domain' ),
         );
 
-        // phpcs:ignore
-        do_action( 'enqueue_block_editor_assets' );
+        return $columns;
+    }
 
-        // Lazyblocks Templates.
-        wp_enqueue_script(
-            'lazyblocks-templates',
-            lazyblocks()->plugin_url() . 'assets/admin/templates/index.min.js',
-            array( 'wp-blocks', 'wp-block-library', 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
-            '@@plugin_version',
-            true
-        );
+    /**
+     * Add thumb to the column
+     *
+     * @param bool $column_name column name.
+     */
+    public function manage_posts_custom_column( $column_name = false ) {
+        global $post;
+
+        if ( 'lazyblocks_template_post_types' === $column_name ) {
+            $post_types = get_post_meta( $post->ID, '_lzb_template_post_types', true );
+
+            if ( ! empty( $post_types ) ) {
+                foreach ( $post_types as $type ) {
+                    echo '<code>' . esc_html( $type ) . '</code> ';
+                }
+            } else {
+                echo '-';
+            }
+        }
+        if ( 'lazyblocks_template_lock' === $column_name ) {
+            $template_lock = get_post_meta( $post->ID, '_lzb_template_lock', true );
+
+            if ( 'all' === $template_lock ) {
+                echo '<code>' . esc_html__( 'All', '@@text_domain' ) . '</code>';
+            } elseif ( 'insert' === $template_lock ) {
+                echo '<code>' . esc_html__( 'Insert', '@@text_domain' ) . '</code>';
+            } else {
+                echo '-';
+            }
+        }
+    }
+
+    /**
+     * Enqueue constructor styles and scripts.
+     */
+    public function templates_editor_enqueue_scripts() {
+        if ( 'lazyblocks_templates' === get_post_type() ) {
+            $templates   = $this->get_templates( true );
+            $post_types  = array();
+            $template_id = get_the_ID();
+
+            foreach ( $templates as $template ) {
+                if ( $template['id'] !== $template_id ) {
+                    $post_types = array_merge( $template['post_types'], $post_types );
+                }
+            }
+
+            wp_enqueue_script(
+                'lazyblocks-templates',
+                lazyblocks()->plugin_url() . 'assets/admin/templates/index.min.js',
+                array( 'wp-blocks', 'wp-block-library', 'wp-data', 'wp-element', 'wp-components', 'wp-api', 'wp-i18n' ),
+                '@@plugin_version',
+                true
+            );
+            wp_localize_script(
+                'lazyblocks-templates',
+                'lazyblocksTemplatesData',
+                array(
+                    'used_post_types_for_templates' => $post_types,
+                )
+            );
+
+            wp_enqueue_style( 'lazyblocks-templates', lazyblocks()->plugin_url() . 'assets/admin/templates/style.min.css', '', '@@plugin_version' );
+            wp_style_add_data( 'lazyblocks-templates', 'rtl', 'replace' );
+            wp_style_add_data( 'lazyblocks-templates', 'suffix', '.min' );
+        }
     }
 }

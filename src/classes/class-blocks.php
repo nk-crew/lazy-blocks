@@ -810,20 +810,7 @@ class LazyBlocks_Blocks {
             $this->user_blocks = array();
         }
 
-        // Fix deprecated 'use_php' and new 'output_method' code data.
-        if ( isset( $data['code'] ) && ! isset( $data['code']['output_method'] ) ) {
-            if ( isset( $data['code']['use_php'] ) && $data['code']['use_php'] ) {
-                $data['code']['output_method'] = 'php';
-            } else {
-                $data['code']['output_method'] = 'html';
-            }
-
-            if ( isset( $data['code']['use_php'] ) ) {
-                unset( $data['code']['use_php'] );
-            }
-        }
-
-        $this->user_blocks[] = $data;
+        $this->user_blocks[] = apply_filters( 'lzb/add_user_block', $data );
     }
 
     /**
