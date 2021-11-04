@@ -229,7 +229,7 @@ class ControlsSettings extends Component {
 
         // set initial active tab.
         if ( ! initialActiveTab ) {
-            initialActiveTab = 'content';
+            initialActiveTab = 'inspector';
             let contentControlsCount = 0;
             let inspectorControlsCount = 0;
             let nowhereControlsCount = 0;
@@ -251,9 +251,9 @@ class ControlsSettings extends Component {
                 }
             } );
 
-            if ( ! contentControlsCount ) {
-                if ( inspectorControlsCount ) {
-                    initialActiveTab = 'inspector';
+            if ( ! inspectorControlsCount ) {
+                if ( contentControlsCount ) {
+                    initialActiveTab = 'content';
                 } else if ( nowhereControlsCount ) {
                     initialActiveTab = 'nowhere';
                 }
