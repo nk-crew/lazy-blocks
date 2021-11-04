@@ -92,7 +92,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      * @access public
      *
      * @param WP_REST_Request $request Request.
-     * @return true|WP_Error True if the request has read access, WP_Error object otherwise.
+     *
+     * @return WP_REST_Response|true
      */
     public function get_block_permission( $request ) {
         global $post;
@@ -117,7 +118,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     /**
      * Get read block data permissions.
      *
-     * @return bool
+     * @return WP_REST_Response|true
      */
     public function get_block_data_permission() {
         global $post;
@@ -142,7 +143,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     /**
      * Get edit block data permissions.
      *
-     * @return bool
+     * @return WP_REST_Response|true
      */
     public function update_block_data_permission() {
         return $this->get_block_data_permission();
@@ -151,7 +152,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     /**
      * Get read wp post types permissions.
      *
-     * @return bool
+     * @return WP_REST_Response|true
      */
     public function get_post_types_permission() {
         if ( ! current_user_can( 'edit_posts' ) ) {
@@ -168,7 +169,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      * @access public
      *
      * @param WP_REST_Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @return WP_REST_Response
      */
     public function get_block( $request ) {
         global $post;
@@ -213,7 +215,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      * Update block data.
      *
      * @param WP_REST_Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @return WP_REST_Response
      */
     public function update_block_data( $request ) {
         $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
@@ -238,7 +241,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      * Get block data.
      *
      * @param WP_REST_Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @return WP_REST_Response
      */
     public function get_block_data( $request ) {
         $post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
@@ -263,7 +267,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      * Get WP post types.
      *
      * @param WP_REST_Request $request Full details about the request.
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @return WP_REST_Response
      */
     public function get_post_types( $request ) {
         $args     = isset( $request['args'] ) ? $request['args'] : array();
@@ -279,7 +284,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      * Success rest.
      *
      * @param mixed $response response data.
-     * @return mixed
+     *
+     * @return WP_REST_Response
      */
     public function success( $response ) {
         return new WP_REST_Response(
@@ -294,9 +300,10 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     /**
      * Error rest.
      *
-     * @param mixed $code     error code.
-     * @param mixed $response response data.
-     * @return mixed
+     * @param string $code     error code.
+     * @param string $response response data.
+     *
+     * @return WP_REST_Response
      */
     public function error( $code, $response ) {
         return new WP_REST_Response(

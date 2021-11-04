@@ -56,18 +56,39 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
         public $plugin_url;
 
         /**
+         * Icons class object.
+         *
+         * @var LazyBlocks_Icons
+         */
+        private $icons;
+
+        /**
+         * Controls class object.
+         *
+         * @var LazyBlocks_Controls
+         */
+        private $controls;
+
+        /**
          * Blocks class object.
          *
-         * @var object
+         * @var LazyBlocks_Blocks
          */
         private $blocks;
 
         /**
          * Templates class object.
          *
-         * @var object
+         * @var LazyBlocks_Templates
          */
         private $templates;
+
+        /**
+         * Tools class object.
+         *
+         * @var LazyBlocks_Tools
+         */
+        private $tools;
 
         /**
          * LazyBlocks constructor.
