@@ -315,7 +315,9 @@ class LazyBlocks_Templates {
 
             if ( ! empty( $post_types ) ) {
                 foreach ( $post_types as $type ) {
-                    echo '<code>' . esc_html( $type ) . '</code> ';
+                    $type_object = get_post_type_object( $type );
+
+                    echo '<code>' . esc_html( isset( $type_object->labels->singular_name ) ? $type_object->labels->singular_name : $type ) . '</code> ';
                 }
             } else {
                 echo '-';
