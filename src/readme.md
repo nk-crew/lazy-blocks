@@ -102,6 +102,14 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.5.0 =
+
+* improved Templates editor (now you can use Gutenberg editor and insert full-featured blocks)
+* fixed `get_lzb_meta` output of array and object values
+* fixed Constructor screen title click in WP 5.9
+* fixed long block names word wrap in export page
+* fixed Color Picker control styles in editor
+
 = 2.4.3 =
 
 * changed post types list limit in the templates editor ()
