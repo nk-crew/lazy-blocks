@@ -13,7 +13,7 @@ registerBlockType( 'lazyblock-core/free', {
     category: 'lazyblocks',
     supports: {
         html: true,
-        inserter: false,
+        inserter: window.lazyblocksGutenberg && window.lazyblocksGutenberg.post_type && 'lazyblocks_templates' === window.lazyblocksGutenberg.post_type,
     },
     edit() {
         return (
