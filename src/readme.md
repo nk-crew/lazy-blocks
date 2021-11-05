@@ -102,6 +102,11 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.5.1 =
+
+* added "Free Content" block in the Templates editor
+* fixed PHP warnings when migrating to v2.5.0
+
 = 2.5.0 =
 
 * improved Templates editor (now you can use Gutenberg editor and insert full-featured blocks)
