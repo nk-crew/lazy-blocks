@@ -119,7 +119,7 @@ class LazyBlocks_Templates {
         $all_templates = $this->get_templates();
 
         foreach ( $all_templates as $template ) {
-            if ( ! in_array( $post_type, $template['post_types'], true ) ) {
+            if ( ! in_array( $post_type, (array) $template['post_types'], true ) ) {
                 continue;
             }
 
@@ -347,7 +347,7 @@ class LazyBlocks_Templates {
 
             foreach ( $templates as $template ) {
                 if ( $template['id'] !== $template_id ) {
-                    $post_types = array_merge( $template['post_types'], $post_types );
+                    $post_types = array_merge( (array) $template['post_types'], $post_types );
                 }
             }
 
