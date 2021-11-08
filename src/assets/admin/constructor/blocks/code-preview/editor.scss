@@ -1,0 +1,17 @@
+@import "../../../variables";
+
+.lzb-constructor .lzb-constructor-code-preview {
+    > .components-panel__body {
+        &:first-child {
+            background-color: #fbfbfb;
+            border-top: none;
+            h2 {
+                margin: 0;
+                text-align: left;
+            }
+        }
+    }
+    .lzb-error-box {
+        overflow: auto;
+    }
+}

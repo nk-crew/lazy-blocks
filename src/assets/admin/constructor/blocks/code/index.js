@@ -1,6 +1,7 @@
 import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
 
 import CodeEditor from '../../../components/code-editor';
+import CodePreview from '../code-preview';
 
 import './editor.scss';
 
@@ -102,6 +103,7 @@ class CustomCodeSettings extends Component {
 
         this.state = {
             showInfo: false,
+            tab: 'frontend',
         };
 
         this.getEditor = this.getEditor.bind( this );
@@ -142,6 +144,10 @@ class CustomCodeSettings extends Component {
             showInfo,
         } = this.state;
 
+        let {
+            tab,
+        } = this.state;
+
         // add ajax check for filter
         //
         // has_filter( $block_slug . '/frontend_callback' )
@@ -167,6 +173,8 @@ class CustomCodeSettings extends Component {
                 title: __( 'Editor', '@@text_domain' ),
                 className: 'lazyblocks-control-tabs-tab',
             } );
+        } else {
+            tab = 'frontend';
         }
 
         return (
@@ -201,23 +209,20 @@ class CustomCodeSettings extends Component {
                 { 'template' !== data.code_output_method ? (
                     <Fragment>
                         <PanelBody>
-                            { 1 < tabs.length ? (
-                                <BaseControl>
+                            <BaseControl>
+                                { 1 < tabs.length ? (
                                     <TabPanel
                                         className="lazyblocks-control-tabs"
                                         activeClass="is-active"
                                         tabs={ tabs }
+                                        onSelect={ ( value ) => this.setState( { tab: value } ) }
                                     >
-                                        {
-                                            ( tab ) => this.getEditor( tab.name )
-                                        }
+                                        { () => null }
+
                                     </TabPanel>
-                                </BaseControl>
-                            ) : (
-                                <BaseControl>
-                                    { this.getEditor( 'frontend' ) }
-                                </BaseControl>
-                            ) }
+                                ) : null }
+                                { this.getEditor( tab ) }
+                            </BaseControl>
                             <BaseControl>
                                 { ! showInfo ? (
                                     <Button
@@ -297,6 +302,12 @@ class CustomCodeSettings extends Component {
                         </Notice>
                     </PanelBody>
                 ) : '' }
+
+                { /* Code/Template Preview */ }
+                <CodePreview
+                    data={ data }
+                    tab={ this.state.tab }
+                />
 
                 <PanelBody>
                     <BaseControl
