@@ -237,7 +237,7 @@ class CustomCodeSettings extends Component {
                                         <p className="description">
                                             { __( 'Simple text field example see here:', '@@text_domain' ) }
                                             { ' ' }
-                                            <a href="https://lazyblocks.com/documentation/blocks-controls/text/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
+                                            <a href="https://lazyblocks.com/documentation/blocks-controls/text/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_control&utm_content=@@plugin_version" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-controls/text/</a>
                                         </p>
                                         <hr />
                                         <p className="description">
@@ -246,7 +246,7 @@ class CustomCodeSettings extends Component {
                                         <p className="description">
                                             { __( 'Note 2: supported custom PHP callback to output block', '@@text_domain' ) }
                                             { ' ' }
-                                            <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>
+                                            <a href="https://lazyblocks.com/documentation/blocks-code/php-callback/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_php_callback&utm_content=@@plugin_version" target="_blank" rel="noopener noreferrer">https://lazyblocks.com/documentation/blocks-code/php-callback/</a>
                                             .
                                         </p>
                                     </Notice>
@@ -290,7 +290,7 @@ class CustomCodeSettings extends Component {
                                 </svg>
                                 { __( 'Read more:', '@@text_domain' ) }
                                 { ' ' }
-                                <a href="https://lazyblocks.com/documentation/blocks-code/theme-template/" target="_blank" rel="noopener noreferrer">
+                                <a href="https://lazyblocks.com/documentation/blocks-code/theme-template/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_theme_template&utm_content=@@plugin_version" target="_blank" rel="noopener noreferrer">
                                     { __( 'How to use theme template', '@@text_domain' ) }
                                 </a>
                             </p>
