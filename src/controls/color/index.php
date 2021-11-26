@@ -14,6 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class LazyBlocks_Control_Color extends LazyBlocks_Control {
     /**
+     * Saved color palette
+     *
+     * @var false|array
+     */
+    public $color_palette = false;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -64,19 +71,34 @@ class LazyBlocks_Control_Color extends LazyBlocks_Control {
      * @return string
      */
     public function get_slug_by_color( $color ) {
-        $color_palette = get_theme_support( 'editor-color-palette' );
-        $slug          = '';
+        if ( ! is_array( $this->color_palette ) ) {
+            $this->color_palette = array();
 
-        if ( ! empty( $color_palette ) ) {
-            $color_palette    = $color_palette[0];
-            $palette_reversed = wp_list_pluck( $color_palette, 'slug', 'color' );
+            // Support for old themes palettes.
+            $old_color_palette = get_theme_support( 'editor-color-palette' );
+            if ( ! empty( $old_color_palette ) ) {
+                $old_color_palette   = $old_color_palette[0];
+                $this->color_palette = wp_list_pluck( $old_color_palette, 'slug', 'color' );
+            }
 
-            if ( isset( $palette_reversed[ $color ] ) ) {
-                $slug = $palette_reversed[ $color ];
+            // Support for new FSE themes data.
+            if ( method_exists( 'WP_Theme_JSON_Resolver', 'get_theme_data' ) ) {
+                $theme_settings = WP_Theme_JSON_Resolver::get_theme_data()->get_settings();
+
+                if ( isset( $theme_settings['color']['palette']['theme'] ) && ! empty( $theme_settings['color']['palette']['theme'] ) ) {
+                    $this->color_palette = array_merge(
+                        $this->color_palette,
+                        wp_list_pluck( $theme_settings['color']['palette']['theme'], 'slug', 'color' )
+                    );
+                }
             }
         }
 
-        return $slug;
+        if ( isset( $this->color_palette[ $color ] ) ) {
+            return $this->color_palette[ $color ];
+        }
+
+        return '';
     }
 
     /**
