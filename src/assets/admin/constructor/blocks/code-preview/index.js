@@ -8,6 +8,7 @@ const {
 
 const {
     Component,
+    createRef,
 } = wp.element;
 
 const { apiFetch } = wp;
@@ -25,6 +26,8 @@ class CodePreview extends Component {
         };
 
         this.loadPreview = throttle( 2000, this.loadPreview.bind( this ) );
+        this.iframeRef = createRef();
+        this.setIframeContents = this.setIframeContents.bind( this );
     }
 
     componentDidMount() {
@@ -59,6 +62,24 @@ class CodePreview extends Component {
         return result;
     }
 
+    setIframeContents( frame ) {
+        const {
+            codePreview,
+        } = this.state;
+
+        if ( frame ) {
+            this.iframeRef.current = frame;
+
+            if ( codePreview ) {
+                const doc = frame.contentDocument;
+                doc.open();
+                doc.write( `<link rel="stylesheet" href="/wp-admin/load-styles.php?load[chunk_0]=common,media,themes" type="text/css" media="all" /><style>body {background: #fff !important;}</style>${ codePreview }` );
+                doc.close();
+                frame.style.width = '100%';
+            }
+        }
+    }
+
     loadPreview() {
         const {
             data,
@@ -78,11 +99,13 @@ class CodePreview extends Component {
                     block: data,
                 },
             } )
-                .then( ( { response, error } ) => {
+                .then( ( { response, error, error_code: errorCode } ) => {
                     if ( error ) {
-                        this.setState( { codePreview: null, error: response } );
+                        if ( 'lazy_block_no_render_callback' === errorCode ) {
+                            this.setState( { codePreview: null, error: '' } );
+                        } else { this.setState( { codePreview: null, error: response } ); }
                     } else {
-                        this.setState( { codePreview: response, error: null } );
+                        this.setState( { codePreview: response, error: null }, () => this.setIframeContents( this.iframeRef.current ) );
                     }
                 } ).catch( () => {
                     this.setState( { codePreview: null, error: 'Error' } );
@@ -92,8 +115,8 @@ class CodePreview extends Component {
 
     render() {
         const {
-            codePreview,
             error,
+            codePreview,
         } = this.state;
 
         return (
@@ -102,12 +125,11 @@ class CodePreview extends Component {
                     <h2>{ __( 'Preview', '@@text_domain' ) }</h2>
                 </PanelBody>
                 <PanelBody>
-                    { error ? <code><pre className="lzb-error-box">{ error }</pre></code>
-                        : <div dangerouslySetInnerHTML={ { __html: codePreview } } /> }
+                    { error && <code><pre className="lzb-error-box">{ error }</pre></code> }
+                    <iframe src="about:blank" frameBorder="0" style={ error || null == codePreview ? { display: 'none' } : {} } ref={ this.setIframeContents } title="code-preview" />
                 </PanelBody>
             </div>
         );
     }
 }
-
 export default CodePreview;

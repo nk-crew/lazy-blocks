@@ -2,6 +2,7 @@ import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
 
 import CodeEditor from '../../../components/code-editor';
 import CodePreview from '../code-preview';
+import PreviewErrorBoundary from '../code-preview/preview-error-boundary';
 
 import './editor.scss';
 
@@ -304,10 +305,12 @@ class CustomCodeSettings extends Component {
                 ) : '' }
 
                 { /* Code/Template Preview */ }
-                <CodePreview
-                    data={ data }
-                    tab={ this.state.tab }
-                />
+                <PreviewErrorBoundary>
+                    <CodePreview
+                        data={ data }
+                        tab={ this.state.tab }
+                    />
+                </PreviewErrorBoundary>
 
                 <PanelBody>
                     <BaseControl
