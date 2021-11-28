@@ -120,7 +120,7 @@ class CodePreview extends Component {
         } = this.state;
 
         return (
-            <div className="lzb-constructor-code-preview">
+            <div className="lazyblocks-component-box lazyblocks-component-box-no-paddings lzb-constructor-code-preview">
                 <PanelBody>
                     <h2>{ __( 'Preview', '@@text_domain' ) }</h2>
                 </PanelBody>

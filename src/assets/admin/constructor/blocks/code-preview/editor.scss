@@ -1,10 +1,16 @@
 @import "../../../variables";
 
 .lzb-constructor .lzb-constructor-code-preview {
+    margin-top: 50px;
+    background: #fff;
+
     > .components-panel__body {
         &:first-child {
             background-color: #fbfbfb;
             border-top: none;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+
             h2 {
                 margin: 0;
                 text-align: left;

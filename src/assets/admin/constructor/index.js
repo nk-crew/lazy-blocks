@@ -12,6 +12,8 @@ import ConditionSettings from './blocks/condition';
 import ControlsSettings from './blocks/controls';
 import SelectedControlSettings from './blocks/selected-control-settings';
 import CustomCodeSettings from './blocks/code';
+import CodePreview from './blocks/code-preview';
+import PreviewErrorBoundary from './blocks/code-preview/preview-error-boundary';
 
 import '../components/tab-panel';
 
@@ -58,11 +60,22 @@ const {
  * Constructor block
  */
 class ConstructorBlock extends Component {
+    constructor( props ) {
+        super( props );
+        this.state = {
+            tab: null,
+        };
+    }
+
     render() {
         const {
             blockData,
             updateBlockData,
         } = this.props;
+
+        const {
+            tab,
+        } = this.state;
 
         if ( ! blockData || 'undefined' === typeof blockData.slug ) {
             return (
@@ -121,8 +134,16 @@ class ConstructorBlock extends Component {
                         <CustomCodeSettings
                             data={ blockData }
                             updateData={ updateBlockData }
+                            onTabChange={ ( value ) => this.setState( { tab: value } ) }
                         />
                     </Box>
+                    { /* Code/Template Preview */ }
+                    <PreviewErrorBoundary>
+                        <CodePreview
+                            data={ blockData }
+                            tab={ tab }
+                        />
+                    </PreviewErrorBoundary>
                 </div>
             </Fragment>
         );
