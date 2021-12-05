@@ -331,18 +331,18 @@ class LazyBlocks_Rest extends WP_REST_Controller {
         foreach ( $block as $k => $val ) {
             $block[ $meta_prefix . $k ] = $val;
         }
-        $block = lazyblocks()->blocks()->marshal_block_data($block);
 
-        try{
+        $block = lazyblocks()->blocks()->marshal_block_data( $block );
+
+        try {
             $block_result = lazyblocks()->blocks()->render_callback( $attributes, null, $context, $block );
-        } catch (Throwable $e) {
+        } catch ( Throwable $e ) {
             return $this->error( 'lazy_block_render_failed', $e->getMessage() . PHP_EOL . PHP_EOL . $e->getTraceAsString() );
         }
 
         if ( isset( $block_result ) && null !== $block_result ) {
             return $this->success( $block_result );
         } else {
-            // return $this->success( $block );
             return $this->error( 'lazy_block_no_render_callback', esc_html__( 'Render callback is not specified.', '@@text_domain' ) );
         }
     }

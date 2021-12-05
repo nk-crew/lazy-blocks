@@ -617,11 +617,12 @@ class LazyBlocks_Blocks {
     /**
      * Get metabox value by name.
      *
-     * @param string      $name - meta name.
-     * @param mixed       $result - result of stored attribute.
+     * @param string $name - meta name.
+     * @param mixed  $result - result of stored attribute.
+     *
      * @return mixed
      */
-    private function _get_meta_value( $name, $result ) {
+    private function get_meta_value( $name, $result ) {
         $default = null;
         if ( isset( $this->defaults[ $name ] ) ) {
             $default = $this->defaults[ $name ];
@@ -652,20 +653,24 @@ class LazyBlocks_Blocks {
             global $post;
             $id = $post->ID;
         }
+
         $result = get_post_meta( $id, $name, true );
-        return $this->_get_meta_value($name, $result);
+
+        return $this->get_meta_value( $name, $result );
     }
 
     /**
      * Get metabox value by name and block data.
      *
-     * @param string   $name - meta name.
-     * @param array    $block_data - supplied block data.
+     * @param string $name - meta name.
+     * @param array  $block_data - supplied block data.
+     *
      * @return mixed
      */
     private function get_meta_value_by_block( $name, $block_data ) {
         $result = $block_data[ $name ];
-        return $this->_get_meta_value($name, $result);
+
+        return $this->get_meta_value( $name, $result );
     }
 
     /**
@@ -837,27 +842,30 @@ class LazyBlocks_Blocks {
     /**
      * Convert block format.
      *
-     * @param array $data - block data.
+     * @param array $block_data - block data.
      */
-    public function marshal_block_data( $block ) {
+    public function marshal_block_data( $block_data ) {
         $all_controls = lazyblocks()->controls()->get_controls();
-        return $this->marshal_block_data_with_controls( null, null, $block, $all_controls );
+        return $this->marshal_block_data_with_controls( null, null, $block_data, $all_controls );
     }
 
     /**
      * Convert block format.
      *
-     * @param array $data - block data.
+     * @param int   $id - registered block id.
+     * @param int   $post_title - registered block post title.
+     * @param array $block_data - block data.
      * @param array $all_controls - control data.
      */
-    public function marshal_block_data_with_controls( $ID=null, $post_title=null, $block_data=null, $all_controls ) {
-        $get_meta_value = function($name) use ($ID, $block_data) {
-            if( $ID ){
-                return $this->get_meta_value_by_id( $name, $ID );
+    public function marshal_block_data_with_controls( $id = null, $post_title = null, $block_data = null, $all_controls ) {
+        $get_meta_value = function( $name ) use ( $id, $block_data ) {
+            if ( $id ) {
+                return $this->get_meta_value_by_id( $name, $id );
             } else {
                 return $this->get_meta_value_by_block( $name, $block_data );
             }
         };
+
         $icon = $get_meta_value( 'lazyblocks_icon' );
 
         // add default icon.
@@ -900,7 +908,7 @@ class LazyBlocks_Blocks {
         }
 
         return array(
-            'id'             => $ID,
+            'id'             => $id,
             'title'          => $post_title,
             'icon'           => $icon,
             'keywords'       => $keywords,
@@ -938,7 +946,7 @@ class LazyBlocks_Blocks {
                 'single_output'     => $get_meta_value( 'lazyblocks_code_single_output' ),
             ),
             'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),
-            'edit_url'       => get_edit_post_link( $ID ),
+            'edit_url'       => get_edit_post_link( $id ),
         );
     }
 
@@ -971,7 +979,7 @@ class LazyBlocks_Blocks {
             $all_controls = lazyblocks()->controls()->get_controls();
 
             foreach ( $all_blocks as $block ) {
-                $this->blocks[] = $this->marshal_block_data_with_controls($block->ID, $block->post_title, null, $all_controls);
+                $this->blocks[] = $this->marshal_block_data_with_controls( $block->ID, $block->post_title, null, $all_controls );
             }
         }
 
@@ -1287,11 +1295,13 @@ class LazyBlocks_Blocks {
      * @return string Returns the post content with latest posts added.
      */
     public function render_callback( $attributes, $content = null, $context = 'frontend', $block = null ) {
-        if ( ! $block && ( ! isset( $attributes['lazyblock'] ) || ! isset( $attributes['lazyblock']['slug'] )) ) {
+        if ( ! $block && ( ! isset( $attributes['lazyblock'] ) || ! isset( $attributes['lazyblock']['slug'] ) ) ) {
             return null;
         }
-        if ( ! $block )
-            $block   = $this->get_block( $attributes['lazyblock']['slug'] );
+        if ( ! $block ) {
+            $block = $this->get_block( $attributes['lazyblock']['slug'] );
+        }
+
         $context = 'editor' === $context ? 'editor' : 'frontend';
         $result  = null;
 
