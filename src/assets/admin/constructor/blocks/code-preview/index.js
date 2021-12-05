@@ -92,7 +92,6 @@ class CodePreview extends Component {
                 path: 'lazy-blocks/v1/block-constructor-preview',
                 method: 'POST',
                 data: {
-                    slug: data.slug,
                     context: tab,
                     attributes,
                     block: data,
@@ -102,7 +101,9 @@ class CodePreview extends Component {
                     if ( error ) {
                         if ( 'lazy_block_no_render_callback' === errorCode ) {
                             this.setState( { codePreview: null, error: '' } );
-                        } else { this.setState( { codePreview: null, error: response } ); }
+                        } else {
+                            this.setState( { codePreview: null, error: response } );
+                        }
                     } else {
                         this.setState( { codePreview: response, error: null }, () => this.setIframeContents( this.iframeRef.current ) );
                     }

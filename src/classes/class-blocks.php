@@ -1290,7 +1290,7 @@ class LazyBlocks_Blocks {
      * @param array  $attributes - The block attributes.
      * @param string $content - The block content.
      * @param string $context - block context [frontend, editor].
-     * @param array  $block - Data containing the block's specifications.
+     * @param array  $block - Data containing the block's specifications (mostly used for live block preview in the block's constructor).
      *
      * @return string Returns the post content with latest posts added.
      */
@@ -1305,20 +1305,21 @@ class LazyBlocks_Blocks {
         $context = 'editor' === $context ? 'editor' : 'frontend';
         $result  = null;
 
+        // phpcs:disable
+
         // apply filter for block attributes.
         $attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block, $context );
-        // phpcs:ignore
         $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $content, $block );
-        // phpcs:ignore
         $attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block, $context );
 
         // apply filter for custom output callback.
         $result = apply_filters( 'lzb/block_render/callback', $result, $attributes, $context );
-        // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
-        // phpcs:ignore
         $result = apply_filters( $block['slug'] . '/callback', $result, $attributes, $context );
 
+        // phpcs:enable
+
+        // Custom render name.
         $custom_render_name = $context . '_html';
         if ( isset( $block['code']['output_method'] ) && isset( $block['code']['single_output'] ) && $block['code']['single_output'] ) {
             $custom_render_name = 'frontend_html';
@@ -1327,6 +1328,7 @@ class LazyBlocks_Blocks {
         // Custom output.
         if ( ! $result && isset( $block['code'] ) ) {
             $code = $block['code'];
+
             // Theme template file.
             if ( isset( $code['output_method'] ) && 'template' === $code['output_method'] ) {
                 ob_start();

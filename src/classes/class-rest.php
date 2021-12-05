@@ -325,17 +325,28 @@ class LazyBlocks_Rest extends WP_REST_Controller {
         $context    = $request->get_param( 'context' );
         $attributes = $request->get_param( 'attributes' );
 
-        $meta_prefix = 'lazyblocks_';
+        // Prepare block clean block data for marshal method.
+        // Add 'lazyblocks_' prefix to all block attributes.
+        $block_data = array();
 
-        // add 'lazyblocks_' prefix.
         foreach ( $block as $k => $val ) {
-            $block[ $meta_prefix . $k ] = $val;
+            $block_data[ 'lazyblocks_' . $k ] = $val;
         }
 
-        $block = lazyblocks()->blocks()->marshal_block_data( $block );
+        $block_data = lazyblocks()->blocks()->marshal_block_data( $block_data );
+
+        // Prepare standard lazyblock attributes.
+        $attributes['blockId']          = 'preview-id';
+        $attributes['blockUniqueClass'] = 'lazyblock-preview-class';
+        $attributes['anchor']           = '';
+        $attributes['className']        = '';
+        $attributes['align']            = '';
+        $attributes['lazyblock']        = array(
+            'slug' => $block_data['slug'],
+        );
 
         try {
-            $block_result = lazyblocks()->blocks()->render_callback( $attributes, null, $context, $block );
+            $block_result = lazyblocks()->blocks()->render_callback( $attributes, null, $context, $block_data );
         } catch ( Throwable $e ) {
             return $this->error( 'lazy_block_render_failed', $e->getMessage() . PHP_EOL . PHP_EOL . $e->getTraceAsString() );
         }
