@@ -89,7 +89,7 @@ class CodePreview extends Component {
             const attributes = this.getAttributes();
 
             apiFetch( {
-                path: 'lazy-blocks/v1/block-designer-preview',
+                path: 'lazy-blocks/v1/block-constructor-preview',
                 method: 'POST',
                 data: {
                     slug: data.slug,

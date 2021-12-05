@@ -98,11 +98,11 @@ class LazyBlocks_Rest extends WP_REST_Controller {
         // Get Lazy Block Editor Preview.
         register_rest_route(
             $namespace,
-            '/block-designer-preview/',
+            '/block-constructor-preview/',
             array(
                 'methods'             => WP_REST_Server::EDITABLE,
-                'callback'            => array( $this, 'block_designer_preview' ),
-                'permission_callback' => array( $this, 'block_designer_preview_permission' ),
+                'callback'            => array( $this, 'block_constructor_preview' ),
+                'permission_callback' => array( $this, 'block_constructor_preview_permission' ),
             )
         );
     }
@@ -185,11 +185,11 @@ class LazyBlocks_Rest extends WP_REST_Controller {
     }
 
     /**
-     * Get block designer preview permissions.
+     * Get block constructor preview permissions.
      *
      * @return WP_REST_Response|true
      */
-    public function block_designer_preview_permission() {
+    public function block_constructor_preview_permission() {
         return $this->get_block_data_permission();
     }
 
@@ -320,7 +320,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
      *
      * @return WP_REST_Response
      */
-    public function block_designer_preview( $request ) {
+    public function block_constructor_preview( $request ) {
         $block      = $request->get_param( 'block' );
         $context    = $request->get_param( 'context' );
         $attributes = $request->get_param( 'attributes' );
