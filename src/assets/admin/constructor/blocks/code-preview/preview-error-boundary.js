@@ -1,4 +1,8 @@
 const {
+    __,
+} = wp.i18n;
+
+const {
     Component,
 } = wp.element;
 
@@ -18,8 +22,7 @@ class PreviewErrorBoundary extends Component {
 
     render() {
         if ( this.state.hasError ) {
-            // You can render any custom fallback UI
-            return <div style={ { margin: '16px' } }>Error: Could not generate the preview.</div>;
+            return <div style={ { margin: '16px' } }>{ __( 'Error: Could not generate the preview.', '@@text_domain' ) }</div>;
         }
 
         return this.props.children;
