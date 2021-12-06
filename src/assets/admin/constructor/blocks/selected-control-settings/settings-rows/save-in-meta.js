@@ -26,7 +26,7 @@ export default class SaveInMetaRow extends Component {
                             <Button
                                 isSecondary
                                 isSmall
-                                href="https://lazyblocks.com/documentation/examples/display-custom-fields-meta/"
+                                href="https://lazyblocks.com/documentation/examples/display-custom-fields-meta/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_meta&utm_content=@@plugin_version"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={ { marginTop: '10px' } }

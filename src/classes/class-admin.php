@@ -38,7 +38,7 @@ class LazyBlocks_Admin {
             esc_html__( 'Documentation', '@@text_domain' ),
             esc_html__( 'Documentation', '@@text_domain' ),
             'manage_options',
-            'https://lazyblocks.com/documentation/getting-started/'
+            'https://lazyblocks.com/documentation/getting-started/?utm_source=plugin&utm_medium=admin_menu&utm_campaign=docs&utm_content=@@plugin_version'
         );
 
         // PRO plugin survive link.
@@ -242,7 +242,7 @@ class LazyBlocks_Admin {
         // Determine if the current page being viewed is "Lazy Blocks" related.
         if ( isset( $screen->post_type ) && 'lazyblocks' === $screen->post_type ) {
             // Use RegExp to append "Lazy Blocks" after the <a> element allowing translations to read correctly.
-            return preg_replace( '/(<a[\S\s]+?\/a>)/', '$1 ' . esc_attr__( 'and', '@@text_domain' ) . ' <a href="https://lazyblocks.com/" target="_blank">Lazy Blocks</a>', $text, 1 );
+            return preg_replace( '/(<a[\S\s]+?\/a>)/', '$1 ' . esc_attr__( 'and', '@@text_domain' ) . ' <a href="https://lazyblocks.com/?utm_source=plugin&utm_medium=admin_footer&utm_campaign=link&utm_content=@@plugin_version" target="_blank">Lazy Blocks</a>', $text, 1 );
         }
 
         return $text;
