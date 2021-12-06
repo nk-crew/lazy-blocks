@@ -164,7 +164,7 @@ class CodePreview extends Component {
 
     render() {
         return (
-            <div className="lazyblocks-component-box lazyblocks-component-box-no-paddings lzb-constructor-code-preview">
+            <div className="lzb-constructor-code-preview">
                 <PanelBody>
                     <h2>{ __( 'Preview', '@@text_domain' ) }</h2>
                 </PanelBody>

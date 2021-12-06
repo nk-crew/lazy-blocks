@@ -139,10 +139,12 @@ class ConstructorBlock extends Component {
                     </Box>
                     { /* Code/Template Preview */ }
                     <PreviewErrorBoundary>
-                        <CodePreview
-                            data={ blockData }
-                            codeContext={ codeContext }
-                        />
+                        <Box no-paddings>
+                            <CodePreview
+                                data={ blockData }
+                                codeContext={ codeContext }
+                            />
+                        </Box>
                     </PreviewErrorBoundary>
                 </div>
             </Fragment>

@@ -2,19 +2,24 @@
 
 .lzb-constructor .lzb-constructor-code-preview {
     margin-top: 50px;
-    background: #fff;
 
     > .components-panel__body {
+        padding: 20px 25px;
+        border-color: #e5e7eb;
+
         &:first-child {
-            background-color: #fbfbfb;
+            background-color: $color_gray_lighten_2;
             border-top: none;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: $radius_box;
+            border-top-right-radius: $radius_box;
 
             h2 {
                 margin: 0;
                 text-align: left;
             }
+        }
+        &:last-child {
+            border-bottom: none;
         }
     }
 }
