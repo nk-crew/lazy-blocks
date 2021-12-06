@@ -63,7 +63,7 @@ class ConstructorBlock extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            tab: null,
+            codeContext: 'frontend',
         };
     }
 
@@ -74,7 +74,7 @@ class ConstructorBlock extends Component {
         } = this.props;
 
         const {
-            tab,
+            codeContext,
         } = this.state;
 
         if ( ! blockData || 'undefined' === typeof blockData.slug ) {
@@ -134,14 +134,14 @@ class ConstructorBlock extends Component {
                         <CustomCodeSettings
                             data={ blockData }
                             updateData={ updateBlockData }
-                            onTabChange={ ( value ) => this.setState( { tab: value } ) }
+                            onTabChange={ ( value ) => this.setState( { codeContext: value } ) }
                         />
                     </Box>
                     { /* Code/Template Preview */ }
                     <PreviewErrorBoundary>
                         <CodePreview
                             data={ blockData }
-                            tab={ tab }
+                            codeContext={ codeContext }
                         />
                     </PreviewErrorBoundary>
                 </div>

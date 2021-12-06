@@ -38,10 +38,10 @@ class CodePreview extends Component {
     componentDidUpdate( prevProps ) {
         const {
             data,
-            tab,
+            codeContext,
         } = this.props;
 
-        if ( prevProps.data !== data || prevProps.tab !== tab ) {
+        if ( prevProps.data !== data || prevProps.codeContext !== codeContext ) {
             this.loadPreview();
         }
     }
@@ -131,7 +131,7 @@ class CodePreview extends Component {
     loadPreview() {
         const {
             data,
-            tab,
+            codeContext,
         } = this.props;
 
         if ( data ) {
@@ -141,7 +141,7 @@ class CodePreview extends Component {
                 path: 'lazy-blocks/v1/block-constructor-preview',
                 method: 'POST',
                 data: {
-                    context: tab,
+                    context: codeContext,
                     attributes,
                     block: data,
                 },
