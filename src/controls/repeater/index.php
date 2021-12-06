@@ -87,14 +87,7 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
             return $attribute_data;
         }
 
-        $default_val  = array();
-        $inner_blocks = lazyblocks()->blocks()->prepare_block_attributes( $controls, $control_id, $block );
-
-        foreach ( $inner_blocks as $n => $inner_block ) {
-            $default_val[ $n ] = $inner_blocks[ $n ]['default'];
-        }
-
-        $attribute_data['default'] = rawurlencode( wp_json_encode( array( $default_val ) ) );
+        $attribute_data['default'] = rawurlencode( wp_json_encode( array() ) );
 
         return $attribute_data;
     }
