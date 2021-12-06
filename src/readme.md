@@ -107,6 +107,7 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 * added support for color slugs in the Color controls when using new FSE themes
 * added code preview in the constructor (thanks <https://github.com/nk-crew/lazy-blocks/pull/227>)
 * fixed propagating cut event in the constructor (thanks <https://github.com/nk-crew/lazy-blocks/pull/226>)
+* removed default value generated for repeaters, as it was not working correctly
 
 = 2.5.1 =
 
