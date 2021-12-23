@@ -1261,6 +1261,7 @@ class LazyBlocks_Blocks {
             $data = array(
                 'attributes'      => $attributes,
                 'render_callback' => array( $this, 'render_callback' ),
+                'example'         => array(),
             );
 
             // Register block type.
