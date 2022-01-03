@@ -857,7 +857,7 @@ class LazyBlocks_Blocks {
      * @param array $block_data - block data.
      * @param array $all_controls - control data.
      */
-    public function marshal_block_data_with_controls( $id = null, $post_title = null, $block_data = null, $all_controls ) {
+    public function marshal_block_data_with_controls( $id = null, $post_title = null, $block_data = null, $all_controls = null ) {
         $get_meta_value = function( $name ) use ( $id, $block_data ) {
             if ( $id ) {
                 return $this->get_meta_value_by_id( $name, $id );
