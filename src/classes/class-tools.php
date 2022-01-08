@@ -513,6 +513,10 @@ class LazyBlocks_Tools {
     /**
      * Duplicate Block.
      *
+     * Thanks to:
+     * - https://wordpress.org/plugins/duplicate-post/
+     * - https://wordpress.org/plugins/duplicate-page/
+     *
      * @param int $block_id block ID to duplicate.
      */
     public function duplicate_block( $block_id ) {
@@ -523,8 +527,6 @@ class LazyBlocks_Tools {
         if ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-duplicate-block-nonce' ) ) {
             return;
         }
-
-        global $wpdb;
 
         $post            = get_post( $block_id );
         $current_user    = wp_get_current_user();
@@ -559,28 +561,46 @@ class LazyBlocks_Tools {
                 wp_set_object_terms( $new_post_id, $post_terms, $taxonomy, false );
             }
 
-            // Duplicate all post meta just in two SQL queries.
-            // phpcs:ignore
-            $post_meta_infos = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$block_id" );
+            // Duplicate all post meta.
+            $post_meta_keys = get_post_custom_keys( $block_id );
+            if ( ! empty( $post_meta_keys ) ) {
+                // Default meta field names to be filtered out.
+                $meta_exclude_list = array(
+                    '_edit_lock',
+                    '_edit_last',
+                    '_dp_original',
+                    '_dp_is_rewrite_republish_copy',
+                    '_dp_has_rewrite_republish_copy',
+                    '_dp_has_been_republished',
+                    '_dp_creation_date_gmt',
+                );
 
-            if ( count( $post_meta_infos ) ) {
-                $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
+                $meta_exclude_list_string = '(' . implode( ')|(', $meta_exclude_list ) . ')';
 
-                foreach ( $post_meta_infos as $meta_info ) {
-                    $meta_key = $meta_info->meta_key;
+                if ( strpos( $meta_exclude_list_string, '*' ) !== false ) {
+                    $meta_exclude_list_string = str_replace( array( '*' ), array( '[a-zA-Z0-9_]*' ), $meta_exclude_list_string );
 
-                    if ( '_wp_old_slug' === $meta_key ) {
-                        continue;
+                    $meta_keys = array();
+                    foreach ( $post_meta_keys as $meta_key ) {
+                        if ( ! preg_match( '#^' . $meta_exclude_list_string . '$#', $meta_key ) ) {
+                            $meta_keys[] = $meta_key;
+                        }
                     }
-
-                    $meta_value      = addslashes( $meta_info->meta_value );
-                    $sql_query_sel[] = "SELECT $new_post_id, '$meta_key', '$meta_value'";
+                } else {
+                    $meta_keys = array_diff( $post_meta_keys, $meta_exclude_list );
                 }
 
-                $sql_query .= implode( ' UNION ALL ', $sql_query_sel );
+                foreach ( $meta_keys as $meta_key ) {
+                    $meta_values = get_post_custom_values( $meta_key, $post->ID );
 
-                // phpcs:ignore
-                $wpdb->query( $sql_query );
+                    // Clear existing meta data so that add_post_meta() works properly with non-unique keys.
+                    delete_post_meta( $new_post_id, $meta_key );
+
+                    foreach ( $meta_values as $meta_value ) {
+                        $meta_value = maybe_unserialize( $meta_value );
+                        add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
+                    }
+                }
             }
 
             // Redirect.
