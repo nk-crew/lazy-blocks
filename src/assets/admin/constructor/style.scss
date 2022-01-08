@@ -40,7 +40,8 @@
 
         // change content width.
         .wp-block {
-            max-width: none;
+            // stylelint-disable-next-line
+            max-width: none !important;
             margin-top: 0;
         }
 
