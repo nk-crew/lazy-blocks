@@ -102,6 +102,13 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
+= 2.5.3 =
+
+* added block inserter preview (thanks <https://github.com/nk-crew/lazy-blocks/pull/230>)
+* fixed PHP8 deprecation warning
+* fixed security issue in the code for duplicating post (thanks to the Wordfence team)
+* minor changes
+
 = 2.5.2 =
 
 * added support for color slugs in the Color controls when using new FSE themes
