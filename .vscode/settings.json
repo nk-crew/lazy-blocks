@@ -1,0 +1,29 @@
+{
+  "editor.defaultFormatter": null,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[php]": {
+    "editor.defaultFormatter": null
+  },
+  "editor.formatOnSave": true,
+
+  "scss.validate": false,
+  "css.validate": false,
+  "less.validate": false,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true
+  },
+  "stylelint.validate": [
+    "css",
+    "scss"
+  ],
+  "stylelint.snippet": [
+    "css",
+    "scss"
+  ],
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

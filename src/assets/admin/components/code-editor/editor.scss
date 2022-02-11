@@ -1,43 +1,44 @@
 @import "../../variables";
 
 .lazyblocks-component-code-editor {
-    // fix editor height jumping after init
-    min-height: 117px;
-    border: 1px solid $color_gray;
-    border-radius: $radius_large;
+  // fix editor height jumping after init
+  min-height: 117px;
+  border: 1px solid $color_gray;
+  border-radius: $radius_large;
 
-    // fix editor height jumping after init
-    .ace_text-input,
-    .ace_gutter-cell,
-    .ace_gutter-active-line {
-        min-height: 17px;
+  // fix editor height jumping after init
+  .ace_text-input,
+  .ace_gutter-cell,
+  .ace_gutter-active-line {
+    min-height: 17px;
+  }
+
+  &.ace_editor {
+    width: 100%;
+    line-height: 1.45;
+    border: 1px solid rgba(0, 0, 0, 7%);
+  }
+
+  .ace_tooltip {
+    padding: 6px 10px;
+    background: none;
+    background-color: #fff;
+    border: 1px solid $color_gray_lighten;
+    border-radius: $radius;
+    box-shadow: $shadow;
+  }
+
+  &.ace-tm {
+    .ace_gutter {
+      background: $color_gray_lighten_2;
+
+      .ace_gutter-active-line {
+        background-color: $color_gray;
+      }
     }
 
-    &.ace_editor {
-        width: 100%;
-        line-height: 1.45;
-        border: 1px solid rgba(0, 0, 0, .07);
+    .ace_print-margin {
+      display: none;
     }
-
-    .ace_tooltip {
-        padding: 6px 10px;
-        background: none;
-        background-color: #fff;
-        border: 1px solid $color_gray_lighten;
-        border-radius: $radius;
-        box-shadow: $shadow;
-    }
-
-    &.ace-tm {
-        .ace_gutter {
-            background: $color_gray_lighten_2;
-
-            .ace_gutter-active-line {
-                background-color: $color_gray;
-            }
-        }
-        .ace_print-margin {
-            display: none;
-        }
-    }
+  }
 }

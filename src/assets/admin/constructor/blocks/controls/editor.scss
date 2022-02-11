@@ -1,267 +1,272 @@
 @import "../../../variables";
 
 .lzb-constructor-controls {
-    margin-top: -10px;
-    margin-bottom: 80px;
+  margin-top: -10px;
+  margin-bottom: 80px;
 }
 
 .lzb-constructor-controls-item,
 .lzb-constructor-controls-item-appender {
-    position: relative;
-    padding: 20px 25px;
-    color: $color_dark_darken;
-    cursor: pointer;
-    background-color: #fff;
-    border-radius: $radius_box;
-    box-shadow: rgba(#000, .1) 0 1px 3px 0, rgba(#000, .06) 0 1px 2px 0;
-    transition: .15s background-color ease-in-out, .15s color ease-in-out, .15s border-color ease-in-out, .15s box-shadow ease-in-out;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
+  padding: 20px 25px;
+  color: $color_dark_darken;
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: $radius_box;
+  box-shadow: rgba(#000, 0.1) 0 1px 3px 0, rgba(#000, 0.06) 0 1px 2px 0;
+  transition: 0.15s background-color ease-in-out, 0.15s color ease-in-out, 0.15s border-color ease-in-out, 0.15s box-shadow ease-in-out;
 }
 
 .lzb-constructor-controls-item-wrap,
 .lzb-constructor-controls-item-appender {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 // appender
 .lzb-constructor-controls-item-appender {
+  display: block;
+  width: 100%;
+  padding: 18px 25px;
+  color: $color_dark_lighten;
+  background: $color_gray_lighten_2;
+  border: 1px dashed $color_gray_darken;
+  outline: none;
+  box-shadow: none;
+
+  &:hover {
+    color: $color_dark_darken;
+    background: #fff;
+    border-color: $color_dark_lighten_2;
+  }
+
+  svg {
     display: block;
-    width: 100%;
-    padding: 18px 25px;
-    color: $color_dark_lighten;
-    background: $color_gray_lighten_2;
-    border: 1px dashed $color_gray_darken;
-    outline: none;
-    box-shadow: none;
-
-    &:hover {
-        color: $color_dark_darken;
-        background: #fff;
-        border-color: $color_dark_lighten_2;
-    }
-
-    svg {
-        display: block;
-        margin: 0 auto;
-    }
+    margin: 0 auto;
+  }
 }
 
 // head
 .lzb-constructor-controls-item {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    padding-left: 60px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 60px;
 
-    &:hover {
-        box-shadow: rgba(#000, .1) 0 0px 0px 1px;
-    }
-    .lzb-constructor-controls-item-wrap-selected > & {
-        box-shadow: rgba(#000, .1) 0 0px 0px 1px, 0 0 0 3px $color_gray_lighten, 0 0 0 5px $blue-50;
-    }
-    .lzb-constructor-controls-item-dragging > & {
-        box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, .2);
-    }
+  &:hover {
+    box-shadow: rgba(#000, 0.1) 0 0px 0px 1px;
+  }
 
-    > div {
-        flex: 1;
-    }
+  .lzb-constructor-controls-item-wrap-selected > & {
+    box-shadow: rgba(#000, 0.1) 0 0px 0px 1px, 0 0 0 3px $color_gray_lighten, 0 0 0 5px $blue-50;
+  }
 
-    // icon
-    .lzb-constructor-controls-item-icon {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 65px;
-        color: $color_dark_darken;
-        cursor: grab;
+  .lzb-constructor-controls-item-dragging > & {
+    box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, 0.2);
+  }
 
-        &::after {
-            content: "";
-            position: absolute;
-            display: block;
-            top: 15px;
-            right: 15px;
-            bottom: 15px;
-            left: 15px;
-            background-color: $color_gray_lighten;
-            border-radius: 30px;
-            box-shadow: inset rgb(0 0 0 / 5%) 0 1px 2px 0;
-            z-index: -1;
-        }
+  > div {
+    flex: 1;
+  }
 
-        svg {
-            width: 1.5em;
-            height: 1.5em;
-        }
-
-        > span {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            transition: .15s opacity ease-in-out, .15s transform ease-in-out;
-
-            + span {
-                opacity: 0;
-                transform: scale(.5);
-            }
-        }
-
-        .lzb-constructor-controls-item-dragging > .lzb-constructor-controls-item > &,
-        &:hover {
-            > span {
-                opacity: 0;
-                transform: scale(.5);
-
-                + span {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        }
-    }
-
-    // drag icon
-    .lzb-constructor-controls-item-handler {
-        z-index: 1;
-    }
-
-    .lzb-constructor-controls-item-label-text {
-        display: block;
-        font-weight: 600;
-        transition: .15s transform ease-in-out;
-
-        .lzb-constructor-controls-item-label-no {
-            opacity: .3;
-        }
-
-        .required {
-            margin-left: 5px;
-        }
-    }
-
-    .lzb-constructor-controls-item-label-buttons {
-        position: absolute;
-        display: block;
-        bottom: 20px;
-        opacity: 0;
-        transition: .15s opacity ease-in-out, .15s transform ease-in-out;
-
-        button {
-            display: inline-flex;
-            align-items: center;
-            padding: 0;
-            margin-right: 5px;
-            font-size: .8em;
-            color: inherit;
-            cursor: pointer;
-            background: none;
-            border: none;
-            opacity: .5;
-            transition: .15s opacity ease-in-out;
-
-            &:hover {
-                opacity: 1;
-            }
-
-            svg {
-                width: 1em;
-                height: 1em;
-                margin-right: .2em;
-            }
-        }
-        .lzb-constructor-controls-item-label-buttons-remove {
-            color: $alert-red;
-        }
-    }
-
-    small {
-        font-size: 80%;
-        color: $color_dark_lighten;
-    }
-}
-.lzb-constructor-controls-item-wrap:hover,
-.lzb-constructor-controls-item-wrap:focus,
-.lzb-constructor-controls-item-wrap-selected {
-    > .lzb-constructor-controls-item > .lzb-constructor-controls-item-label {
-        .lzb-constructor-controls-item-label-text {
-            transform: translateY(-7px);
-        }
-        .lzb-constructor-controls-item-label-buttons {
-            opacity: 1;
-            transform: translateY(12px);
-        }
-    }
-}
-
-.lzb-constructor-controls-item-name {
-    position: relative;
-    display: flex;
-    align-items: center;
-    align-self: center;
-    padding: 3px 10px;
-    font-size: 80%;
-    font-weight: 600;
+  // icon
+  .lzb-constructor-controls-item-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 65px;
     color: $color_dark_darken;
-    cursor: pointer;
-    background-color: $color_gray_lighten;
-    border: none;
-    border-radius: 20px;
-    outline: 0;
-    transition: .15s color ease-in-out, .15s background-color ease-in-out, .15s box-shadow ease-in-out;
+    cursor: grab;
 
-    &:hover,
-    &:focus {
-        background-color: #fff;
-        box-shadow: rgba(0, 0, 0, .2) 0 0 0 1px, rgba(0, 0, 0, .1) 0 2px 4px 0;
+    &::after {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      bottom: 15px;
+      left: 15px;
+      z-index: -1;
+      display: block;
+      content: "";
+      background-color: $color_gray_lighten;
+      border-radius: 30px;
+      box-shadow: inset rgb(0 0 0 / 5%) 0 1px 2px 0;
     }
 
     svg {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    > span {
+      position: absolute;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      transition: 0.15s opacity ease-in-out, 0.15s transform ease-in-out;
+
+      + span {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+    }
+
+    .lzb-constructor-controls-item-dragging > .lzb-constructor-controls-item > &,
+    &:hover {
+      > span {
+        opacity: 0;
+        transform: scale(0.5);
+
+        + span {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  // drag icon
+  .lzb-constructor-controls-item-handler {
+    z-index: 1;
+  }
+
+  .lzb-constructor-controls-item-label-text {
+    display: block;
+    font-weight: 600;
+    transition: 0.15s transform ease-in-out;
+
+    .lzb-constructor-controls-item-label-no {
+      opacity: 0.3;
+    }
+
+    .required {
+      margin-left: 5px;
+    }
+  }
+
+  .lzb-constructor-controls-item-label-buttons {
+    position: absolute;
+    bottom: 20px;
+    display: block;
+    opacity: 0;
+    transition: 0.15s opacity ease-in-out, 0.15s transform ease-in-out;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      padding: 0;
+      margin-right: 5px;
+      font-size: 0.8em;
+      color: inherit;
+      cursor: pointer;
+      background: none;
+      border: none;
+      opacity: 0.5;
+      transition: 0.15s opacity ease-in-out;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      svg {
         width: 1em;
         height: 1em;
-        margin-left: .4em;
+        margin-right: 0.2em;
+      }
     }
+
+    .lzb-constructor-controls-item-label-buttons-remove {
+      color: $alert-red;
+    }
+  }
+
+  small {
+    font-size: 80%;
+    color: $color_dark_lighten;
+  }
+}
+
+.lzb-constructor-controls-item-wrap:hover,
+.lzb-constructor-controls-item-wrap:focus,
+.lzb-constructor-controls-item-wrap-selected {
+  > .lzb-constructor-controls-item > .lzb-constructor-controls-item-label {
+    .lzb-constructor-controls-item-label-text {
+      transform: translateY(-7px);
+    }
+
+    .lzb-constructor-controls-item-label-buttons {
+      opacity: 1;
+      transform: translateY(12px);
+    }
+  }
+}
+
+.lzb-constructor-controls-item-name {
+  position: relative;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  padding: 3px 10px;
+  font-size: 80%;
+  font-weight: 600;
+  color: $color_dark_darken;
+  cursor: pointer;
+  background-color: $color_gray_lighten;
+  border: none;
+  border-radius: 20px;
+  outline: 0;
+  transition: 0.15s color ease-in-out, 0.15s background-color ease-in-out, 0.15s box-shadow ease-in-out;
+
+  &:hover,
+  &:focus {
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 20%) 0 0 0 1px, rgba(0, 0, 0, 10%) 0 2px 4px 0;
+  }
+
+  svg {
+    width: 1em;
+    height: 1em;
+    margin-left: 0.4em;
+  }
 }
 
 // repeater child items.
 .lzb-constructor-controls-item-childs {
-    padding-left: 20px;
+  padding-left: 20px;
 }
 
 // repeater toggle child button.
 .lzb-constructor-controls-item-repeater-toggle {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 9px;
-    padding-left: 20px;
-    margin-top: 3px;
-    margin-bottom: -11px;
-    font-size: 80%;
-    color: $color_dark_lighten;
-    text-align: left;
-    cursor: pointer;
-    background: none;
-    border: none;
-    outline: none;
-    transition: .15s color;
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 9px;
+  padding-left: 20px;
+  margin-top: 3px;
+  margin-bottom: -11px;
+  font-size: 80%;
+  color: $color_dark_lighten;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  transition: 0.15s color;
 
-    &:hover {
-        color: $color_dark_darken;
-    }
+  &:hover {
+    color: $color_dark_darken;
+  }
 
-    > svg {
-        height: .7em;
-        margin-left: .5em;
-        vertical-align: -.05em;
-    }
+  > svg {
+    height: 0.7em;
+    margin-left: 0.5em;
+    vertical-align: -0.05em;
+  }
 
-    &.lzb-constructor-controls-item-repeater-toggle-collapsed > svg {
-        transform: rotate(-90deg);
-    }
+  &.lzb-constructor-controls-item-repeater-toggle-collapsed > svg {
+    transform: rotate(-90deg);
+  }
 }

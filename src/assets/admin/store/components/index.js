@@ -6,13 +6,11 @@
  */
 import * as selectors from './selectors';
 
-const {
-    registerStore,
-} = wp.data;
+const { registerStore } = wp.data;
 
-registerStore( 'lazy-blocks/components', {
-    selectors,
-    reducer( state ) {
-        return state;
-    },
-} );
+registerStore('lazy-blocks/components', {
+  selectors,
+  reducer(state) {
+    return state;
+  },
+});

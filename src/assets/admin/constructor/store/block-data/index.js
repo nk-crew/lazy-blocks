@@ -4,10 +4,12 @@ import * as actions from './actions';
 import * as controls from './controls';
 import * as resolvers from './resolvers';
 
-const {
-    registerStore,
-} = wp.data;
+const { registerStore } = wp.data;
 
-registerStore( 'lazy-blocks/block-data', {
-    reducer, selectors, actions, controls, resolvers,
-} );
+registerStore('lazy-blocks/block-data', {
+  reducer,
+  selectors,
+  actions,
+  controls,
+  resolvers,
+});

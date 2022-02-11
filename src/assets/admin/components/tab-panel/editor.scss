@@ -4,70 +4,70 @@
  * Tabs Panel Control.
  */
 .lazyblocks-control-tabs {
-    > .components-tab-panel__tabs {
-        display: inline-flex;
-        flex-wrap: wrap;
-        padding: 2px;
-        margin-bottom: 15px;
-        background-color: $color_gray;
-        border-radius: $radius_box;
+  > .components-tab-panel__tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding: 2px;
+    margin-bottom: 15px;
+    background-color: $color_gray;
+    border-radius: $radius_box;
 
-        // single tab
-        > .lazyblocks-control-tabs-tab {
-            height: auto;
-            padding: 7px 15px;
-            margin: 0;
-            color: $color_dark_darken;
-            cursor: pointer;
-            background: none;
-            border: none;
-            border-radius: $radius_box - 2px;
-            box-shadow: 0 0 0 transparent;
+    // single tab
+    > .lazyblocks-control-tabs-tab {
+      height: auto;
+      padding: 7px 15px;
+      margin: 0;
+      color: $color_dark_darken;
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-radius: $radius_box - 2px;
+      box-shadow: 0 0 0 transparent;
 
-            + .lazyblocks-control-tabs-tab {
-                margin-left: 2px;
-            }
+      + .lazyblocks-control-tabs-tab {
+        margin-left: 2px;
+      }
 
-            &.lazyblocks-control-tabs-tab-hidden:not(.is-active) {
-                display: none;
-            }
+      &.lazyblocks-control-tabs-tab-hidden:not(.is-active) {
+        display: none;
+      }
 
-            svg {
-                display: block;
-                width: auto;
-                height: 1.4em;
-                margin-right: .3em;
-            }
+      svg {
+        display: block;
+        width: auto;
+        height: 1.4em;
+        margin-right: 0.3em;
+      }
 
-            &.is-active {
-                position: relative;
-                font-weight: 600;
-                background-color: #fff;
-                box-shadow: rgba(0, 0, 0, .05) 0 0 0 1px, rgba(0, 0, 0, .05) 0 1px 2px 0;
-                z-index: 1;
+      &.is-active {
+        position: relative;
+        z-index: 1;
+        font-weight: 600;
+        background-color: #fff;
+        box-shadow: rgba(0, 0, 0, 5%) 0 0 0 1px, rgba(0, 0, 0, 5%) 0 1px 2px 0;
 
-                svg {
-                    color: $blue-50;
-                }
-            }
+        svg {
+          color: $blue-50;
         }
+      }
     }
+  }
 
-    // wide
-    &.lazyblocks-control-tabs-wide > .components-tab-panel__tabs > .lazyblocks-control-tabs-tab {
-        flex: 1;
-        justify-content: center;
-        text-align: center;
+  // wide
+  &.lazyblocks-control-tabs-wide > .components-tab-panel__tabs > .lazyblocks-control-tabs-tab {
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .lazyblocks-control-tabs-separator {
+    padding: 15px;
+    margin-right: -15px;
+    margin-left: -15px;
+    border-top: 1px solid $color_gray;
+
+    &:first-child {
+      margin-top: -16px;
     }
-
-    .lazyblocks-control-tabs-separator {
-        padding: 15px;
-        margin-right: -15px;
-        margin-left: -15px;
-        border-top: 1px solid $color_gray;
-
-        &:first-child {
-            margin-top: -16px;
-        }
-    }
+  }
 }

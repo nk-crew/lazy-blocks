@@ -1,6 +1,7 @@
 /**
  * WordPress.
  */
+/* stylelint-disable-next-line scss/at-import-partial-extension */
 @import "../../../node_modules/@wordpress/base-styles/colors.native";
 @import "../../../node_modules/@wordpress/base-styles/variables";
 
@@ -18,5 +19,5 @@ $color_dark_lighten: #6b6c6e !default;
 $color_dark: #515764 !default;
 $color_dark_darken: #343536 !default;
 
-$shadow: 0 5px 10px 0 rgba(0, 0, 0, .04) !default;
-$shadow_small: 0 5px 10px 0 rgba(0, 0, 0, .02) !default;
+$shadow: 0 5px 10px 0 rgba(0, 0, 0, 4%) !default;
+$shadow_small: 0 5px 10px 0 rgba(0, 0, 0, 2%) !default;

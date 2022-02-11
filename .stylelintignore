@@ -3,5 +3,6 @@
 **/*.min.css
 **/*.build.css
 node_modules
+dist
 vendor
 vendors

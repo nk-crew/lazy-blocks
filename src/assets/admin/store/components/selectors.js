@@ -13,16 +13,16 @@ import TabPanel from '../../components/tab-panel';
 import Tabs from '../../components/tabs';
 
 export function get() {
-    return {
-        BlockSlug,
-        Box,
-        CodeEditor,
-        Copied,
-        DocumentTabs,
-        IconPicker,
-        Modal,
-        Select,
-        TabPanel,
-        Tabs,
-    };
+  return {
+    BlockSlug,
+    Box,
+    CodeEditor,
+    Copied,
+    DocumentTabs,
+    IconPicker,
+    Modal,
+    Select,
+    TabPanel,
+    Tabs,
+  };
 }
