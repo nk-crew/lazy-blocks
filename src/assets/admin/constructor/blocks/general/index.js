@@ -89,7 +89,10 @@ class GeneralSettings extends Component {
             <Select
               isCreatable
               isTags
-              placeholder={__('Enter up to 3 keywords', '@@text_domain')}
+              placeholder={__(
+                'Make it easier to discover a block with keyword aliases',
+                '@@text_domain'
+              )}
               value={(() => {
                 if (keywords) {
                   const result = keywords.split(',').map((val) => ({
@@ -104,12 +107,8 @@ class GeneralSettings extends Component {
                 let result = '';
 
                 if (value) {
-                  const limitNum = 3;
-                  let i = 0;
                   value.forEach((optionData) => {
-                    if (optionData && i < limitNum) {
-                      i += 1;
-
+                    if (optionData) {
                       if (result) {
                         result += ',';
                       }
