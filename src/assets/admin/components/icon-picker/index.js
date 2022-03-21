@@ -9,7 +9,7 @@ import 'react-virtualized/styles.css';
 import classnames from 'classnames/dedupe';
 import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from 'react-virtualized';
 
-const { Component, Fragment } = wp.element;
+const { Fragment, useState, useEffect } = wp.element;
 
 const { __ } = wp.i18n;
 
@@ -18,54 +18,42 @@ const { Button, Dropdown, Tooltip, BaseControl, TextControl, G, Path, SVG } = wp
 const { icons } = window.lazyblocksConstructorData || window.lazyblocksGutenberg;
 
 // we need this lazy loading component to prevent a huge lags while first loading SVG icons
-class Icon extends Component {
-  render() {
-    const { svg, onClick, active } = this.props;
-
-    return (
-      <IconPicker.Preview
-        className={classnames(
-          'lazyblocks-component-icon-picker-button',
-          active ? 'lazyblocks-component-icon-picker-button-active' : ''
-        )}
-        onClick={onClick}
-        svg={svg}
-      />
-    );
-  }
+function Icon({ svg, onClick, active }) {
+  return (
+    <IconPicker.Preview
+      className={classnames(
+        'lazyblocks-component-icon-picker-button',
+        active ? 'lazyblocks-component-icon-picker-button-active' : ''
+      )}
+      onClick={onClick}
+      svg={svg}
+    />
+  );
 }
 
 const hiddenIconCategories = {};
 
+const cellMCache = new CellMeasurerCache({
+  defaultHeight: 65,
+  fixedWidth: true,
+});
+
 /**
  * Dropdown
  */
-class IconPickerDropdown extends Component {
-  constructor(...args) {
-    super(...args);
+function IconPickerDropdown(props) {
+  const { onChange, value, label, className, renderToggle } = props;
 
-    this.cellMCache = new CellMeasurerCache({
-      defaultHeight: 65,
-      fixedWidth: true,
-    });
+  const [search, setSearch] = useState('');
+  const [hiddenCategories, setHiddenCategories] = useState(hiddenIconCategories);
 
-    this.state = {
-      search: '',
-      hiddenCategories: hiddenIconCategories,
-    };
-
-    this.getDropdownContent = this.getDropdownContent.bind(this);
-  }
-
-  componentDidUpdate() {
-    if (this.cellMCache) {
-      this.cellMCache.clearAll();
+  useEffect(() => {
+    if (cellMCache) {
+      cellMCache.clearAll();
     }
-  }
+  }, [props]);
 
-  getDropdownContent() {
-    const { onChange, value } = this.props;
-
+  function getDropdownContent() {
     const rows = [
       {
         key: 'form',
@@ -73,8 +61,8 @@ class IconPickerDropdown extends Component {
           <Fragment key="form">
             <TextControl
               label={__('Search Icon', '@@text_domain')}
-              value={this.state.search}
-              onChange={(searchVal) => this.setState({ search: searchVal })}
+              value={search}
+              onChange={(searchVal) => setSearch(searchVal)}
               placeholder={__('Type to Search...', '@@text_domain')}
               autoComplete="off"
             />
@@ -85,12 +73,11 @@ class IconPickerDropdown extends Component {
 
     Object.keys(icons).forEach((categoryName) => {
       const categoryIcons = icons[categoryName];
-      const { hiddenCategories } = this.state;
       const showCategory =
         typeof hiddenCategories[categoryName] !== 'undefined'
           ? hiddenCategories[categoryName]
           : true;
-      const searchString = this.state.search.toLowerCase();
+      const searchString = search.toLowerCase();
 
       // prepare all icons.
       const allIcons = Object.keys(categoryIcons)
@@ -142,19 +129,17 @@ class IconPickerDropdown extends Component {
               <Button
                 className="components-panel__body-toggle"
                 onClick={() => {
-                  this.setState({
-                    hiddenCategories: {
-                      ...hiddenCategories,
-                      [categoryName]: !showCategory,
-                    },
+                  setHiddenCategories({
+                    ...hiddenCategories,
+                    [categoryName]: !showCategory,
                   });
                 }}
                 aria-expanded={showCategory}
               >
                 {/*
-                                    Firefox + NVDA don't announce aria-expanded because the browser
-                                    repaints the whole element, so this wrapping span hides that.
-                                */}
+                    Firefox + NVDA don't announce aria-expanded because the browser
+                    repaints the whole element, so this wrapping span hides that.
+                */}
                 <span aria-hidden="true">
                   {showCategory ? (
                     <SVG
@@ -231,14 +216,14 @@ class IconPickerDropdown extends Component {
             width={width}
             height={height}
             rowCount={rows.length}
-            rowHeight={this.cellMCache.rowHeight}
+            rowHeight={cellMCache.rowHeight}
             // eslint-disable-next-line react/no-unstable-nested-components
             rowRenderer={(data) => {
               const { index, style, parent, key } = data;
 
               return (
                 <CellMeasurer
-                  cache={this.cellMCache}
+                  cache={cellMCache}
                   columnIndex={0}
                   key={key}
                   rowIndex={index}
@@ -261,56 +246,49 @@ class IconPickerDropdown extends Component {
     );
   }
 
-  render() {
-    const { label, className, renderToggle } = this.props;
+  const dropdown = (
+    <Dropdown
+      className={className}
+      contentClassName="lazyblocks-component-icon-picker-content"
+      renderToggle={renderToggle}
+      focusOnMount={false}
+      // eslint-disable-next-line react/jsx-no-bind
+      renderContent={getDropdownContent}
+    />
+  );
 
-    const dropdown = (
-      <Dropdown
-        className={className}
-        contentClassName="lazyblocks-component-icon-picker-content"
-        renderToggle={renderToggle}
-        focusOnMount={false}
-        renderContent={this.getDropdownContent}
-      />
-    );
-
-    return label ? (
-      <BaseControl label={label} className={className}>
-        {dropdown}
-      </BaseControl>
-    ) : (
-      dropdown
-    );
-  }
+  return label ? (
+    <BaseControl label={label} className={className}>
+      {dropdown}
+    </BaseControl>
+  ) : (
+    dropdown
+  );
 }
 
-export default class IconPicker extends Component {
-  render() {
-    const { value, onChange, label } = this.props;
-
-    return (
-      <IconPicker.Dropdown
-        label={label}
-        className="lazyblocks-component-icon-picker-wrapper"
-        onChange={onChange}
-        value={value}
-        renderToggle={({ isOpen, onToggle }) => (
-          <Tooltip text={__('Icon Picker', '@@text_domain')}>
-            {/* We need this <div> just because Tooltip don't work without it */}
-            <div>
-              <IconPicker.Preview
-                className="lazyblocks-component-icon-picker-button hover"
-                aria-expanded={isOpen}
-                onClick={onToggle}
-                svg={value}
-                alwaysRender
-              />
-            </div>
-          </Tooltip>
-        )}
-      />
-    );
-  }
+export default function IconPicker({ value, onChange, label }) {
+  return (
+    <IconPicker.Dropdown
+      label={label}
+      className="lazyblocks-component-icon-picker-wrapper"
+      onChange={onChange}
+      value={value}
+      renderToggle={({ isOpen, onToggle }) => (
+        <Tooltip text={__('Icon Picker', '@@text_domain')}>
+          {/* We need this <div> just because Tooltip don't work without it */}
+          <div>
+            <IconPicker.Preview
+              className="lazyblocks-component-icon-picker-button hover"
+              aria-expanded={isOpen}
+              onClick={onToggle}
+              svg={value}
+              alwaysRender
+            />
+          </div>
+        </Tooltip>
+      )}
+    />
+  );
 }
 
 // dropdown

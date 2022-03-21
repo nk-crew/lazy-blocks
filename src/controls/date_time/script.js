@@ -3,8 +3,6 @@
  */
 import classnames from 'classnames/dedupe';
 
-const { Component } = wp.element;
-
 const { __ } = wp.i18n;
 
 const { addFilter } = wp.hooks;
@@ -17,106 +15,92 @@ const { Dropdown, PanelBody, BaseControl, ButtonGroup, Button, DatePicker, TimeP
 /**
  * Date Time Picker.
  */
-class DateTimePicker extends Component {
-  render() {
-    const {
-      value,
-      onChange,
-      label,
-      help,
-      allowTimePicker = true,
-      allowDatePicker = true,
-    } = this.props;
+function DateTimePicker(props) {
+  const { value, onChange, label, help, allowTimePicker = true, allowDatePicker = true } = props;
 
-    const settings = getSettings();
+  const settings = getSettings();
 
-    // To know if the current timezone is a 12 hour time with look for an "a" in the time format.
-    // We also make sure this a is not escaped by a "/".
-    const is12Hour = /a(?!\\)/i.test(
-      settings.formats.time
-        .toLowerCase() // Test only the lower case a
-        .replace(/\\\\/g, '') // Replace "//" with empty strings
-        .split('')
-        .reverse()
-        .join('') // Reverse the string and test for "a" not followed by a slash
-    );
+  // To know if the current timezone is a 12 hour time with look for an "a" in the time format.
+  // We also make sure this a is not escaped by a "/".
+  const is12Hour = /a(?!\\)/i.test(
+    settings.formats.time
+      .toLowerCase() // Test only the lower case a
+      .replace(/\\\\/g, '') // Replace "//" with empty strings
+      .split('')
+      .reverse()
+      .join('') // Reverse the string and test for "a" not followed by a slash
+  );
 
-    let buttonLabel = __('Select Date', '@@text_domain');
-    let resolvedFormat = settings.formats.date || 'F j, Y';
+  let buttonLabel = __('Select Date', '@@text_domain');
+  let resolvedFormat = settings.formats.date || 'F j, Y';
 
-    if (allowTimePicker && allowDatePicker) {
-      buttonLabel = __('Select Date and Time', '@@text_domain');
-      resolvedFormat = settings.formats.datetime || 'F j, Y g:i a';
-    } else if (allowTimePicker) {
-      buttonLabel = __('Select Time', '@@text_domain');
-      resolvedFormat = settings.formats.time || 'g:i a';
-    }
-
-    return (
-      <BaseControl label={label} help={help}>
-        <div>
-          <Dropdown
-            renderToggle={({ isOpen, onToggle }) => (
-              <Button
-                isLink
-                aria-expanded={isOpen}
-                onClick={onToggle}
-                className="lzb-date-time-picker-toggle"
-              >
-                {allowDatePicker ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    width="24"
-                  >
-                    <path d="M0 0h24v24H0V0z" fill="none" />
-                    <path d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    enableBackground="new 0 0 24 24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    width="24"
-                  >
-                    <g>
-                      <rect fill="none" height="24" width="24" x="0" />
-                    </g>
-                    <g>
-                      <g>
-                        <path d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M12.5,7H11v6l5.2,3.2l0.8-1.3l-4.5-2.7V7z" />
-                      </g>
-                    </g>
-                  </svg>
-                )}
-
-                {value ? dateI18n(resolvedFormat, value) : buttonLabel}
-              </Button>
-            )}
-            renderContent={() => (
-              <div
-                className={classnames(
-                  'components-datetime',
-                  'lzb-gutenberg-date-time-picker',
-                  allowTimePicker ? 'lzb-gutenberg-date-time-picker-allowed-time' : '',
-                  allowDatePicker ? 'lzb-gutenberg-date-time-picker-allowed-date' : ''
-                )}
-              >
-                <TimePicker currentTime={value} onChange={onChange} is12Hour={is12Hour} />
-                {allowDatePicker ? (
-                  <DatePicker currentDate={value} onChange={onChange} onMonthPreviewed={() => {}} />
-                ) : (
-                  ''
-                )}
-              </div>
-            )}
-          />
-        </div>
-      </BaseControl>
-    );
+  if (allowTimePicker && allowDatePicker) {
+    buttonLabel = __('Select Date and Time', '@@text_domain');
+    resolvedFormat = settings.formats.datetime || 'F j, Y g:i a';
+  } else if (allowTimePicker) {
+    buttonLabel = __('Select Time', '@@text_domain');
+    resolvedFormat = settings.formats.time || 'g:i a';
   }
+
+  return (
+    <BaseControl label={label} help={help}>
+      <div>
+        <Dropdown
+          renderToggle={({ isOpen, onToggle }) => (
+            <Button
+              isLink
+              aria-expanded={isOpen}
+              onClick={onToggle}
+              className="lzb-date-time-picker-toggle"
+            >
+              {allowDatePicker ? (
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                  <path d="M0 0h24v24H0V0z" fill="none" />
+                  <path d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  enableBackground="new 0 0 24 24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <g>
+                    <rect fill="none" height="24" width="24" x="0" />
+                  </g>
+                  <g>
+                    <g>
+                      <path d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M12.5,7H11v6l5.2,3.2l0.8-1.3l-4.5-2.7V7z" />
+                    </g>
+                  </g>
+                </svg>
+              )}
+
+              {value ? dateI18n(resolvedFormat, value) : buttonLabel}
+            </Button>
+          )}
+          renderContent={() => (
+            <div
+              className={classnames(
+                'components-datetime',
+                'lzb-gutenberg-date-time-picker',
+                allowTimePicker ? 'lzb-gutenberg-date-time-picker-allowed-time' : '',
+                allowDatePicker ? 'lzb-gutenberg-date-time-picker-allowed-date' : ''
+              )}
+            >
+              <TimePicker currentTime={value} onChange={onChange} is12Hour={is12Hour} />
+              {allowDatePicker ? (
+                <DatePicker currentDate={value} onChange={onChange} onMonthPreviewed={() => {}} />
+              ) : (
+                ''
+              )}
+            </div>
+          )}
+        />
+      </div>
+    </BaseControl>
+  );
 }
 
 /**

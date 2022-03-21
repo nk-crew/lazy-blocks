@@ -2,7 +2,7 @@ import { SortableContainer, SortableElement, SortableHandle } from 'react-sortab
 import { arrayMoveImmutable } from 'array-move';
 
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+const { useRef } = wp.element;
 const { BaseControl, TextControl, Button } = wp.components;
 
 const DragHandle = SortableHandle(() => (
@@ -71,22 +71,13 @@ const SortableList = SortableContainer(({ items }) => (
   </div>
 ));
 
-export default class ChoicesRow extends Component {
-  constructor(...args) {
-    super(...args);
+export default function ChoicesRow(props) {
+  const { data, updateData } = props;
+  const { choices = [] } = data;
 
-    // eslint-disable-next-line react/no-unused-class-component-methods
-    this.sortRef = wp.element.createRef();
+  const $sortRef = useRef();
 
-    this.addChoice = this.addChoice.bind(this);
-    this.removeChoice = this.removeChoice.bind(this);
-    this.updateChoice = this.updateChoice.bind(this);
-  }
-
-  addChoice() {
-    const { data, updateData } = this.props;
-    const { choices = [] } = data;
-
+  function addChoice() {
     choices.push({
       label: '',
       value: '',
@@ -95,19 +86,13 @@ export default class ChoicesRow extends Component {
     updateData({ choices });
   }
 
-  removeChoice(i) {
-    const { data, updateData } = this.props;
-    const { choices = [] } = data;
-
+  function removeChoice(i) {
     choices.splice(i, 1);
 
     updateData({ choices });
   }
 
-  updateChoice(i, newData) {
-    const { data, updateData } = this.props;
-    const { choices = [] } = data;
-
+  function updateChoice(i, newData) {
     if (choices[i]) {
       choices[i] = {
         ...choices[i],
@@ -118,69 +103,57 @@ export default class ChoicesRow extends Component {
     }
   }
 
-  // eslint-disable-next-line react/no-unused-class-component-methods
-  resortChoice(oldIndex, newIndex) {
-    const { data, updateData } = this.props;
-    const { choices = [] } = data;
-
+  function resortChoice(oldIndex, newIndex) {
     const newChoices = arrayMoveImmutable(choices, oldIndex, newIndex);
 
     updateData({ choices: newChoices });
   }
 
-  render() {
-    const self = this;
+  const items = [];
 
-    const { data } = self.props;
-
-    const { choices = [] } = data;
-
-    const items = [];
-
-    if (choices && choices.length) {
-      choices.forEach((choice, i) => {
-        items.push({
-          value: choice.value,
-          label: choice.label,
-          removeChoice() {
-            self.removeChoice(i);
-          },
-          updateChoice(newData) {
-            self.updateChoice(i, newData);
-          },
-        });
+  if (choices && choices.length) {
+    choices.forEach((choice, i) => {
+      items.push({
+        value: choice.value,
+        label: choice.label,
+        removeChoice() {
+          removeChoice(i);
+        },
+        updateChoice(newData) {
+          updateChoice(i, newData);
+        },
       });
-    }
-
-    return (
-      <BaseControl label={__('Choices', '@@text_domain')}>
-        <div className="lzb-constructor-controls-item-settings-choices">
-          {items.length ? (
-            <SortableList
-              ref={self.sortRef}
-              items={items}
-              onSortEnd={({ oldIndex, newIndex }) => {
-                self.resortChoice(oldIndex, newIndex);
-              }}
-              useDragHandle
-              helperContainer={() => {
-                if (self.sortRef && self.sortRef.current && self.sortRef.current.container) {
-                  return self.sortRef.current.container;
-                }
-
-                return document.body;
-              }}
-            />
-          ) : (
-            ''
-          )}
-          <div>
-            <Button onClick={self.addChoice} isSecondary isSmall>
-              {__('+ Add Choice', '@@text_domain')}
-            </Button>
-          </div>
-        </div>
-      </BaseControl>
-    );
+    });
   }
+
+  return (
+    <BaseControl label={__('Choices', '@@text_domain')}>
+      <div className="lzb-constructor-controls-item-settings-choices">
+        {items.length ? (
+          <SortableList
+            ref={$sortRef}
+            items={items}
+            onSortEnd={({ oldIndex, newIndex }) => {
+              resortChoice(oldIndex, newIndex);
+            }}
+            useDragHandle
+            helperContainer={() => {
+              if ($sortRef && $sortRef.current && $sortRef.current.container) {
+                return $sortRef.current.container;
+              }
+
+              return document.body;
+            }}
+          />
+        ) : (
+          ''
+        )}
+        <div>
+          <Button onClick={() => addChoice()} isSecondary isSmall>
+            {__('+ Add Choice', '@@text_domain')}
+          </Button>
+        </div>
+      </div>
+    </BaseControl>
+  );
 }

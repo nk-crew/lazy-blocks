@@ -1,5 +1,5 @@
 /**
- * TinyMCE Component from https://github.com/WordPress/gutenberg/blob/master/packages/block-library/src/classic/edit.js
+ * TinyMCE Component from https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/freeform/edit.js
  * With changes to work as control.
  */
 

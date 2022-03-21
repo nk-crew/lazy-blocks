@@ -1,96 +1,65 @@
-// External Dependencies.
-import { debounce } from 'throttle-debounce';
+/* eslint-disable no-underscore-dangle */
 
 /**
  * Internal dependencies
  */
-const { createBlock } = wp.blocks;
-
 const { registerPlugin } = wp.plugins;
 
 const { __ } = wp.i18n;
 
-const { Component } = wp.element;
+const { useCallback, useEffect } = wp.element;
 
-const { compose } = wp.compose;
-
-const { withSelect, withDispatch } = wp.data;
+const { useSelect, useDispatch } = wp.data;
 
 const { PanelRow, SelectControl } = wp.components;
+
+const { useDebounce } = wp.compose;
 
 const { PluginDocumentSettingPanel } = wp.editPost || {};
 
 const { used_post_types_for_templates: usedPostTypes } = window.lazyblocksTemplatesData || {};
 
-class UpdateEditor extends Component {
-  constructor(...args) {
-    super(...args);
+function UpdateEditor() {
+  const { templatePostTypes, templateLock, templateBlocks, postTypes, blocks } = useSelect(
+    (select) => {
+      const { getEditedPostAttribute } = select('core/editor');
+      const { getPostTypes } = select('core');
+      const { getBlocks } = select('core/block-editor');
 
-    this.updateBlocksMeta = debounce(500, this.updateBlocksMeta.bind(this));
-  }
+      const meta = getEditedPostAttribute('meta') || {};
 
-  componentDidUpdate() {
-    this.update();
-  }
+      return {
+        templatePostTypes: meta._lzb_template_post_types || [],
+        templateLock: meta._lzb_template_lock || '',
+        templateBlocks: meta._lzb_template_blocks || '',
+        postTypes:
+          getPostTypes({
+            show_ui: true,
+            per_page: -1,
+          }) || [],
+        blocks: getBlocks(),
+      };
+    },
+    []
+  );
 
-  /**
-   * Run when something changed in editor.
-   */
-  update() {
-    this.fallbackTemplateBlocks();
-    this.updateBlocksMeta();
-  }
+  const { editPost } = useDispatch('core/editor');
 
-  /**
-   * Fallback for old template editor. Restore all blocks inside editor directly.
-   */
-  fallbackTemplateBlocks() {
-    const {
-      templateConvertBlocksToContent,
-      templateBlocks,
-      resetBlocks,
-      insertBlocks,
-      updateMeta,
-    } = this.props;
-
-    if (this.dontRunFallback || !templateConvertBlocksToContent) {
-      return;
-    }
-
-    this.dontRunFallback = true;
-
-    const newBlocks = JSON.parse(decodeURIComponent(templateBlocks));
-
-    if (newBlocks && newBlocks.length) {
-      const newBlocksResult = [];
-
-      newBlocks.forEach((blockData) => {
-        try {
-          newBlocksResult.push(createBlock(blockData[0]));
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.error(e);
-        }
-      });
-
-      resetBlocks([]);
-      insertBlocks(newBlocksResult);
-    }
-
-    updateMeta('_lzb_template_convert_blocks_to_content', false);
+  function updateMeta(name, val) {
+    editPost({ meta: { [name]: val } });
   }
 
   /**
    * Convert blocks data to template data.
    */
-  convertBlocksToTemplate(blocks) {
+  function convertBlocksToTemplate(blocksList) {
     const result = [];
 
-    blocks.forEach((blockData) => {
+    blocksList.forEach((blockData) => {
       const resultBlockData = [blockData.name, blockData.attributes];
 
       if (blockData.innerBlocks && blockData.innerBlocks.length) {
-        resultBlockData.push(this.convertBlocksToTemplate(blockData.innerBlocks));
+        resultBlockData.push(convertBlocksToTemplate(blockData.innerBlocks));
       }
 
       result.push(resultBlockData);
@@ -102,147 +71,107 @@ class UpdateEditor extends Component {
   /**
    * Convert blocks to the meta to easily work with it in PHP.
    */
-  updateBlocksMeta() {
-    const { templateBlocks, blocks, updateMeta } = this.props;
+  function updateBlocksMeta(blocksList, templateBlocksString) {
+    const blocksString = encodeURIComponent(JSON.stringify(convertBlocksToTemplate(blocksList)));
 
-    const blocksString = encodeURIComponent(JSON.stringify(this.convertBlocksToTemplate(blocks)));
-
-    if (templateBlocks !== blocksString) {
+    if (templateBlocksString !== blocksString) {
       updateMeta('_lzb_template_blocks', blocksString);
     }
   }
 
-  render() {
-    const { templateLock, templatePostTypes, postTypes, updateMeta } = this.props;
+  const updateBlocksMetaDebounce = useCallback(useDebounce(updateBlocksMeta, 500), []);
 
-    const templateLockOptions = [
-      {
-        label: __('None', '@@text_domain'),
-        value: '',
-      },
-      {
-        label: __('Prevent all operations', '@@text_domain'),
-        value: 'all',
-      },
-      {
-        label: __('Prevent inserting new blocks, but allows moving existing ones', '@@text_domain'),
-        value: 'insert',
-      },
-    ];
+  useEffect(() => {
+    updateBlocksMetaDebounce(blocks, templateBlocks);
+  }, [blocks, templateBlocks]);
 
-    // Default options.
-    const postTypesOptions = [];
-    const postTypesArray = [];
+  const templateLockOptions = [
+    {
+      label: __('None', '@@text_domain'),
+      value: '',
+    },
+    {
+      label: __('Prevent all operations', '@@text_domain'),
+      value: 'all',
+    },
+    {
+      label: __('Prevent inserting new blocks, but allows moving existing ones', '@@text_domain'),
+      value: 'insert',
+    },
+  ];
 
-    postTypes
-      .filter(
-        (post) =>
-          post.viewable &&
-          post.slug !== 'lazyblocks' &&
-          post.slug !== 'lazyblocks_templates' &&
-          post.slug !== 'attachment'
-      )
-      .forEach((post) => {
-        let { label } = post;
+  // Default options.
+  const postTypesOptions = [];
+  const postTypesArray = [];
 
-        if (post.labels && post.labels.singular_name) {
-          label = post.labels.singular_name;
-        }
+  postTypes
+    .filter(
+      (post) =>
+        post.viewable &&
+        post.slug !== 'lazyblocks' &&
+        post.slug !== 'lazyblocks_templates' &&
+        post.slug !== 'attachment'
+    )
+    .forEach((post) => {
+      let { label } = post;
 
-        postTypesArray.push(post.slug);
+      if (post.labels && post.labels.singular_name) {
+        label = post.labels.singular_name;
+      }
 
+      postTypesArray.push(post.slug);
+
+      postTypesOptions.push({
+        label,
+        value: post.slug,
+        disabled: usedPostTypes.includes(post.slug),
+      });
+    });
+
+  // Display selected post type in select in case if it is not exists.
+  // For example, when removed plugin, which works with this custom post type.
+  if (templatePostTypes && templatePostTypes.length) {
+    templatePostTypes.forEach((postType) => {
+      if (!postTypesArray.includes(postType)) {
         postTypesOptions.push({
-          label,
-          value: post.slug,
-          disabled: usedPostTypes.includes(post.slug),
+          label: postType,
+          value: postType,
         });
-      });
-
-    // Display selected post type in select in case if it is not exists.
-    // For example, when removed plugin, which works with this custom post type.
-    if (templatePostTypes && templatePostTypes.length) {
-      templatePostTypes.forEach((postType) => {
-        if (!postTypesArray.includes(postType)) {
-          postTypesOptions.push({
-            label: postType,
-            value: postType,
-          });
-        }
-      });
-    }
-
-    return (
-      <PluginDocumentSettingPanel
-        name="LZBTemplateSettings"
-        title={__('Template Settings', '@@text_domain')}
-        className="lzb-template-settings-panel"
-      >
-        <PanelRow>
-          <SelectControl
-            label={__('Post Types', '@@text_domain')}
-            multiple
-            options={postTypesOptions}
-            value={templatePostTypes}
-            onChange={(value) => {
-              updateMeta('_lzb_template_post_types', value);
-            }}
-          />
-        </PanelRow>
-        <PanelRow>
-          <SelectControl
-            label={__('Template Lock', '@@text_domain')}
-            options={templateLockOptions}
-            value={templateLock}
-            onChange={(value) => {
-              updateMeta('_lzb_template_lock', value);
-            }}
-          />
-        </PanelRow>
-      </PluginDocumentSettingPanel>
-    );
+      }
+    });
   }
+
+  return (
+    <PluginDocumentSettingPanel
+      name="LZBTemplateSettings"
+      title={__('Template Settings', '@@text_domain')}
+      className="lzb-template-settings-panel"
+    >
+      <PanelRow>
+        <SelectControl
+          label={__('Post Types', '@@text_domain')}
+          multiple
+          options={postTypesOptions}
+          value={templatePostTypes}
+          onChange={(value) => {
+            updateMeta('_lzb_template_post_types', value);
+          }}
+        />
+      </PanelRow>
+      <PanelRow>
+        <SelectControl
+          label={__('Template Lock', '@@text_domain')}
+          options={templateLockOptions}
+          value={templateLock}
+          onChange={(value) => {
+            updateMeta('_lzb_template_lock', value);
+          }}
+        />
+      </PanelRow>
+    </PluginDocumentSettingPanel>
+  );
 }
 
 registerPlugin('lazy-blocks-template', {
-  render: compose(
-    withSelect((select) => {
-      const { getEditedPostAttribute } = select('core/editor');
-
-      const { getPostTypes } = select('core');
-
-      const { getBlocks } = select('core/block-editor');
-
-      const meta = getEditedPostAttribute('meta') || {};
-
-      return {
-        // eslint-disable-next-line no-underscore-dangle
-        templatePostTypes: meta._lzb_template_post_types || [],
-        // eslint-disable-next-line no-underscore-dangle
-        templateLock: meta._lzb_template_lock || '',
-        // eslint-disable-next-line no-underscore-dangle
-        templateBlocks: meta._lzb_template_blocks || '',
-        // eslint-disable-next-line no-underscore-dangle
-        templateConvertBlocksToContent: meta._lzb_template_convert_blocks_to_content || false,
-        postTypes:
-          getPostTypes({
-            show_ui: true,
-            per_page: -1,
-          }) || [],
-        blocks: getBlocks(),
-      };
-    }),
-    withDispatch((dispatch) => {
-      const { insertBlocks, resetBlocks } = dispatch('core/block-editor');
-
-      const { editPost } = dispatch('core/editor');
-
-      return {
-        insertBlocks,
-        resetBlocks,
-        updateMeta(name, val) {
-          editPost({ meta: { [name]: val } });
-        },
-      };
-    })
-  )(UpdateEditor),
+  render: UpdateEditor,
 });

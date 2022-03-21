@@ -131,7 +131,7 @@ class LazyBlocks_Dummy {
                     'lazyblocks_icon'                   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect opacity="0.25" width="15" height="15" rx="4" transform="matrix(-1 0 0 1 22 7)" fill="currentColor" /><rect width="15" height="15" rx="4" transform="matrix(-1 0 0 1 17 2)" fill="currentColor" /></svg>',
                     'lazyblocks_description'            => esc_html__( 'Example block that helps you to get started with Lazy Blocks plugin', '@@text_domain' ),
                     'lazyblocks_keywords'               => 'example,sample,template',
-                    'lazyblocks_category'               => 'common',
+                    'lazyblocks_category'               => 'design',
                     'lazyblocks_code_output_method'     => 'php',
                     'lazyblocks_code_show_preview'      => 'always',
                     'lazyblocks_code_single_output'     => 'true',

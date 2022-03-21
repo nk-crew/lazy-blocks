@@ -14,59 +14,54 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 // Import CSS
 import './editor.scss';
 
-const { Component, createRef } = wp.element;
+const { useEffect, useRef } = wp.element;
 
-export default class CodeEditor extends Component {
-  constructor(...args) {
-    super(...args);
+export default function CodeEditor(props) {
+  const $editorWrapper = useRef();
 
-    this.editorWrapper = createRef();
-  }
-
-  componentDidMount() {
-    this.editorWrapper.current.addEventListener('cut', this.handleCut);
-  }
-
-  componentWillUnmount() {
-    this.editorWrapper.current.removeEventListener('cut', this.handleCut);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  handleCut = (event) => {
+  function handleCut(event) {
     event.stopPropagation();
-  };
-
-  render() {
-    return (
-      <div ref={this.editorWrapper}>
-        <AceEditor
-          theme="textmate"
-          onLoad={(editor) => {
-            editor.renderer.setScrollMargin(16, 16, 16, 16);
-            editor.renderer.setPadding(16);
-          }}
-          fontSize={12}
-          showPrintMargin
-          showGutter
-          highlightActiveLine={false}
-          width="100%"
-          className="lazyblocks-component-code-editor"
-          {...this.props}
-          editorProps={{
-            $blockScrolling: Infinity,
-            ...(this.props.editorProps || {}),
-          }}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
-            showLineNumbers: true,
-            tabSize: 2,
-            useWorker: false,
-            ...(this.props.setOptions || {}),
-          }}
-        />
-      </div>
-    );
   }
+
+  useEffect(() => {
+    const $frame = $editorWrapper.current;
+
+    $frame.addEventListener('cut', handleCut);
+
+    return () => {
+      $frame.removeEventListener('cut', handleCut);
+    };
+  }, []);
+
+  return (
+    <div ref={$editorWrapper}>
+      <AceEditor
+        theme="textmate"
+        onLoad={(editor) => {
+          editor.renderer.setScrollMargin(16, 16, 16, 16);
+          editor.renderer.setPadding(16);
+        }}
+        fontSize={12}
+        showPrintMargin
+        showGutter
+        highlightActiveLine={false}
+        width="100%"
+        className="lazyblocks-component-code-editor"
+        {...props}
+        editorProps={{
+          $blockScrolling: Infinity,
+          ...(props.editorProps || {}),
+        }}
+        setOptions={{
+          enableBasicAutocompletion: true,
+          enableLiveAutocompletion: true,
+          enableSnippets: true,
+          showLineNumbers: true,
+          tabSize: 2,
+          useWorker: false,
+          ...(props.setOptions || {}),
+        }}
+      />
+    </div>
+  );
 }

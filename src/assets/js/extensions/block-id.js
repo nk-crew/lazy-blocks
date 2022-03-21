@@ -2,13 +2,11 @@ import shorthash from 'shorthash';
 
 const { addFilter } = wp.hooks;
 
-const { Component } = wp.element;
+const { useEffect } = wp.element;
 
 const { getBlockType } = wp.blocks;
 
 const { createHigherOrderComponent } = wp.compose;
-
-const { withSelect } = wp.data;
 
 /**
  * List of used IDs to prevent duplicates.
@@ -25,76 +23,62 @@ const usedIds = {};
  *
  * @return {string} Wrapped component.
  */
-const withUniqueBlockId = createHigherOrderComponent((BlockEdit) => {
-  class newEdit extends Component {
-    constructor(...args) {
-      super(...args);
-
-      const { attributes, clientId } = this.props;
-
-      // fix duplicated classes after block clone.
-      if (clientId && attributes.blockId && typeof usedIds[attributes.blockId] === 'undefined') {
-        usedIds[attributes.blockId] = clientId;
-      }
-
-      this.maybeCreateBlockId = this.maybeCreateBlockId.bind(this);
-    }
-
-    componentDidMount() {
-      this.maybeCreateBlockId();
-    }
-
-    componentDidUpdate() {
-      this.maybeCreateBlockId();
-    }
-
-    maybeCreateBlockId() {
-      if (!this.props.blockSettings.lazyblock) {
-        return;
-      }
-
-      const { setAttributes, attributes, clientId } = this.props;
-
+const withUniqueBlockId = createHigherOrderComponent(
+  (BlockEdit) =>
+    function newEdit(props) {
+      const { setAttributes, attributes, clientId, name } = props;
       const { blockId } = attributes;
+      const blockSettings = getBlockType(name);
 
-      if (!blockId || usedIds[blockId] !== clientId) {
-        let newBlockId = '';
-
-        // check if ID already exist.
-        let tryCount = 10;
-        while (
-          !newBlockId ||
-          (typeof usedIds[newBlockId] !== 'undefined' &&
-            usedIds[newBlockId] !== clientId &&
-            tryCount > 0)
-        ) {
-          newBlockId = shorthash.unique(clientId);
-          tryCount -= 1;
+      function maybeCreateBlockId() {
+        if (!blockSettings.lazyblock) {
+          return;
         }
 
-        if (newBlockId && typeof usedIds[newBlockId] === 'undefined') {
-          usedIds[newBlockId] = clientId;
-        }
+        if (!blockId || usedIds[blockId] !== clientId) {
+          let newBlockId = '';
 
-        if (newBlockId !== blockId) {
-          const newClass = `${this.props.name.replace('/', '-')}-${newBlockId}`;
+          // check if ID already exist.
+          let tryCount = 10;
+          while (
+            !newBlockId ||
+            (typeof usedIds[newBlockId] !== 'undefined' &&
+              usedIds[newBlockId] !== clientId &&
+              tryCount > 0)
+          ) {
+            newBlockId = shorthash.unique(clientId);
+            tryCount -= 1;
+          }
 
-          setAttributes({
-            blockId: newBlockId,
-            blockUniqueClass: newClass,
-          });
+          if (newBlockId && typeof usedIds[newBlockId] === 'undefined') {
+            usedIds[newBlockId] = clientId;
+          }
+
+          if (newBlockId !== blockId) {
+            const newClass = `${name.replace('/', '-')}-${newBlockId}`;
+
+            setAttributes({
+              blockId: newBlockId,
+              blockUniqueClass: newClass,
+            });
+          }
         }
       }
-    }
 
-    render() {
-      return <BlockEdit {...this.props} />;
-    }
-  }
+      useEffect(() => {
+        // fix duplicated classes after block clone.
+        if (clientId && attributes.blockId && typeof usedIds[attributes.blockId] === 'undefined') {
+          usedIds[attributes.blockId] = clientId;
+        }
+      }, []);
 
-  return withSelect((select, ownProps) => ({
-    blockSettings: getBlockType(ownProps.name),
-  }))(newEdit);
-}, 'withUniqueBlockId');
+      useEffect(() => {
+        maybeCreateBlockId();
+      });
+
+      return <BlockEdit {...props} />;
+    },
+  'withUniqueBlockId'
+);
 
 addFilter('editor.BlockEdit', 'lazyblocks/uniqueBlockId', withUniqueBlockId);

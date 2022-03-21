@@ -1,7 +1,7 @@
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+const { useRef, useEffect, useState } = wp.element;
 const { BaseControl, Button, Tooltip, ToggleControl } = wp.components;
 
 const { withInstanceId } = wp.compose;
@@ -83,45 +83,31 @@ const SortableList = SortableContainer(({ items }) => (
   </div>
 ));
 
-class RepeaterControl extends Component {
-  constructor(...args) {
-    super(...args);
+function RepeaterControl(props) {
+  const {
+    label,
+    count = 0,
+    controlData,
+    renderRow = () => {},
+    addRow = () => {},
+    removeRow = () => {},
+    resortRow = () => {},
+    getInnerControls = () => {},
+  } = props;
 
-    const { controlData } = this.props;
+  const $sortRef = useRef();
 
-    this.sortRef = wp.element.createRef();
+  let activeItemDefault = -1;
 
-    let activeItem = -1;
-
-    if (controlData.rows_collapsible === 'false') {
-      activeItem = -2;
-    } else if (controlData.rows_collapsed === 'false') {
-      activeItem = -2;
-    }
-
-    this.state = {
-      activeItem,
-    };
-
-    this.getRowTitle = this.getRowTitle.bind(this);
+  if (controlData.rows_collapsible === 'false') {
+    activeItemDefault = -2;
+  } else if (controlData.rows_collapsed === 'false') {
+    activeItemDefault = -2;
   }
 
-  componentDidMount() {
-    const { count = 0, controlData, addRow = () => {} } = this.props;
+  const [activeItem, setActiveItem] = useState(activeItemDefault);
 
-    // add rows to meet Minimum requirements
-    if (controlData.rows_min && controlData.rows_min > 0 && controlData.rows_min > count) {
-      const needToAdd = controlData.rows_min - count;
-
-      for (let i = 0; i < needToAdd; i += 1) {
-        addRow();
-      }
-    }
-  }
-
-  getRowTitle(i) {
-    const { controlData, getInnerControls = () => {} } = this.props;
-
+  function getRowTitle(i) {
     let title = controlData.rows_label || __('Row {{#}}', '@@text_domain');
 
     // add row number.
@@ -142,104 +128,102 @@ class RepeaterControl extends Component {
     return title;
   }
 
-  render() {
-    const {
-      label,
-      count = 0,
-      controlData,
-      renderRow = () => {},
-      addRow = () => {},
-      removeRow = () => {},
-      resortRow = () => {},
-    } = this.props;
+  // Mount.
+  useEffect(() => {
+    // add rows to meet Minimum requirements
+    if (controlData.rows_min && controlData.rows_min > 0 && controlData.rows_min > count) {
+      const needToAdd = controlData.rows_min - count;
 
-    const items = [];
-    for (let i = 0; i < count; i += 1) {
-      const active = this.state.activeItem === -2 || this.state.activeItem === i;
-
-      items.push({
-        title: this.getRowTitle(i),
-        active,
-        count,
-        controlData,
-        onToggle: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          if (controlData.rows_collapsible === 'true') {
-            this.setState({ activeItem: active ? -1 : i });
-          }
-        },
-        onRemove: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          removeRow(i);
-        },
-        renderContent: () => (
-          <div className="lzb-gutenberg-repeater-item-content">{renderRow(i)}</div>
-        ),
-      });
+      for (let i = 0; i < needToAdd; i += 1) {
+        addRow();
+      }
     }
+  }, []);
 
-    return (
-      <BaseControl label={label}>
-        <div className="lzb-gutenberg-repeater">
-          {items.length ? (
-            <SortableList
-              ref={this.sortRef}
-              items={items}
-              onSortEnd={({ oldIndex, newIndex }) => {
-                resortRow(oldIndex, newIndex);
+  const items = [];
+  for (let i = 0; i < count; i += 1) {
+    const active = activeItem === -2 || activeItem === i;
 
-                if (this.state.activeItem > -1) {
-                  this.setState({ activeItem: newIndex });
-                }
-              }}
-              useDragHandle
-              helperContainer={() => {
-                if (this.sortRef && this.sortRef.current && this.sortRef.current.container) {
-                  return this.sortRef.current.container;
-                }
+    items.push({
+      title: getRowTitle(i),
+      active,
+      count,
+      controlData,
+      onToggle: (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-                return document.body;
-              }}
-            />
+        if (controlData.rows_collapsible === 'true') {
+          setActiveItem(active ? -1 : i);
+        }
+      },
+      onRemove: (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        removeRow(i);
+      },
+      renderContent: () => (
+        <div className="lzb-gutenberg-repeater-item-content">{renderRow(i)}</div>
+      ),
+    });
+  }
+
+  return (
+    <BaseControl label={label}>
+      <div className="lzb-gutenberg-repeater">
+        {items.length ? (
+          <SortableList
+            ref={$sortRef}
+            items={items}
+            onSortEnd={({ oldIndex, newIndex }) => {
+              resortRow(oldIndex, newIndex);
+
+              if (activeItem > -1) {
+                setActiveItem(newIndex);
+              }
+            }}
+            useDragHandle
+            helperContainer={() => {
+              if ($sortRef && $sortRef.current && $sortRef.current.container) {
+                return $sortRef.current.container;
+              }
+
+              return document.body;
+            }}
+          />
+        ) : (
+          ''
+        )}
+        <div className="lzb-gutenberg-repeater-options">
+          <Button
+            isSecondary
+            isSmall
+            disabled={controlData.rows_max && count >= controlData.rows_max}
+            onClick={() => {
+              addRow();
+            }}
+          >
+            {controlData.rows_add_button_label || __('+ Add Row', '@@text_domain')}
+          </Button>
+          {controlData.rows_collapsible === 'true' && items.length && items.length > 1 ? (
+            <Tooltip text={__('Toggle all rows', '@@text_domain')}>
+              <div>
+                {/* For some reason Tooltip is not working without this <div> */}
+                <ToggleControl
+                  checked={activeItem === -2}
+                  onChange={() => {
+                    setActiveItem(activeItem ? -1 : -2);
+                  }}
+                />
+              </div>
+            </Tooltip>
           ) : (
             ''
           )}
-          <div className="lzb-gutenberg-repeater-options">
-            <Button
-              isSecondary
-              isSmall
-              disabled={controlData.rows_max && count >= controlData.rows_max}
-              onClick={() => {
-                addRow();
-              }}
-            >
-              {controlData.rows_add_button_label || __('+ Add Row', '@@text_domain')}
-            </Button>
-            {controlData.rows_collapsible === 'true' && items.length && items.length > 1 ? (
-              <Tooltip text={__('Toggle all rows', '@@text_domain')}>
-                <div>
-                  {/* For some reason Tooltip is not working without this <div> */}
-                  <ToggleControl
-                    checked={this.state.activeItem === -2}
-                    onChange={() => {
-                      this.setState((prevState) => ({
-                        activeItem: prevState.activeItem ? -1 : -2,
-                      }));
-                    }}
-                  />
-                </div>
-              </Tooltip>
-            ) : (
-              ''
-            )}
-          </div>
         </div>
-      </BaseControl>
-    );
-  }
+      </div>
+    </BaseControl>
+  );
 }
 
 export default withInstanceId(RepeaterControl);

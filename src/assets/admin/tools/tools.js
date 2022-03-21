@@ -21,38 +21,42 @@ const { lazyblocksToolsData: data } = window;
  */
 const { __ } = wp.i18n;
 
-const { Component, Fragment } = wp.element;
+const { Fragment, useState, useRef } = wp.element;
 
 const { BaseControl, TextareaControl, ToggleControl } = wp.components;
 
 /**
  * Component
  */
-class Templates extends Component {
-  constructor(...args) {
-    super(...args);
+export default function Templates() {
+  const [showBlocksPHP, setShowBlocksPHP] = useState(false);
+  const [showTemplatesPHP, setShowTemplatesPHP] = useState(false);
+  const [disabledBlocks, setDisabledBlocks] = useState({});
+  const [disabledTemplates, setDisabledTemplates] = useState({});
+  const [copiedBlocks, setCopiedBlocks] = useState(false);
+  const [copiedTemplates, setCopiedTemplates] = useState(false);
 
-    this.state = {
-      showBlocksPHP: false,
-      showTemplatesPHP: false,
-      disabledBlocks: {},
-      disabledTemplates: {},
-      copiedBlocks: false,
-      copiedTemplates: false,
-    };
+  const showStates = {
+    showBlocksPHP,
+    showTemplatesPHP,
+  };
+  const disabledStates = {
+    disabledBlocks,
+    disabledTemplates,
+  };
+  const copiedStates = {
+    copiedBlocks,
+    copiedTemplates,
+  };
 
-    this.renderExportContent = this.renderExportContent.bind(this);
-    this.getDownloadJSONUrl = this.getDownloadJSONUrl.bind(this);
-    this.getPHPStringCode = this.getPHPStringCode.bind(this);
-    this.copyPHPStringCode = this.copyPHPStringCode.bind(this);
-  }
+  const copiedTimeouts = useRef({});
 
-  getDownloadJSONUrl(type = 'blocks') {
+  function getDownloadJSONUrl(type = 'blocks') {
     const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
     let url = window.location.href;
 
     data[type].forEach((item) => {
-      if (!this.state[`disabled${typeLabel}`][item.data.id]) {
+      if (!disabledStates[`disabled${typeLabel}`][item.data.id]) {
         url += `&lazyblocks_export_${type}[]=${item.data.id}`;
       }
     });
@@ -67,13 +71,13 @@ class Templates extends Component {
    *
    * @return {String} code.
    */
-  getPHPStringCode(type = 'blocks') {
+  function getPHPStringCode(type = 'blocks') {
     const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
     let result = '';
 
     data[type].forEach((item) => {
-      if (!this.state[`disabled${typeLabel}`][item.data.id]) {
+      if (!disabledStates[`disabled${typeLabel}`][item.data.id]) {
         result += item.php_string_code;
       }
     });
@@ -85,28 +89,32 @@ class Templates extends Component {
     return result;
   }
 
-  copyPHPStringCode(type = 'blocks') {
+  function copyPHPStringCode(type = 'blocks') {
     const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-    clipboard.writeText(this.getPHPStringCode(type));
+    clipboard.writeText(getPHPStringCode(type));
 
-    this.setState({
-      [`copied${typeLabel}`]: true,
-    });
+    if (typeLabel === 'Blocks') {
+      setCopiedBlocks(true);
+    } else if (typeLabel === 'Templates') {
+      setCopiedTemplates(true);
+    }
 
-    clearTimeout(this[`copied${typeLabel}Timeout`]);
+    clearTimeout(copiedTimeouts.current[typeLabel]);
 
-    this[`copied${typeLabel}Timeout`] = setTimeout(() => {
-      this.setState({
-        [`copied${typeLabel}`]: false,
-      });
+    copiedTimeouts.current[typeLabel] = setTimeout(() => {
+      if (typeLabel === 'Blocks') {
+        setCopiedBlocks(false);
+      } else if (typeLabel === 'Templates') {
+        setCopiedTemplates(false);
+      }
     }, 350);
   }
 
-  renderExportContent(type = 'blocks') {
+  function renderExportContent(type = 'blocks') {
     const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
     const nothingSelected =
-      Object.keys(this.state[`disabled${typeLabel}`]).length === data[type].length;
+      Object.keys(disabledStates[`disabled${typeLabel}`]).length === data[type].length;
 
     return (
       <Fragment>
@@ -114,24 +122,26 @@ class Templates extends Component {
           <BaseControl>
             <ToggleControl
               label={__('Select all', '@@text_domain')}
-              checked={Object.keys(this.state[`disabled${typeLabel}`]).length === 0}
+              checked={Object.keys(disabledStates[`disabled${typeLabel}`]).length === 0}
               onChange={() => {
                 const newDisabled = {};
 
                 // disable all
-                if (Object.keys(this.state[`disabled${typeLabel}`]).length === 0) {
+                if (Object.keys(disabledStates[`disabled${typeLabel}`]).length === 0) {
                   data[type].forEach((item) => {
                     newDisabled[item.data.id] = true;
                   });
                 }
 
-                this.setState({
-                  [`disabled${typeLabel}`]: newDisabled,
-                });
+                if (typeLabel === 'Blocks') {
+                  setDisabledBlocks(newDisabled);
+                } else if (typeLabel === 'Templates') {
+                  setDisabledTemplates(newDisabled);
+                }
               }}
             />
             {data[type].map((item) => {
-              const isSelected = !this.state[`disabled${typeLabel}`][item.data.id];
+              const isSelected = !disabledStates[`disabled${typeLabel}`][item.data.id];
 
               return (
                 <ToggleControl
@@ -163,7 +173,7 @@ class Templates extends Component {
                   onChange={() => {
                     const newDisabled = {
                       // eslint-disable-next-line react/no-access-state-in-setstate
-                      ...this.state[`disabled${typeLabel}`],
+                      ...disabledStates[`disabled${typeLabel}`],
                     };
 
                     if (isSelected && !newDisabled[item.data.id]) {
@@ -172,9 +182,11 @@ class Templates extends Component {
                       delete newDisabled[item.data.id];
                     }
 
-                    this.setState({
-                      [`disabled${typeLabel}`]: newDisabled,
-                    });
+                    if (typeLabel === 'Blocks') {
+                      setDisabledBlocks(newDisabled);
+                    } else if (typeLabel === 'Templates') {
+                      setDisabledTemplates(newDisabled);
+                    }
                   }}
                 />
               );
@@ -182,13 +194,13 @@ class Templates extends Component {
           </BaseControl>
         </div>
 
-        {this.state[`show${typeLabel}PHP`] ? (
+        {showStates[`show${typeLabel}PHP`] ? (
           <Fragment>
             <div className="lzb-export-textarea">
               <TextareaControl
                 className="lzb-export-code"
                 readOnly
-                value={this.getPHPStringCode(type)}
+                value={getPHPStringCode(type)}
               />
             </div>
             <div className="lzb-export-buttons">
@@ -196,11 +208,11 @@ class Templates extends Component {
               <button
                 className="button"
                 onClick={() => {
-                  this.copyPHPStringCode(type);
+                  copyPHPStringCode(type);
                 }}
               >
                 {__('Copy to Clipboard', '@@text_domain')}
-                {this.state[`copied${typeLabel}`] ? <Copied /> : ''}
+                {copiedStates[`copied${typeLabel}`] ? <Copied /> : ''}
               </button>
             </div>
           </Fragment>
@@ -209,7 +221,7 @@ class Templates extends Component {
             <a
               className="button button-primary"
               disabled={nothingSelected}
-              href={this.getDownloadJSONUrl(type)}
+              href={getDownloadJSONUrl(type)}
             >
               {__('Export JSON', '@@text_domain')}
             </a>
@@ -217,9 +229,11 @@ class Templates extends Component {
             <button
               className="button"
               onClick={() => {
-                this.setState({
-                  [`show${typeLabel}PHP`]: true,
-                });
+                if (typeLabel === 'Blocks') {
+                  setShowBlocksPHP(true);
+                } else if (typeLabel === 'Templates') {
+                  setShowTemplatesPHP(true);
+                }
               }}
               disabled={nothingSelected}
             >
@@ -231,87 +245,83 @@ class Templates extends Component {
     );
   }
 
-  render() {
-    return (
-      <div className="metabox-holder">
-        <div className="postbox-container">
-          <div id="normal-sortables">
-            <div className="postbox-container">
-              <div className="postbox">
-                <h2 className="hndle">
-                  <span>{__('Export Blocks', '@@text_domain')}</span>
-                </h2>
-                {data.blocks && data.blocks.length ? (
-                  <div className="inside">
-                    <p>
-                      {__(
-                        'Select the blocks you would like to export and then select your export method. Use the download button to export to a .json file which you can then import to another Lazy Blocks installation. Use the generate button to export to PHP code which you can place in your theme.'
-                      )}
-                    </p>
-
-                    {this.renderExportContent('blocks')}
-                  </div>
-                ) : (
-                  <div className="inside">
-                    <p>{__('There are no blocks to export.')}</p>
-                  </div>
-                )}
-              </div>
-              <div className="postbox">
-                <h2 className="hndle">
-                  <span>{__('Export Templates', '@@text_domain')}</span>
-                </h2>
-                {data.templates && data.templates.length ? (
-                  <div className="inside">
-                    <p>
-                      {__(
-                        'Select the templates you would like to export and then select your export method. Use the download button to export to a .json file which you can then import to another Lazy Blocks installation. Use the generate button to export to PHP code which you can place in your theme.'
-                      )}
-                    </p>
-
-                    {this.renderExportContent('templates')}
-                  </div>
-                ) : (
-                  <div className="inside">
-                    <p>{__('There are no templates to export.')}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="postbox-container">
-              <div className="postbox">
-                <h2 className="hndle">
-                  <span>{__('Import', '@@text_domain')}</span>
-                </h2>
+  return (
+    <div className="metabox-holder">
+      <div className="postbox-container">
+        <div id="normal-sortables">
+          <div className="postbox-container">
+            <div className="postbox">
+              <h2 className="hndle">
+                <span>{__('Export Blocks', '@@text_domain')}</span>
+              </h2>
+              {data.blocks && data.blocks.length ? (
                 <div className="inside">
                   <p>
                     {__(
-                      'Select the Lazy Blocks JSON file you would like to import. When you click the import button below, Lazy Blocks will import the blocks or templates.'
+                      'Select the blocks you would like to export and then select your export method. Use the download button to export to a .json file which you can then import to another Lazy Blocks installation. Use the generate button to export to PHP code which you can place in your theme.'
                     )}
                   </p>
 
-                  <form method="post" encType="multipart/form-data">
-                    <div className="lzb-export-select-items">
-                      <input type="file" name="lzb_tools_import_json" />
-                    </div>
-
-                    <input type="hidden" name="lzb_tools_import_nonce" value={data.nonce} />
-
-                    <div className="lzb-export-buttons">
-                      {/* eslint-disable-next-line react/button-has-type */}
-                      <button className="button button-primary">
-                        {__('Import', '@@text_domain')}
-                      </button>
-                    </div>
-                  </form>
+                  {renderExportContent('blocks')}
                 </div>
+              ) : (
+                <div className="inside">
+                  <p>{__('There are no blocks to export.')}</p>
+                </div>
+              )}
+            </div>
+            <div className="postbox">
+              <h2 className="hndle">
+                <span>{__('Export Templates', '@@text_domain')}</span>
+              </h2>
+              {data.templates && data.templates.length ? (
+                <div className="inside">
+                  <p>
+                    {__(
+                      'Select the templates you would like to export and then select your export method. Use the download button to export to a .json file which you can then import to another Lazy Blocks installation. Use the generate button to export to PHP code which you can place in your theme.'
+                    )}
+                  </p>
+
+                  {renderExportContent('templates')}
+                </div>
+              ) : (
+                <div className="inside">
+                  <p>{__('There are no templates to export.')}</p>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="postbox-container">
+            <div className="postbox">
+              <h2 className="hndle">
+                <span>{__('Import', '@@text_domain')}</span>
+              </h2>
+              <div className="inside">
+                <p>
+                  {__(
+                    'Select the Lazy Blocks JSON file you would like to import. When you click the import button below, Lazy Blocks will import the blocks or templates.'
+                  )}
+                </p>
+
+                <form method="post" encType="multipart/form-data">
+                  <div className="lzb-export-select-items">
+                    <input type="file" name="lzb_tools_import_json" />
+                  </div>
+
+                  <input type="hidden" name="lzb_tools_import_nonce" value={data.nonce} />
+
+                  <div className="lzb-export-buttons">
+                    {/* eslint-disable-next-line react/button-has-type */}
+                    <button className="button button-primary">
+                      {__('Import', '@@text_domain')}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default Templates;
