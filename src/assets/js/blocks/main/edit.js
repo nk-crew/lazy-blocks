@@ -34,6 +34,7 @@ export default function BlockEdit(props) {
   const { lazyBlockData, clientId, setAttributes, attributes } = props;
 
   const isFirstLoad = useRef(true);
+  const isMounted = useRef(true);
 
   const { isLazyBlockSelected } = useSelect((select, ownProps) => {
     const { hasSelectedInnerBlock } = select('core/block-editor');
@@ -308,6 +309,11 @@ export default function BlockEdit(props) {
     let shouldLock = 0;
     let thereIsRequired = false;
 
+    // Prevent if component already unmounted.
+    if (!isMounted.current) {
+      return;
+    }
+
     // check all controls
     Object.keys(lazyBlockData.controls).forEach((k) => {
       const control = lazyBlockData.controls[k];
@@ -358,16 +364,25 @@ export default function BlockEdit(props) {
   const maybeLockPostSavingThrottle = useThrottle(maybeLockPostSaving, 500);
 
   useEffect(() => {
-    // Don't throttle the first run. This ensures that the first render
-    // checks data to lock as soon as possible.
-    if (isFirstLoad.current) {
-      isFirstLoad.current = false;
-
-      maybeLockPostSaving();
-    } else {
+    // Run throttle when attributes changed.
+    if (!isFirstLoad.current) {
       maybeLockPostSavingThrottle();
     }
   }, [attributes]);
+
+  useEffect(() => {
+    isFirstLoad.current = false;
+
+    // Try to lock post once component mounted.
+    maybeLockPostSaving();
+
+    // Unlock once component unmounted (mostly when block removed).
+    return () => {
+      isMounted.current = false;
+
+      unlockPostSaving();
+    };
+  }, []);
 
   const { blockUniqueClass = '' } = attributes;
 
