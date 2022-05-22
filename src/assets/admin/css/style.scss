@@ -511,6 +511,14 @@
     outline: none;
   }
 
+  .lzb-gutenberg-repeater-btn-title {
+    img {
+      width: auto;
+      height: 17px;
+      vertical-align: bottom;
+    }
+  }
+
   // Button Arrow.
   .lzb-gutenberg-repeater-btn-arrow {
     position: absolute;
@@ -612,7 +620,6 @@
     flex-wrap: wrap;
     padding-bottom: 13px;
     margin: 0;
-    margin-left: -15px;
 
     .components-notice {
       margin: 0;

@@ -38,7 +38,11 @@ const SortableItem = SortableElement((data) => (
       onClick={data.onToggle}
     >
       <DragHandle />
-      {data.title}
+      <div
+        className="lzb-gutenberg-repeater-btn-title"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: data.title }}
+      />
       <div className="lzb-gutenberg-repeater-btn-arrow">
         <svg
           width="24"
@@ -108,6 +112,7 @@ function RepeaterControl(props) {
   const [activeItem, setActiveItem] = useState(activeItemDefault);
 
   function getRowTitle(i) {
+    const valObjectVariants = ['alt', 'url', 'title', 'caption', 'description', 'id', 'link'];
     let title = controlData.rows_label || __('Row {{#}}', '@@text_domain');
 
     // add row number.
@@ -118,8 +123,26 @@ function RepeaterControl(props) {
     // add inner controls values.
     if (innerControls) {
       Object.keys(innerControls).forEach((k) => {
-        const val = innerControls[k].val || '';
         const { data } = innerControls[k];
+
+        let val = innerControls[k].val || '';
+
+        // Prepare object value variants.
+        if (typeof val === 'object') {
+          valObjectVariants.forEach((tag) => {
+            title = title.replace(new RegExp(`{{${data.name}.${tag}}}`, 'g'), val[tag] || '');
+          });
+        }
+
+        // Add support for image control tag displaying.
+        if (data.type === 'image' && val.url) {
+          val = `<img src="${val.url}" loading="lazy" />`;
+        }
+
+        // In case if value is object - display nothing.
+        if (typeof val === 'object') {
+          val = '';
+        }
 
         title = title.replace(new RegExp(`{{${data.name}}}`, 'g'), val);
       });
