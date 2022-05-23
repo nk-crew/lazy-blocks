@@ -48,7 +48,19 @@ addFilter('lzb.editor.control.repeater.render', 'lzb.editor', (render, props) =>
         }
       }}
       addRow={() => {
-        val.push({});
+        const innerControls = props.getControls(props.uniqueId);
+        const newRow = {};
+
+        // Add defaults to the new row.
+        Object.keys(innerControls).forEach((i) => {
+          const innerControl = innerControls[i];
+
+          if (innerControl.default) {
+            newRow[innerControl.name] = innerControl.default;
+          }
+        });
+
+        val.push(newRow);
         props.onChange(val);
       }}
       resortRow={(oldIndex, newIndex) => {
