@@ -538,11 +538,15 @@ class LazyBlocks_Blocks {
             $icon      = $this->get_meta_value_by_id( 'lazyblocks_icon' );
             $admin_url = get_edit_post_link( $post->ID );
 
+            echo '<a class="lzb-admin-block-icon" href="' . esc_url( $admin_url ) . '">';
+
             if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
-                echo '<a class="lzb-admin-block-icon" href="' . esc_url( $admin_url ) . '"><span class="dashicons ' . esc_attr( $icon ) . '"></span></a>';
+                echo '<span class="dashicons ' . esc_attr( $icon ) . '"></span>';
             } elseif ( $icon ) {
-                echo '<a class="lzb-admin-block-icon" href="' . esc_url( $admin_url ) . '">' . wp_kses( $icon, $this->kses_svg ) . '</a>';
+                echo wp_kses( $icon, $this->kses_svg );
             }
+
+            echo '</a>';
         }
 
         if ( 'lazyblocks_post_category' === $column_name ) {
