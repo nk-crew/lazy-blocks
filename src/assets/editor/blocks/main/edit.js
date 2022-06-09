@@ -2,7 +2,7 @@
 // External Dependencies.
 import classnames from 'classnames/dedupe';
 
-import getControlTypeData from '../../../admin/utils/get-control-type-data';
+import getControlTypeData from '../../../utils/get-control-type-data';
 import PreviewServerCallback from '../../components/preview-server-callback';
 
 let options = window.lazyblocksGutenberg;
@@ -248,13 +248,16 @@ export default function BlockEdit(props) {
         );
 
         if (controlResult) {
-          let controlNotice = '';
           controlResult = applyFilters(
             'lzb.editor.control.render',
             controlResult,
             controlData,
             props
           );
+        }
+
+        if (controlResult) {
+          let controlNotice = '';
 
           // show error for required fields
           if (

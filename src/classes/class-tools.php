@@ -206,6 +206,10 @@ class LazyBlocks_Tools {
         );
 
         wp_localize_script( 'lazyblocks-tools', 'lazyblocksToolsData', $data );
+
+        wp_enqueue_style( 'lazyblocks-tools', lazyblocks()->plugin_url() . 'assets/admin/tools/style.min.css', '', '@@plugin_version' );
+        wp_style_add_data( 'lazyblocks-tools', 'rtl', 'replace' );
+        wp_style_add_data( 'lazyblocks-tools', 'suffix', '.min' );
     }
 
     /**

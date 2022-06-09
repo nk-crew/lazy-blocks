@@ -86,7 +86,7 @@ class LazyBlocks_Admin {
             )
         );
 
-        wp_enqueue_style( 'lazyblocks-admin', lazyblocks()->plugin_url() . 'assets/admin/css/style.min.css', '', '@@plugin_version' );
+        wp_enqueue_style( 'lazyblocks-admin', lazyblocks()->plugin_url() . 'assets/admin/style.min.css', array(), '@@plugin_version' );
         wp_style_add_data( 'lazyblocks-admin', 'rtl', 'replace' );
         wp_style_add_data( 'lazyblocks-admin', 'suffix', '.min' );
     }
@@ -98,7 +98,7 @@ class LazyBlocks_Admin {
         if ( 'lazyblocks' === get_post_type() ) {
             wp_enqueue_script(
                 'lazyblocks-constructor',
-                lazyblocks()->plugin_url() . 'assets/admin/constructor/index.min.js',
+                lazyblocks()->plugin_url() . 'assets/editor-constructor/index.min.js',
                 array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
                 '@@plugin_version',
                 true
@@ -115,7 +115,7 @@ class LazyBlocks_Admin {
                 )
             );
 
-            wp_enqueue_style( 'lazyblocks-constructor', lazyblocks()->plugin_url() . 'assets/admin/constructor/style.min.css', array(), '@@plugin_version' );
+            wp_enqueue_style( 'lazyblocks-constructor', lazyblocks()->plugin_url() . 'assets/editor-constructor/style.min.css', array(), '@@plugin_version' );
             wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
             wp_style_add_data( 'lazyblocks-constructor', 'suffix', '.min' );
         }
@@ -129,7 +129,7 @@ class LazyBlocks_Admin {
             return;
         }
 
-        wp_enqueue_script( 'lazyblocks-translation', lazyblocks()->plugin_url() . 'assets/js/translation.min.js', array(), '@@plugin_version', false );
+        wp_enqueue_script( 'lazyblocks-translation', lazyblocks()->plugin_url() . 'assets/editor/translation.min.js', array(), '@@plugin_version', false );
         wp_set_script_translations( 'lazyblocks-translation', '@@text_domain', lazyblocks()->plugin_path() . 'languages' );
     }
 

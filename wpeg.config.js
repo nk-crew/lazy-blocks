@@ -33,11 +33,12 @@ cfg.compile_scss_files_rtl = true;
 
 // Compile JS files.
 cfg.compile_js_files_src = [
-  '{src}/*assets/js/index.js',
-  '{src}/*assets/js/translation.js',
-  '{src}/*assets/admin/constructor/index.js',
+  '{src}/*assets/admin/index.js',
   '{src}/*assets/admin/templates/index.js',
   '{src}/*assets/admin/tools/index.js',
+  '{src}/*assets/editor/index.js',
+  '{src}/*assets/editor/translation.js',
+  '{src}/*assets/editor-constructor/index.js',
   '{src}/*controls/**/*.js',
 ];
 

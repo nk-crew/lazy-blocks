@@ -5,15 +5,10 @@
 import * as clipboard from 'clipboard-polyfill';
 
 /**
- * Styles
- */
-import './style.scss';
-
-import Copied from '../components/copied';
-
-/**
  * Internal Dependencies
  */
+import Copied from '../../components/copied';
+
 const { lazyblocksToolsData: data } = window;
 
 /**

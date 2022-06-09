@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable indent */
-import Select from '../../assets/admin/components/select';
+import Select from '../../assets/components/select';
 
 import FileControl from './file-control';
 

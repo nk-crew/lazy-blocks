@@ -81,7 +81,7 @@ class LazyBlocks_Blocks {
             // add custom block categories.
             add_filter( 'block_categories_all', array( $this, 'block_categories_all' ), 100 );
 
-            add_action( 'enqueue_block_editor_assets', array( $this, 'register_block' ) );
+            add_action( 'init', array( $this, 'register_block' ) );
             add_action( 'init', array( $this, 'register_block_render' ), 20 );
         }
     }
@@ -1110,20 +1110,14 @@ class LazyBlocks_Blocks {
 
         $blocks = $this->get_blocks();
 
-        // enqueue block css.
-        wp_enqueue_style(
-            'lazyblocks-gutenberg',
-            lazyblocks()->plugin_url() . 'assets/css/style.min.css',
-            array(),
-            '@@plugin_version'
-        );
-        wp_style_add_data( 'lazyblocks-gutenberg', 'rtl', 'replace' );
-        wp_style_add_data( 'lazyblocks-gutenberg', 'suffix', '.min' );
+        wp_register_style( 'lazyblocks-editor', lazyblocks()->plugin_url() . 'assets/editor/style.min.css', array(), '@@plugin_version' );
+        wp_style_add_data( 'lazyblocks-editor', 'rtl', 'replace' );
+        wp_style_add_data( 'lazyblocks-editor', 'suffix', '.min' );
 
         // enqueue block js.
-        wp_enqueue_script(
-            'lazyblocks-gutenberg',
-            lazyblocks()->plugin_url() . 'assets/js/index.min.js',
+        wp_register_script(
+            'lazyblocks-editor',
+            lazyblocks()->plugin_url() . 'assets/editor/index.min.js',
             array( 'wp-blocks', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
             '@@plugin_version',
             true
@@ -1131,7 +1125,7 @@ class LazyBlocks_Blocks {
 
         // additional data for block js.
         wp_localize_script(
-            'lazyblocks-gutenberg',
+            'lazyblocks-editor',
             'lazyblocksGutenberg',
             array(
                 'post_type'          => $post_type,
@@ -1266,6 +1260,8 @@ class LazyBlocks_Blocks {
                 'attributes'      => $attributes,
                 'render_callback' => array( $this, 'render_callback' ),
                 'example'         => array(),
+                'editor_script'   => 'lazyblocks-editor',
+                'editor_style'    => 'lazyblocks-editor',
             );
 
             // Register block type.

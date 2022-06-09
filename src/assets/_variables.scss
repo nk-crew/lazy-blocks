@@ -2,8 +2,8 @@
  * WordPress.
  */
 /* stylelint-disable-next-line scss/at-import-partial-extension */
-@import "../../../node_modules/@wordpress/base-styles/colors.native";
-@import "../../../node_modules/@wordpress/base-styles/variables";
+@import "../../node_modules/@wordpress/base-styles/colors.native";
+@import "../../node_modules/@wordpress/base-styles/variables";
 
 $radius: 3px !default;
 $radius_large: 4px !default;
