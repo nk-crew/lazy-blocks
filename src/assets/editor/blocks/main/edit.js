@@ -196,7 +196,7 @@ export default function BlockEdit(props) {
         if (
           placementCheck &&
           placement === 'content' &&
-          control.placement === 'content' &&
+          (control.placement === 'content' || control.placement === 'both') &&
           controlTypeData.restrictions.hide_if_not_selected_settings &&
           control.hide_if_not_selected &&
           control.hide_if_not_selected === 'true'
