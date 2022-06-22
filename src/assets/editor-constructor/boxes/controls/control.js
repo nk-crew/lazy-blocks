@@ -55,6 +55,10 @@ export default function Control(props) {
     controlName = save_in_meta_name || name;
   }
 
+  if (!controlTypeData.restrictions.name_settings) {
+    controlName = '';
+  }
+
   let isUseOnce = false;
 
   // restrict once per block.
