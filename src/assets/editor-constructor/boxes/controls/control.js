@@ -86,14 +86,18 @@ export default function Control(props) {
         <DragHandle />
       </div>
       <div className="lzb-constructor-controls-item-label">
-        <span className="lzb-constructor-controls-item-label-text">
-          {label || placeholder || (
-            <span className="lzb-constructor-controls-item-label-no">
-              {__('(no label)', '@@text_domain')}
-            </span>
-          )}
-          {required === 'true' ? <span className="required">*</span> : ''}
-        </span>
+        {controlTypeData.restrictions.label_settings ? (
+          <span className="lzb-constructor-controls-item-label-text">
+            {label || placeholder || (
+              <span className="lzb-constructor-controls-item-label-no">
+                {__('(no label)', '@@text_domain')}
+              </span>
+            )}
+            {required === 'true' ? <span className="required">*</span> : ''}
+          </span>
+        ) : (
+          <span className="lzb-constructor-controls-item-label-text">&nbsp;</span>
+        )}
         <span className="lzb-constructor-controls-item-label-buttons">
           {!isUseOnce ? (
             // eslint-disable-next-line react/button-has-type
