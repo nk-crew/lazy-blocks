@@ -282,17 +282,26 @@ export default function BlockEdit(props) {
             }
           }
 
-          result.push(
-            <div
-              key={`control-${k}`}
-              style={{
-                width: control.width ? `${control.width}%` : '',
-              }}
-            >
-              {controlResult}
-              {controlNotice}
-            </div>
-          );
+          if (placement === 'inspector') {
+            result.push(
+              <Fragment key={`control-${k}`}>
+                {controlResult}
+                {controlNotice}
+              </Fragment>
+            );
+          } else {
+            result.push(
+              <div
+                key={`control-${k}`}
+                style={{
+                  width: control.width ? `${control.width}%` : '',
+                }}
+              >
+                {controlResult}
+                {controlNotice}
+              </div>
+            );
+          }
         }
       }
     });
