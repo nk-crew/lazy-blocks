@@ -40,7 +40,7 @@ export default class ClassicEdit extends Component {
   }
 
   componentDidMount() {
-    const { baseURL, suffix } = window.wpEditorL10n.tinymce;
+    const { baseURL, suffix } = window.wpEditorL10n ? window.wpEditorL10n.tinymce : window.tinymce;
 
     window.tinymce.EditorManager.overrideDefaults({
       base_url: baseURL,
@@ -160,7 +160,8 @@ export default class ClassicEdit extends Component {
 
   initialize() {
     const { editorId } = this.props;
-    const { settings } = window.wpEditorL10n.tinymce;
+    const { settings } = window.wpEditorL10n ? window.wpEditorL10n.tinymce : window.tinymce;
+
     wp.oldEditor.initialize(`editor-${editorId}`, {
       tinymce: {
         ...settings,
