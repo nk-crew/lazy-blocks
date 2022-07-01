@@ -63,7 +63,9 @@ class LazyBlocks_Blocks {
 
         add_action( 'init', array( $this, 'remove_custom_fields_support' ), 150 );
 
-        add_filter( 'allowed_block_types_all', array( $this, 'allowed_block_types_all' ), 10, 2 );
+        // It is important to have priority higher than 10 to prevent possible conflicts.
+        // https://github.com/nk-crew/lazy-blocks/issues/247 .
+        add_filter( 'allowed_block_types_all', array( $this, 'allowed_block_types_all' ), 100, 2 );
 
         // custom post roles.
         add_action( 'admin_init', array( $this, 'add_role_caps' ) );
