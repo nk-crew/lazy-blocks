@@ -45,7 +45,7 @@ export default function BlockEdit(props) {
   }, []);
 
   const { lockPostSaving: lockPostSavingDispatch, unlockPostSaving: unlockPostSavingDispatch } =
-    useDispatch('core/editor');
+    useDispatch('core/editor') || {};
 
   function lockPostSaving() {
     // We should check this because of Widget screen does not have this feature
