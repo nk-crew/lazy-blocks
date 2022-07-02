@@ -482,6 +482,22 @@ class LazyBlocks_Tools {
             )
         );
 
+        // TODO - reuse this data from /controls/_base/index.php .
+        $default_control_attributes = array(
+            'type'                 => 'text',
+            'name'                 => '',
+            'default'              => '',
+            'label'                => '',
+            'help'                 => '',
+            'child_of'             => '',
+            'placement'            => 'content',
+            'width'                => '100',
+            'hide_if_not_selected' => 'false',
+            'save_in_meta'         => 'false',
+            'save_in_meta_name'    => '',
+            'required'             => 'false',
+        );
+
         if ( 0 < $post_id ) {
             // add 'lazyblocks_' prefix.
             foreach ( $data as $k => $val ) {
@@ -494,6 +510,14 @@ class LazyBlocks_Tools {
                         $val = substr( $val, strpos( $val, '/' ) + 1 );
                     } elseif ( 'keywords' === $k ) {
                         $val = implode( ',', $val );
+                    } elseif ( 'controls' === $k ) {
+                        $controls = array();
+
+                        foreach ( $val as $i => $inner_val ) {
+                            $controls[ $i ] = array_merge( $default_control_attributes, $inner_val );
+                        }
+
+                        $val = $controls;
                     }
 
                     $meta[ $meta_prefix . $k ] = $val;
