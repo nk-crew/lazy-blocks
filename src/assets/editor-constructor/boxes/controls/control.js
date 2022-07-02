@@ -70,16 +70,33 @@ export default function Control(props) {
     });
   }
 
+  let controlsItemAttributes = {
+    className: classnames(
+      'lzb-constructor-controls-item',
+      isSelected ? 'lzb-constructor-controls-item-selected' : ''
+    ),
+    onClick: () => {
+      selectControl(id);
+    },
+    role: 'none',
+    'data-control-type': data.type,
+    'data-control-name': data.name,
+    'data-control-label': data.type,
+  };
+  controlsItemAttributes = applyFilters(
+    `lzb.constructor.controls.${type}.item-attributes`,
+    controlsItemAttributes,
+    props
+  );
+  controlsItemAttributes = applyFilters(
+    'lzb.constructor.controls.item-attributes',
+    controlsItemAttributes,
+    props
+  );
+
   // Item with filter
-  let controlsItem = applyFilters(
-    `lzb.constructor.controls.${type}.item`,
-    <div
-      className="lzb-constructor-controls-item"
-      onClick={() => {
-        selectControl(id);
-      }}
-      role="none"
-    >
+  let controlsItem = (
+    <div {...controlsItemAttributes}>
       <div className="lzb-constructor-controls-item-icon">
         {/* eslint-disable-next-line react/no-danger */}
         <span dangerouslySetInnerHTML={{ __html: controlTypeData.icon }} />
@@ -198,20 +215,11 @@ export default function Control(props) {
       ) : (
         ''
       )}
-    </div>,
-    props
-  );
-
-  controlsItem = applyFilters('lzb.constructor.controls.item', controlsItem, props);
-
-  return (
-    <div
-      className={classnames(
-        'lzb-constructor-controls-item-wrap',
-        isSelected ? 'lzb-constructor-controls-item-wrap-selected' : ''
-      )}
-    >
-      {controlsItem}
     </div>
   );
+
+  controlsItem = applyFilters(`lzb.constructor.controls.${type}.item`, controlsItem, props);
+  controlsItem = applyFilters('lzb.constructor.controls.item', controlsItem, props);
+
+  return controlsItem;
 }

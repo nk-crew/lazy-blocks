@@ -10,17 +10,17 @@
   position: relative;
   z-index: 1;
   padding: 20px 25px;
+  margin-top: 15px;
   color: $color_dark_darken;
   cursor: pointer;
   background-color: #fff;
   border-radius: $radius_box;
   box-shadow: rgba(#000, 0.1) 0 1px 3px 0, rgba(#000, 0.06) 0 1px 2px 0;
   transition: 0.15s background-color ease-in-out, 0.15s color ease-in-out, 0.15s border-color ease-in-out, 0.15s box-shadow ease-in-out;
-}
 
-.lzb-constructor-controls-item-wrap,
-.lzb-constructor-controls-item-appender {
-  margin-top: 15px;
+  &:not(.lzb-constructor-controls-item-dragging) {
+    transition: 0.15s background-color ease-in-out, 0.15s color ease-in-out, 0.15s border-color ease-in-out, 0.15s box-shadow ease-in-out, 0.15s transform ease-in-out;
+  }
 }
 
 // appender
@@ -57,11 +57,11 @@
     box-shadow: rgba(#000, 0.1) 0 0px 0px 1px;
   }
 
-  .lzb-constructor-controls-item-wrap-selected > & {
+  &.lzb-constructor-controls-item-selected {
     box-shadow: rgba(#000, 0.1) 0 0px 0px 1px, 0 0 0 3px $color_gray_lighten, 0 0 0 5px $blue-50;
   }
 
-  .lzb-constructor-controls-item-dragging > & {
+  &.lzb-constructor-controls-item-dragging {
     box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, 0.2);
   }
 
@@ -114,7 +114,7 @@
       }
     }
 
-    .lzb-constructor-controls-item-dragging > .lzb-constructor-controls-item > &,
+    .lzb-constructor-controls-item-dragging > &,
     &:hover {
       > span {
         opacity: 0;
@@ -189,10 +189,10 @@
   }
 }
 
-.lzb-constructor-controls-item-wrap:hover,
-.lzb-constructor-controls-item-wrap:focus,
-.lzb-constructor-controls-item-wrap-selected {
-  > .lzb-constructor-controls-item > .lzb-constructor-controls-item-label {
+.lzb-constructor-controls-item:hover,
+.lzb-constructor-controls-item:focus,
+.lzb-constructor-controls-item-selected {
+  > .lzb-constructor-controls-item-label {
     .lzb-constructor-controls-item-label-text {
       transform: translateY(-7px);
     }
