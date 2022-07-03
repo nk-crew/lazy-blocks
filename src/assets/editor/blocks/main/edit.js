@@ -177,138 +177,170 @@ export default function BlockEdit(props) {
     Object.keys(controls).forEach((k) => {
       const control = controls[k];
 
-      let placementCheck =
-        control.type &&
-        control.placement !== 'nowhere' &&
-        (control.placement === 'both' || control.placement === placement);
-      let { label } = control;
+      // eslint-disable-next-line no-use-before-define
+      const renderedControl = renderControl(control, placement, k, childIndex);
 
-      const controlTypeData = getControlTypeData(control.type);
-
-      // restrictions.
-      if (controlTypeData && controlTypeData.restrictions) {
-        // Restrict placement.
-        if (placementCheck && controlTypeData.restrictions.placement_settings) {
-          placementCheck = controlTypeData.restrictions.placement_settings.indexOf(placement) > -1;
-        }
-
-        // Restrict hide if not selected.
-        if (
-          placementCheck &&
-          placement === 'content' &&
-          (control.placement === 'content' || control.placement === 'both') &&
-          controlTypeData.restrictions.hide_if_not_selected_settings &&
-          control.hide_if_not_selected &&
-          control.hide_if_not_selected === 'true'
-        ) {
-          placementCheck = isLazyBlockSelected;
-        }
-
-        // Restrict required mark
-        if (
-          controlTypeData.restrictions.required_settings &&
-          control.required &&
-          control.required === 'true'
-        ) {
-          label = (
-            <Fragment>
-              {label}
-              <span className="required">*</span>
-            </Fragment>
-          );
-        }
-      }
-
-      // prepare control output
-      if (control.child_of || placementCheck) {
-        // prepare data for filter.
-        const controlData = {
-          data: {
-            ...control,
-            label,
-          },
-          placement,
-          childIndex,
-          uniqueId: k,
-          getValue: (optionalControl = control, optionalChildIndex = childIndex) =>
-            getControlValue(optionalControl, optionalChildIndex),
-          onChange: (val) => {
-            onControlChange(val, control, childIndex);
-          },
-          getControls,
-          renderControls,
-        };
-
-        // get control data from filter.
-        let controlResult = applyFilters(
-          `lzb.editor.control.${control.type}.render`,
-          '',
-          controlData,
-          props
-        );
-
-        if (controlResult) {
-          controlResult = applyFilters(
-            'lzb.editor.control.render',
-            controlResult,
-            controlData,
-            props
-          );
-        }
-
-        if (controlResult) {
-          let controlNotice = '';
-
-          // show error for required fields
-          if (
-            controlTypeData &&
-            controlTypeData.restrictions.required_settings &&
-            control.required &&
-            control.required === 'true'
-          ) {
-            const val = getControlValue(control, childIndex);
-
-            if (!isControlValueValid(val, control)) {
-              controlNotice = (
-                <Notice
-                  key={`notice-${control.name}`}
-                  status="warning"
-                  isDismissible={false}
-                  className="lzb-constructor-notice"
-                >
-                  {__('This field is required', '@@text_domain')}
-                </Notice>
-              );
-            }
-          }
-
-          if (placement === 'inspector') {
-            result.push(
-              <Fragment key={`control-${k}`}>
-                {controlResult}
-                {controlNotice}
-              </Fragment>
-            );
-          } else {
-            result.push(
-              <div
-                key={`control-${k}`}
-                style={{
-                  width: control.width ? `${control.width}%` : '',
-                }}
-              >
-                {controlResult}
-                {controlNotice}
-              </div>
-            );
-          }
-        }
+      if (renderedControl) {
+        result.push(renderedControl);
       }
     });
 
     // additional element for better formatting in inspector.
     if (placement === 'inspector' && result.length) {
       result = <PanelBody>{result}</PanelBody>;
+    }
+
+    // filter render result.
+    result = applyFilters('lzb.editor.controls.render', result, {
+      placement,
+      childOf,
+      childIndex,
+      getControls,
+      // eslint-disable-next-line no-use-before-define
+      renderControl,
+    });
+
+    return result;
+  }
+
+  /**
+   * Render single control.
+   *
+   * @param {Object} controlData - control data
+   * @param {String} placement - placement
+   * @param {String} uniqueId - unique control ID
+   * @param {Number|Boolean} childIndex - child index in parent.
+   *
+   * @return {Object|Boolean} react control.
+   */
+  function renderControl(controlData, placement, uniqueId, childIndex = false) {
+    let result = false;
+
+    let placementCheck =
+      controlData.type &&
+      controlData.placement !== 'nowhere' &&
+      (controlData.placement === 'both' || controlData.placement === placement);
+    let { label } = controlData;
+
+    const controlTypeData = getControlTypeData(controlData.type);
+
+    // restrictions.
+    if (controlTypeData && controlTypeData.restrictions) {
+      // Restrict placement.
+      if (placementCheck && controlTypeData.restrictions.placement_settings) {
+        placementCheck = controlTypeData.restrictions.placement_settings.indexOf(placement) > -1;
+      }
+
+      // Restrict hide if not selected.
+      if (
+        placementCheck &&
+        placement === 'content' &&
+        (controlData.placement === 'content' || controlData.placement === 'both') &&
+        controlTypeData.restrictions.hide_if_not_selected_settings &&
+        controlData.hide_if_not_selected &&
+        controlData.hide_if_not_selected === 'true'
+      ) {
+        placementCheck = isLazyBlockSelected;
+      }
+
+      // Restrict required mark
+      if (
+        controlTypeData.restrictions.required_settings &&
+        controlData.required &&
+        controlData.required === 'true'
+      ) {
+        label = (
+          <Fragment>
+            {label}
+            <span className="required">*</span>
+          </Fragment>
+        );
+      }
+    }
+
+    // prepare control output
+    if (controlData.child_of || placementCheck) {
+      // prepare data for filter.
+      const controlRenderData = {
+        data: {
+          ...controlData,
+          label,
+        },
+        placement,
+        childIndex,
+        uniqueId,
+        getValue: (optionalControl = controlData, optionalChildIndex = childIndex) =>
+          getControlValue(optionalControl, optionalChildIndex),
+        onChange: (val) => {
+          onControlChange(val, controlData, childIndex);
+        },
+        getControls,
+        renderControls,
+      };
+
+      // get control data from filter.
+      let controlResult = applyFilters(
+        `lzb.editor.control.${controlData.type}.render`,
+        '',
+        controlRenderData,
+        props
+      );
+      if (controlResult) {
+        controlResult = applyFilters(
+          'lzb.editor.control.render',
+          controlResult,
+          controlRenderData,
+          props
+        );
+      }
+
+      if (controlResult) {
+        let controlNotice = '';
+
+        // show error for required fields
+        if (
+          controlTypeData &&
+          controlTypeData.restrictions.required_settings &&
+          controlData.required &&
+          controlData.required === 'true'
+        ) {
+          const val = controlRenderData.getValue();
+
+          if (!isControlValueValid(val, controlData)) {
+            controlNotice = (
+              <Notice
+                key={`notice-${controlData.name}`}
+                status="warning"
+                isDismissible={false}
+                className="lzb-constructor-notice"
+              >
+                {__('This field is required', '@@text_domain')}
+              </Notice>
+            );
+          }
+        }
+
+        if (placement === 'inspector') {
+          result = (
+            <Fragment key={`control-${uniqueId}`}>
+              {controlResult}
+              {controlNotice}
+            </Fragment>
+          );
+        } else {
+          result = (
+            <div
+              key={`control-${uniqueId}`}
+              style={{
+                width: controlData.width ? `${controlData.width}%` : '',
+              }}
+            >
+              {controlResult}
+              {controlNotice}
+            </div>
+          );
+        }
+      }
     }
 
     return result;
