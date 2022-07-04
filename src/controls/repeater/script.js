@@ -55,9 +55,7 @@ addFilter('lzb.editor.control.repeater.render', 'lzb.editor', (render, props) =>
         Object.keys(innerControls).forEach((i) => {
           const innerControl = innerControls[i];
 
-          if (innerControl.default) {
-            newRow[innerControl.name] = innerControl.default;
-          }
+          newRow[innerControl.name] = innerControl.default || '';
         });
 
         val.push(newRow);
