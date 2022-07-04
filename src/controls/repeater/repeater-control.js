@@ -1,91 +1,112 @@
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+import classnames from 'classnames/dedupe';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const { __ } = wp.i18n;
-const { useRef, useEffect, useState } = wp.element;
+const { useEffect, useState } = wp.element;
 const { BaseControl, Button, Tooltip, ToggleControl } = wp.components;
 
 const { withInstanceId } = wp.compose;
 
-const DragHandle = SortableHandle(() => (
-  <Button
-    className="lzb-gutenberg-repeater-btn-drag"
-    onClick={(e) => {
-      e.stopPropagation();
-    }}
-    role="button"
-  >
-    <svg
-      width="18"
-      height="18"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 18 18"
-      role="img"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M5 4h2V2H5v2zm6-2v2h2V2h-2zm-6 8h2V8H5v2zm6 0h2V8h-2v2zm-6 6h2v-2H5v2zm6 0h2v-2h-2v2z" />
-    </svg>
-  </Button>
-));
+const RepeaterItem = function (props) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isSorting } =
+    useSortable({
+      id: props.id,
+    });
 
-const SortableItem = SortableElement((data) => (
-  <div className="lzb-gutenberg-repeater-item">
-    {/* eslint-disable-next-line react/button-has-type */}
-    <button
-      className={`lzb-gutenberg-repeater-btn${
-        data.active ? ' lzb-gutenberg-repeater-btn-active' : ''
-      }`}
-      onClick={data.onToggle}
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition: isSorting ? transition : '',
+  };
+
+  return (
+    <div
+      className={classnames(
+        'lzb-gutenberg-repeater-item',
+        isDragging ? 'lzb-gutenberg-repeater-item-dragging' : ''
+      )}
+      ref={setNodeRef}
+      style={style}
     >
-      <DragHandle />
       <div
-        className="lzb-gutenberg-repeater-btn-title"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: data.title }}
-      />
-      <div className="lzb-gutenberg-repeater-btn-arrow">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-hidden="true"
-          focusable="false"
+        className={`lzb-gutenberg-repeater-btn${
+          props.active ? ' lzb-gutenberg-repeater-btn-active' : ''
+        }`}
+        onClick={props.onToggle}
+        onKeyDown={() => {}}
+        role="button"
+        tabIndex={0}
+      >
+        <Button
+          className="lzb-gutenberg-repeater-btn-drag"
+          role="button"
+          {...attributes}
+          {...listeners}
         >
-          <path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" />
-        </svg>
+          <svg
+            width="18"
+            height="18"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 18 18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M5 4h2V2H5v2zm6-2v2h2V2h-2zm-6 8h2V8H5v2zm6 0h2V8h-2v2zm-6 6h2v-2H5v2zm6 0h2v-2h-2v2z" />
+          </svg>
+        </Button>
+        <div
+          className="lzb-gutenberg-repeater-btn-title"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: props.title }}
+        />
+        <div className="lzb-gutenberg-repeater-btn-arrow">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" />
+          </svg>
+        </div>
       </div>
-    </button>
-    {!data.controlData.rows_min || data.count > data.controlData.rows_min ? (
-      // eslint-disable-next-line react/button-has-type
-      <button className="lzb-gutenberg-repeater-btn-remove" onClick={data.onRemove}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="-2 -2 24 24"
-          width="24"
-          height="24"
-          role="img"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path d="M12 4h3c.6 0 1 .4 1 1v1H3V5c0-.6.5-1 1-1h3c.2-1.1 1.3-2 2.5-2s2.3.9 2.5 2zM8 4h3c-.2-.6-.9-1-1.5-1S8.2 3.4 8 4zM4 7h11l-.9 10.1c0 .5-.5.9-1 .9H5.9c-.5 0-.9-.4-1-.9L4 7z" />
-        </svg>
-      </button>
-    ) : (
-      ''
-    )}
-    {data.active ? data.renderContent() : ''}
-  </div>
-));
-const SortableList = SortableContainer(({ items }) => (
-  <div className="lzb-gutenberg-repeater-items">
-    {items.map((value, index) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <SortableItem key={`repeater-item-${index}`} index={index} {...value} />
-    ))}
-  </div>
-));
+      {!props.controlData.rows_min || props.count > props.controlData.rows_min ? (
+        // eslint-disable-next-line react/button-has-type
+        <button className="lzb-gutenberg-repeater-btn-remove" onClick={props.onRemove}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="-2 -2 24 24"
+            width="24"
+            height="24"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M12 4h3c.6 0 1 .4 1 1v1H3V5c0-.6.5-1 1-1h3c.2-1.1 1.3-2 2.5-2s2.3.9 2.5 2zM8 4h3c-.2-.6-.9-1-1.5-1S8.2 3.4 8 4zM4 7h11l-.9 10.1c0 .5-.5.9-1 .9H5.9c-.5 0-.9-.4-1-.9L4 7z" />
+          </svg>
+        </button>
+      ) : null}
+      {props.active ? props.renderContent() : ''}
+    </div>
+  );
+};
 
 function RepeaterControl(props) {
   const {
@@ -99,7 +120,12 @@ function RepeaterControl(props) {
     getInnerControls = () => {},
   } = props;
 
-  const $sortRef = useRef();
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   let activeItemDefault = -1;
 
@@ -168,6 +194,7 @@ function RepeaterControl(props) {
     const active = activeItem === -2 || activeItem === i;
 
     items.push({
+      id: i + 1,
       title: getRowTitle(i),
       active,
       count,
@@ -194,29 +221,34 @@ function RepeaterControl(props) {
   return (
     <BaseControl label={label}>
       <div className="lzb-gutenberg-repeater">
-        {items.length ? (
-          <SortableList
-            ref={$sortRef}
-            items={items}
-            onSortEnd={({ oldIndex, newIndex }) => {
-              resortRow(oldIndex, newIndex);
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={(event) => {
+            const { active, over } = event;
+
+            if (active.id !== over.id) {
+              resortRow(active.id - 1, over.id - 1);
 
               if (activeItem > -1) {
-                setActiveItem(newIndex);
+                setActiveItem(over.id - 1);
               }
-            }}
-            useDragHandle
-            helperContainer={() => {
-              if ($sortRef && $sortRef.current && $sortRef.current.container) {
-                return $sortRef.current.container;
-              }
-
-              return document.body;
-            }}
-          />
-        ) : (
-          ''
-        )}
+            }
+          }}
+        >
+          {items.length ? (
+            <div className="lzb-gutenberg-repeater-items">
+              <SortableContext items={items} strategy={verticalListSortingStrategy}>
+                {items.map((value) => (
+                  <RepeaterItem
+                    key={`lzb-constructor-controls-items-sortable-${value.id}`}
+                    {...value}
+                  />
+                ))}
+              </SortableContext>
+            </div>
+          ) : null}
+        </DndContext>
         <div className="lzb-gutenberg-repeater-options">
           <Button
             isSecondary

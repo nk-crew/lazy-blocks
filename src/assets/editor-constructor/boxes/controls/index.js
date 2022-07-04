@@ -1,12 +1,24 @@
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import classnames from 'classnames/dedupe';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 import './editor.scss';
 import Control from './control';
 
 const { __ } = wp.i18n;
 
-const { Fragment, useEffect, useRef } = wp.element;
+const { Fragment, useEffect } = wp.element;
 
 const { Tooltip, TabPanel } = wp.components;
 
@@ -16,45 +28,15 @@ const $ = window.jQuery;
 
 const constructorData = window.lazyblocksConstructorData;
 
-const DragHandle = SortableHandle(() => (
-  <span className="lzb-constructor-controls-item-handler">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 4.99976H8V6.99976H10V4.99976Z" fill="currentColor" />
-      <path d="M10 10.9998H8V12.9998H10V10.9998Z" fill="currentColor" />
-      <path d="M10 16.9998H8V18.9998H10V16.9998Z" fill="currentColor" />
-      <path d="M16 4.99976H14V6.99976H16V4.99976Z" fill="currentColor" />
-      <path d="M16 10.9998H14V12.9998H16V10.9998Z" fill="currentColor" />
-      <path d="M16 16.9998H14V18.9998H16V16.9998Z" fill="currentColor" />
-    </svg>
-  </span>
-));
-
-const SortableItem = SortableElement((data) => (
-  <Control
-    {...{
-      ...data,
-      ...{
-        DragHandle,
-      },
-    }}
-  />
-));
-const SortableList = SortableContainer(({ items }) => (
-  <div className="lzb-constructor-controls-items-sortable">
-    {items.map((value, index) => (
-      <SortableItem
-        key={`lzb-constructor-controls-items-sortable-${value.id}`}
-        index={index}
-        {...value}
-      />
-    ))}
-  </div>
-));
-
 let initialActiveTab = '';
 
 export default function ControlsSettings(props) {
-  const sortRef = useRef();
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const { data } = props;
 
@@ -116,25 +98,25 @@ export default function ControlsSettings(props) {
 
     return (
       <Fragment>
-        <SortableList
-          ref={sortRef}
-          items={items}
-          onSortEnd={({ oldIndex, newIndex }) => {
-            resortControl(items[oldIndex].id, items[newIndex].id);
-          }}
-          useDragHandle
-          helperClass="lzb-constructor-controls-item-dragging"
-          helperContainer={() => {
-            if (sortRef && sortRef.current && sortRef.current.container) {
-              return sortRef.current.container;
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={(event) => {
+            const { active, over } = event;
+
+            if (active.id !== over.id) {
+              resortControl(active.id, over.id);
             }
-
-            // sometimes container ref disappears, so we can find dom element manually.
-            const newRef = document.querySelector('.lzb-constructor') || document.body;
-
-            return newRef;
           }}
-        />
+        >
+          <div className="lzb-constructor-controls-items-sortable">
+            <SortableContext items={items} strategy={verticalListSortingStrategy}>
+              {items.map((value) => (
+                <Control key={`lzb-constructor-controls-items-sortable-${value.id}`} {...value} />
+              ))}
+            </SortableContext>
+          </div>
+        </DndContext>
         <Tooltip
           text={
             childOf ? __('Add Child Control', '@@text_domain') : __('Add Control', '@@text_domain')

@@ -17,10 +17,6 @@
   border-radius: $radius_box;
   box-shadow: rgba(#000, 0.1) 0 1px 3px 0, rgba(#000, 0.06) 0 1px 2px 0;
   transition: 0.15s background-color ease-in-out, 0.15s color ease-in-out, 0.15s border-color ease-in-out, 0.15s box-shadow ease-in-out;
-
-  &:not(.lzb-constructor-controls-item-dragging) {
-    transition: 0.15s background-color ease-in-out, 0.15s color ease-in-out, 0.15s border-color ease-in-out, 0.15s box-shadow ease-in-out, 0.15s transform ease-in-out;
-  }
 }
 
 // appender
@@ -62,7 +58,8 @@
   }
 
   &.lzb-constructor-controls-item-dragging {
-    box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 rgba($color_gray_darken, 0.2);
+    z-index: 2;
+    box-shadow: 0 0 0 1px $color_gray_darken, 0 5px 15px 0 $color_gray_darken;
   }
 
   > div {

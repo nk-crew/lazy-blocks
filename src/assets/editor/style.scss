@@ -434,11 +434,6 @@
     border-bottom: none;
   }
 
-  > div {
-    margin-right: 15px;
-    margin-left: 15px;
-  }
-
   .lzb-gutenberg-repeater-btn {
     position: relative;
     width: 100%;
@@ -578,6 +573,10 @@
       border: none;
     }
   }
+}
+
+.lzb-gutenberg-repeater-item-dragging {
+  z-index: 2;
 }
 
 .lzb-gutenberg-repeater-items {

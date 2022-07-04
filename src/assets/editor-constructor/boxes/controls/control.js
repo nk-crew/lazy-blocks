@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import classnames from 'classnames/dedupe';
 import * as clipboard from 'clipboard-polyfill';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 import Copied from '../../../components/copied';
 import getControlTypeData from '../../../utils/get-control-type-data';
@@ -17,7 +19,17 @@ const { useDispatch, useSelect } = wp.data;
 let copiedTimeout;
 
 export default function Control(props) {
-  const { data, id, DragHandle, addControl, removeControl, controls } = props;
+  const { data, id, addControl, removeControl, controls } = props;
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isSorting } =
+    useSortable({
+      id,
+    });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition: isSorting ? transition : '',
+  };
 
   const [copied, setCopied] = useState(false);
 
@@ -73,7 +85,8 @@ export default function Control(props) {
   let controlsItemAttributes = {
     className: classnames(
       'lzb-constructor-controls-item',
-      isSelected ? 'lzb-constructor-controls-item-selected' : ''
+      isSelected ? 'lzb-constructor-controls-item-selected' : '',
+      isDragging ? 'lzb-constructor-controls-item-dragging' : ''
     ),
     onClick: () => {
       selectControl(id);
@@ -82,6 +95,8 @@ export default function Control(props) {
     'data-control-type': data.type,
     'data-control-name': data.name,
     'data-control-label': data.type,
+    ref: setNodeRef,
+    style,
   };
   controlsItemAttributes = applyFilters(
     `lzb.constructor.controls.${type}.item-attributes`,
@@ -100,7 +115,22 @@ export default function Control(props) {
       <div className="lzb-constructor-controls-item-icon">
         {/* eslint-disable-next-line react/no-danger */}
         <span dangerouslySetInnerHTML={{ __html: controlTypeData.icon }} />
-        <DragHandle />
+        <span className="lzb-constructor-controls-item-handler" {...attributes} {...listeners}>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M10 4.99976H8V6.99976H10V4.99976Z" fill="currentColor" />
+            <path d="M10 10.9998H8V12.9998H10V10.9998Z" fill="currentColor" />
+            <path d="M10 16.9998H8V18.9998H10V16.9998Z" fill="currentColor" />
+            <path d="M16 4.99976H14V6.99976H16V4.99976Z" fill="currentColor" />
+            <path d="M16 10.9998H14V12.9998H16V10.9998Z" fill="currentColor" />
+            <path d="M16 16.9998H14V18.9998H16V16.9998Z" fill="currentColor" />
+          </svg>
+        </span>
       </div>
       <div className="lzb-constructor-controls-item-label">
         {controlTypeData.restrictions.label_settings ? (
