@@ -78,6 +78,9 @@ class LazyBlocks_Blocks {
         add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'manage_posts_columns' ) );
         add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 
+        // sanitize block configs.
+        add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ) );
+
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
             // add custom block categories.
@@ -693,28 +696,14 @@ class LazyBlocks_Blocks {
     }
 
     /**
-     * Recursive sanitation for an array
-     * Thanks: https://wordpress.stackexchange.com/questions/24736/wordpress-sanitize-array/26465
+     * Returns true if the current user is allowed to save unfiltered HTML.
      *
-     * @param array $array - array for sanitize.
-     * @param array $textarea_items - sanitize as textarea fields by name.
-     *
-     * @return array
+     * @return bool
      */
-    private function sanitize_array( $array, $textarea_items = array() ) {
-        foreach ( $array as $key => &$value ) {
-            if ( is_array( $value ) ) {
-                $value = $this->sanitize_array( $value, $textarea_items );
-            } else {
-                if ( in_array( $key, $textarea_items, true ) ) {
-                    $value = sanitize_textarea_field( $value );
-                } else {
-                    $value = sanitize_text_field( $value );
-                }
-            }
-        }
+    public function is_allowed_unfiltered_html() {
+        $allow_unfiltered_html = current_user_can( 'unfiltered_html' );
 
-        return $array;
+        return apply_filters( 'lzb/allow_unfiltered_html', $allow_unfiltered_html );
     }
 
     /**
@@ -741,18 +730,13 @@ class LazyBlocks_Blocks {
                     'lazyblocks_code_frontend_html' === $meta ||
                     'lazyblocks_code_frontend_css' === $meta
                 ) {
-                    // phpcs:ignore
                     $new_meta_value = wp_slash( $data[ $meta ] );
                 } else {
-                    // Get the posted data and sanitize it for use as an HTML class.
-                    if ( is_array( $data[ $meta ] ) ) {
-                        $block_data_array_textarea = array( 'choices', 'help' );
-                        $block_data_array_textarea = apply_filters( 'lzb/block_save/array_attributes/textarea_items', $block_data_array_textarea, $data[ $meta ], $meta );
+                    $new_meta_value = wp_slash( $data[ $meta ] );
 
-                        // phpcs:ignore
-                        $new_meta_value = $this->sanitize_array( wp_slash( $data[ $meta ] ), $block_data_array_textarea );
-                    } else {
-                        $new_meta_value = sanitize_text_field( wp_slash( $data[ $meta ] ) );
+                    // Filter $_POST data for users without the 'unfiltered_html' capability.
+                    if ( ! $this->is_allowed_unfiltered_html() ) {
+                        $new_meta_value = wp_kses_post_deep( $new_meta_value );
                     }
                 }
             }
@@ -919,7 +903,7 @@ class LazyBlocks_Blocks {
             'icon'           => $icon,
             'keywords'       => $keywords,
             'slug'           => 'lazyblock/' . esc_html( $get_meta_value( 'lazyblocks_slug' ) ),
-            'description'    => esc_html( $get_meta_value( 'lazyblocks_description' ) ),
+            'description'    => $get_meta_value( 'lazyblocks_description' ),
             'category'       => $this->sanitize_slug( esc_html( $get_meta_value( 'lazyblocks_category' ) ) ),
             'category_label' => esc_html( $get_meta_value( 'lazyblocks_category' ) ),
             'supports'       => array(
@@ -1007,10 +991,10 @@ class LazyBlocks_Blocks {
                 }
             }
 
-            return $unique_result;
+            return apply_filters( 'lzb/get_blocks', $unique_result );
         }
 
-        return $result;
+        return apply_filters( 'lzb/get_blocks', $result );
     }
 
     /**
@@ -1065,6 +1049,60 @@ class LazyBlocks_Blocks {
         }
 
         return $custom_categories;
+    }
+
+    /**
+     * Sanitize block configs.
+     *
+     * @param array $blocks - block list.
+     *
+     * @return array
+     */
+    public function sanitize_block_configs( $blocks ) {
+        if ( empty( $blocks ) ) {
+            return $blocks;
+        }
+
+        $sanitize_block_data = apply_filters(
+            'lzb/sanitize_block_data',
+            array(
+                'title',
+                'description',
+                'category',
+                'category_label',
+            )
+        );
+
+        $sanitize_control_data = apply_filters(
+            'lzb/sanitize_block_control_data',
+            array(
+                'label',
+                'help',
+                'rows_label',
+                'rows_add_button_label',
+                'placeholder',
+            )
+        );
+
+        foreach ( $blocks as &$block ) {
+            foreach ( $sanitize_block_data as $name ) {
+                if ( ! empty( $block[ $name ] ) ) {
+                    $block[ $name ] = wp_kses_post( $block[ $name ] );
+                }
+            }
+
+            if ( ! empty( $block['controls'] ) ) {
+                foreach ( $block['controls'] as &$control_data ) {
+                    foreach ( $sanitize_control_data as $name ) {
+                        if ( ! empty( $control_data[ $name ] ) ) {
+                            $control_data[ $name ] = wp_kses_post( $control_data[ $name ] );
+                        }
+                    }
+                }
+            }
+        }
+
+        return $blocks;
     }
 
     /**

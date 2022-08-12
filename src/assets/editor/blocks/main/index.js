@@ -2,6 +2,8 @@
 import BlockEdit from './edit';
 import BlockSave from './save';
 
+const { RawHTML } = wp.element;
+
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {
   options = {
@@ -38,7 +40,7 @@ options.blocks.forEach((item) => {
   // register block.
   registerBlockType(item.slug, {
     title: item.title || item.slug,
-    description: item.description,
+    description: <RawHTML>{item.description}</RawHTML>,
     icon: registerIcon,
     category: item.category,
     keywords: item.keywords,

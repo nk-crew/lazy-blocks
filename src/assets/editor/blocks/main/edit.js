@@ -18,7 +18,7 @@ const { cloneDeep } = window.lodash;
 
 const { __ } = wp.i18n;
 
-const { Fragment, useRef, useEffect } = wp.element;
+const { Fragment, RawHTML, useRef, useEffect } = wp.element;
 
 const { applyFilters } = wp.hooks;
 
@@ -264,7 +264,8 @@ export default function BlockEdit(props) {
       const controlRenderData = {
         data: {
           ...controlData,
-          label,
+          help: controlData.help ? <RawHTML>{controlData.help}</RawHTML> : false,
+          label: <RawHTML>{label}</RawHTML>,
         },
         placement,
         childIndex,
