@@ -40,7 +40,7 @@ export default function BlockEdit(props) {
     const { hasSelectedInnerBlock } = select('core/block-editor');
 
     return {
-      isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock(ownProps.clientId),
+      isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock(ownProps.clientId, true),
     };
   }, []);
 
