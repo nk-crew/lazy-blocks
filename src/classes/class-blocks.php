@@ -577,7 +577,7 @@ class LazyBlocks_Blocks {
 
         if ( 'lazyblocks_post_description' === $column_name ) {
             $description = $this->get_meta_value_by_id( 'lazyblocks_description' );
-            echo esc_html( $description );
+            echo wp_kses_post( $description );
         }
     }
 
