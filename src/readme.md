@@ -2,6 +2,7 @@
 
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
+* Donate link: https://lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 5.8
 * Tested up to: 5.8
 * Requires PHP: 7.2
