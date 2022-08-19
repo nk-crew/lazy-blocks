@@ -24,8 +24,6 @@ const { Tooltip, TabPanel } = wp.components;
 
 const { useDispatch } = wp.data;
 
-const $ = window.jQuery;
-
 const constructorData = window.lazyblocksConstructorData;
 
 let initialActiveTab = '';
@@ -42,7 +40,11 @@ export default function ControlsSettings(props) {
 
   useEffect(() => {
     // fix first loading focus on code editor
-    $('.lazyblocks-control-tabs button:eq(0)').focus();
+    const $tabsButton = document.querySelector('.lazyblocks-control-tabs button');
+
+    if ($tabsButton) {
+      $tabsButton.focus();
+    }
   }, []);
 
   const {
