@@ -3,7 +3,7 @@ const micromatch = require('micromatch');
 
 function excludeVendor(lint) {
   return (filenames) => {
-    const files = micromatch(filenames, '!**/vendor/**/*');
+    const files = micromatch(filenames, ['!**/vendor/**/*', '!**/dist/**/*']);
 
     if (files && files.length) {
       return `${lint} ${files.join(' ')}`;
@@ -14,8 +14,8 @@ function excludeVendor(lint) {
 }
 
 module.exports = {
-  'src/**/*.php': excludeVendor('composer run-script phpcs'),
-  'src/**/*.css': excludeVendor('stylelint'),
-  'src/**/*.scss': excludeVendor('stylelint --custom-syntax postcss-scss'),
-  'src/**/*.{js,jsx}': excludeVendor('eslint'),
+  '**/*.php': excludeVendor('composer run-script phpcs'),
+  '**/*.css': excludeVendor('stylelint'),
+  '**/*.scss': excludeVendor('stylelint --custom-syntax postcss-scss'),
+  '**/*.{js,jsx}': excludeVendor('eslint'),
 };

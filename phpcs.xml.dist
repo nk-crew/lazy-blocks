@@ -13,9 +13,10 @@
     -->
 
     <!-- Check the /src/ directory and the directories below it. -->
-    <file>./src/</file>
+    <file>.</file>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/vendors/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
 
     <!-- These files are too large to be scanned. -->
     <exclude-pattern>/src/classes/class-fonts\.php</exclude-pattern>
@@ -29,7 +30,16 @@
     <arg value="ps"/>
 
     <!-- Check up to 8 files simultaneously. -->
-    <arg name="parallel" value="8"/>
+    <arg name="parallel" value="20"/>
+
+    <!-- Whenever possible, cache the scan results and re-use those for unchanged files on the next scan. -->
+    <arg name="cache"/>
+
+    <!-- Set the memory limit to 256M.
+      For most standard PHP configurations, this means the memory limit will temporarily be raised.
+      Ref: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#specifying-phpini-settings
+    -->
+    <ini name="memory_limit" value="256M"/>
 
 
     <!--
@@ -81,7 +91,7 @@
         <properties>
             <property name="text_domain" type="array">
                 <!-- This placeholder domain will be replaced automatically on each release. -->
-                <element value="@@text_domain"/>
+                <element value="lazy-blocks"/>
             </property>
         </properties>
     </rule>

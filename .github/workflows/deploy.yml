@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-    - "v*"
+      - 'v*'
 
 jobs:
   deploy:
@@ -22,12 +22,12 @@ jobs:
         run: npm install
 
       - name: Run Production Task
-        run: npm run production
+        run: npm run build:prod
 
       - name: WordPress Plugin Deploy
         uses: nk-o/action-wordpress-plugin-deploy@master
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SOURCE_DIR: dist/lazy-blocks/
+          SOURCE_DIR: dist-zip/lazy-blocks/
           SLUG: lazy-blocks

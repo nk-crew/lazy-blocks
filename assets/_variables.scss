@@ -1,0 +1,23 @@
+/**
+ * WordPress.
+ */
+/* stylelint-disable-next-line scss/at-import-partial-extension */
+@import "../node_modules/@wordpress/base-styles/colors.native";
+@import "../node_modules/@wordpress/base-styles/variables";
+
+$radius: 3px !default;
+$radius_large: 4px !default;
+$radius_box: 8px !default;
+
+$color_gray_lighten_2: #fbfbfb !default;
+$color_gray_lighten: #f4f5f7 !default;
+$color_gray: #e6e8eb !default;
+$color_gray_darken: #dadbdd !default;
+
+$color_dark_lighten_2: #a3a5a7 !default;
+$color_dark_lighten: #6b6c6e !default;
+$color_dark: #515764 !default;
+$color_dark_darken: #343536 !default;
+
+$shadow: 0 5px 10px 0 rgba(0, 0, 0, 4%) !default;
+$shadow_small: 0 5px 10px 0 rgba(0, 0, 0, 2%) !default;
