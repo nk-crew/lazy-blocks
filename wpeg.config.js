@@ -11,9 +11,11 @@ cfg.browser_sync = {
 
 // Compile SCSS files.
 cfg.compile_scss_files_src = [
-  '{src}/*assets/**/*.scss',
-  '{src}/*controls/**/*.scss',
-  '!{src}/**/vendor/**/*',
+  '{src}/*assets/admin/style.scss',
+  '{src}/*assets/admin/templates/style.scss',
+  '{src}/*assets/admin/tools/style.scss',
+  '{src}/*assets/editor/style.scss',
+  '{src}/*assets/editor-constructor/style.scss',
 ];
 cfg.compile_scss_files_rtl = true;
 
