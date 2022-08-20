@@ -21,7 +21,6 @@
     "js-lint": "eslint --ext .js assets/ controls/",
     "js-lint-fix": "eslint --ext .js --fix assets/ controls/",
     "make-pot": "composer wp -- i18n make-pot ./ ./languages/lazy-blocks.pot --skip-audit --exclude=vendor,vendors,node_modules,dist-zip --headers='{\"Last-Translator\":\"nK\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-o/lazyblocks/issues\"}'",
-    "make-json-new": "composer wp -- i18n make-json ./languages/lazy-blocks.pot --no-purge",
     "make-json": "po2json ./languages/lazy-blocks.pot ./languages/lazy-blocks.json --format=jed1.x --pretty --domain=lazy-blocks",
     "prepare": "husky install",
     "postinstall": "composer install"
