@@ -158,7 +158,7 @@ export default function PreviewServerCallback(props) {
     // translators: %s: error message describing the problem
     const errorMessage = sprintf(
       __('Error loading block preview: %s', 'lazy-blocks'),
-      response.response
+      response.response.message || response.response.code || response.response
     );
     result = errorMessage;
   } else {
