@@ -34,8 +34,17 @@ cfg.compile_js_files_src = [
 cfg.correct_line_endings_files_src = '{dist}/**/*.{js,css}';
 
 // Watch files.
-cfg.watch_js_files = ['{src}/**/*.js', '{src}/**/*.scss', '!{src}/*vendor/**/*'];
+cfg.watch_js_files = [
+  '{src}/assets/**/*.js',
+  '{src}/controls/**/*.js',
+  '{src}/**/*.scss',
+  '!{src}/*vendor/**/*',
+];
 
-cfg.watch_scss_files = '{src}/**/*.scss';
+cfg.watch_scss_files = [
+  '{src}/assets/**/*.scss',
+  '{src}/controls/**/*.scss',
+  '!{src}/*vendor/**/*',
+];
 
 module.exports = cfg;
