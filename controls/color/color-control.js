@@ -1,9 +1,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import ColorPalette from './color-palette-control';
 
-const { Fragment } = wp.element;
-
-const { BaseControl, ColorIndicator } = wp.components;
+const { BaseControl, ColorPalette } = wp.components;
 
 const { useSelect } = wp.data;
 
@@ -20,20 +17,11 @@ function ColorControl(props) {
   });
 
   return (
-    <BaseControl
-      label={
-        <Fragment>
-          {label}
-          <ColorIndicator colorValue={value} />
-        </Fragment>
-      }
-      help={help}
-      className="lzb-gutenberg-color"
-    >
+    <BaseControl label={label} help={help} className="lzb-gutenberg-color">
       <ColorPalette
         colors={colors}
         value={value}
-        disableAlpha={!alpha}
+        enableAlpha={alpha}
         onChange={(val) => {
           onChange(val);
         }}
