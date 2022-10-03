@@ -50,7 +50,7 @@
     "@babel/plugin-transform-react-jsx": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/register": "^7.18.9",
-    "@svgr/webpack": "^5.5.0",
+    "@svgr/webpack": "^6.4.0",
     "base64-inline-loader": "^2.0.1",
     "browserslist-config-nk": "^1.0.0",
     "cross-env": "^7.0.3",
