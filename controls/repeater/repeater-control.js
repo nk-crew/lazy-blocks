@@ -267,7 +267,7 @@ function RepeaterControl(props) {
                 <ToggleControl
                   checked={-2 === activeItem}
                   onChange={() => {
-                    setActiveItem(activeItem ? -1 : -2);
+                    setActiveItem(-2 === activeItem ? -1 : -2);
                   }}
                 />
               </div>

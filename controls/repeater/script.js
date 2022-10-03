@@ -105,7 +105,7 @@ function ControlsRepeaterItem(props) {
   const [collapsedChilds, setCollapsedChilds] = useState(false);
 
   function toggleCollapseChilds() {
-    setCollapsedChilds(!collapsedChilds + 1);
+    setCollapsedChilds(!collapsedChilds);
   }
 
   // repeater child items count.
