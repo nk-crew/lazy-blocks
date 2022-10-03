@@ -420,6 +420,15 @@
   }
 }
 
+// Code Editor control
+.lzb-gutenberg-code-editor textarea {
+  padding: 15px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  border: 1px solid #757575;
+  border-radius: 2px;
+}
+
 // repeater
 .components-base-control__label + .lzb-gutenberg-repeater {
   margin-top: 8px;
