@@ -2,7 +2,7 @@
 
 * Contributors: nko
 * Tags: gutenberg, blocks, custom, meta, fields
-* Donate link: https://lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
+* Donate link: https://lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 5.8
 * Tested up to: 6.1
 * Requires PHP: 7.2
@@ -82,6 +82,29 @@ To manage custom blocks attributes you need to use Controls. Lazy Blocks have a 
 Lazy Blocks built by developers, for developers and gives you unlimited freedom to create custom blocks. Furthermore, there are PHP filters and actions to customize every part of your custom blocks from the backend. Possibility to use PHP and theme templates system.
 
 Every UI part should be intuitive for simple custom blocks, but if you want to create something more complex, you may be required to [read our extensive documentation](https://lazyblocks.com/documentation/getting-started/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=developers).
+
+### 🔥 Lazy Blocks Pro
+
+> The Lazy Blocks plugin is also available in a professional version which includes more controls and features! [**Learn more about Lazy Blocks Pro**](https://lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=pro)
+>
+> In order to maintain the free version of the plugin on an ongoing basis, and to provide quick and effective support for free, we offer a Pro version of the plugin. The Pro version allows you to:
+
+* **Additional Controls**
+
+  * **Posts** - Search and select posts based on post type or taxonomy
+  * **Taxonomy** - Search and select categories, tags and any other custom taxonomies
+  * **Users** - Search and select users based on user roles
+  * **Units** - Advanced number input with possibility to select any CSS unit
+  * **Message** - Display a helpful message between controls
+  * **Code Editor** - Insert code parts using editor with syntax highlighting
+
+* **Controls Conditions**
+Conditionally display/hide controls. In order not to overload your block with a huge list of controls, you can hide some of them depending on the values of other controls.
+
+* **Panels and Dividers**
+The Panels and Dividers provides a way to structure controls into groups. It assists in better organizing the block panel UI.
+
+[**Find much more custom blocks features of Lazy Blocks Pro today!**](https://lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=pro)
 
 ## Installation
 

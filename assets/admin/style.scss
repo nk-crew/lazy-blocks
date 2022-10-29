@@ -103,5 +103,26 @@
     &:focus {
       color: #007cba;
     }
+
+    .dashicons {
+      line-height: 2;
+    }
+  }
+}
+
+// Go Pro links.
+#adminmenu a[href*="lazyblocks.com/pro/"],
+.wp-list-table.plugins a[href*="lazyblocks.com/pro/"],
+.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"] {
+  font-weight: 700;
+  color: #ef6f0f;
+
+  .dashicons {
+    transition: none;
+  }
+
+  &:hover,
+  &:focus {
+    color: #ef490f;
   }
 }
