@@ -37,7 +37,7 @@ class LazyBlocks_Control_Email extends LazyBlocks_Control {
             'lazyblocks-control-email',
             lazyblocks()->plugin_url() . 'dist/controls/email/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }

@@ -49,7 +49,7 @@ class LazyBlocks_Control_Color extends LazyBlocks_Control {
             'lazyblocks-control-color',
             lazyblocks()->plugin_url() . 'dist/controls/color/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }

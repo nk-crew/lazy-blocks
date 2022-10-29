@@ -37,7 +37,7 @@ class LazyBlocks_Migration {
     public function init() {
         // Migration code added after `$this->initial_version` plugin version.
         $saved_version   = get_option( 'lzb_db_version', $this->initial_version );
-        $current_version = LAZYBLOCKS_VERSION;
+        $current_version = LAZY_BLOCKS_VERSION;
 
         foreach ( $this->get_migrations() as $migration ) {
             if ( version_compare( $saved_version, $migration['version'], '<' ) ) {

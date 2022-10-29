@@ -44,7 +44,7 @@ class LazyBlocks_Control_Image extends LazyBlocks_Control {
             'lazyblocks-control-image',
             lazyblocks()->plugin_url() . 'dist/controls/image/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }

@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( ! defined( 'LAZYBLOCKS_VERSION' ) ) {
-    define( 'LAZYBLOCKS_VERSION', '2.5.3' );
+if ( ! defined( 'LAZY_BLOCKS_VERSION' ) ) {
+    define( 'LAZY_BLOCKS_VERSION', '2.5.3' );
 }
 
 if ( ! class_exists( 'LazyBlocks' ) ) :
@@ -178,7 +178,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
                     'utm_source'   => 'plugin',
                     'utm_medium'   => 'admin_menu',
                     'utm_campaign' => 'go_pro',
-                    'utm_content'  => LAZYBLOCKS_VERSION,
+                    'utm_content'  => LAZY_BLOCKS_VERSION,
                 ),
                 $args
             );

@@ -46,7 +46,7 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
             'lazyblocks-control-inner-blocks',
             lazyblocks()->plugin_url() . 'dist/controls/inner_blocks/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }

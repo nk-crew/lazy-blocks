@@ -1150,7 +1150,7 @@ class LazyBlocks_Blocks {
 
         $blocks = $this->get_blocks();
 
-        wp_register_style( 'lazyblocks-editor', lazyblocks()->plugin_url() . 'dist/assets/editor/style.min.css', array(), LAZYBLOCKS_VERSION );
+        wp_register_style( 'lazyblocks-editor', lazyblocks()->plugin_url() . 'dist/assets/editor/style.min.css', array(), LAZY_BLOCKS_VERSION );
         wp_style_add_data( 'lazyblocks-editor', 'rtl', 'replace' );
         wp_style_add_data( 'lazyblocks-editor', 'suffix', '.min' );
 
@@ -1159,7 +1159,7 @@ class LazyBlocks_Blocks {
             'lazyblocks-editor',
             lazyblocks()->plugin_url() . 'dist/assets/editor/index.min.js',
             array( 'wp-blocks', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
 

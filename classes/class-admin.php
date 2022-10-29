@@ -126,7 +126,7 @@ class LazyBlocks_Admin {
             )
         );
 
-        wp_enqueue_style( 'lazyblocks-admin', lazyblocks()->plugin_url() . 'dist/assets/admin/style.min.css', array(), LAZYBLOCKS_VERSION );
+        wp_enqueue_style( 'lazyblocks-admin', lazyblocks()->plugin_url() . 'dist/assets/admin/style.min.css', array(), LAZY_BLOCKS_VERSION );
         wp_style_add_data( 'lazyblocks-admin', 'rtl', 'replace' );
         wp_style_add_data( 'lazyblocks-admin', 'suffix', '.min' );
     }
@@ -140,7 +140,7 @@ class LazyBlocks_Admin {
                 'lazyblocks-constructor',
                 lazyblocks()->plugin_url() . 'dist/assets/editor-constructor/index.min.js',
                 array( 'wp-blocks', 'wp-editor', 'wp-block-editor', 'wp-i18n', 'wp-element', 'wp-components', 'lodash', 'jquery' ),
-                LAZYBLOCKS_VERSION,
+                LAZY_BLOCKS_VERSION,
                 true
             );
             wp_localize_script(
@@ -152,11 +152,11 @@ class LazyBlocks_Admin {
                     'controls'            => lazyblocks()->controls()->get_controls(),
                     'controls_categories' => lazyblocks()->controls()->get_controls_categories(),
                     'icons'               => lazyblocks()->icons()->get_all(),
-                    'plugin_version'      => LAZYBLOCKS_VERSION,
+                    'plugin_version'      => LAZY_BLOCKS_VERSION,
                 )
             );
 
-            wp_enqueue_style( 'lazyblocks-constructor', lazyblocks()->plugin_url() . 'dist/assets/editor-constructor/style.min.css', array(), LAZYBLOCKS_VERSION );
+            wp_enqueue_style( 'lazyblocks-constructor', lazyblocks()->plugin_url() . 'dist/assets/editor-constructor/style.min.css', array(), LAZY_BLOCKS_VERSION );
             wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
             wp_style_add_data( 'lazyblocks-constructor', 'suffix', '.min' );
         }
@@ -170,7 +170,7 @@ class LazyBlocks_Admin {
             return;
         }
 
-        wp_enqueue_script( 'lazyblocks-translation', lazyblocks()->plugin_url() . 'dist/assets/editor/translation.min.js', array(), LAZYBLOCKS_VERSION, false );
+        wp_enqueue_script( 'lazyblocks-translation', lazyblocks()->plugin_url() . 'dist/assets/editor/translation.min.js', array(), LAZY_BLOCKS_VERSION, false );
         wp_set_script_translations( 'lazyblocks-translation', 'lazy-blocks', lazyblocks()->plugin_path() . 'languages' );
     }
 
@@ -283,7 +283,7 @@ class LazyBlocks_Admin {
         // Determine if the current page being viewed is "Lazy Blocks" related.
         if ( isset( $screen->post_type ) && 'lazyblocks' === $screen->post_type ) {
             // Use RegExp to append "Lazy Blocks" after the <a> element allowing translations to read correctly.
-            return preg_replace( '/(<a[\S\s]+?\/a>)/', '$1 ' . esc_attr__( 'and', 'lazy-blocks' ) . ' <a href="https://lazyblocks.com/?utm_source=plugin&utm_medium=admin_footer&utm_campaign=link&utm_content=' . LAZYBLOCKS_VERSION . '" target="_blank">Lazy Blocks</a>', $text, 1 );
+            return preg_replace( '/(<a[\S\s]+?\/a>)/', '$1 ' . esc_attr__( 'and', 'lazy-blocks' ) . ' <a href="https://lazyblocks.com/?utm_source=plugin&utm_medium=admin_footer&utm_campaign=link&utm_content=' . LAZY_BLOCKS_VERSION . '" target="_blank">Lazy Blocks</a>', $text, 1 );
         }
 
         return $text;

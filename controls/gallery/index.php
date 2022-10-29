@@ -44,7 +44,7 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
             'lazyblocks-control-gallery',
             lazyblocks()->plugin_url() . 'dist/controls/gallery/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }

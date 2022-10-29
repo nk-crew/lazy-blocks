@@ -34,7 +34,7 @@ class LazyBlocks_Control_ClassicEditor extends LazyBlocks_Control {
             'lazyblocks-control-classic-editor',
             lazyblocks()->plugin_url() . 'dist/controls/classic_editor/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-keycodes' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }

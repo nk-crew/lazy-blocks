@@ -21,7 +21,7 @@ const bumpFiles = {
     /(\* Version:\s\s+)[0-9][0-9.]*($)/gm,
 
     // Version in the constant definition.
-    /(define\( 'LAZYBLOCKS_VERSION', ').*(' \);$)/gm,
+    /(define\( 'LAZY_BLOCKS_VERSION', ').*(' \);$)/gm,
   ],
 };
 

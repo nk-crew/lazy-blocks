@@ -37,7 +37,7 @@ class LazyBlocks_Control_DateTime extends LazyBlocks_Control {
             'lazyblocks-control-date-time',
             lazyblocks()->plugin_url() . 'dist/controls/date_time/script.min.js',
             array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components' ),
-            LAZYBLOCKS_VERSION,
+            LAZY_BLOCKS_VERSION,
             true
         );
     }
