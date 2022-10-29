@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Lazy Blocks 2.5.3\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lazy-blocks\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: https://github.com/nk-o/lazyblocks/issues\n"
+"Last-Translator: nK\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-08-20T12:21:42+00:00\n"
+"POT-Creation-Date: 2022-10-29T08:57:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: lazy-blocks\n"
@@ -157,12 +157,12 @@ msgid "Template"
 msgstr ""
 
 #: classes/class-templates.php:298
-#: assets/admin/templates/index.js:152
+#: assets/admin/templates/index.js:162
 msgid "Post Types"
 msgstr ""
 
 #: classes/class-templates.php:299
-#: assets/admin/templates/index.js:163
+#: assets/admin/templates/index.js:173
 msgid "Template Lock"
 msgstr ""
 
@@ -314,14 +314,18 @@ msgid "None"
 msgstr ""
 
 #: assets/admin/templates/index.js:94
-msgid "Prevent all operations"
+msgid "All - prevents all operations"
 msgstr ""
 
 #: assets/admin/templates/index.js:98
-msgid "Prevent inserting new blocks, but allows moving existing ones"
+msgid "Insert - prevents inserting new blocks, but allows moving existing ones"
 msgstr ""
 
-#: assets/admin/templates/index.js:147
+#: assets/admin/templates/index.js:105
+msgid "Content Only - prevents all operations, except the content editing."
+msgstr ""
+
+#: assets/admin/templates/index.js:157
 msgid "Template Settings"
 msgstr ""
 
@@ -812,29 +816,6 @@ msgstr ""
 
 #: controls/classic_editor/tmce.js:195
 msgid "Classic"
-msgstr ""
-
-#: controls/color/color-palette-control.js:25
-msgid "Custom color picker"
-msgstr ""
-
-#. translators: %s: color hex code e.g: "#f00".
-#: controls/color/color-palette-control.js:49
-#: controls/color/color-palette-control.js:62
-msgid "Color code: %s"
-msgstr ""
-
-#. translators: %s: The name of the color e.g: "vivid red".
-#: controls/color/color-palette-control.js:60
-msgid "Color: %s"
-msgstr ""
-
-#: controls/color/color-palette-control.js:89
-msgid "Custom Color"
-msgstr ""
-
-#: controls/color/color-palette-control.js:120
-msgid "Clear"
 msgstr ""
 
 #: controls/color/script.js:34

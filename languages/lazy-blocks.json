@@ -208,10 +208,13 @@
          "None": [
             ""
          ],
-         "Prevent all operations": [
+         "All - prevents all operations": [
             ""
          ],
-         "Prevent inserting new blocks, but allows moving existing ones": [
+         "Insert - prevents inserting new blocks, but allows moving existing ones": [
+            ""
+         ],
+         "Content Only - prevents all operations, except the content editing.": [
             ""
          ],
          "Template Settings": [
@@ -566,21 +569,6 @@
             ""
          ],
          "Classic": [
-            ""
-         ],
-         "Custom color picker": [
-            ""
-         ],
-         "Color code: %s": [
-            ""
-         ],
-         "Color: %s": [
-            ""
-         ],
-         "Custom Color": [
-            ""
-         ],
-         "Clear": [
             ""
          ],
          "Alpha Channel": [

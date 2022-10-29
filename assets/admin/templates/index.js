@@ -91,12 +91,22 @@ function UpdateEditor() {
       value: '',
     },
     {
-      label: __('Prevent all operations', 'lazy-blocks'),
+      label: __('All - prevents all operations', 'lazy-blocks'),
       value: 'all',
     },
     {
-      label: __('Prevent inserting new blocks, but allows moving existing ones', 'lazy-blocks'),
+      label: __(
+        'Insert - prevents inserting new blocks, but allows moving existing ones',
+        'lazy-blocks'
+      ),
       value: 'insert',
+    },
+    {
+      label: __(
+        'Content Only - prevents all operations, except the content editing.',
+        'lazy-blocks'
+      ),
+      value: 'contentOnly',
     },
   ];
 
