@@ -1,6 +1,6 @@
 <?php
 /**
- * Checks if another version of Lazy Blocks/Lazy Blocks PRO is active and deactivates it.
+ * Checks if another version of Lazy Blocks/Lazy Blocks Pro is active and deactivates it.
  *
  * @package Lazy Blocks
  */
@@ -22,7 +22,7 @@ class LazyBlocks_Deactivate_Duplicate_Plugin {
     }
 
     /**
-     * Checks if another version of Lazy Blocks/Lazy Blocks PRO is active and deactivates it.
+     * Checks if another version of Lazy Blocks/Lazy Blocks Pro is active and deactivates it.
      * Hooked on `activated_plugin` so other plugin is deactivated when current plugin is activated.
      *
      * @param string $plugin The plugin being activated.
@@ -35,7 +35,7 @@ class LazyBlocks_Deactivate_Duplicate_Plugin {
         $plugin_to_deactivate  = 'lazy-blocks/lazy-blocks.php';
         $deactivated_notice_id = 1;
 
-        // If we just activated the free version, deactivate the pro version.
+        // If we just activated the free version, deactivate the Pro version.
         if ( $plugin === $plugin_to_deactivate ) {
             $plugin_to_deactivate  = 'lazy-blocks-pro/lazy-blocks-pro.php';
             $deactivated_notice_id = 2;
@@ -58,7 +58,7 @@ class LazyBlocks_Deactivate_Duplicate_Plugin {
     }
 
     /**
-     * Displays a notice when either Lazy Blocks or Lazy Blocks PRO is automatically deactivated.
+     * Displays a notice when either Lazy Blocks or Lazy Blocks Pro is automatically deactivated.
      */
     public function plugin_deactivated_notice() {
         $deactivated_notice_id = (int) get_transient( 'lazy_blocks_deactivated_notice_id' );
@@ -66,13 +66,13 @@ class LazyBlocks_Deactivate_Duplicate_Plugin {
             return;
         }
 
-        $message = __( "Lazy Blocks and Lazy Blocks PRO should not be active at the same time. We've automatically deactivated Lazy Blocks.", 'lazy-blocks' );
+        $message = __( "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks.", 'lazy-blocks' );
         if ( 2 === $deactivated_notice_id ) {
-            $message = __( "Lazy Blocks and Lazy Blocks PRO should not be active at the same time. We've automatically deactivated Lazy Blocks PRO.", 'lazy-blocks' );
+            $message = __( "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks Pro.", 'lazy-blocks' );
         }
 
         ?>
-        <div class="updated" style="border-left: 4px solid #ffba00;">
+        <div class="notice notice-warning">
             <p><?php echo esc_html( $message ); ?></p>
         </div>
         <?php
