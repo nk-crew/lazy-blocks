@@ -50,14 +50,16 @@ class LazyBlocks_Admin {
             )
         );
 
-        // PRO plugin survive link.
-        add_submenu_page(
-            'edit.php?post_type=lazyblocks',
-            '',
-            '<span class="dashicons dashicons-star-filled" style="font-size: 17px"></span> ' . esc_html__( 'Go Pro', 'lazy-blocks' ),
-            'manage_options',
-            'lazy_blocks_go_pro'
-        );
+        // Go Pro link.
+        if ( ! lazyblocks()->is_pro() ) {
+            add_submenu_page(
+                'edit.php?post_type=lazyblocks',
+                '',
+                '<span class="dashicons dashicons-star-filled" style="font-size: 17px"></span> ' . esc_html__( 'Go Pro', 'lazy-blocks' ),
+                'manage_options',
+                'lazy_blocks_go_pro'
+            );
+        }
     }
 
     /**
@@ -68,6 +70,10 @@ class LazyBlocks_Admin {
      * @return array
      */
     public function add_go_pro_link_plugins_page( $links ) {
+        if ( lazyblocks()->is_pro() ) {
+            return $links;
+        }
+
         return array_merge(
             $links,
             array(
@@ -153,6 +159,8 @@ class LazyBlocks_Admin {
                     'controls_categories' => lazyblocks()->controls()->get_controls_categories(),
                     'icons'               => lazyblocks()->icons()->get_all(),
                     'plugin_version'      => LAZY_BLOCKS_VERSION,
+                    'is_pro'              => lazyblocks()->is_pro(),
+                    'pro_url'             => lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'constructor' ) ),
                 )
             );
 

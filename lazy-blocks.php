@@ -166,6 +166,13 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
         }
 
         /**
+         * Check if Pro plugin installed.
+         */
+        public function is_pro() {
+            return defined( 'LAZY_BLOCKS_PRO' ) && LAZY_BLOCKS_PRO;
+        }
+
+        /**
          * Get URL to main site with UTM tags.
          *
          * @param array $args - Arguments of link.

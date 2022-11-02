@@ -1,4 +1,5 @@
 import getControlTypeData from '../../../../utils/get-control-type-data';
+import ProNotice from '../../../../components/pro-notice';
 
 import LabelRow from './label';
 import NameRow from './name';
@@ -33,6 +34,7 @@ export default function settingsRows(props) {
       required: RequiredRow,
       hide_if_not_selected: HideIfNotSelectedRow,
       save_in_meta: SaveInMetaRow,
+      pro_notice: ProNotice,
     },
     props,
     controlTypeData

@@ -1,4 +1,5 @@
 // Internal Dependencies
+import ProNotice from '../../components/pro-notice';
 import DocumentTabs from '../../components/document-tabs';
 import Box from '../../components/box';
 import TitleSettings from '../boxes/title';
@@ -60,6 +61,7 @@ export default function ConstructorBlock() {
             return (
               <Fragment>
                 <GeneralSettings data={blockData} updateData={updateBlockData} />
+                <ProNotice />
                 <PanelBody title={__('Supports', 'lazy-blocks')} initialOpen={false}>
                   <SupportsSettings data={blockData} updateData={updateBlockData} />
                 </PanelBody>
