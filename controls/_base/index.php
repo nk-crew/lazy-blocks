@@ -58,6 +58,9 @@ class LazyBlocks_Control {
     public $default_restrictions = array(
         'once'                          => false,
         'as_child'                      => true,
+        'hidden_from_select'            => false,
+
+        // Display Settings.
         'name_settings'                 => true,
         'label_settings'                => true,
         'default_settings'              => true,

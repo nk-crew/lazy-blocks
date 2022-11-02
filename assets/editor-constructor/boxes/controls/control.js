@@ -85,6 +85,7 @@ export default function Control(props) {
   let controlsItemAttributes = {
     className: classnames(
       'lzb-constructor-controls-item',
+      'undefined' === controlTypeData.name ? 'lzb-constructor-controls-item-undefined' : '',
       isSelected ? 'lzb-constructor-controls-item-selected' : '',
       isDragging ? 'lzb-constructor-controls-item-dragging' : ''
     ),

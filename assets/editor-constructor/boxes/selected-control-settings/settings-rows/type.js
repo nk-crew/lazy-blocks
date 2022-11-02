@@ -44,8 +44,9 @@ export default function TypeRow(props) {
     .map((k) => {
       const controlTypeData = getControlTypeData(controls[k].name);
       let isDisabled = false;
+      let isHiddenFromSelect = false;
 
-      // restrictions.
+      // Disabled restrictions.
       if (!isDisabled && controlTypeData) {
         // restrict as child.
         if (!controlTypeData.restrictions.as_child) {
@@ -62,7 +63,14 @@ export default function TypeRow(props) {
         }
       }
 
-      availableCategories[controls[k].category] = 1;
+      // Hidden restrictions.
+      if (!isHiddenFromSelect && controlTypeData?.restrictions?.hidden_from_select) {
+        isHiddenFromSelect = true;
+      }
+
+      if (!isHiddenFromSelect) {
+        availableCategories[controls[k].category] = 1;
+      }
 
       return {
         name: controls[k].name,
@@ -70,6 +78,7 @@ export default function TypeRow(props) {
         category: controls[k].category,
         icon: controlTypeData.icon,
         isDisabled,
+        isHiddenFromSelect,
       };
     });
 
@@ -124,7 +133,7 @@ export default function TypeRow(props) {
                   }}
                 >
                   {types.map((thisType) => {
-                    if (thisType.category !== cat) {
+                    if (thisType.category !== cat || thisType.isHiddenFromSelect) {
                       return null;
                     }
 
