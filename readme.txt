@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.1
 * Requires PHP: 7.2
-* Stable tag: 2.5.3
+* Stable tag: 3.0.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -125,6 +125,38 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.0.0 =
+
+PRO plugin:
+
+* Lazy Blocks Pro is finally released and available here - [https://lazyblocks.com/pro/](https://lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=pro)
+
+FREE plugin:
+
+* a lot of code rewrites to improve stability and performance
+* added support for Image control data in the repeater title short tags
+* added possibility to save block data with html tags. Supported block description, controls labels and help fields
+* added basic styles to the Code Editor control
+* added support for "Content Only" lock in Templates
+* added support for multiple color palettes (registered in the theme and in Gutenberg itself) in the Color Picker control
+* fixed enqueue styles in FSE
+* fixed "Hide if block is not selected" option when control displayed in both placements (Inspector and Content)
+* fixed "Hide if block is not selected" option to work with inner blocks
+* fixed adding defaults to the new row in repeater
+* fixed unlocking post saving when remove locked block
+* fixed URL control styles
+* fixed icon box in admin block list ui when no icon selected
+* fixed constructor rendering when 3rd parties use the `allowed_block_types_all` hook
+* fixed widgets screen block error
+* fixed Classic Editor control in Widgets Screen
+* fixed Rest permissions check errors
+* fixed error message displaying when block preview is not rendered
+* simplified exported block configs (removed fields with default values)
+* changed `react-sortable-hoc` to `dnd-kit` - no more error messages in the console
+* removed limitation for 3 tags per block
+* removed wrapper from controls displayed inside Inspector
+* minor changes
 
 = 2.5.3 =
 

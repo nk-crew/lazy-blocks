@@ -2,20 +2,20 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 2.5.3\n"
+"Project-Id-Version: Lazy Blocks 3.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-o/lazyblocks/issues\n"
 "Last-Translator: nK\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-29T21:13:53+00:00\n"
+"POT-Creation-Date: 2022-11-08T22:04:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
-#: classes/class-admin.php:252
+#: classes/class-admin.php:260
 #: classes/class-blocks.php:317
 #: classes/class-blocks.php:1118
 msgid "Lazy Blocks"
@@ -38,12 +38,12 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: classes/class-admin.php:57
-#: classes/class-admin.php:74
+#: classes/class-admin.php:58
+#: classes/class-admin.php:80
 msgid "Go Pro"
 msgstr ""
 
-#: classes/class-admin.php:286
+#: classes/class-admin.php:294
 msgid "and"
 msgstr ""
 
@@ -64,7 +64,7 @@ msgid "Duplicate “%1$s”"
 msgstr ""
 
 #: classes/class-blocks.php:458
-#: assets/editor-constructor/boxes/controls/control.js:183
+#: assets/editor-constructor/boxes/controls/control.js:184
 msgid "Duplicate"
 msgstr ""
 
@@ -112,6 +112,14 @@ msgstr ""
 
 #: classes/class-controls.php:45
 msgid "Layout"
+msgstr ""
+
+#: classes/class-deactivate-duplicate-plugin.php:69
+msgid "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks."
+msgstr ""
+
+#: classes/class-deactivate-duplicate-plugin.php:71
+msgid "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks Pro."
 msgstr ""
 
 #: classes/class-dummy.php:54
@@ -300,6 +308,10 @@ msgstr ""
 msgid "Toggle"
 msgstr ""
 
+#: controls/undefined/index.php:23
+msgid "Undefined"
+msgstr ""
+
 #: controls/url/index.php:23
 msgid "URL"
 msgstr ""
@@ -372,7 +384,7 @@ msgid "Search Icon"
 msgstr ""
 
 #: assets/components/icon-picker/index.js:66
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:111
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:120
 msgid "Type to Search..."
 msgstr ""
 
@@ -384,11 +396,19 @@ msgstr ""
 msgid "Icon Picker"
 msgstr ""
 
-#: assets/editor-constructor/block/edit.js:63
+#: assets/components/pro-notice/index.js:18
+msgid "Unlock Extra Features"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:23
+msgid "Upgrade to Lazy Blocks Pro"
+msgstr ""
+
+#: assets/editor-constructor/block/edit.js:65
 msgid "Supports"
 msgstr ""
 
-#: assets/editor-constructor/block/edit.js:66
+#: assets/editor-constructor/block/edit.js:68
 msgid "Condition"
 msgstr ""
 
@@ -503,19 +523,19 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:140
+#: assets/editor-constructor/boxes/controls/control.js:141
 msgid "(no label)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:158
+#: assets/editor-constructor/boxes/controls/control.js:159
 msgid "(copy)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:196
+#: assets/editor-constructor/boxes/controls/control.js:197
 msgid "Do you really want to remove control?"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:219
+#: assets/editor-constructor/boxes/controls/control.js:220
 msgid "Remove"
 msgstr ""
 
@@ -647,11 +667,11 @@ msgstr ""
 msgid "Unique metabox name"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:80
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:89
 msgid "Type"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:103
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:112
 msgid "Control Type"
 msgstr ""
 
@@ -1038,6 +1058,11 @@ msgstr ""
 
 #: controls/toggle/script.js:34
 msgid "Displays text alongside the toggle"
+msgstr ""
+
+#: controls/undefined/script.js:15
+#: controls/undefined/script.js:28
+msgid "Looks like this control does not exists."
 msgstr ""
 
 #: controls/url/script.js:39

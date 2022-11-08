@@ -68,6 +68,12 @@
          "Layout": [
             ""
          ],
+         "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks.": [
+            ""
+         ],
+         "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks Pro.": [
+            ""
+         ],
          "Example Block": [
             ""
          ],
@@ -199,6 +205,9 @@
          "Toggle": [
             ""
          ],
+         "Undefined": [
+            ""
+         ],
          "URL": [
             ""
          ],
@@ -257,6 +266,12 @@
             ""
          ],
          "Icon Picker": [
+            ""
+         ],
+         "Unlock Extra Features": [
+            ""
+         ],
+         "Upgrade to Lazy Blocks Pro": [
             ""
          ],
          "Supports": [
@@ -716,6 +731,9 @@
             ""
          ],
          "Displays text alongside the toggle": [
+            ""
+         ],
+         "Looks like this control does not exists.": [
             ""
          ],
          "Reset": [
