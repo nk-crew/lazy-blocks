@@ -58,19 +58,19 @@ class LazyBlocks_Dummy {
         );
 
         $code = '<?php if ( isset( $attributes[\'image\'][\'url\'] ) ) : ?>
-    <p>
-        <img src="<?php echo esc_url( $attributes[\'image\'][\'url\'] ); ?>" alt="<?php echo esc_attr( $attributes[\'image\'][\'alt\'] ); ?>">
-    </p>
+  <p>
+    <img src="<?php echo esc_url( $attributes[\'image\'][\'url\'] ); ?>" alt="<?php echo esc_attr( $attributes[\'image\'][\'alt\'] ); ?>">
+  </p>
 
-    <?php if ( isset( $attributes[\'button-label\'] ) ) : ?>
-        <p>
-            <a href="<?php echo esc_url( $attributes[\'button-url\'] ); ?>" class="button button-primary">
-                <?php echo esc_html( $attributes[\'button-label\'] ); ?>
-            </a>
-        </p>
-    <?php endif; ?>
+  <?php if ( isset( $attributes[\'button-label\'] ) ) : ?>
+    <p>
+      <a href="<?php echo esc_url( $attributes[\'button-url\'] ); ?>" class="button button-primary">
+        <?php echo esc_html( $attributes[\'button-label\'] ); ?>
+      </a>
+    </p>
+  <?php endif; ?>
 <?php else: ?>
-    <p>Image is required to show this block content.</p>
+  <p>Image is required to show this block content.</p>
 <?php endif; ?>';
 
         if ( $post_id ) {
