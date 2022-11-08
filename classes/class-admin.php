@@ -44,7 +44,7 @@ class LazyBlocks_Admin {
             'manage_options',
             lazyblocks()->get_plugin_site_url(
                 array(
-                    'sub_path'     => 'documentation/getting-started',
+                    'sub_path'     => 'docs/overview/',
                     'utm_campaign' => 'docs',
                 )
             )

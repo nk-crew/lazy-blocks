@@ -222,11 +222,11 @@ export default function CustomCodeSettings(props) {
                   <p className="description">
                     {__('Simple text field example see here:', 'lazy-blocks')}{' '}
                     <a
-                      href={`https://lazyblocks.com/documentation/blocks-controls/text/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_control&utm_content=${pluginVersion}`}
+                      href={`https://lazyblocks.com/docs/blocks-controls/text/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_control&utm_content=${pluginVersion}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      https://lazyblocks.com/documentation/blocks-controls/text/
+                      https://lazyblocks.com/docs/blocks-controls/text/
                     </a>
                   </p>
                   <hr />
@@ -239,11 +239,11 @@ export default function CustomCodeSettings(props) {
                   <p className="description">
                     {__('Note 2: supported custom PHP callback to output block', 'lazy-blocks')}{' '}
                     <a
-                      href={`https://lazyblocks.com/documentation/blocks-code/php-callback/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_php_callback&utm_content=${pluginVersion}`}
+                      href={`https://lazyblocks.com/docs/blocks-code/php-callback/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_php_callback&utm_content=${pluginVersion}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      https://lazyblocks.com/documentation/blocks-code/php-callback/
+                      https://lazyblocks.com/docs/blocks-code/php-callback/
                     </a>
                     .
                   </p>
@@ -302,7 +302,7 @@ export default function CustomCodeSettings(props) {
               </svg>
               {__('Read more:', 'lazy-blocks')}{' '}
               <a
-                href={`https://lazyblocks.com/documentation/blocks-code/theme-template/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_theme_template&utm_content=${pluginVersion}`}
+                href={`https://lazyblocks.com/docs/blocks-code/theme-template/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_theme_template&utm_content=${pluginVersion}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
