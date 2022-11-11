@@ -78,7 +78,7 @@ export default function Templates() {
     });
 
     if (result) {
-      result = `if ( function_exists( 'lazyblocks' ) ) :\n${result}\nendif;`;
+      result = `add_action( 'lzb/init', function() {\n${result}\n}`;
     }
 
     return result;
