@@ -22,7 +22,6 @@ class LazyBlocks_Admin {
 
         // Add Pro link to plugins page and menu.
         add_filter( 'plugin_action_links_' . lazyblocks()->plugin_basename(), array( $this, 'add_go_pro_link_plugins_page' ) );
-        add_action( 'admin_menu', array( $this, 'add_go_pro_link_admin_menu' ), 100 );
 
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_scripts' ) );
@@ -57,7 +56,7 @@ class LazyBlocks_Admin {
                 '',
                 '<span class="dashicons dashicons-star-filled" style="font-size: 17px"></span> ' . esc_html__( 'Go Pro', 'lazy-blocks' ),
                 'manage_options',
-                'lazy_blocks_go_pro'
+                lazyblocks()->get_plugin_site_url()
             );
         }
     }
@@ -80,21 +79,6 @@ class LazyBlocks_Admin {
                 '<a target="_blank" href="' . lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'plugins_list' ) ) . '">' . esc_html__( 'Go Pro', 'lazy-blocks' ) . '</a>',
             )
         );
-    }
-
-    /**
-     * Add go pro link to admin menu.
-     */
-    public function add_go_pro_link_admin_menu() {
-        global $submenu;
-
-        $plugin_submenu = &$submenu['edit.php?post_type=lazyblocks'];
-
-        foreach ( $plugin_submenu as $key => $submenu_item ) {
-            if ( 'lazy_blocks_go_pro' === $submenu_item[2] ) {
-                $plugin_submenu[ $key ][2] = lazyblocks()->get_plugin_site_url();
-            }
-        }
     }
 
     /**
