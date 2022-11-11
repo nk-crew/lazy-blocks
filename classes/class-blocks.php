@@ -1168,8 +1168,6 @@ class LazyBlocks_Blocks {
      * Add Gutenberg block assets.
      */
     public function register_block() {
-        global $post_type;
-
         $blocks = $this->get_blocks();
 
         wp_register_style( 'lazyblocks-editor', lazyblocks()->plugin_url() . 'dist/assets/editor/style.min.css', array(), LAZY_BLOCKS_VERSION );
@@ -1190,7 +1188,6 @@ class LazyBlocks_Blocks {
             'lazyblocks-editor',
             'lazyblocksGutenberg',
             array(
-                'post_type'          => $post_type,
                 'blocks'             => $blocks,
                 'controls'           => lazyblocks()->controls()->get_controls(),
                 'icons'              => lazyblocks()->icons()->get_all(),

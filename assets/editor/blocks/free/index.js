@@ -15,10 +15,7 @@ registerBlockType('lazyblock-core/free', {
   category: 'lazyblocks',
   supports: {
     html: true,
-    inserter:
-      window.lazyblocksGutenberg &&
-      window.lazyblocksGutenberg.post_type &&
-      'lazyblocks_templates' === window.lazyblocksGutenberg.post_type,
+    inserter: window.pagenow && 'lazyblocks_templates' === window.pagenow,
   },
   edit: BlockEdit,
   save: BlockSave,

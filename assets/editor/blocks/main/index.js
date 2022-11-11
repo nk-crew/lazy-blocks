@@ -7,7 +7,6 @@ const { RawHTML } = wp.element;
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {
   options = {
-    post_type: 'post',
     blocks: [],
     controls: {},
   };
@@ -19,13 +18,13 @@ const { registerBlockType } = wp.blocks;
 options.blocks.forEach((item) => {
   // conditionally show for specific post type.
   if (item.supports.inserter && item.condition.length) {
-    let preventInsertion = true;
+    let preventInsertion = false;
     item.condition.forEach((val) => {
-      if (val === options.post_type) {
-        preventInsertion = false;
+      if (window.pagenow && val === window.pagenow) {
+        preventInsertion = true;
       }
     });
-    item.supports.inserter = !preventInsertion;
+    item.supports.inserter = preventInsertion;
   }
 
   let registerIcon = '';
