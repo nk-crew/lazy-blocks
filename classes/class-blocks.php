@@ -79,7 +79,7 @@ class LazyBlocks_Blocks {
         add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 
         // sanitize block configs.
-        add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ) );
+        add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ), 100 );
 
         // add gutenberg blocks assets.
         if ( function_exists( 'register_block_type' ) ) {
