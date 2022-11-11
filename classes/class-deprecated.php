@@ -23,6 +23,9 @@ class LazyBlocks_Deprecations {
 
         // Filters for v2.1.0.
         add_filter( 'lzb/add_user_block', array( $this, 'v2_1_0_convert_user_block' ) );
+
+        // Actions for v2.0.0.
+        do_action( 'lzb/handlebars/object', array( $this, 'v2_0_0_deprecated_handlebars_action' ) );
     }
 
     /**
@@ -90,6 +93,15 @@ class LazyBlocks_Deprecations {
         }
 
         return $data;
+    }
+
+    /**
+     * Call deprecated handlebars action.
+     *
+     * @param Object $handlebars - handlebars data.
+     */
+    public function v2_0_0_deprecated_handlebars_action( $handlebars ) {
+        do_action( 'lzb_handlebars_object', $handlebars );
     }
 }
 
