@@ -3,21 +3,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Lazy Blocks 3.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/nk-o/lazyblocks/issues\n"
-"Last-Translator: nK\n"
+"Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
+"Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-08T22:04:03+00:00\n"
+"POT-Creation-Date: 2022-11-11T16:35:33+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
 #: classes/class-admin.php:260
-#: classes/class-blocks.php:317
-#: classes/class-blocks.php:1118
+#: classes/class-blocks.php:318
+#: classes/class-blocks.php:1140
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -30,7 +30,7 @@ msgid "Lazy Blocks Team"
 msgstr ""
 
 #. Author URI of the plugin
-msgid "https://lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline"
+msgid "https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline"
 msgstr ""
 
 #: classes/class-admin.php:42
@@ -47,48 +47,48 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: classes/class-blocks.php:318
 #: classes/class-blocks.php:319
+#: classes/class-blocks.php:320
 msgid "Blocks"
 msgstr ""
 
-#: classes/class-blocks.php:320
+#: classes/class-blocks.php:321
 #: assets/components/document-tabs/index.js:56
 #: assets/components/document-tabs/index.js:58
 msgid "Block"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:455
+#: classes/class-blocks.php:456
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:458
+#: classes/class-blocks.php:459
 #: assets/editor-constructor/boxes/controls/control.js:184
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:469
+#: classes/class-blocks.php:470
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:472
-#: classes/class-blocks.php:491
+#: classes/class-blocks.php:473
+#: classes/class-blocks.php:492
 msgid "Export"
 msgstr ""
 
-#: classes/class-blocks.php:525
+#: classes/class-blocks.php:526
 #: assets/editor-constructor/boxes/general/index.js:81
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:527
+#: classes/class-blocks.php:528
 #: assets/editor-constructor/boxes/general/index.js:87
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:528
+#: classes/class-blocks.php:529
 #: assets/editor-constructor/boxes/general/index.js:138
 msgid "Description"
 msgstr ""

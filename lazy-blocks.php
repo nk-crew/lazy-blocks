@@ -4,7 +4,7 @@
  * Description:  Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.
  * Version:      3.0.0
  * Author:       Lazy Blocks Team
- * Author URI:   https://lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline
+ * Author URI:   https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline
  * License:      GPLv2 or later
  * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:  lazy-blocks
@@ -198,7 +198,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
                 ),
                 $args
             );
-            $url        = 'https://lazyblocks.com/';
+            $url        = 'https://www.lazyblocks.com/';
             $first_flag = true;
 
             if ( isset( $args['sub_path'] ) && ! empty( $args['sub_path'] ) ) {

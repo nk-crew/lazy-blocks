@@ -16,7 +16,7 @@ export default function SaveInMetaRow(props) {
           <Button
             isSecondary
             isSmall
-            href={`https://lazyblocks.com/docs/examples/display-custom-fields-meta/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_meta&utm_content=${pluginVersion}`}
+            href={`https://www.lazyblocks.com/docs/examples/display-custom-fields-meta/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_meta&utm_content=${pluginVersion}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ marginTop: '10px' }}
