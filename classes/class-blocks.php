@@ -86,7 +86,9 @@ class LazyBlocks_Blocks {
             // add custom block categories.
             add_filter( 'block_categories_all', array( $this, 'block_categories_all' ), 100 );
 
-            add_action( 'init', array( $this, 'register_block' ) );
+            // It is important to have priority higher than 10 to allow users register
+            // custom blocks using standard `init` hook.
+            add_action( 'init', array( $this, 'register_block' ), 20 );
             add_action( 'init', array( $this, 'register_block_render' ), 20 );
         }
     }
