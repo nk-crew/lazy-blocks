@@ -829,6 +829,29 @@ class LazyBlocks_Blocks {
     }
 
     /**
+     * Prepare block controls by adding defaults.
+     *
+     * @param array $controls - block controls.
+     * @param array $all_controls - all registered controls.
+     *
+     * @return array
+     */
+    public function prepare_block_controls( $controls, $all_controls ) {
+        $result = array();
+
+        foreach ( (array) $controls as $k => $control ) {
+            if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) && isset( $all_controls[ $control['type'] ]['attributes'] ) ) {
+                $result[ $k ] = array_merge(
+                    $all_controls[ $control['type'] ]['attributes'],
+                    $control
+                );
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Convert block format.
      *
      * @param array $block_data - block data.
@@ -877,17 +900,8 @@ class LazyBlocks_Blocks {
             $keywords = array();
         }
 
-        $controls = $get_meta_value( 'lazyblocks_controls' );
-
         // prepare default control data.
-        foreach ( $controls as $k => $control ) {
-            if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) && isset( $all_controls[ $control['type'] ]['attributes'] ) ) {
-                $controls[ $k ] = array_merge(
-                    $all_controls[ $control['type'] ]['attributes'],
-                    $control
-                );
-            }
-        }
+        $controls = $this->prepare_block_controls( $get_meta_value( 'lazyblocks_controls' ), $all_controls );
 
         $align          = (array) $get_meta_value( 'lazyblocks_supports_align' );
         $align_none_key = array_search( 'none', $align, true );
@@ -975,7 +989,14 @@ class LazyBlocks_Blocks {
         $result = $this->blocks;
 
         if ( ! $db_only && $this->user_blocks ) {
-            $result = array_merge( $result, $this->user_blocks );
+            $all_user_blocks = $this->user_blocks;
+            $all_controls    = lazyblocks()->controls()->get_controls();
+
+            foreach ( $all_user_blocks as $block ) {
+                $block['controls'] = $this->prepare_block_controls( $block['controls'], $all_controls );
+
+                $result[] = $block;
+            }
         }
 
         // unique only.
