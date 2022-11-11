@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-11T16:35:33+00:00\n"
+"POT-Creation-Date: 2022-11-11T21:21:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: lazy-blocks\n"
@@ -1060,8 +1060,8 @@ msgstr ""
 msgid "Displays text alongside the toggle"
 msgstr ""
 
-#: controls/undefined/script.js:15
-#: controls/undefined/script.js:28
+#: controls/undefined/script.js:11
+#: controls/undefined/script.js:18
 msgid "Looks like this control does not exists."
 msgstr ""
 

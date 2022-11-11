@@ -45,10 +45,10 @@
     "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/node": "^7.18.10",
-    "@babel/plugin-proposal-object-rest-spread": "^7.18.9",
-    "@babel/plugin-transform-react-jsx": "^7.18.10",
-    "@babel/preset-env": "^7.18.10",
+    "@babel/node": "^7.20.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.2",
+    "@babel/plugin-transform-react-jsx": "^7.19.0",
+    "@babel/preset-env": "^7.20.2",
     "@babel/register": "^7.18.9",
     "@svgr/webpack": "^5.5.0",
     "base64-inline-loader": "^2.0.1",
@@ -59,7 +59,7 @@
     "gulp": "^4.0.2",
     "gulp-change-file-content": "^1.0.1",
     "gulp-zip": "^5.1.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.2",
     "lint-staged": "^13.0.3",
     "md5": "^2.3.0",
     "micromatch": "^4.0.5",
@@ -68,6 +68,6 @@
     "prettier-config-nk": "^1.1.0",
     "stylelint-config-nk": "^1.1.2",
     "wpeg": "^1.2.6",
-    "yargs": "^17.5.1"
+    "yargs": "^17.6.2"
   }
 }
