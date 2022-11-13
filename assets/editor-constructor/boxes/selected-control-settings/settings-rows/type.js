@@ -119,6 +119,8 @@ export default function TypeRow(props) {
                 onChange={(searchVal) => setSearch(searchVal)}
                 placeholder={__('Type to Search...', 'lazy-blocks')}
                 autoComplete="off"
+                className="lzb-constructor-type-search"
+                autoFocus
               />
               {Object.keys(availableCategories).map((cat) => (
                 <PanelBody

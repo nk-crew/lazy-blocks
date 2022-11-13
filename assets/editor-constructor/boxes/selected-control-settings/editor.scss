@@ -72,7 +72,8 @@
 }
 
 .lzb-constructor-type-dropdown {
-  margin: -24px;
+  margin: -32px;
+  margin-top: -10px;
 
   > .components-base-control {
     padding: 15px;
@@ -107,6 +108,12 @@
       display: block;
       margin-right: 10px;
     }
+  }
+}
+
+.lzb-constructor-type-search {
+  input[type="text"] {
+    padding: 10px 14px;
   }
 }
 
