@@ -17,7 +17,10 @@ import { CSS } from '@dnd-kit/utilities';
 import { arrayMoveImmutable } from 'array-move';
 
 const { __ } = wp.i18n;
+
 const { BaseControl, TextControl, Button } = wp.components;
+
+const { usePrevious } = wp.compose;
 
 const SortableItem = function (props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging, isSorting } =
@@ -43,6 +46,7 @@ const SortableItem = function (props) {
         placeholder={__('Label', 'lazy-blocks')}
         value={props.label}
         onChange={(value) => props.updateChoice({ label: value })}
+        autoFocus={props.focusInput}
       />
       <TextControl
         placeholder={__('Value', 'lazy-blocks')}
@@ -101,6 +105,8 @@ export default function ChoicesRow(props) {
   const { data, updateData } = props;
   const { choices = [] } = data;
 
+  const prevChoicesLength = usePrevious(choices && choices.length);
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -141,6 +147,7 @@ export default function ChoicesRow(props) {
   }
 
   const items = [];
+  let focusNewChoice = false;
 
   if (choices && choices.length) {
     choices.forEach((choice, i) => {
@@ -156,6 +163,11 @@ export default function ChoicesRow(props) {
         },
       });
     });
+
+    // Focus newly added choice input.
+    if (prevChoicesLength < choices.length) {
+      focusNewChoice = true;
+    }
   }
 
   return (
@@ -175,12 +187,15 @@ export default function ChoicesRow(props) {
               }}
             >
               <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                {items.map((value) => (
-                  <SortableItem
-                    key={`lzb-constructor-controls-item-settings-choices-item-${value.id}`}
-                    {...value}
-                  />
-                ))}
+                {items.map((value, index) => {
+                  return (
+                    <SortableItem
+                      key={`lzb-constructor-controls-item-settings-choices-item-${value.id}`}
+                      {...value}
+                      focusInput={index + 1 === choices.length ? focusNewChoice : false}
+                    />
+                  );
+                })}
               </SortableContext>
             </DndContext>
           </div>
