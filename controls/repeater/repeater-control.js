@@ -17,7 +17,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 const { __ } = wp.i18n;
 const { useEffect, useState } = wp.element;
-const { BaseControl, Button, Tooltip, ToggleControl } = wp.components;
+const { Button, Tooltip, ToggleControl } = wp.components;
 
 const { withInstanceId } = wp.compose;
 
@@ -110,7 +110,6 @@ const RepeaterItem = function (props) {
 
 function RepeaterControl(props) {
   const {
-    label,
     count = 0,
     controlData,
     renderRow = () => {},
@@ -219,65 +218,63 @@ function RepeaterControl(props) {
   }
 
   return (
-    <BaseControl label={label}>
-      <div className="lzb-gutenberg-repeater">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={(event) => {
-            const { active, over } = event;
+    <div className="lzb-gutenberg-repeater">
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={(event) => {
+          const { active, over } = event;
 
-            if (active.id !== over.id) {
-              resortRow(active.id - 1, over.id - 1);
+          if (active.id !== over.id) {
+            resortRow(active.id - 1, over.id - 1);
 
-              if (-1 < activeItem) {
-                setActiveItem(over.id - 1);
-              }
+            if (-1 < activeItem) {
+              setActiveItem(over.id - 1);
             }
+          }
+        }}
+      >
+        {items.length ? (
+          <div className="lzb-gutenberg-repeater-items">
+            <SortableContext items={items} strategy={verticalListSortingStrategy}>
+              {items.map((value) => (
+                <RepeaterItem
+                  key={`lzb-constructor-controls-items-sortable-${value.id}`}
+                  {...value}
+                />
+              ))}
+            </SortableContext>
+          </div>
+        ) : null}
+      </DndContext>
+      <div className="lzb-gutenberg-repeater-options">
+        <Button
+          isSecondary
+          isSmall
+          disabled={controlData.rows_max && count >= controlData.rows_max}
+          onClick={() => {
+            addRow();
           }}
         >
-          {items.length ? (
-            <div className="lzb-gutenberg-repeater-items">
-              <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                {items.map((value) => (
-                  <RepeaterItem
-                    key={`lzb-constructor-controls-items-sortable-${value.id}`}
-                    {...value}
-                  />
-                ))}
-              </SortableContext>
+          {controlData.rows_add_button_label || __('+ Add Row', 'lazy-blocks')}
+        </Button>
+        {'true' === controlData.rows_collapsible && items.length && 1 < items.length ? (
+          <Tooltip text={__('Toggle all rows', 'lazy-blocks')}>
+            <div>
+              {/* For some reason Tooltip is not working without this <div> */}
+              <ToggleControl
+                checked={-2 === activeItem}
+                onChange={() => {
+                  setActiveItem(-2 === activeItem ? -1 : -2);
+                }}
+              />
             </div>
-          ) : null}
-        </DndContext>
-        <div className="lzb-gutenberg-repeater-options">
-          <Button
-            isSecondary
-            isSmall
-            disabled={controlData.rows_max && count >= controlData.rows_max}
-            onClick={() => {
-              addRow();
-            }}
-          >
-            {controlData.rows_add_button_label || __('+ Add Row', 'lazy-blocks')}
-          </Button>
-          {'true' === controlData.rows_collapsible && items.length && 1 < items.length ? (
-            <Tooltip text={__('Toggle all rows', 'lazy-blocks')}>
-              <div>
-                {/* For some reason Tooltip is not working without this <div> */}
-                <ToggleControl
-                  checked={-2 === activeItem}
-                  onChange={() => {
-                    setActiveItem(-2 === activeItem ? -1 : -2);
-                  }}
-                />
-              </div>
-            </Tooltip>
-          ) : (
-            ''
-          )}
-        </div>
+          </Tooltip>
+        ) : (
+          ''
+        )}
       </div>
-    </BaseControl>
+    </div>
   );
 }
 

@@ -1,3 +1,5 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { Fragment } = wp.element;
@@ -13,14 +15,15 @@ addFilter('lzb.editor.control.text.render', 'lzb.editor', (render, props) => {
   const maxlength = props.data.characters_limit ? parseInt(props.data.characters_limit, 10) : '';
 
   return (
-    <TextControl
-      label={props.data.label}
-      maxLength={maxlength}
-      help={props.data.help}
-      placeholder={props.data.placeholder}
-      value={props.getValue()}
-      onChange={props.onChange}
-    />
+    <BaseControl help={props.data.help}>
+      <TextControl
+        label={props.data.label}
+        maxLength={maxlength}
+        placeholder={props.data.placeholder}
+        value={props.getValue()}
+        onChange={props.onChange}
+      />
+    </BaseControl>
   );
 });
 

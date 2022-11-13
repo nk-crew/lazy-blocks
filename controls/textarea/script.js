@@ -1,3 +1,5 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { Fragment } = wp.element;
@@ -13,14 +15,15 @@ addFilter('lzb.editor.control.textarea.render', 'lzb.editor', (render, props) =>
   const maxlength = props.data.characters_limit ? parseInt(props.data.characters_limit, 10) : '';
 
   return (
-    <TextareaControl
-      label={props.data.label}
-      maxLength={maxlength}
-      help={props.data.help}
-      value={props.getValue()}
-      placeholder={props.data.placeholder}
-      onChange={props.onChange}
-    />
+    <BaseControl help={props.data.help}>
+      <TextareaControl
+        label={props.data.label}
+        maxLength={maxlength}
+        value={props.getValue()}
+        placeholder={props.data.placeholder}
+        onChange={props.onChange}
+      />
+    </BaseControl>
   );
 });
 

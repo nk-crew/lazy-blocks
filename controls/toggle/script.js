@@ -1,20 +1,21 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { Fragment } = wp.element;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, BaseControl, TextControl, ToggleControl } = wp.components;
+const { PanelBody, TextControl, ToggleControl } = wp.components;
 
 /**
  * Control render in editor.
  */
 addFilter('lzb.editor.control.toggle.render', 'lzb.editor', (render, props) => (
-  <BaseControl label={props.data.label}>
+  <BaseControl label={props.data.label} help={props.data.help}>
     <ToggleControl
       label={props.data.alongside_text}
       checked={!!props.getValue()}
-      help={props.data.help}
       onChange={props.onChange}
     />
   </BaseControl>

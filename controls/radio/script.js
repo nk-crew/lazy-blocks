@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import BaseControl from '../../assets/components/base-control';
 import ComponentChoices from '../select/component-choices';
 
 const { __ } = wp.i18n;
@@ -7,19 +8,20 @@ const { Fragment } = wp.element;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, BaseControl, RadioControl, ToggleControl } = wp.components;
+const { PanelBody, RadioControl, ToggleControl } = wp.components;
 
 /**
  * Control render in editor.
  */
 addFilter('lzb.editor.control.radio.render', 'lzb.editor', (render, props) => (
-  <RadioControl
-    label={props.data.label}
-    help={props.data.help}
-    selected={props.getValue()}
-    options={props.data.choices}
-    onChange={props.onChange}
-  />
+  <BaseControl help={props.data.help}>
+    <RadioControl
+      label={props.data.label}
+      selected={props.getValue()}
+      options={props.data.choices}
+      onChange={props.onChange}
+    />
+  </BaseControl>
 ));
 
 /**

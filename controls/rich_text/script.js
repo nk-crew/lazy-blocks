@@ -1,8 +1,10 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, ToggleControl, BaseControl } = wp.components;
+const { PanelBody, ToggleControl } = wp.components;
 
 const { RichText } = wp.blockEditor;
 

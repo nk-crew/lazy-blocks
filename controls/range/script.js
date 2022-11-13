@@ -1,3 +1,5 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { Fragment } = wp.element;
@@ -10,17 +12,18 @@ const { PanelBody, RangeControl, TextControl } = wp.components;
  * Control render in editor.
  */
 addFilter('lzb.editor.control.range.render', 'lzb.editor', (render, props) => (
-  <RangeControl
-    label={props.data.label}
-    min={props.data.min}
-    max={props.data.max}
-    step={props.data.step}
-    help={props.data.help}
-    value={props.getValue()}
-    onChange={(val) => {
-      props.onChange(parseFloat(val));
-    }}
-  />
+  <BaseControl help={props.data.help}>
+    <RangeControl
+      label={props.data.label}
+      min={props.data.min}
+      max={props.data.max}
+      step={props.data.step}
+      value={props.getValue()}
+      onChange={(val) => {
+        props.onChange(parseFloat(val));
+      }}
+    />
+  </BaseControl>
 ));
 
 /**

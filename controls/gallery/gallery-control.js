@@ -1,6 +1,8 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
-const { BaseControl, Button, DropZone, withNotices } = wp.components;
+const { Button, DropZone, withNotices } = wp.components;
 
 const { MediaPlaceholder, MediaUpload } = wp.blockEditor;
 

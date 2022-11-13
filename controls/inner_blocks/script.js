@@ -1,6 +1,6 @@
-const { addFilter } = wp.hooks;
+import BaseControl from '../../assets/components/base-control';
 
-const { BaseControl } = wp.components;
+const { addFilter } = wp.hooks;
 
 const { InnerBlocks } = wp.blockEditor;
 

@@ -1,8 +1,8 @@
+import BaseControl from '../../assets/components/base-control';
+
 import TMCE from './tmce';
 
 const { addFilter } = wp.hooks;
-
-const { BaseControl } = wp.components;
 
 /**
  * Control render in editor.

@@ -1,20 +1,21 @@
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { Fragment } = wp.element;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, BaseControl, TextControl, CheckboxControl } = wp.components;
+const { PanelBody, TextControl, CheckboxControl } = wp.components;
 
 /**
  * Control render in editor.
  */
 addFilter('lzb.editor.control.checkbox.render', 'lzb.editor', (render, props) => (
-  <BaseControl label={props.data.label}>
+  <BaseControl label={props.data.label} help={props.data.help}>
     <CheckboxControl
       label={props.data.alongside_text}
       checked={!!props.getValue()}
-      help={props.data.help}
       onChange={props.onChange}
     />
   </BaseControl>

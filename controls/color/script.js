@@ -1,3 +1,5 @@
+import BaseControl from '../../assets/components/base-control';
+
 import ColorControl from './color-control';
 
 const { __ } = wp.i18n;
@@ -6,19 +8,19 @@ const { addFilter } = wp.hooks;
 
 const { Fragment } = wp.element;
 
-const { PanelBody, BaseControl, ToggleControl, RadioControl } = wp.components;
+const { PanelBody, ToggleControl, RadioControl } = wp.components;
 
 /**
  * Control render in editor.
  */
 addFilter('lzb.editor.control.color.render', 'lzb.editor', (render, props) => (
-  <ColorControl
-    label={props.data.label}
-    help={props.data.help}
-    alpha={'true' === props.data.alpha}
-    value={props.getValue()}
-    onChange={props.onChange}
-  />
+  <BaseControl label={props.data.label} help={props.data.help}>
+    <ColorControl
+      alpha={'true' === props.data.alpha}
+      value={props.getValue()}
+      onChange={props.onChange}
+    />
+  </BaseControl>
 ));
 
 /**

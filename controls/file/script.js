@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable indent */
 import Select from '../../assets/components/select';
+import BaseControl from '../../assets/components/base-control';
 
 import FileControl from './file-control';
 
@@ -8,7 +9,7 @@ const { __ } = wp.i18n;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, BaseControl } = wp.components;
+const { PanelBody } = wp.components;
 
 const { allowed_mime_types: wpAllowedMimeTypes } =
   window.lazyblocksConstructorData || window.lazyblocksGutenberg;
@@ -17,26 +18,27 @@ const { allowed_mime_types: wpAllowedMimeTypes } =
  * Control render in editor.
  */
 addFilter('lzb.editor.control.file.render', 'lzb.editor', (render, props) => (
-  <FileControl
-    label={props.data.label}
-    help={props.data.help}
-    allowedMimeTypes={props.data.allowed_mime_types}
-    value={props.getValue()}
-    onChange={(val) => {
-      const result = val
-        ? {
-            alt: val.alt || '',
-            title: val.title || '',
-            caption: val.caption || '',
-            id: val.id || '',
-            link: val.link || '',
-            url: val.url || '',
-          }
-        : '';
+  <BaseControl label={props.data.label} help={props.data.help}>
+    <FileControl
+      label={props.data.label}
+      allowedMimeTypes={props.data.allowed_mime_types}
+      value={props.getValue()}
+      onChange={(val) => {
+        const result = val
+          ? {
+              alt: val.alt || '',
+              title: val.title || '',
+              caption: val.caption || '',
+              id: val.id || '',
+              link: val.link || '',
+              url: val.url || '',
+            }
+          : '';
 
-      props.onChange(result);
-    }}
-  />
+        props.onChange(result);
+      }}
+    />
+  </BaseControl>
 ));
 
 /**

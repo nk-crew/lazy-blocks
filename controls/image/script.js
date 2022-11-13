@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable indent */
+import BaseControl from '../../assets/components/base-control';
+
 import ImageControl from './image-control';
 
 const { addFilter } = wp.hooks;
@@ -14,28 +16,28 @@ const { PanelBody, SelectControl } = wp.components;
  * Control render in editor.
  */
 addFilter('lzb.editor.control.image.render', 'lzb.editor', (render, props) => (
-  <ImageControl
-    label={props.data.label}
-    help={props.data.help}
-    previewSize={props.data.preview_size}
-    value={props.getValue()}
-    onChange={(val) => {
-      const result = val
-        ? {
-            alt: val.alt || '',
-            title: val.title || '',
-            caption: val.caption || '',
-            description: val.description || '',
-            id: val.id || '',
-            link: val.link || '',
-            url: val.url || '',
-            sizes: val.sizes || '',
-          }
-        : '';
+  <BaseControl label={props.data.label} help={props.data.help}>
+    <ImageControl
+      previewSize={props.data.preview_size}
+      value={props.getValue()}
+      onChange={(val) => {
+        const result = val
+          ? {
+              alt: val.alt || '',
+              title: val.title || '',
+              caption: val.caption || '',
+              description: val.description || '',
+              id: val.id || '',
+              link: val.link || '',
+              url: val.url || '',
+              sizes: val.sizes || '',
+            }
+          : '';
 
-      props.onChange(result);
-    }}
-  />
+        props.onChange(result);
+      }}
+    />
+  </BaseControl>
 ));
 
 /**

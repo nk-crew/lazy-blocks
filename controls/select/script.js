@@ -1,4 +1,6 @@
 /* eslint-disable no-param-reassign */
+import BaseControl from '../../assets/components/base-control';
+
 import ComponentChoices from './component-choices';
 
 const { __ } = wp.i18n;
@@ -7,7 +9,7 @@ const { Fragment } = wp.element;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, BaseControl, SelectControl, ToggleControl, RadioControl } = wp.components;
+const { PanelBody, SelectControl, ToggleControl, RadioControl } = wp.components;
 
 /**
  * Control render in editor.
@@ -27,17 +29,18 @@ addFilter('lzb.editor.control.select.render', 'lzb.editor', (render, props) => {
   }
 
   return (
-    <SelectControl
-      label={props.data.label}
-      options={choices}
-      multiple={'true' === props.data.multiple}
-      help={props.data.help}
-      value={props.getValue()}
-      className="lzb-gutenberg-select"
-      onChange={(val) => {
-        props.onChange(val);
-      }}
-    />
+    <BaseControl help={props.data.help}>
+      <SelectControl
+        label={props.data.label}
+        options={choices}
+        multiple={'true' === props.data.multiple}
+        value={props.getValue()}
+        className="lzb-gutenberg-select"
+        onChange={(val) => {
+          props.onChange(val);
+        }}
+      />
+    </BaseControl>
   );
 });
 

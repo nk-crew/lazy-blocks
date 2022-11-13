@@ -3,14 +3,15 @@
  */
 import classnames from 'classnames/dedupe';
 
+import BaseControl from '../../assets/components/base-control';
+
 const { __ } = wp.i18n;
 
 const { addFilter } = wp.hooks;
 
 const { __experimentalGetSettings: getSettings, dateI18n } = wp.date;
 
-const { Dropdown, PanelBody, BaseControl, ButtonGroup, Button, DatePicker, TimePicker } =
-  wp.components;
+const { Dropdown, PanelBody, ButtonGroup, Button, DatePicker, TimePicker } = wp.components;
 
 /**
  * Date Time Picker.

@@ -2,13 +2,15 @@
 import { arrayMoveImmutable } from 'array-move';
 import classnames from 'classnames/dedupe';
 
+import BaseControl from '../../assets/components/base-control';
+
 import RepeaterControl from './repeater-control';
 
 const { __, _n, sprintf } = wp.i18n;
 
 const { Fragment, useState } = wp.element;
 
-const { PanelBody, BaseControl, TextControl, ToggleControl } = wp.components;
+const { PanelBody, TextControl, ToggleControl } = wp.components;
 
 const { addFilter } = wp.hooks;
 
@@ -19,53 +21,54 @@ addFilter('lzb.editor.control.repeater.render', 'lzb.editor', (render, props) =>
   const val = props.getValue() || [];
 
   return (
-    <RepeaterControl
-      controlData={props.data}
-      label={props.data.label}
-      count={val.length}
-      getInnerControls={(index) => {
-        const innerControls = props.getControls(props.uniqueId);
-        const innerResult = {};
+    <BaseControl label={props.data.label} help={props.data.help}>
+      <RepeaterControl
+        controlData={props.data}
+        count={val.length}
+        getInnerControls={(index) => {
+          const innerControls = props.getControls(props.uniqueId);
+          const innerResult = {};
 
-        Object.keys(innerControls).forEach((i) => {
-          const innerData = innerControls[i];
+          Object.keys(innerControls).forEach((i) => {
+            const innerData = innerControls[i];
 
-          innerResult[i] = {
-            data: innerData,
-            val: props.getValue(innerData, index),
-          };
-        });
+            innerResult[i] = {
+              data: innerData,
+              val: props.getValue(innerData, index),
+            };
+          });
 
-        return innerResult;
-      }}
-      renderRow={(index) => (
-        <Fragment>{props.renderControls(props.placement, props.uniqueId, index)}</Fragment>
-      )}
-      removeRow={(i) => {
-        if (-1 < i) {
-          val.splice(i, 1);
+          return innerResult;
+        }}
+        renderRow={(index) => (
+          <Fragment>{props.renderControls(props.placement, props.uniqueId, index)}</Fragment>
+        )}
+        removeRow={(i) => {
+          if (-1 < i) {
+            val.splice(i, 1);
+            props.onChange(val);
+          }
+        }}
+        addRow={() => {
+          const innerControls = props.getControls(props.uniqueId);
+          const newRow = {};
+
+          // Add defaults to the new row.
+          Object.keys(innerControls).forEach((i) => {
+            const innerControl = innerControls[i];
+
+            newRow[innerControl.name] = innerControl.default || '';
+          });
+
+          val.push(newRow);
           props.onChange(val);
-        }
-      }}
-      addRow={() => {
-        const innerControls = props.getControls(props.uniqueId);
-        const newRow = {};
-
-        // Add defaults to the new row.
-        Object.keys(innerControls).forEach((i) => {
-          const innerControl = innerControls[i];
-
-          newRow[innerControl.name] = innerControl.default || '';
-        });
-
-        val.push(newRow);
-        props.onChange(val);
-      }}
-      resortRow={(oldIndex, newIndex) => {
-        const newVal = arrayMoveImmutable(val, oldIndex, newIndex);
-        props.onChange(newVal);
-      }}
-    />
+        }}
+        resortRow={(oldIndex, newIndex) => {
+          const newVal = arrayMoveImmutable(val, oldIndex, newIndex);
+          props.onChange(newVal);
+        }}
+      />
+    </BaseControl>
   );
 });
 

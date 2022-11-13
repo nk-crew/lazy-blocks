@@ -26,7 +26,6 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
             'as_child'          => false,
             'default_settings'  => false,
             'required_settings' => false,
-            'help_settings'     => false,
         );
         $this->attributes   = array(
             'rows_min'              => '',

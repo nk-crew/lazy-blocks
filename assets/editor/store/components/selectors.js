@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import BaseControl from '../../../components/base-control';
 import BlockSlug from '../../../components/block-slug';
 import Box from '../../../components/box';
 import CodeEditor from '../../../components/code-editor';
@@ -14,6 +15,7 @@ import Tabs from '../../../components/tabs';
 
 export function get() {
   return {
+    BaseControl,
     BlockSlug,
     Box,
     CodeEditor,

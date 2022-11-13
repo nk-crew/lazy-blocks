@@ -1,12 +1,14 @@
 import shorthash from 'shorthash';
 
+import BaseControl from '../../assets/components/base-control';
+
 const { useState } = wp.element;
 
 const { __ } = wp.i18n;
 
 const { addFilter } = wp.hooks;
 
-const { BaseControl, Button } = wp.components;
+const { Button } = wp.components;
 
 const { __experimentalLinkControl: LinkControl } = wp.blockEditor;
 
