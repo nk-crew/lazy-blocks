@@ -4,11 +4,7 @@ import BaseControl from '../../assets/components/base-control';
 
 const { useState } = wp.element;
 
-const { __ } = wp.i18n;
-
 const { addFilter } = wp.hooks;
-
-const { Button } = wp.components;
 
 const { __experimentalLinkControl: LinkControl } = wp.blockEditor;
 
@@ -28,21 +24,11 @@ function ComponentRender(props) {
           onChange={({ url: newURL = '' }) => {
             props.onChange(newURL);
           }}
+          onRemove={() => {
+            props.onChange('');
+            setKey(shorthash.unique(`${new Date()}`));
+          }}
         />
-        {props.getValue() ? (
-          <Button
-            isSmall
-            isSecondary
-            onClick={() => {
-              props.onChange('');
-              setKey(shorthash.unique(`${new Date()}`));
-            }}
-          >
-            {__('Reset', 'lazy-blocks')}
-          </Button>
-        ) : (
-          ''
-        )}
       </div>
     </BaseControl>
   );
