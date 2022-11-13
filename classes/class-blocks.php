@@ -583,11 +583,11 @@ class LazyBlocks_Blocks {
     }
 
     /**
-     * Default constructor block data.
+     * Default block data.
      *
      * @var array
      */
-    private $constructor_meta_defaults = array(
+    private $block_defaults = array(
         'lazyblocks_controls'                        => array(),
 
         'lazyblocks_slug'                            => '',
@@ -629,8 +629,8 @@ class LazyBlocks_Blocks {
      *
      * @return array
      */
-    private function get_constructor_meta_defaults() {
-        return apply_filters( 'lzb/constructor_meta_defaults', $this->constructor_meta_defaults );
+    private function get_block_defaults() {
+        return apply_filters( 'lzb/block_defaults', $this->block_defaults );
     }
 
     /**
@@ -642,7 +642,7 @@ class LazyBlocks_Blocks {
      * @return mixed
      */
     private function get_meta_value( $name, $result ) {
-        $defaults = $this->get_constructor_meta_defaults();
+        $defaults = $this->get_block_defaults();
         $default  = null;
 
         if ( isset( $defaults[ $name ] ) ) {
@@ -725,7 +725,7 @@ class LazyBlocks_Blocks {
      * @param array $data Metaboxes data for save.
      */
     public function save_meta_boxes( $post_id, $data ) {
-        $defaults = $this->get_constructor_meta_defaults();
+        $defaults = $this->get_block_defaults();
 
         foreach ( $defaults as $meta => $default ) {
             $new_meta_value = '';
@@ -807,7 +807,7 @@ class LazyBlocks_Blocks {
      * @return array|null
      */
     public function get_meta_boxes( $post_id ) {
-        $defaults    = $this->get_constructor_meta_defaults();
+        $defaults    = $this->get_block_defaults();
         $result_meta = array();
 
         foreach ( $defaults as $meta => $default ) {
