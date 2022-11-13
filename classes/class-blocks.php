@@ -926,46 +926,50 @@ class LazyBlocks_Blocks {
             unset( $align[ $align_none_key ] );
         }
 
-        return array(
-            'id'             => $id,
-            'title'          => $post_title,
-            'icon'           => $icon,
-            'keywords'       => $keywords,
-            'slug'           => 'lazyblock/' . esc_html( $get_meta_value( 'lazyblocks_slug' ) ),
-            'description'    => $get_meta_value( 'lazyblocks_description' ),
-            'category'       => $this->sanitize_slug( esc_html( $get_meta_value( 'lazyblocks_category' ) ) ),
-            'category_label' => esc_html( $get_meta_value( 'lazyblocks_category' ) ),
-            'supports'       => array(
-                'customClassName' => $get_meta_value( 'lazyblocks_supports_classname' ),
-                'anchor'          => $get_meta_value( 'lazyblocks_supports_anchor' ),
-                'align'           => $align,
-                'html'            => $get_meta_value( 'lazyblocks_supports_html' ),
-                'multiple'        => $get_meta_value( 'lazyblocks_supports_multiple' ),
-                'inserter'        => $get_meta_value( 'lazyblocks_supports_inserter' ),
-            ),
-            'ghostkit'       => array(
-                'supports' => array(
-                    'spacings'     => $get_meta_value( 'lazyblocks_supports_ghostkit_spacings' ),
-                    'display'      => $get_meta_value( 'lazyblocks_supports_ghostkit_display' ),
-                    'scrollReveal' => $get_meta_value( 'lazyblocks_supports_ghostkit_scroll_reveal' ),
-                    'frame'        => $get_meta_value( 'lazyblocks_supports_ghostkit_frame' ),
-                    'customCSS'    => $get_meta_value( 'lazyblocks_supports_ghostkit_custom_css' ),
+        return apply_filters(
+            'lzb/block_data',
+            array(
+                'id'             => $id,
+                'title'          => $post_title,
+                'icon'           => $icon,
+                'keywords'       => $keywords,
+                'slug'           => 'lazyblock/' . esc_html( $get_meta_value( 'lazyblocks_slug' ) ),
+                'description'    => $get_meta_value( 'lazyblocks_description' ),
+                'category'       => $this->sanitize_slug( esc_html( $get_meta_value( 'lazyblocks_category' ) ) ),
+                'category_label' => esc_html( $get_meta_value( 'lazyblocks_category' ) ),
+                'supports'       => array(
+                    'customClassName' => $get_meta_value( 'lazyblocks_supports_classname' ),
+                    'anchor'          => $get_meta_value( 'lazyblocks_supports_anchor' ),
+                    'align'           => $align,
+                    'html'            => $get_meta_value( 'lazyblocks_supports_html' ),
+                    'multiple'        => $get_meta_value( 'lazyblocks_supports_multiple' ),
+                    'inserter'        => $get_meta_value( 'lazyblocks_supports_inserter' ),
                 ),
+                'ghostkit'       => array(
+                    'supports' => array(
+                        'spacings'     => $get_meta_value( 'lazyblocks_supports_ghostkit_spacings' ),
+                        'display'      => $get_meta_value( 'lazyblocks_supports_ghostkit_display' ),
+                        'scrollReveal' => $get_meta_value( 'lazyblocks_supports_ghostkit_scroll_reveal' ),
+                        'frame'        => $get_meta_value( 'lazyblocks_supports_ghostkit_frame' ),
+                        'customCSS'    => $get_meta_value( 'lazyblocks_supports_ghostkit_custom_css' ),
+                    ),
+                ),
+                'controls'       => $controls,
+                'code'           => array(
+                    'output_method'     => $get_meta_value( 'lazyblocks_code_output_method' ),
+                    'editor_html'       => $get_meta_value( 'lazyblocks_code_editor_html' ),
+                    'editor_callback'   => '',
+                    'editor_css'        => $get_meta_value( 'lazyblocks_code_editor_css' ),
+                    'frontend_html'     => $get_meta_value( 'lazyblocks_code_frontend_html' ),
+                    'frontend_callback' => '',
+                    'frontend_css'      => $get_meta_value( 'lazyblocks_code_frontend_css' ),
+                    'show_preview'      => $get_meta_value( 'lazyblocks_code_show_preview' ),
+                    'single_output'     => $get_meta_value( 'lazyblocks_code_single_output' ),
+                ),
+                'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),
+                'edit_url'       => get_edit_post_link( $id ),
             ),
-            'controls'       => $controls,
-            'code'           => array(
-                'output_method'     => $get_meta_value( 'lazyblocks_code_output_method' ),
-                'editor_html'       => $get_meta_value( 'lazyblocks_code_editor_html' ),
-                'editor_callback'   => '',
-                'editor_css'        => $get_meta_value( 'lazyblocks_code_editor_css' ),
-                'frontend_html'     => $get_meta_value( 'lazyblocks_code_frontend_html' ),
-                'frontend_callback' => '',
-                'frontend_css'      => $get_meta_value( 'lazyblocks_code_frontend_css' ),
-                'show_preview'      => $get_meta_value( 'lazyblocks_code_show_preview' ),
-                'single_output'     => $get_meta_value( 'lazyblocks_code_single_output' ),
-            ),
-            'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),
-            'edit_url'       => get_edit_post_link( $id ),
+            $get_meta_value
         );
     }
 
