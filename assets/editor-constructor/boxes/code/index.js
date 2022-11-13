@@ -328,23 +328,23 @@ export default function CustomCodeSettings(props) {
   const settingsPreview = applyFilters(
     `lzb.constructor.code-settings.preview`,
     <PanelBody>
-      <BaseControl label={__('Show block preview in editor', 'lazy-blocks')}>
+      <BaseControl label={__('Code Output in Editor', 'lazy-blocks')}>
         <SelectControl
           options={[
             {
-              label: __('Always', 'lazy-blocks'),
+              label: __('Display Always', 'lazy-blocks'),
               value: 'always',
             },
             {
-              label: __('Within `selected` block only', 'lazy-blocks'),
+              label: __('Display within `selected` block only', 'lazy-blocks'),
               value: 'selected',
             },
             {
-              label: __('Within `unselected` block only', 'lazy-blocks'),
+              label: __('Display within `unselected` block only', 'lazy-blocks'),
               value: 'unselected',
             },
             {
-              label: __('Never', 'lazy-blocks'),
+              label: __('Never Display', 'lazy-blocks'),
               value: 'never',
             },
           ]}

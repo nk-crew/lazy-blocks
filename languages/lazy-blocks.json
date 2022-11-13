@@ -334,19 +334,19 @@
          "How to use theme template": [
             ""
          ],
-         "Show block preview in editor": [
+         "Code Output in Editor": [
             ""
          ],
-         "Always": [
+         "Display Always": [
             ""
          ],
-         "Within `selected` block only": [
+         "Display within `selected` block only": [
             ""
          ],
-         "Within `unselected` block only": [
+         "Display within `unselected` block only": [
             ""
          ],
-         "Never": [
+         "Never Display": [
             ""
          ],
          "Code": [
