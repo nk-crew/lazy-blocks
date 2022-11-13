@@ -14,7 +14,7 @@ const { __, sprintf } = wp.i18n;
 
 const { apiFetch } = wp;
 
-const { doAction } = wp.hooks;
+const { doAction, applyFilters } = wp.hooks;
 
 const { useSelect } = wp.data;
 
@@ -131,6 +131,28 @@ export default function PreviewServerCallback(props) {
 
   useEffect(() => {
     if (!allowRender) {
+      return;
+    }
+
+    // Filter to allow custom providers to disable fetching. Used in the Pro blocks preloading feature.
+    // Forward everything from this component to filter.
+    const allowFetch = applyFilters('lzb.components.PreviewServerCallback.allowFetch', true, {
+      props,
+      prevProps,
+      response,
+      setResponse,
+      isLoading,
+      setIsLoading,
+      allowRender,
+      setAllowRender,
+      isMountedRef,
+      currentFetchRequest,
+      postId,
+      fetchData,
+      debouncedFetchData,
+    });
+
+    if (!allowFetch) {
       return;
     }
 
