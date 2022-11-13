@@ -122,6 +122,7 @@
   select[multiple].components-select-control__input {
     height: auto;
     padding-right: 8px;
+    overflow: auto;
 
     + .components-input-control__suffix {
       display: none;
