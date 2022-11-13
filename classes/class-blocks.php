@@ -583,11 +583,11 @@ class LazyBlocks_Blocks {
     }
 
     /**
-     * Default values of controls.
+     * Default constructor block data.
      *
      * @var array
      */
-    private $defaults = array(
+    private $constructor_meta_defaults = array(
         'lazyblocks_controls'                        => array(),
 
         'lazyblocks_slug'                            => '',
@@ -625,6 +625,15 @@ class LazyBlocks_Blocks {
     );
 
     /**
+     * Return default constructor block data.
+     *
+     * @return array
+     */
+    private function get_constructor_meta_defaults() {
+        return apply_filters( 'lzb/constructor_meta_defaults', $this->constructor_meta_defaults );
+    }
+
+    /**
      * Get metabox value by name.
      *
      * @param string $name - meta name.
@@ -633,9 +642,11 @@ class LazyBlocks_Blocks {
      * @return mixed
      */
     private function get_meta_value( $name, $result ) {
-        $default = null;
-        if ( isset( $this->defaults[ $name ] ) ) {
-            $default = $this->defaults[ $name ];
+        $defaults = $this->get_constructor_meta_defaults();
+        $default  = null;
+
+        if ( isset( $defaults[ $name ] ) ) {
+            $default = $defaults[ $name ];
         }
 
         if ( '' === $result && null !== $default ) {
@@ -714,7 +725,9 @@ class LazyBlocks_Blocks {
      * @param array $data Metaboxes data for save.
      */
     public function save_meta_boxes( $post_id, $data ) {
-        foreach ( $this->defaults as $meta => $default ) {
+        $defaults = $this->get_constructor_meta_defaults();
+
+        foreach ( $defaults as $meta => $default ) {
             $new_meta_value = '';
 
             if ( isset( $data[ $meta ] ) ) {
@@ -794,9 +807,10 @@ class LazyBlocks_Blocks {
      * @return array|null
      */
     public function get_meta_boxes( $post_id ) {
+        $defaults    = $this->get_constructor_meta_defaults();
         $result_meta = array();
 
-        foreach ( $this->defaults as $meta => $default ) {
+        foreach ( $defaults as $meta => $default ) {
             $result_meta[ $meta ] = $this->get_meta_value_by_id( $meta, $post_id );
         }
 
