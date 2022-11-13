@@ -9,15 +9,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-11T21:21:11+00:00\n"
+"POT-Creation-Date: 2022-11-13T22:00:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
-#: classes/class-admin.php:260
+#: classes/class-admin.php:244
 #: classes/class-blocks.php:318
-#: classes/class-blocks.php:1140
+#: classes/class-blocks.php:1154
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -33,17 +33,17 @@ msgstr ""
 msgid "https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline"
 msgstr ""
 
+#: classes/class-admin.php:41
 #: classes/class-admin.php:42
-#: classes/class-admin.php:43
 msgid "Documentation"
 msgstr ""
 
-#: classes/class-admin.php:58
-#: classes/class-admin.php:80
+#: classes/class-admin.php:57
+#: classes/class-admin.php:79
 msgid "Go Pro"
 msgstr ""
 
-#: classes/class-admin.php:294
+#: classes/class-admin.php:278
 msgid "and"
 msgstr ""
 
@@ -425,90 +425,90 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:45
-#: assets/editor-constructor/boxes/code/index.js:75
+#: assets/editor-constructor/boxes/code/index.js:47
+#: assets/editor-constructor/boxes/code/index.js:78
 msgid "Control \"%1$s\""
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:152
+#: assets/editor-constructor/boxes/code/index.js:155
 msgid "Frontend"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:160
+#: assets/editor-constructor/boxes/code/index.js:163
 msgid "Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:168
-msgid "Code"
-msgstr ""
-
-#: assets/editor-constructor/boxes/code/index.js:171
+#: assets/editor-constructor/boxes/code/index.js:174
 msgid "Output Method"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:175
+#: assets/editor-constructor/boxes/code/index.js:178
 msgid "HTML + Handlebars"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:179
+#: assets/editor-constructor/boxes/code/index.js:182
 msgid "PHP"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:183
+#: assets/editor-constructor/boxes/code/index.js:186
 msgid "Theme Template"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:218
+#: assets/editor-constructor/boxes/code/index.js:225
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:24
 msgid "How to use?"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:223
+#: assets/editor-constructor/boxes/code/index.js:230
 msgid "Simple text field example see here:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:234
+#: assets/editor-constructor/boxes/code/index.js:241
 msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:240
+#: assets/editor-constructor/boxes/code/index.js:247
 msgid "Note 2: supported custom PHP callback to output block"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:258
+#: assets/editor-constructor/boxes/code/index.js:265
 msgid "Single output code for Frontend and Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:278
+#: assets/editor-constructor/boxes/code/index.js:287
 msgid "To output block code, Lazy Blocks will look for template file in your theme directory:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:303
+#: assets/editor-constructor/boxes/code/index.js:312
 msgid "Read more:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:309
+#: assets/editor-constructor/boxes/code/index.js:318
 msgid "How to use theme template"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:319
+#: assets/editor-constructor/boxes/code/index.js:331
 msgid "Show block preview in editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:323
+#: assets/editor-constructor/boxes/code/index.js:335
 msgid "Always"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:327
+#: assets/editor-constructor/boxes/code/index.js:339
 msgid "Within `selected` block only"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:331
+#: assets/editor-constructor/boxes/code/index.js:343
 msgid "Within `unselected` block only"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:335
+#: assets/editor-constructor/boxes/code/index.js:347
 msgid "Never"
+msgstr ""
+
+#: assets/editor-constructor/boxes/code/index.js:369
+msgid "Code"
 msgstr ""
 
 #: assets/editor-constructor/boxes/condition/index.js:39
@@ -610,20 +610,20 @@ msgstr ""
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:12
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:12
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:29
-#: controls/checkbox/script.js:42
-#: controls/color/script.js:41
-#: controls/radio/script.js:53
-#: controls/repeater/script.js:229
-#: controls/select/script.js:72
-#: controls/select/script.js:84
-#: controls/toggle/script.js:42
+#: controls/checkbox/script.js:43
+#: controls/color/script.js:43
+#: controls/radio/script.js:55
+#: controls/repeater/script.js:232
+#: controls/select/script.js:75
+#: controls/select/script.js:87
+#: controls/toggle/script.js:43
 msgid "Yes"
 msgstr ""
 
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:36
-#: controls/radio/script.js:71
-#: controls/select/component-choices.js:43
-#: controls/select/script.js:102
+#: controls/radio/script.js:73
+#: controls/select/component-choices.js:46
+#: controls/select/script.js:105
 msgid "Label"
 msgstr ""
 
@@ -696,7 +696,7 @@ msgid "Width"
 msgstr ""
 
 #: assets/editor-constructor/boxes/supports/index.js:34
-#: controls/select/script.js:80
+#: controls/select/script.js:83
 msgid "Multiple"
 msgstr ""
 
@@ -812,21 +812,21 @@ msgstr ""
 msgid "Edit Block"
 msgstr ""
 
-#: assets/editor/components/preview-server-callback.js:160
+#: assets/editor/components/preview-server-callback.js:182
 msgid "Error loading block preview: %s"
 msgstr ""
 
-#: controls/checkbox/script.js:33
-#: controls/toggle/script.js:33
+#: controls/checkbox/script.js:34
+#: controls/toggle/script.js:34
 msgid "Alongside Text"
 msgstr ""
 
-#: controls/checkbox/script.js:34
+#: controls/checkbox/script.js:35
 msgid "Displays text alongside the checkbox"
 msgstr ""
 
-#: controls/checkbox/script.js:40
-#: controls/toggle/script.js:40
+#: controls/checkbox/script.js:41
+#: controls/toggle/script.js:41
 msgid "Checked"
 msgstr ""
 
@@ -838,107 +838,107 @@ msgstr ""
 msgid "Classic"
 msgstr ""
 
-#: controls/color/script.js:34
+#: controls/color/script.js:36
 msgid "Alpha Channel"
 msgstr ""
 
-#: controls/color/script.js:35
+#: controls/color/script.js:37
 msgid "Will be added option that allow you to set semi-transparent colors with rgba"
 msgstr ""
 
-#: controls/color/script.js:49
-#: controls/radio/script.js:61
-#: controls/select/script.js:92
+#: controls/color/script.js:51
+#: controls/radio/script.js:63
+#: controls/select/script.js:95
 msgid "Output Format"
 msgstr ""
 
-#: controls/color/script.js:50
-#: controls/radio/script.js:62
-#: controls/select/script.js:93
+#: controls/color/script.js:52
+#: controls/radio/script.js:64
+#: controls/select/script.js:96
 msgid "Allows you to change attribute output format"
 msgstr ""
 
-#: controls/color/script.js:55
+#: controls/color/script.js:57
 msgid "Color"
 msgstr ""
 
-#: controls/color/script.js:59
+#: controls/color/script.js:61
 msgid "Array (Color + Slug)"
 msgstr ""
 
-#: controls/date_time/script.js:34
+#: controls/date_time/script.js:35
 msgid "Select Date"
 msgstr ""
 
-#: controls/date_time/script.js:38
+#: controls/date_time/script.js:39
 msgid "Select Date and Time"
 msgstr ""
 
-#: controls/date_time/script.js:41
+#: controls/date_time/script.js:42
 msgid "Select Time"
 msgstr ""
 
-#: controls/date_time/script.js:155
+#: controls/date_time/script.js:156
 msgid "Date"
 msgstr ""
 
-#: controls/date_time/script.js:177
+#: controls/date_time/script.js:178
 msgid "Time"
 msgstr ""
 
-#: controls/email/script.js:38
-#: controls/number/script.js:69
-#: controls/password/script.js:38
-#: controls/text/script.js:37
-#: controls/textarea/script.js:37
+#: controls/email/script.js:41
+#: controls/number/script.js:72
+#: controls/password/script.js:41
+#: controls/text/script.js:40
+#: controls/textarea/script.js:40
 msgid "Placeholder"
 msgstr ""
 
-#: controls/email/script.js:45
-#: controls/password/script.js:45
-#: controls/text/script.js:44
-#: controls/textarea/script.js:44
+#: controls/email/script.js:48
+#: controls/password/script.js:48
+#: controls/text/script.js:47
+#: controls/textarea/script.js:47
 msgid "Characters Limit"
 msgstr ""
 
-#: controls/email/script.js:46
-#: controls/password/script.js:46
-#: controls/text/script.js:45
-#: controls/textarea/script.js:45
+#: controls/email/script.js:49
+#: controls/password/script.js:49
+#: controls/text/script.js:48
+#: controls/textarea/script.js:48
 msgid "Maximum number of characters allowed. Leave blank to no limit."
 msgstr ""
 
-#: controls/file/file-control.js:57
+#: controls/file/file-control.js:48
 msgid "file"
 msgstr ""
 
-#: controls/file/file-control.js:108
+#: controls/file/file-control.js:99
 msgid "Remove File"
 msgstr ""
 
-#: controls/file/script.js:84
+#: controls/file/script.js:86
 msgid "Allowed Mime Types"
 msgstr ""
 
-#: controls/file/script.js:85
+#: controls/file/script.js:87
 msgid "If nothing selected, all file types will be allowed to use."
 msgstr ""
 
-#: controls/gallery/gallery-control.js:69
+#: controls/gallery/gallery-control.js:71
 msgid "images"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:112
+#: controls/gallery/gallery-control.js:114
 msgid "Edit Gallery"
 msgstr ""
 
 #: controls/gallery/script.js:79
-#: controls/image/script.js:82
+#: controls/image/script.js:84
 msgid "Medium"
 msgstr ""
 
 #: controls/gallery/script.js:95
-#: controls/image/script.js:98
+#: controls/image/script.js:100
 msgid "Preview Size"
 msgstr ""
 
@@ -950,121 +950,117 @@ msgstr ""
 msgid "Remove Image"
 msgstr ""
 
-#: controls/number/script.js:43
-#: controls/range/script.js:36
+#: controls/number/script.js:46
+#: controls/range/script.js:39
 msgid "Minimum Value"
 msgstr ""
 
-#: controls/number/script.js:52
-#: controls/range/script.js:45
+#: controls/number/script.js:55
+#: controls/range/script.js:48
 msgid "Maximum Value"
 msgstr ""
 
-#: controls/number/script.js:61
-#: controls/range/script.js:54
+#: controls/number/script.js:64
+#: controls/range/script.js:57
 msgid "Step Size"
 msgstr ""
 
-#: controls/radio/script.js:49
-#: controls/select/script.js:68
+#: controls/radio/script.js:51
+#: controls/select/script.js:71
 msgid "Allow Null"
 msgstr ""
 
-#: controls/radio/script.js:50
-#: controls/select/script.js:69
+#: controls/radio/script.js:52
+#: controls/select/script.js:72
 msgid "Allows you to reset selected option value to null"
 msgstr ""
 
-#: controls/radio/script.js:67
-#: controls/select/component-choices.js:48
-#: controls/select/script.js:98
+#: controls/radio/script.js:69
+#: controls/select/component-choices.js:52
+#: controls/select/script.js:101
 msgid "Value"
 msgstr ""
 
-#: controls/radio/script.js:75
-#: controls/select/script.js:106
+#: controls/radio/script.js:77
+#: controls/select/script.js:109
 msgid "Both (Array)"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:142
-#: controls/repeater/script.js:189
+#: controls/repeater/repeater-control.js:141
+#: controls/repeater/script.js:192
 msgid "Row {{#}}"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:261
-#: controls/repeater/script.js:201
+#: controls/repeater/repeater-control.js:259
+#: controls/repeater/script.js:204
 msgid "+ Add Row"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:264
+#: controls/repeater/repeater-control.js:262
 msgid "Toggle all rows"
 msgstr ""
 
-#: controls/repeater/script.js:121
+#: controls/repeater/script.js:124
 msgid "Show Child Controls"
 msgstr ""
 
-#: controls/repeater/script.js:123
+#: controls/repeater/script.js:126
 msgid "Hide Child Controls"
 msgstr ""
 
-#: controls/repeater/script.js:188
+#: controls/repeater/script.js:191
 msgid "Row Label"
 msgstr ""
 
-#: controls/repeater/script.js:190
+#: controls/repeater/script.js:193
 msgid "Example: \"My row number {{#}} with inner control {{control_name}}\""
 msgstr ""
 
-#: controls/repeater/script.js:200
+#: controls/repeater/script.js:203
 msgid "Add Button Label"
 msgstr ""
 
-#: controls/repeater/script.js:209
+#: controls/repeater/script.js:212
 msgid "Minimum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:219
+#: controls/repeater/script.js:222
 msgid "Maximum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:227
+#: controls/repeater/script.js:230
 msgid "Collapsible Rows"
 msgstr ""
 
-#: controls/repeater/script.js:235
+#: controls/repeater/script.js:238
 msgid "Collapsed by Default"
 msgstr ""
 
-#: controls/rich_text/script.js:40
+#: controls/rich_text/script.js:42
 msgid "Multiline"
 msgstr ""
 
-#: controls/select/component-choices.js:162
+#: controls/select/component-choices.js:174
 msgid "Choices"
 msgstr ""
 
-#: controls/select/component-choices.js:190
+#: controls/select/component-choices.js:205
 msgid "+ Add Choice"
 msgstr ""
 
-#: controls/select/script.js:23
+#: controls/select/script.js:25
 msgid "-- Select --"
 msgstr ""
 
-#: controls/select/script.js:81
+#: controls/select/script.js:84
 msgid "Allows you to select multiple values"
 msgstr ""
 
-#: controls/toggle/script.js:34
+#: controls/toggle/script.js:35
 msgid "Displays text alongside the toggle"
 msgstr ""
 
 #: controls/undefined/script.js:11
 #: controls/undefined/script.js:18
 msgid "Looks like this control does not exists."
-msgstr ""
-
-#: controls/url/script.js:39
-msgid "Reset"
 msgstr ""
