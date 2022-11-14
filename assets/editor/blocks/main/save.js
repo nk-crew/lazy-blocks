@@ -9,7 +9,7 @@ export default function BlockSave(props) {
   Object.keys(lazyBlockData.controls).forEach((k) => {
     if ('inner_blocks' === lazyBlockData.controls[k].type) {
       const innerBlocksProps = useInnerBlocksProps.save();
-      result = <div {...innerBlocksProps} />;
+      result = innerBlocksProps.children;
     }
   });
 

@@ -265,7 +265,7 @@ export default function BlockEdit(props) {
         data: {
           ...controlData,
           help: controlData.help ? <RawHTML>{controlData.help}</RawHTML> : false,
-          label: <RawHTML>{label}</RawHTML>,
+          label: label ? <RawHTML>{label}</RawHTML> : false,
         },
         placement,
         childIndex,
