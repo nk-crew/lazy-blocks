@@ -38,6 +38,7 @@ options.blocks.forEach((item) => {
 
   // register block.
   registerBlockType(item.slug, {
+    apiVersion: 2,
     title: item.title || item.slug,
     description: <RawHTML>{item.description}</RawHTML>,
     icon: registerIcon,

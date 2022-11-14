@@ -1334,6 +1334,7 @@ class LazyBlocks_Blocks {
             $attributes = $this->prepare_block_attributes( $block['controls'], '', $block );
 
             $data = array(
+                'apiVersion'      => 2,
                 'attributes'      => $attributes,
                 'render_callback' => array( $this, 'render_callback' ),
                 'example'         => array(),
@@ -1460,13 +1461,11 @@ class LazyBlocks_Blocks {
         $allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes, $context );
 
         if ( $allow_wrapper ) {
-            $html_atts = '';
+            $array_atts = array();
 
             if ( ! isset( $attributes['className'] ) ) {
                 $attributes['className'] = '';
             }
-
-            $attributes['className'] .= ' wp-block-' . str_replace( '/', '-', $attributes['lazyblock']['slug'] );
 
             if ( $attributes['blockUniqueClass'] ) {
                 $attributes['className'] .= ' ' . $attributes['blockUniqueClass'];
@@ -1478,17 +1477,19 @@ class LazyBlocks_Blocks {
 
             if ( $attributes['className'] ) {
                 $attributes['className'] = trim( $attributes['className'] );
-                $html_atts              .= ' class="' . esc_attr( $attributes['className'] ) . '"';
+                $array_atts['class']     = esc_attr( $attributes['className'] );
             }
             if ( $attributes['anchor'] ) {
-                $html_atts .= ' id="' . esc_attr( $attributes['anchor'] ) . '"';
+                $array_atts['id'] = esc_attr( $attributes['anchor'] );
             }
 
             if ( isset( $attributes['ghostkitSR'] ) && $attributes['ghostkitSR'] ) {
-                $html_atts .= ' data-ghostkit-sr="' . esc_attr( $attributes['ghostkitSR'] ) . '"';
+                $array_atts['data-ghostkit-sr'] = esc_attr( $attributes['ghostkitSR'] );
             }
 
-            $result = '<div' . $html_atts . '>' . $result . '</div>';
+            $html_atts = get_block_wrapper_attributes( $array_atts );
+
+            $result = '<div ' . $html_atts . '>' . $result . '</div>';
         }
 
         // add filter for block output.

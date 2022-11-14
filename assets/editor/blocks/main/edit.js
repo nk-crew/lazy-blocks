@@ -24,11 +24,11 @@ const { applyFilters } = wp.hooks;
 
 const { PanelBody, Notice, Tooltip } = wp.components;
 
-const { InspectorControls } = wp.blockEditor;
-
 const { useSelect, useDispatch } = wp.data;
 
 const { useThrottle } = wp.compose;
+
+const { InspectorControls, useBlockProps } = wp.blockEditor;
 
 export default function BlockEdit(props) {
   const { lazyBlockData, clientId, setAttributes, attributes } = props;
@@ -431,11 +431,7 @@ export default function BlockEdit(props) {
 
   const { blockUniqueClass = '' } = attributes;
 
-  const className = classnames(
-    'lazyblock',
-    `wp-block-${lazyBlockData.slug.replace('/', '-')}`,
-    blockUniqueClass
-  );
+  const className = classnames('lazyblock', blockUniqueClass);
 
   const attsForRender = {};
 
@@ -476,79 +472,69 @@ export default function BlockEdit(props) {
   }
 
   return (
-    <Fragment>
+    <div {...useBlockProps({ className })}>
       <InspectorControls>
         <div className="lzb-inspector-controls">{renderControls('inspector')}</div>
       </InspectorControls>
-      <div className={className}>
-        <div className="lzb-content-title">
-          {lazyBlockData.icon && /^dashicons/.test(lazyBlockData.icon) ? (
-            <span className={lazyBlockData.icon} />
-          ) : (
-            ''
-          )}
-          {lazyBlockData.icon && !/^dashicons/.test(lazyBlockData.icon) ? (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: lazyBlockData.icon }} />
-          ) : (
-            ''
-          )}
+      <div className="lzb-content-title">
+        {lazyBlockData.icon && /^dashicons/.test(lazyBlockData.icon) ? (
+          <span className={lazyBlockData.icon} />
+        ) : null}
+        {lazyBlockData.icon && !/^dashicons/.test(lazyBlockData.icon) ? (
+          // eslint-disable-next-line react/no-danger
+          <span dangerouslySetInnerHTML={{ __html: lazyBlockData.icon }} />
+        ) : null}
 
-          <h6>{lazyBlockData.title}</h6>
+        <h6>{lazyBlockData.title}</h6>
 
-          {lazyBlockData.edit_url ? (
-            <Tooltip text={__('Edit Block', 'lazy-blocks')}>
-              <a
-                href={lazyBlockData.edit_url.replace('&amp;', '&')}
-                className="lzb-content-edit-link"
-                target="_blank"
-                rel="noopener noreferrer"
+        {lazyBlockData.edit_url ? (
+          <Tooltip text={__('Edit Block', 'lazy-blocks')}>
+            <a
+              href={lazyBlockData.edit_url.replace('&amp;', '&')}
+              className="lzb-content-edit-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M11.9287 18C15.2424 18 17.9287 15.3137 17.9287 12C17.9287 8.68629 15.2424 6 11.9287 6C8.61497 6 5.92868 8.68629 5.92868 12C5.92868 15.3137 8.61497 18 11.9287 18ZM11.9287 15C13.5855 15 14.9287 13.6569 14.9287 12C14.9287 10.3431 13.5855 9 11.9287 9C10.2718 9 8.92868 10.3431 8.92868 12C8.92868 13.6569 10.2718 15 11.9287 15Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M11.2758 4C10.787 4 10.3698 4.35341 10.2894 4.8356L9.92868 7H13.9287L13.5679 4.8356C13.4876 4.35341 13.0704 4 12.5816 4H11.2758ZM12.5816 20C13.0704 20 13.4876 19.6466 13.5679 19.1644L13.9287 17H9.92868L10.2894 19.1644C10.3698 19.6466 10.787 20 11.2758 20H12.5816Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M18.53 7.43472C18.2856 7.01138 17.7709 6.82678 17.3131 6.99828L15.2583 7.76808L17.2583 11.2322L18.9524 9.83757C19.3298 9.52688 19.4273 8.98888 19.1829 8.56553L18.53 7.43472ZM5.32645 16.5655C5.57087 16.9889 6.08553 17.1735 6.5433 17.002L8.59809 16.2322L6.59809 12.7681L4.90404 14.1627C4.52663 14.4734 4.42916 15.0114 4.67358 15.4347L5.32645 16.5655Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M4.6745 8.56553C4.43008 8.98888 4.52755 9.52688 4.90495 9.83757L6.59901 11.2322L8.59901 7.76808L6.54422 6.99828C6.08645 6.82678 5.57179 7.01138 5.32737 7.43472L4.6745 8.56553ZM19.1838 15.4347C19.4282 15.0114 19.3307 14.4734 18.9533 14.1627L17.2593 12.7681L15.2593 16.2322L17.3141 17.002C17.7718 17.1735 18.2865 16.9889 18.5309 16.5655L19.1838 15.4347Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </a>
-            </Tooltip>
-          ) : (
-            ''
-          )}
-        </div>
-        <div className="lzb-content-controls">{renderControls('content')}</div>
-        {showPreview ? (
-          <PreviewServerCallback block={lazyBlockData.slug} attributes={attsForRender} />
-        ) : (
-          ''
-        )}
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M11.9287 18C15.2424 18 17.9287 15.3137 17.9287 12C17.9287 8.68629 15.2424 6 11.9287 6C8.61497 6 5.92868 8.68629 5.92868 12C5.92868 15.3137 8.61497 18 11.9287 18ZM11.9287 15C13.5855 15 14.9287 13.6569 14.9287 12C14.9287 10.3431 13.5855 9 11.9287 9C10.2718 9 8.92868 10.3431 8.92868 12C8.92868 13.6569 10.2718 15 11.9287 15Z"
+                  fill="currentColor"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M11.2758 4C10.787 4 10.3698 4.35341 10.2894 4.8356L9.92868 7H13.9287L13.5679 4.8356C13.4876 4.35341 13.0704 4 12.5816 4H11.2758ZM12.5816 20C13.0704 20 13.4876 19.6466 13.5679 19.1644L13.9287 17H9.92868L10.2894 19.1644C10.3698 19.6466 10.787 20 11.2758 20H12.5816Z"
+                  fill="currentColor"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M18.53 7.43472C18.2856 7.01138 17.7709 6.82678 17.3131 6.99828L15.2583 7.76808L17.2583 11.2322L18.9524 9.83757C19.3298 9.52688 19.4273 8.98888 19.1829 8.56553L18.53 7.43472ZM5.32645 16.5655C5.57087 16.9889 6.08553 17.1735 6.5433 17.002L8.59809 16.2322L6.59809 12.7681L4.90404 14.1627C4.52663 14.4734 4.42916 15.0114 4.67358 15.4347L5.32645 16.5655Z"
+                  fill="currentColor"
+                />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4.6745 8.56553C4.43008 8.98888 4.52755 9.52688 4.90495 9.83757L6.59901 11.2322L8.59901 7.76808L6.54422 6.99828C6.08645 6.82678 5.57179 7.01138 5.32737 7.43472L4.6745 8.56553ZM19.1838 15.4347C19.4282 15.0114 19.3307 14.4734 18.9533 14.1627L17.2593 12.7681L15.2593 16.2322L17.3141 17.002C17.7718 17.1735 18.2865 16.9889 18.5309 16.5655L19.1838 15.4347Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </a>
+          </Tooltip>
+        ) : null}
       </div>
-    </Fragment>
+      <div className="lzb-content-controls">{renderControls('content')}</div>
+      {showPreview ? (
+        <PreviewServerCallback block={lazyBlockData.slug} attributes={attsForRender} />
+      ) : null}
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-const { InnerBlocks } = wp.blockEditor;
+const { useInnerBlocksProps } = wp.blockEditor;
 
 export default function BlockSave(props) {
   const { lazyBlockData } = props;
@@ -8,7 +8,8 @@ export default function BlockSave(props) {
   // Return inner blocks content to use it in PHP render.
   Object.keys(lazyBlockData.controls).forEach((k) => {
     if ('inner_blocks' === lazyBlockData.controls[k].type) {
-      result = <InnerBlocks.Content />;
+      const innerBlocksProps = useInnerBlocksProps.save();
+      result = <div {...innerBlocksProps} />;
     }
   });
 
