@@ -1,9 +1,8 @@
-const { InnerBlocks } = wp.blockEditor;
+const { useBlockProps, useInnerBlocksProps } = wp.blockEditor;
 
 export default function BlockEdit() {
-  return (
-    <div className="lazyblocks-free">
-      <InnerBlocks templateLock={null} />
-    </div>
-  );
+  const props = useBlockProps({ className: 'lazyblocks-free' });
+  const innerBlockProps = useInnerBlocksProps(props, { templateLock: null });
+
+  return <div {...innerBlockProps} />;
 }

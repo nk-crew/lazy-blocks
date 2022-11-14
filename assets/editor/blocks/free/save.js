@@ -1,5 +1,6 @@
-const { InnerBlocks } = wp.blockEditor;
+const { useInnerBlocksProps } = wp.blockEditor;
 
 export default function BlockSave() {
-  return <InnerBlocks.Content />;
+  const innerBlocksProps = useInnerBlocksProps.save();
+  return innerBlocksProps.children;
 }
