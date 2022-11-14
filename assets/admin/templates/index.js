@@ -158,25 +158,29 @@ function UpdateEditor() {
       className="lzb-template-settings-panel"
     >
       <PanelRow>
-        <SelectControl
-          label={__('Post Types', 'lazy-blocks')}
-          multiple
-          options={postTypesOptions}
-          value={templatePostTypes}
-          onChange={(value) => {
-            updateMeta('_lzb_template_post_types', value);
-          }}
-        />
+        <div style={{ width: '100%' }}>
+          <SelectControl
+            label={__('Post Types', 'lazy-blocks')}
+            multiple
+            options={postTypesOptions}
+            value={templatePostTypes}
+            onChange={(value) => {
+              updateMeta('_lzb_template_post_types', value);
+            }}
+          />
+        </div>
       </PanelRow>
       <PanelRow>
-        <SelectControl
-          label={__('Template Lock', 'lazy-blocks')}
-          options={templateLockOptions}
-          value={templateLock}
-          onChange={(value) => {
-            updateMeta('_lzb_template_lock', value);
-          }}
-        />
+        <div style={{ width: '100%' }}>
+          <SelectControl
+            label={__('Template Lock', 'lazy-blocks')}
+            options={templateLockOptions}
+            value={templateLock}
+            onChange={(value) => {
+              updateMeta('_lzb_template_lock', value);
+            }}
+          />
+        </div>
       </PanelRow>
     </PluginDocumentSettingPanel>
   );
