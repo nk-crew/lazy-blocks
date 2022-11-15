@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.1
 * Requires PHP: 7.2
-* Stable tag: 3.0.0
+* Stable tag: 3.1.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -125,6 +125,40 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.1.0 =
+
+PRO plugin:
+
+* added block preloading feature - all blocks loaded immediately, when you open the page editor
+* added support for content analysis in Rank Math and Yoast
+* added setting to remove block frame in page editor and display it as native block
+* added Link Suggestions option to URL control (select post types to suggest links when typing)
+* added Rich Preview option to URL control (display page title and image of selected URL)
+
+FREE plugin:
+
+* added support for Blocks API v2
+* added `lzb/init` hook for developers to register blocks in PHP
+* added autoFocus to constructor control Type popup input search
+* added autoFocus to choices component when adding new choice
+* added JS filters - `lzb.components.PreviewServerCallback.allowFetch`, `lzb.constructor.code-settings.output-method`, `lzb.constructor.code-settings.output-code`, `lzb.constructor.code-settings.output-template`, `lzb.constructor.code-settings.preview`, `lzb.constructor.code-settings.additional`
+* added PHP filters - `lzb/block_defaults`, `lzb/block_data`
+* added PHP actions - `lzb/init`
+* fixed constructor control Type popup padding
+* fixed constructor code preview iframe width
+* fixed admin PHP warning when user with Editor role
+* fixed blocks conditional displaying in selected post types
+* fixed registering user blocks which don't have all control parameters
+* fixed registering block inside `init` hook
+* fixed BaseControl help with HTML generates JS errors in console
+* fixed Select control with Multiple option CSS overflow problem
+* fixed templates custom meta settings width
+* fixed control label displaying when it is empty
+* changed block configs sanitization function priority to prevent possible conflicts
+* removed URL control Reset button, use standard icon instead
+* disabled custom class name support in Free block
+* deprecated action `lzb_handlebars_object`, use `lzb/handlebars/object` instead
 
 = 3.0.0 =
 

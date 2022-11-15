@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.0.0\n"
+"Project-Id-Version: Lazy Blocks 3.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-13T22:20:53+00:00\n"
+"POT-Creation-Date: 2022-11-15T22:29:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: lazy-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: classes/class-admin.php:244
 #: classes/class-blocks.php:318
-#: classes/class-blocks.php:1154
+#: classes/class-blocks.php:1158
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -165,12 +165,12 @@ msgid "Template"
 msgstr ""
 
 #: classes/class-templates.php:298
-#: assets/admin/templates/index.js:162
+#: assets/admin/templates/index.js:163
 msgid "Post Types"
 msgstr ""
 
 #: classes/class-templates.php:299
-#: assets/admin/templates/index.js:173
+#: assets/admin/templates/index.js:176
 msgid "Template Lock"
 msgstr ""
 
@@ -796,11 +796,11 @@ msgstr ""
 msgid "Block Name"
 msgstr ""
 
-#: assets/editor/blocks/free/index.js:10
+#: assets/editor/blocks/free/index.js:11
 msgid "Free Content"
 msgstr ""
 
-#: assets/editor/blocks/free/index.js:11
+#: assets/editor/blocks/free/index.js:12
 msgid "Block used for adding blocks inside it in cases when template locked from adding blocks."
 msgstr ""
 
@@ -808,7 +808,7 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:500
+#: assets/editor/blocks/main/edit.js:491
 msgid "Edit Block"
 msgstr ""
 
