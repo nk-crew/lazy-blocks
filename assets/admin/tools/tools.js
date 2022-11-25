@@ -78,7 +78,7 @@ export default function Templates() {
     });
 
     if (result) {
-      result = `add_action( 'lzb/init', function() {\n${result}\n}`;
+      result = `add_action( 'lzb/init', function() {\n${result}\n} );`;
     }
 
     return result;
