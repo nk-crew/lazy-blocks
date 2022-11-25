@@ -31,18 +31,20 @@ const { useThrottle } = wp.compose;
 const { InspectorControls, useBlockProps } = wp.blockEditor;
 
 export default function BlockEdit(props) {
-  const { lazyBlockData, clientId, setAttributes, attributes } = props;
+  const { lazyBlockData, clientId, isSelected, setAttributes, attributes } = props;
 
   const isFirstLoad = useRef(true);
   const isMounted = useRef(true);
 
-  const { isLazyBlockSelected } = useSelect((select, ownProps) => {
+  const { innerBlockSelected } = useSelect((select) => {
     const { hasSelectedInnerBlock } = select('core/block-editor');
 
     return {
-      isLazyBlockSelected: ownProps.isSelected || hasSelectedInnerBlock(ownProps.clientId, true),
+      innerBlockSelected: hasSelectedInnerBlock(clientId, true),
     };
   }, []);
+
+  const isLazyBlockSelected = isSelected || innerBlockSelected;
 
   const { lockPostSaving: lockPostSavingDispatch, unlockPostSaving: unlockPostSavingDispatch } =
     useDispatch('core/editor') || {};
