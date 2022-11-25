@@ -251,12 +251,7 @@ export default function BlockEdit(props) {
         controlData.required &&
         'true' === controlData.required
       ) {
-        label = (
-          <Fragment>
-            {label}
-            <span className="required">*</span>
-          </Fragment>
-        );
+        label = `${label || ''} <span class="required">*</span>`;
       }
     }
 
@@ -267,7 +262,8 @@ export default function BlockEdit(props) {
         data: {
           ...controlData,
           help: controlData.help ? <RawHTML>{controlData.help}</RawHTML> : false,
-          label: label ? <RawHTML>{label}</RawHTML> : false,
+          // eslint-disable-next-line react/no-danger
+          label: label ? <span dangerouslySetInnerHTML={{ __html: label }} /> : false,
         },
         placement,
         childIndex,
