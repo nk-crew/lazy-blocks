@@ -1441,7 +1441,9 @@ class LazyBlocks_Blocks {
                 $result = ob_get_clean();
 
                 // Custom code.
-            } elseif ( isset( $code[ $custom_render_name ] ) && ! empty( $code[ $custom_render_name ] ) ) {
+                // Previously we checked for empty, but we should output even an empty string
+                // to prevent error message in the editor block preview.
+            } elseif ( isset( $code[ $custom_render_name ] ) ) {
                 // PHP output.
                 if ( isset( $code['output_method'] ) && 'php' === $code['output_method'] ) {
                     $result = $this->php_eval( $code[ $custom_render_name ], $attributes );
