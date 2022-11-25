@@ -2,6 +2,8 @@
 import BlockEdit from './edit';
 import BlockSave from './save';
 
+const { __ } = wp.i18n;
+
 const { RawHTML } = wp.element;
 
 let options = window.lazyblocksGutenberg;
@@ -40,7 +42,20 @@ options.blocks.forEach((item) => {
   registerBlockType(item.slug, {
     apiVersion: 2,
     title: item.title || item.slug,
-    description: <RawHTML>{item.description}</RawHTML>,
+    description: (
+      <RawHTML>
+        {item.description}
+        {item.edit_url
+          ? `<br />
+            <a href="${item.edit_url.replace('&amp;', '&')}"
+              class="lzb-description-edit-link"
+              target="_blank"
+              rel="noopener noreferrer">
+              ${__('Edit Block', 'lazy-blocks')}
+            </a>`
+          : ''}
+      </RawHTML>
+    ),
     icon: registerIcon,
     category: item.category,
     keywords: item.keywords,
