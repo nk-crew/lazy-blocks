@@ -9,7 +9,7 @@
     color: rgb(117, 117, 117);
   }
 
-  .components-base-control + .lazyblocks-component-base-control__help {
-    margin-top: -16px;
+  .components-base-control:has(+ .lazyblocks-component-base-control__help) {
+    margin-bottom: 0;
   }
 }
