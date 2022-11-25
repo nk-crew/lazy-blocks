@@ -7,7 +7,7 @@ const { useInnerBlocksProps } = wp.blockEditor;
 /**
  * Control render in editor.
  */
-addFilter('lzb.editor.control.inner_blocks.render', 'lzb.editor', (render, props) => {
+function ComponentRender(props) {
   const { data } = props;
   const innerBlocksProps = useInnerBlocksProps();
 
@@ -23,4 +23,8 @@ addFilter('lzb.editor.control.inner_blocks.render', 'lzb.editor', (render, props
   }
 
   return result;
+}
+
+addFilter('lzb.editor.control.inner_blocks.render', 'lzb.editor', (render, props) => {
+  return <ComponentRender {...props} />;
 });
