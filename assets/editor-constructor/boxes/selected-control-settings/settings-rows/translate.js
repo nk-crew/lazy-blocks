@@ -10,6 +10,7 @@ export default function WPMLRow(props) {
       <BaseControl label={__('WPML Translation', 'lazy-blocks')}>
         <ToggleControl
           label={__('Yes', 'lazy-blocks')}
+          help={__('Experimental feature, may not work as expected.', 'lazy-blocks')}
           checked={'true' === data.translate}
           onChange={(value) => updateData({ translate: value ? 'true' : 'false' })}
         />
