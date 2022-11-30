@@ -46,7 +46,7 @@ options.blocks.forEach((item) => {
       <RawHTML>
         {item.description}
         {item.edit_url
-          ? `<br />
+          ? `${item.description ? '<br />' : ''}
             <a href="${item.edit_url.replace('&amp;', '&')}"
               class="lzb-description-edit-link"
               target="_blank"
