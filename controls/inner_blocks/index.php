@@ -63,9 +63,9 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
     /**
      * Change block render attribute to inner content.
      *
-     * @param string $attributes - block attributes.
-     * @param mixed  $content - block content.
-     * @param mixed  $block - block data.
+     * @param array $attributes - block attributes.
+     * @param mixed $content - block content.
+     * @param mixed $block - block data.
      *
      * @return array filtered attribute data.
      */
