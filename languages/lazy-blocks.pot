@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-15T22:29:43+00:00\n"
+"POT-Creation-Date: 2022-11-29T11:16:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
@@ -804,11 +804,12 @@ msgstr ""
 msgid "Block used for adding blocks inside it in cases when template locked from adding blocks."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:318
+#: assets/editor/blocks/main/edit.js:316
 msgid "This field is required"
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:491
+#: assets/editor/blocks/main/edit.js:489
+#: assets/editor/blocks/main/index.js:54
 msgid "Edit Block"
 msgstr ""
 

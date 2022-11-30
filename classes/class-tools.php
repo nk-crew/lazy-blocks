@@ -109,6 +109,7 @@ class LazyBlocks_Tools {
                             'width',
                             'required',
                             'hide_if_not_selected',
+                            'translate',
                             'save_in_meta',
                         );
 
@@ -135,9 +136,10 @@ class LazyBlocks_Tools {
                             'characters_limit'     => '',
                             'width'                => '100',
                             'hide_if_not_selected' => 'false',
+                            'required'             => 'false',
+                            'translate'            => 'false',
                             'save_in_meta'         => 'false',
                             'save_in_meta_name'    => '',
-                            'required'             => 'false',
                         );
 
                         foreach ( $default_fields_to_remove as $field => $val ) {
@@ -493,9 +495,10 @@ class LazyBlocks_Tools {
             'placement'            => 'content',
             'width'                => '100',
             'hide_if_not_selected' => 'false',
+            'required'             => 'false',
+            'translate'            => 'false',
             'save_in_meta'         => 'false',
             'save_in_meta_name'    => '',
-            'required'             => 'false',
         );
 
         if ( 0 < $post_id ) {

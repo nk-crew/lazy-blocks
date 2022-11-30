@@ -28,6 +28,7 @@ class LazyBlocks_Control_Undefined extends LazyBlocks_Control {
             'help_settings'                 => false,
             'width_settings'                => false,
             'required_settings'             => false,
+            'translate_settings'            => false,
             'hide_if_not_selected_settings' => false,
             'save_in_meta_settings'         => false,
         );

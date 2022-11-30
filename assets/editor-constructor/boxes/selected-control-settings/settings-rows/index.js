@@ -11,6 +11,7 @@ import HelpRow from './help';
 import PlacementRow from './placement';
 import WidthRow from './width';
 import HideIfNotSelectedRow from './hide-if-not-selected';
+import TranslateRow from './translate';
 import SaveInMetaRow from './save-in-meta';
 
 const { applyFilters } = wp.hooks;
@@ -33,6 +34,7 @@ export default function settingsRows(props) {
       width: WidthRow,
       required: RequiredRow,
       hide_if_not_selected: HideIfNotSelectedRow,
+      translate: TranslateRow,
       save_in_meta: SaveInMetaRow,
       pro_notice: ProNotice,
     },
