@@ -118,10 +118,7 @@ export default function BlockEdit(props) {
     val = applyFilters(`lzb.editor.control.${control.type}.updateValue`, val, control, childIndex);
     val = applyFilters('lzb.editor.control.updateValue', val, control, childIndex);
 
-    const result = {};
-    result[name] = val;
-
-    setAttributes(result);
+    setAttributes({ [name]: val });
   }
 
   /**
