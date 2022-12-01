@@ -18,7 +18,7 @@ const { doAction, applyFilters } = wp.hooks;
 
 const { useSelect } = wp.data;
 
-const { useDebounce, usePrevious } = wp.compose;
+const { usePrevious } = wp.compose;
 
 /**
  * Block Editor custom PHP preview.
@@ -41,6 +41,7 @@ export default function PreviewServerCallback(props) {
 
   const isMountedRef = useRef(true);
   const currentFetchRequest = useRef(null);
+  const fetchTimeout = useRef();
 
   const prevProps = usePrevious(props);
 
@@ -118,7 +119,14 @@ export default function PreviewServerCallback(props) {
     currentFetchRequest.current = fetchRequest;
   }
 
-  const debouncedFetchData = useDebounce(fetchData, 500);
+  const debouncedFetchData = () => {
+    // Clear the previous timeout.
+    clearTimeout(fetchTimeout.current);
+
+    fetchTimeout.current = setTimeout(() => {
+      fetchData();
+    }, 500);
+  };
 
   // When the component unmounts, set isMountedRef to false. This will
   // let the async fetch callbacks know when to stop.
