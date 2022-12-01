@@ -67,7 +67,7 @@ export default function BlockEdit(props) {
   function getControlValue(control, childIndex) {
     let result = attributes[control.name];
 
-    // prepare child items.
+    // Prepare child items.
     if (control.child_of && lazyBlockData.controls[control.child_of] && -1 < childIndex) {
       const childs = getControlValue(lazyBlockData.controls[control.child_of]);
 
@@ -80,7 +80,7 @@ export default function BlockEdit(props) {
       }
     }
 
-    // filter control value.
+    // Filter control value.
     result = applyFilters(
       `lzb.editor.control.${control.type}.getValue`,
       result,
@@ -88,6 +88,12 @@ export default function BlockEdit(props) {
       childIndex
     );
     result = applyFilters('lzb.editor.control.getValue', result, control, childIndex);
+
+    // Prevent rendering an undefined value, because it triggers a JS error
+    // when change of new controls inside existing repeater.
+    if ('undefined' === typeof result) {
+      result = '';
+    }
 
     return result;
   }
