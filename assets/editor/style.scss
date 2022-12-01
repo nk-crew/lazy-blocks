@@ -16,6 +16,8 @@
 }
 
 .lazyblock {
+  --lzb-controls-columns-gap: 15px;
+
   display: block;
   padding: 20px;
   background-color: #fff;
@@ -79,12 +81,12 @@
   .lzb-content-controls {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: -15px;
-    margin-left: -15px;
+    margin-bottom: calc(-1 * var(--lzb-controls-columns-gap));
+    margin-left: calc(-1 * var(--lzb-controls-columns-gap));
 
     > div > div {
-      margin-bottom: 15px;
-      margin-left: 15px;
+      margin-bottom: var(--lzb-controls-columns-gap);
+      margin-left: var(--lzb-controls-columns-gap);
     }
   }
 
