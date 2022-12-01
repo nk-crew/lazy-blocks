@@ -15,13 +15,30 @@ export default function ProNotice() {
   return (
     <PanelBody>
       <BaseControl
-        label={__('Unlock Extra Features', 'lazy-blocks')}
+        label={__('Lazy Blocks Pro', 'lazy-blocks')}
         className="lazyblocks-component-pro-notice"
       >
         <div>
-          <a target="_blank" rel="noreferrer" href={lazyblocksConstructorData.pro_url}>
-            {__('Upgrade to Lazy Blocks Pro', 'lazy-blocks')}
+          <a
+            className="lazyblocks-component-pro-notice-btn"
+            target="_blank"
+            rel="noreferrer"
+            href={lazyblocksConstructorData.pro_url}
+          >
+            {__('Upgrade Now', 'lazy-blocks')}
           </a>
+          <ul className="ul-square">
+            <li>{__('Controls Conditional Logic', 'lazy-blocks')}</li>
+            <li>{__('Panels and Dividers', 'lazy-blocks')}</li>
+            <li>{__('Posts Control', 'lazy-blocks')}</li>
+            <li>{__('Blocks Preloading', 'lazy-blocks')}</li>
+            <li>{__('SEO Enhancements', 'lazy-blocks')}</li>
+            <li>
+              <a target="_blank" rel="noreferrer" href={lazyblocksConstructorData.pro_url}>
+                {__('And much more...', 'lazy-blocks')}
+              </a>
+            </li>
+          </ul>
         </div>
       </BaseControl>
     </PanelBody>
