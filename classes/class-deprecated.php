@@ -25,7 +25,7 @@ class LazyBlocks_Deprecations {
         add_filter( 'lzb/add_user_block', array( $this, 'v2_1_0_convert_user_block' ) );
 
         // Actions for v2.0.0.
-        do_action( 'lzb/handlebars/object', array( $this, 'v2_0_0_deprecated_handlebars_action' ) );
+        add_action( 'lzb/handlebars/object', array( $this, 'v2_0_0_deprecated_handlebars_action' ) );
     }
 
     /**
