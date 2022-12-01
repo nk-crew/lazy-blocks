@@ -74,7 +74,7 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
             return $attributes;
         }
 
-        // prepare decoded array to actual array.
+        // prepare inner-blocks content to actual attribute.
         foreach ( $block['controls'] as $control ) {
             if ( $this->name === $control['type'] ) {
                 $attributes[ $control['name'] ] = $content ? $content : '';
