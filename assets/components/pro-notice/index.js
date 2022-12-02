@@ -30,7 +30,7 @@ export default function ProNotice() {
           <ul className="ul-square">
             <li>{__('Controls Conditional Logic', 'lazy-blocks')}</li>
             <li>{__('Panels and Dividers', 'lazy-blocks')}</li>
-            <li>{__('Posts Control', 'lazy-blocks')}</li>
+            <li>{__('Posts, Taxonomy, User Controls', 'lazy-blocks')}</li>
             <li>{__('Blocks Preloading', 'lazy-blocks')}</li>
             <li>{__('SEO Enhancements', 'lazy-blocks')}</li>
             <li>
