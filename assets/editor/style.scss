@@ -210,7 +210,7 @@
     width: 100%;
     padding: 6px 4px;
     margin: 0;
-    border-color: #8d96a0;
+    border-color: #757575;
 
     &:focus {
       color: #191e23;
@@ -352,14 +352,15 @@
   .lzb-gutenberg-file-item {
     display: flex;
     margin-bottom: 10px;
-    border: 1px solid #e2e4e7;
+    border: 1px solid #757575;
+    border-radius: 2px;
   }
 
   .lzb-gutenberg-file-item-icon {
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    border-right: 1px solid #e2e4e7;
+    border-right: 1px solid #757575;
   }
 
   .lzb-gutenberg-file-item-content {
@@ -398,7 +399,8 @@
   .block-editor-rich-text__tinymce {
     padding: 10px 15px;
     background-color: #fff;
-    border: 1px solid #e2e4e7;
+    border: 1px solid #757575;
+    border-radius: 2px;
 
     p:last-of-type {
       margin-bottom: 0;
@@ -408,23 +410,35 @@
 
 // Classic Editor control
 .lzb-gutenberg-classic-editor {
+  .block-library-rich-text__tinymce {
+    padding: 20px;
+    border: 1px solid #757575;
+    border-radius: 0 0 2px 2px;
+    outline: none;
+  }
+
   .block-library-classic__toolbar {
     display: block;
     margin: 0;
-
-    &:empty {
-      display: none;
-    }
+    border-color: #757575;
 
     div.mce-toolbar-grp {
       border-bottom: none;
     }
-  }
 
-  .block-library-rich-text__tinymce {
-    padding: 20px;
-    border: 1px solid #e2e4e7;
-    outline: none;
+    &,
+    .mce-container,
+    .mce-toolbar-grp {
+      border-radius: 2px 2px 0 0;
+    }
+
+    &:empty {
+      display: none;
+
+      + .block-library-rich-text__tinymce {
+        border-radius: 2px;
+      }
+    }
   }
 }
 
