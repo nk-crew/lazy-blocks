@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.1
 * Requires PHP: 7.2
-* Stable tag: 3.2.0
+* Stable tag: 3.2.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -136,7 +136,7 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
-= 3.2.0 =
+= 3.2.1 =
 
 PRO plugin:
 
@@ -157,6 +157,7 @@ FREE plugin:
 * fixed Classic Editor and Repeater save attribute conflict
 * fixed debounce preview is not always reloaded after changes
 * fixed usage of deprecated action "lzb_handlebars_object"
+* fixed deprecated warning even if no deprecated hook used
 
 = 3.1.0 =
 
