@@ -2,7 +2,7 @@
 /**
  * Plugin Name:  Lazy Blocks
  * Description:  Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.
- * Version:      3.1.0
+ * Version:      3.2.0
  * Author:       Lazy Blocks Team
  * Author URI:   https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline
  * License:      GPLv2 or later
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'LAZY_BLOCKS_VERSION' ) ) {
-    define( 'LAZY_BLOCKS_VERSION', '3.1.0' );
+    define( 'LAZY_BLOCKS_VERSION', '3.2.0' );
 }
 
 if ( ! class_exists( 'LazyBlocks' ) ) :

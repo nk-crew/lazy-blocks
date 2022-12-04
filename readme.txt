@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.1
 * Requires PHP: 7.2
-* Stable tag: 3.1.0
+* Stable tag: 3.2.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -77,6 +77,10 @@ To manage custom blocks attributes you need to use Controls. Lazy Blocks have a 
   * Repeater
 * Custom Controls [read our extensive documentation](https://www.lazyblocks.com/docs/examples/create-custom-control/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=custom_controls)
 
+### 🏳️ Multilingual
+
+Lazy Blocks adds a new layer of compatibility for [WPML](https://wpml.org/). All text controls of custom blocks are compatible with WPML and ready for translation. [https://www.lazyblocks.com/docs/multilingual/](https://www.lazyblocks.com/docs/multilingual/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=wpml)
+
 ### 🛠 Built For Developers
 
 Lazy Blocks built by developers, for developers and gives you unlimited freedom to create custom blocks. Furthermore, there are PHP filters and actions to customize every part of your custom blocks from the backend. Possibility to use PHP and theme templates system.
@@ -104,6 +108,12 @@ Conditionally display/hide controls. In order not to overload your block with a 
 * **Panels and Dividers**
 The Panels and Dividers provides a way to structure controls into groups. It assists in better organizing the block panel UI.
 
+* **Blocks Preloading**
+Display blocks preview immediately once the page editor loaded.
+
+* **SEO Enhancements**
+Additional support for content analysis in Rank Math and Yoast SEO plugins.
+
 [**Find much more custom blocks features of Lazy Blocks Pro today!**](https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=pro)
 
 ## Installation
@@ -125,6 +135,28 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.2.0 =
+
+PRO plugin:
+
+* fixed block preloading inner-blocks attribute
+* fixed displaying controls in columns
+
+FREE plugin:
+
+* added support for WPML
+* added "Edit Block" link inside the block description
+* fixed incorrect detection of the selected block to hide/show controls and preview
+* fixed displaying control label with Required mark
+* fixed margin between control and help text
+* fixed block render error when add "Hide If Not Selected" option to Inner Blocks control
+* fixed error "Render callback is not specified" when preview block with empty output code
+* fixed export block PHP closing function call
+* fixed JS error when change value of new control inside existing repeater
+* fixed Classic Editor and Repeater save attribute conflict
+* fixed debounce preview is not always reloaded after changes
+* fixed usage of deprecated action "lzb_handlebars_object"
 
 = 3.1.0 =
 
