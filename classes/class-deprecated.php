@@ -25,7 +25,10 @@ class LazyBlocks_Deprecations {
         add_filter( 'lzb/add_user_block', array( $this, 'v2_1_0_convert_user_block' ) );
 
         // Actions for v2.0.0.
-        add_action( 'lzb/handlebars/object', array( $this, 'v2_0_0_deprecated_handlebars_action' ) );
+        add_action( 'lzb/handlebars/object', array( $this, 'v2_0_0_deprecated_lzb_handlebars_object_action' ) );
+
+        // Deprecated actions usage warning.
+        add_action( 'init', array( $this, 'deprecated_actions_usage_warning' ) );
     }
 
     /**
@@ -113,18 +116,25 @@ class LazyBlocks_Deprecations {
      *
      * @param Object $handlebars - handlebars data.
      */
-    public function v2_0_0_deprecated_handlebars_action( $handlebars ) {
+    public function v2_0_0_deprecated_lzb_handlebars_object_action( $handlebars ) {
         do_action( 'lzb_handlebars_object', $handlebars );
+    }
 
-        $this->show_deprecated_error(
-            sprintf(
-                /* translators: 1: WordPress hook name, 2: Version number, 3: Alternative hook name. */
-                esc_html__( 'Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'lazy-blocks' ),
-                'lzb_handlebars_object',
-                '3.1.0',
-                'lzb/handlebars/object'
-            )
-        );
+    /**
+     * Warning usage of deprecated action.
+     */
+    public function deprecated_actions_usage_warning() {
+        if ( has_action( 'lzb_handlebars_object' ) ) {
+            $this->show_deprecated_error(
+                sprintf(
+                    /* translators: 1: WordPress hook name, 2: Version number, 3: Alternative hook name. */
+                    esc_html__( 'Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.', 'lazy-blocks' ),
+                    'lzb_handlebars_object',
+                    '3.1.0',
+                    'lzb/handlebars/object'
+                )
+            );
+        }
     }
 }
 
