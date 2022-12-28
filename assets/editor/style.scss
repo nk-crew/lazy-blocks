@@ -141,8 +141,14 @@
 .lzb-gutenberg-date-time-picker {
   min-width: 230px;
 
-  &:not(.lzb-gutenberg-date-time-picker-allowed-date) {
+  &:not(.lzb-gutenberg-date-time-picker-allowed-time) {
     .components-datetime__time > fieldset:nth-of-type(1) {
+      display: none;
+    }
+  }
+
+  &:not(.lzb-gutenberg-date-time-picker-allowed-date) {
+    .components-datetime__time > fieldset:nth-of-type(2) {
       display: none;
     }
 
@@ -151,10 +157,8 @@
     }
   }
 
-  &:not(.lzb-gutenberg-date-time-picker-allowed-time) {
-    .components-datetime__time > fieldset:nth-of-type(2) {
-      display: none;
-    }
+  &.lzb-gutenberg-date-time-picker-allowed-date .components-datetime__time > fieldset:nth-of-type(2) {
+    margin-bottom: 15px;
   }
 }
 
