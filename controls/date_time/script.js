@@ -47,6 +47,11 @@ function DateTimePicker(props) {
     <BaseControl label={label} help={help}>
       <div>
         <Dropdown
+          popoverProps={{
+            placement: 'left-start',
+            offset: 36,
+            shift: true,
+          }}
           renderToggle={({ isOpen, onToggle }) => (
             <Button
               isLink
