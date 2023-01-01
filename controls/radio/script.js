@@ -28,7 +28,7 @@ addFilter('lzb.editor.control.radio.render', 'lzb.editor', (render, props) => (
  * Control value valid in editor.
  */
 addFilter('lzb.editor.control.radio.isValueValid', 'lzb.editor', (isValid, value, data) => {
-  if ('true' === data.allow_null) {
+  if (data.allow_null === 'true') {
     isValid = true;
   }
 
@@ -53,7 +53,7 @@ addFilter('lzb.constructor.control.radio.settings', 'lzb.constructor', (render, 
         >
           <ToggleControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.allow_null}
+            checked={data.allow_null === 'true'}
             onChange={(value) => updateData({ allow_null: value ? 'true' : 'false' })}
           />
         </BaseControl>

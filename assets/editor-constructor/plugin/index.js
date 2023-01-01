@@ -57,7 +57,7 @@ export default function UpdateEditor() {
    * Force change gutenberg edit mode to Visual.
    */
   useEffect(() => {
-    if (editorSettings.richEditingEnabled && 'text' === editorMode) {
+    if (editorSettings.richEditingEnabled && editorMode === 'text') {
       switchEditorMode();
     }
   }, [editorSettings, editorMode]);
@@ -72,7 +72,7 @@ export default function UpdateEditor() {
     }
 
     const isValidList =
-      1 === blocks.length && blocks[0] && 'lzb-constructor/main' === blocks[0].name;
+      blocks.length === 1 && blocks[0] && blocks[0].name === 'lzb-constructor/main';
 
     if (!isValidList) {
       blocksRestoreBusy.current = true;
@@ -87,7 +87,7 @@ export default function UpdateEditor() {
    */
   useEffect(() => {
     // if selected block, do nothing.
-    if (selectedBlock && 'lzb-constructor/main' === selectedBlock.name) {
+    if (selectedBlock && selectedBlock.name === 'lzb-constructor/main') {
       return;
     }
 
@@ -99,7 +99,7 @@ export default function UpdateEditor() {
 
     let selectBlockId = '';
     blocks.forEach((thisBlock) => {
-      if ('lzb-constructor/main' === thisBlock.name) {
+      if (thisBlock.name === 'lzb-constructor/main') {
         selectBlockId = thisBlock.clientId;
       }
     });

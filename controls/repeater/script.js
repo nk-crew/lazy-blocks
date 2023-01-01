@@ -44,7 +44,7 @@ addFilter('lzb.editor.control.repeater.render', 'lzb.editor', (render, props) =>
           <Fragment>{props.renderControls(props.placement, props.uniqueId, index)}</Fragment>
         )}
         removeRow={(i) => {
-          if (-1 < i) {
+          if (i > -1) {
             val.splice(i, 1);
             props.onChange(val);
           }
@@ -77,7 +77,7 @@ addFilter('lzb.editor.control.repeater.render', 'lzb.editor', (render, props) =>
  */
 addFilter('lzb.editor.control.repeater.getValue', 'lzb.editor', (value) => {
   // change string value to array.
-  if ('string' === typeof value) {
+  if (typeof value === 'string') {
     try {
       value = JSON.parse(decodeURI(value));
     } catch (e) {
@@ -93,7 +93,7 @@ addFilter('lzb.editor.control.repeater.getValue', 'lzb.editor', (value) => {
  */
 addFilter('lzb.editor.control.repeater.updateValue', 'lzb.editor', (value) => {
   // change array value to string.
-  if ('object' === typeof value || Array.isArray(value)) {
+  if (typeof value === 'object' || Array.isArray(value)) {
     value = encodeURI(JSON.stringify(value));
   }
 
@@ -230,13 +230,13 @@ addFilter('lzb.constructor.control.repeater.settings', 'lzb.constructor', (rende
         <BaseControl label={__('Collapsible Rows', 'lazy-blocks')}>
           <ToggleControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.rows_collapsible}
+            checked={data.rows_collapsible === 'true'}
             onChange={(value) => updateData({ rows_collapsible: value ? 'true' : 'false' })}
           />
-          {'true' === data.rows_collapsible ? (
+          {data.rows_collapsible === 'true' ? (
             <ToggleControl
               label={__('Collapsed by Default', 'lazy-blocks')}
-              checked={'true' === data.rows_collapsed}
+              checked={data.rows_collapsed === 'true'}
               onChange={(value) => updateData({ rows_collapsed: value ? 'true' : 'false' })}
             />
           ) : (

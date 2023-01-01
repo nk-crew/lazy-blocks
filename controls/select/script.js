@@ -18,7 +18,7 @@ addFilter('lzb.editor.control.select.render', 'lzb.editor', (render, props) => {
   let { choices } = props.data;
 
   // allow null.
-  if (props.data.allow_null && 'true' === props.data.allow_null) {
+  if (props.data.allow_null && props.data.allow_null === 'true') {
     choices = [
       {
         value: '',
@@ -33,7 +33,7 @@ addFilter('lzb.editor.control.select.render', 'lzb.editor', (render, props) => {
       <SelectControl
         label={props.data.label}
         options={choices}
-        multiple={'true' === props.data.multiple}
+        multiple={props.data.multiple === 'true'}
         value={props.getValue()}
         className="lzb-gutenberg-select"
         onChange={(val) => {
@@ -48,7 +48,7 @@ addFilter('lzb.editor.control.select.render', 'lzb.editor', (render, props) => {
  * Control value valid in editor.
  */
 addFilter('lzb.editor.control.select.isValueValid', 'lzb.editor', (isValid, value, data) => {
-  if ('true' === data.allow_null) {
+  if (data.allow_null === 'true') {
     isValid = true;
   }
 
@@ -73,7 +73,7 @@ addFilter('lzb.constructor.control.select.settings', 'lzb.constructor', (render,
         >
           <ToggleControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.allow_null}
+            checked={data.allow_null === 'true'}
             onChange={(value) => updateData({ allow_null: value ? 'true' : 'false' })}
           />
         </BaseControl>
@@ -85,7 +85,7 @@ addFilter('lzb.constructor.control.select.settings', 'lzb.constructor', (render,
         >
           <ToggleControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.multiple}
+            checked={data.multiple === 'true'}
             onChange={(value) => updateData({ multiple: value ? 'true' : 'false' })}
           />
         </BaseControl>

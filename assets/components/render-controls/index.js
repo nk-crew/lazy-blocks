@@ -44,14 +44,14 @@ export default class RenderControls extends Component {
     let { name } = control;
 
     // prepare child items.
-    if (control.child_of && lazyBlockData.controls[control.child_of] && -1 < childIndex) {
+    if (control.child_of && lazyBlockData.controls[control.child_of] && childIndex > -1) {
       const childs = getControlValue(
         attributes,
         lazyBlockData,
         lazyBlockData.controls[control.child_of]
       );
 
-      if (childs && 'undefined' !== typeof childs[childIndex]) {
+      if (childs && typeof childs[childIndex] !== 'undefined') {
         childs[childIndex][control.name] = val;
         val = childs;
       }
@@ -122,7 +122,7 @@ export default class RenderControls extends Component {
     });
 
     // additional element for better formatting in inspector.
-    if ('inspector' === placement && result.length) {
+    if (placement === 'inspector' && result.length) {
       result = <PanelBody>{result}</PanelBody>;
     }
 
@@ -154,8 +154,8 @@ export default class RenderControls extends Component {
 
     let placementCheck =
       controlData.type &&
-      'nowhere' !== controlData.placement &&
-      ('both' === controlData.placement || controlData.placement === placement);
+      controlData.placement !== 'nowhere' &&
+      (controlData.placement === 'both' || controlData.placement === placement);
     let { label } = controlData;
 
     const controlTypeData = getControlTypeData(controlData.type);
@@ -164,17 +164,17 @@ export default class RenderControls extends Component {
     if (controlTypeData && controlTypeData.restrictions) {
       // Restrict placement.
       if (placementCheck && controlTypeData.restrictions.placement_settings) {
-        placementCheck = -1 < controlTypeData.restrictions.placement_settings.indexOf(placement);
+        placementCheck = controlTypeData.restrictions.placement_settings.indexOf(placement) > -1;
       }
 
       // Restrict hide if not selected.
       if (
         placementCheck &&
-        'content' === placement &&
-        ('content' === controlData.placement || 'both' === controlData.placement) &&
+        placement === 'content' &&
+        (controlData.placement === 'content' || controlData.placement === 'both') &&
         controlTypeData.restrictions.hide_if_not_selected_settings &&
         controlData.hide_if_not_selected &&
-        'true' === controlData.hide_if_not_selected
+        controlData.hide_if_not_selected === 'true'
       ) {
         placementCheck = isLazyBlockSelected;
       }
@@ -183,7 +183,7 @@ export default class RenderControls extends Component {
       if (
         controlTypeData.restrictions.required_settings &&
         controlData.required &&
-        'true' === controlData.required
+        controlData.required === 'true'
       ) {
         label = `${label || ''} <span class="required">*</span>`;
       }
@@ -235,7 +235,7 @@ export default class RenderControls extends Component {
           controlTypeData &&
           controlTypeData.restrictions.required_settings &&
           controlData.required &&
-          'true' === controlData.required
+          controlData.required === 'true'
         ) {
           const val = controlRenderData.getValue();
 
@@ -253,7 +253,7 @@ export default class RenderControls extends Component {
           }
         }
 
-        if ('inspector' === placement) {
+        if (placement === 'inspector') {
           result = (
             <Fragment key={`control-${uniqueId}`}>
               {controlResult}

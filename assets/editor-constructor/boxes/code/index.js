@@ -29,7 +29,7 @@ const { plugin_version: pluginVersion } = window.lazyblocksConstructorData;
 // Add autocompleter with control names.
 addCompleter({
   getCompletions(editor, session, pos, prefix, callback) {
-    if ('lzb-editor-php' === editor.id) {
+    if (editor.id === 'lzb-editor-php') {
       const { getBlockData } = select('lazy-blocks/block-data');
 
       const blockData = getBlockData();
@@ -60,7 +60,7 @@ addCompleter({
 
 addCompleter({
   getCompletions(editor, session, pos, prefix, callback) {
-    if ('lzb-editor-html' === editor.id) {
+    if (editor.id === 'lzb-editor-html') {
       const { getBlockData } = select('lazy-blocks/block-data');
 
       const blockData = getBlockData();
@@ -112,7 +112,7 @@ export default function CustomCodeSettings(props) {
 
   // Set default tab when code preview is disabled or code has a single output.
   useEffect(() => {
-    if ('frontend' !== tab && ('never' === data.code_show_preview || data.code_single_output)) {
+    if (tab !== 'frontend' && (data.code_show_preview === 'never' || data.code_single_output)) {
       setTab('frontend');
     }
   }, [data]);
@@ -157,7 +157,7 @@ export default function CustomCodeSettings(props) {
     },
   ];
 
-  if ('never' !== data.code_show_preview && !data.code_single_output) {
+  if (data.code_show_preview !== 'never' && !data.code_single_output) {
     tabs.push({
       name: 'editor',
       title: __('Editor', 'lazy-blocks'),
@@ -198,11 +198,11 @@ export default function CustomCodeSettings(props) {
   // Output code settings.
   const settingsOutputCode = applyFilters(
     `lzb.constructor.code-settings.output-code`,
-    'template' !== data.code_output_method ? (
+    data.code_output_method !== 'template' ? (
       <Fragment>
         <PanelBody>
           <BaseControl>
-            {1 < tabs.length ? (
+            {tabs.length > 1 ? (
               <TabPanel
                 className="lazyblocks-control-tabs"
                 activeClass="is-active"
@@ -276,7 +276,7 @@ export default function CustomCodeSettings(props) {
   // Information about Theme Template usage.
   const settingsOutputTemplate = applyFilters(
     `lzb.constructor.code-settings.output-template`,
-    'template' === data.code_output_method && currentTheme && currentTheme.stylesheet ? (
+    data.code_output_method === 'template' && currentTheme && currentTheme.stylesheet ? (
       <PanelBody>
         <Notice
           status="info"

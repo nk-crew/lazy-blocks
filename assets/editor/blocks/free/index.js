@@ -17,7 +17,7 @@ registerBlockType('lazyblock-core/free', {
   supports: {
     html: true,
     customClassName: false,
-    inserter: window.pagenow && 'lazyblocks_templates' === window.pagenow,
+    inserter: window.pagenow && window.pagenow === 'lazyblocks_templates',
   },
   edit: BlockEdit,
   save: BlockSave,

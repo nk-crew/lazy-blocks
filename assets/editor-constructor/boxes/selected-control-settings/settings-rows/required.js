@@ -10,7 +10,7 @@ export default function RequiredRow(props) {
       <BaseControl label={__('Required', 'lazy-blocks')}>
         <ToggleControl
           label={__('Yes', 'lazy-blocks')}
-          checked={'true' === data.required}
+          checked={data.required === 'true'}
           onChange={(value) => updateData({ required: value ? 'true' : 'false' })}
         />
       </BaseControl>

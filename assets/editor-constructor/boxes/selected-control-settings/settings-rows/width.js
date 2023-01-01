@@ -29,7 +29,7 @@ export default function WidthRow(props) {
               thereIsActive = isActive;
             }
 
-            if (!thereIsActive && '100' === w) {
+            if (!thereIsActive && w === '100') {
               isActive = true;
             }
 

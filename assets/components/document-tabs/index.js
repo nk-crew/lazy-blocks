@@ -33,7 +33,7 @@ export default function DocumentTabs({ children }) {
   function activateTab(name) {
     globalActiveTab = name;
 
-    if ('block' === name) {
+    if (name === 'block') {
       clearSelectedControl();
     } else {
       selectControl('NO_CONTROL_ID_JUST_SELECT_TAB');
@@ -51,7 +51,7 @@ export default function DocumentTabs({ children }) {
                 activateTab('block');
               }}
               className={`components-button edit-post-sidebar__panel-tab ${
-                'block' === activeTab ? 'is-active' : ''
+                activeTab === 'block' ? 'is-active' : ''
               }`}
               aria-label={__('Block', 'lazy-blocks')}
             >
@@ -65,7 +65,7 @@ export default function DocumentTabs({ children }) {
                 activateTab('control');
               }}
               className={`components-button edit-post-sidebar__panel-tab ${
-                'control' === activeTab ? 'is-active' : ''
+                activeTab === 'control' ? 'is-active' : ''
               }`}
               aria-label={__('Control', 'lazy-blocks')}
             >

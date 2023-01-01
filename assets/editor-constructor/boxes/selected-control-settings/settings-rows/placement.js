@@ -14,7 +14,7 @@ export default function PlacementRow(props) {
   // check restrictions.
   let placementRestrictions = [];
 
-  if (controlTypeData && 'undefined' !== typeof controlTypeData.restrictions.placement_settings) {
+  if (controlTypeData && typeof controlTypeData.restrictions.placement_settings !== 'undefined') {
     placementRestrictions = controlTypeData.restrictions.placement_settings;
   }
 
@@ -28,18 +28,18 @@ export default function PlacementRow(props) {
         <div />
         <ButtonGroup>
           <Button
-            isPrimary={'content' === placement || 'both' === placement}
-            isPressed={'content' === placement || 'both' === placement}
-            disabled={-1 === placementRestrictions.indexOf('content')}
+            isPrimary={placement === 'content' || placement === 'both'}
+            isPressed={placement === 'content' || placement === 'both'}
+            disabled={placementRestrictions.indexOf('content') === -1}
             isSmall
             onClick={() => {
               let newPlacement = 'content';
 
-              if ('both' === placement) {
+              if (placement === 'both') {
                 newPlacement = 'inspector';
-              } else if ('content' === placement) {
+              } else if (placement === 'content') {
                 newPlacement = 'nowhere';
-              } else if ('inspector' === placement) {
+              } else if (placement === 'inspector') {
                 newPlacement = 'both';
               }
 
@@ -51,18 +51,18 @@ export default function PlacementRow(props) {
             {__('Content', 'lazy-blocks')}
           </Button>
           <Button
-            isPrimary={'inspector' === placement || 'both' === placement}
-            isPressed={'inspector' === placement || 'both' === placement}
-            disabled={-1 === placementRestrictions.indexOf('inspector')}
+            isPrimary={placement === 'inspector' || placement === 'both'}
+            isPressed={placement === 'inspector' || placement === 'both'}
+            disabled={placementRestrictions.indexOf('inspector') === -1}
             isSmall
             onClick={() => {
               let newPlacement = 'inspector';
 
-              if ('both' === placement) {
+              if (placement === 'both') {
                 newPlacement = 'content';
-              } else if ('inspector' === placement) {
+              } else if (placement === 'inspector') {
                 newPlacement = 'nowhere';
-              } else if ('content' === placement) {
+              } else if (placement === 'content') {
                 newPlacement = 'both';
               }
 

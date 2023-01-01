@@ -84,7 +84,7 @@ function reducer(state = { data: false }, action = {}) {
         const { controls = {} } = state.data;
 
         let newId = getUID();
-        while ('undefined' !== typeof controls[`control_${newId}`]) {
+        while (typeof controls[`control_${newId}`] !== 'undefined') {
           newId = getUID();
         }
         newId = `control_${newId}`;

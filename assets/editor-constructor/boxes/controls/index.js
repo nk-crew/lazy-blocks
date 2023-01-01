@@ -77,7 +77,7 @@ export default function ControlsSettings(props) {
         return;
       }
 
-      if (!controlData.child_of && placement !== controlPlacement && 'both' !== controlPlacement) {
+      if (!controlData.child_of && placement !== controlPlacement && controlPlacement !== 'both') {
         return;
       }
 
@@ -209,7 +209,7 @@ export default function ControlsSettings(props) {
   Object.keys(controls).forEach((id) => {
     const controlData = controls[id];
 
-    if (!controlData.child_of && 'nowhere' === controlData.placement) {
+    if (!controlData.child_of && controlData.placement === 'nowhere') {
       thereIsHidden = true;
     }
   });

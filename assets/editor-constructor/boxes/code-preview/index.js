@@ -109,7 +109,7 @@ export default function CodePreview(props) {
         }
 
         if (error) {
-          if ('lazy_block_no_render_callback' === errorCode) {
+          if (errorCode === 'lazy_block_no_render_callback') {
             setCodePreview('');
           } else {
             setCodePreview(`<pre>${response}</pre>`);

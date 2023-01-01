@@ -41,7 +41,7 @@ addFilter('lzb.constructor.control.toggle.settings', 'lzb.constructor', (render,
         <BaseControl label={__('Checked', 'lazy-blocks')}>
           <ToggleControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.checked}
+            checked={data.checked === 'true'}
             onChange={(value) => updateData({ checked: value ? 'true' : 'false' })}
           />
         </BaseControl>

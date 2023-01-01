@@ -10,7 +10,7 @@ export function setBlockData(data) {
   // check if control is array and change it to object
   // unless value will not be saved.
   // related topic: https://wordpress.org/support/topic/controls-not-saving/
-  if (data.controls && 'object' === typeof data.controls && data.controls.constructor === Array) {
+  if (data.controls && typeof data.controls === 'object' && data.controls.constructor === Array) {
     data.controls = {};
   }
 

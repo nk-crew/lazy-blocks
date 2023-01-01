@@ -41,7 +41,7 @@ addFilter('lzb.constructor.control.checkbox.settings', 'lzb.constructor', (rende
         <BaseControl label={__('Checked', 'lazy-blocks')}>
           <CheckboxControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.checked}
+            checked={data.checked === 'true'}
             onChange={(value) => updateData({ checked: value ? 'true' : 'false' })}
           />
         </BaseControl>

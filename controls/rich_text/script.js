@@ -21,7 +21,7 @@ addFilter('lzb.editor.control.rich_text.render', 'lzb.editor', (render, props) =
     <RichText
       inlineToolbar
       format="string"
-      multiline={'true' === props.data.multiline ? 'p' : false}
+      multiline={props.data.multiline === 'true' ? 'p' : false}
       value={props.getValue()}
       onChange={(val) => {
         props.onChange(val);
@@ -40,7 +40,7 @@ addFilter('lzb.constructor.control.rich_text.settings', 'lzb.constructor', (rend
     <PanelBody>
       <ToggleControl
         label={__('Multiline', 'lazy-blocks')}
-        checked={'true' === data.multiline}
+        checked={data.multiline === 'true'}
         onChange={(value) => updateData({ multiline: value ? 'true' : 'false' })}
       />
     </PanelBody>

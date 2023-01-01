@@ -74,7 +74,7 @@ function IconPickerDropdown(props) {
     Object.keys(icons).forEach((categoryName) => {
       const categoryIcons = icons[categoryName];
       const showCategory =
-        'undefined' !== typeof hiddenCategories[categoryName]
+        typeof hiddenCategories[categoryName] !== 'undefined'
           ? hiddenCategories[categoryName]
           : true;
       const searchString = search.toLowerCase();
@@ -84,7 +84,7 @@ function IconPickerDropdown(props) {
         .filter((iconName) => {
           if (
             !searchString ||
-            (searchString && -1 < iconName.indexOf(searchString.toLowerCase()))
+            (searchString && iconName.indexOf(searchString.toLowerCase()) > -1)
           ) {
             return true;
           }
@@ -189,7 +189,7 @@ function IconPickerDropdown(props) {
       allIcons.forEach((icon, i) => {
         currentIcons.push(icon);
 
-        if (3 === currentIcons.length || allIcons.length === i + 1) {
+        if (currentIcons.length === 3 || allIcons.length === i + 1) {
           rows.push({
             key: 'icons',
             render: <div className="lazyblocks-component-icon-picker-list">{currentIcons}</div>,
@@ -201,7 +201,7 @@ function IconPickerDropdown(props) {
     });
 
     // No icons.
-    if (1 === rows.length) {
+    if (rows.length === 1) {
       rows.push({
         key: 'icons',
         render: __('No icons found.', 'lazy-blocks'),

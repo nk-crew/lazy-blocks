@@ -10,7 +10,7 @@ export default function HideIfNotSelectedRow(props) {
       <BaseControl label={__('Hide if block is not selected', 'lazy-blocks')}>
         <ToggleControl
           label={__('Yes', 'lazy-blocks')}
-          checked={'true' === data.hide_if_not_selected}
+          checked={data.hide_if_not_selected === 'true'}
           onChange={(value) => updateData({ hide_if_not_selected: value ? 'true' : 'false' })}
         />
       </BaseControl>

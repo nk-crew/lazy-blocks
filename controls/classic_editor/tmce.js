@@ -136,12 +136,12 @@ export default function ClassicEdit(props) {
     }
 
     function onReadyStateChange() {
-      if ('complete' === document.readyState) {
+      if (document.readyState === 'complete') {
         initialize();
       }
     }
 
-    if ('complete' === document.readyState) {
+    if (document.readyState === 'complete') {
       initialize();
     } else {
       document.addEventListener('readystatechange', onReadyStateChange);

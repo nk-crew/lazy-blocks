@@ -35,7 +35,7 @@ export default function TypeRow(props) {
     .filter((k) => {
       const iconName = controls[k].name;
 
-      if (!searchString || (searchString && -1 < iconName.indexOf(searchString.toLowerCase()))) {
+      if (!searchString || (searchString && iconName.indexOf(searchString.toLowerCase()) > -1)) {
         return true;
       }
 
@@ -129,7 +129,7 @@ export default function TypeRow(props) {
                   initialOpen={!hiddenIconCategories[cat]}
                   onToggle={() => {
                     hiddenIconCategories[cat] =
-                      'undefined' === typeof hiddenIconCategories[cat]
+                      typeof hiddenIconCategories[cat] === 'undefined'
                         ? true
                         : !hiddenIconCategories[cat];
                   }}

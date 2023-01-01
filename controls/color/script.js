@@ -16,7 +16,7 @@ const { PanelBody, ToggleControl, RadioControl } = wp.components;
 addFilter('lzb.editor.control.color.render', 'lzb.editor', (render, props) => (
   <BaseControl label={props.data.label} help={props.data.help}>
     <ColorControl
-      alpha={'true' === props.data.alpha}
+      alpha={props.data.alpha === 'true'}
       value={props.getValue()}
       onChange={props.onChange}
     />
@@ -41,7 +41,7 @@ addFilter('lzb.constructor.control.color.settings', 'lzb.constructor', (render, 
         >
           <ToggleControl
             label={__('Yes', 'lazy-blocks')}
-            checked={'true' === data.alpha}
+            checked={data.alpha === 'true'}
             onChange={(value) => updateData({ alpha: value ? 'true' : 'false' })}
           />
         </BaseControl>

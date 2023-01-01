@@ -118,9 +118,9 @@ function UpdateEditor() {
     .filter(
       (post) =>
         post.viewable &&
-        'lazyblocks' !== post.slug &&
-        'lazyblocks_templates' !== post.slug &&
-        'attachment' !== post.slug
+        post.slug !== 'lazyblocks' &&
+        post.slug !== 'lazyblocks_templates' &&
+        post.slug !== 'attachment'
     )
     .forEach((post) => {
       let { label } = post;

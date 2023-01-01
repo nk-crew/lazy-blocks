@@ -128,9 +128,9 @@ function RepeaterControl(props) {
 
   let activeItemDefault = -1;
 
-  if ('false' === controlData.rows_collapsible) {
+  if (controlData.rows_collapsible === 'false') {
     activeItemDefault = -2;
-  } else if ('false' === controlData.rows_collapsed) {
+  } else if (controlData.rows_collapsed === 'false') {
     activeItemDefault = -2;
   }
 
@@ -153,19 +153,19 @@ function RepeaterControl(props) {
         let val = innerControls[k].val || '';
 
         // Prepare object value variants.
-        if ('object' === typeof val) {
+        if (typeof val === 'object') {
           valObjectVariants.forEach((tag) => {
             title = title.replace(new RegExp(`{{${data.name}.${tag}}}`, 'g'), val[tag] || '');
           });
         }
 
         // Add support for image control tag displaying.
-        if ('image' === data.type && val.url) {
+        if (data.type === 'image' && val.url) {
           val = `<img src="${val.url}" loading="lazy" />`;
         }
 
         // In case if value is object - display nothing.
-        if ('object' === typeof val) {
+        if (typeof val === 'object') {
           val = '';
         }
 
@@ -179,7 +179,7 @@ function RepeaterControl(props) {
   // Mount.
   useEffect(() => {
     // add rows to meet Minimum requirements
-    if (controlData.rows_min && 0 < controlData.rows_min && controlData.rows_min > count) {
+    if (controlData.rows_min && controlData.rows_min > 0 && controlData.rows_min > count) {
       const needToAdd = controlData.rows_min - count;
 
       for (let i = 0; i < needToAdd; i += 1) {
@@ -190,7 +190,7 @@ function RepeaterControl(props) {
 
   const items = [];
   for (let i = 0; i < count; i += 1) {
-    const active = -2 === activeItem || activeItem === i;
+    const active = activeItem === -2 || activeItem === i;
 
     items.push({
       id: i + 1,
@@ -202,7 +202,7 @@ function RepeaterControl(props) {
         e.preventDefault();
         e.stopPropagation();
 
-        if ('true' === controlData.rows_collapsible) {
+        if (controlData.rows_collapsible === 'true') {
           setActiveItem(active ? -1 : i);
         }
       },
@@ -228,7 +228,7 @@ function RepeaterControl(props) {
           if (active.id !== over.id) {
             resortRow(active.id - 1, over.id - 1);
 
-            if (-1 < activeItem) {
+            if (activeItem > -1) {
               setActiveItem(over.id - 1);
             }
           }
@@ -258,14 +258,14 @@ function RepeaterControl(props) {
         >
           {controlData.rows_add_button_label || __('+ Add Row', 'lazy-blocks')}
         </Button>
-        {'true' === controlData.rows_collapsible && items.length && 1 < items.length ? (
+        {controlData.rows_collapsible === 'true' && items.length && items.length > 1 ? (
           <Tooltip text={__('Toggle all rows', 'lazy-blocks')}>
             <div>
               {/* For some reason Tooltip is not working without this <div> */}
               <ToggleControl
-                checked={-2 === activeItem}
+                checked={activeItem === -2}
                 onChange={() => {
-                  setActiveItem(-2 === activeItem ? -1 : -2);
+                  setActiveItem(activeItem === -2 ? -1 : -2);
                 }}
               />
             </div>

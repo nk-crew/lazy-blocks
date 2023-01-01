@@ -40,7 +40,7 @@ addFilter('lzb.editor.control.gallery.render', 'lzb.editor', (render, props) => 
  */
 addFilter('lzb.editor.control.gallery.getValue', 'lzb.editor', (value) => {
   // change string value to array.
-  if ('string' === typeof value) {
+  if (typeof value === 'string') {
     try {
       value = JSON.parse(decodeURI(value));
     } catch (e) {
@@ -56,7 +56,7 @@ addFilter('lzb.editor.control.gallery.getValue', 'lzb.editor', (value) => {
  */
 addFilter('lzb.editor.control.gallery.updateValue', 'lzb.editor', (value) => {
   // change array value to string.
-  if ('object' === typeof value || Array.isArray(value)) {
+  if (typeof value === 'object' || Array.isArray(value)) {
     value = encodeURI(JSON.stringify(value));
   }
 

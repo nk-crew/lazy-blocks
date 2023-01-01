@@ -42,15 +42,15 @@ const withUniqueBlockId = createHigherOrderComponent(
           let tryCount = 10;
           while (
             !newBlockId ||
-            ('undefined' !== typeof usedIds[newBlockId] &&
+            (typeof usedIds[newBlockId] !== 'undefined' &&
               usedIds[newBlockId] !== clientId &&
-              0 < tryCount)
+              tryCount > 0)
           ) {
             newBlockId = shorthash.unique(clientId);
             tryCount -= 1;
           }
 
-          if (newBlockId && 'undefined' === typeof usedIds[newBlockId]) {
+          if (newBlockId && typeof usedIds[newBlockId] === 'undefined') {
             usedIds[newBlockId] = clientId;
           }
 
@@ -67,7 +67,7 @@ const withUniqueBlockId = createHigherOrderComponent(
 
       useEffect(() => {
         // fix duplicated classes after block clone.
-        if (clientId && attributes.blockId && 'undefined' === typeof usedIds[attributes.blockId]) {
+        if (clientId && attributes.blockId && typeof usedIds[attributes.blockId] === 'undefined') {
           usedIds[attributes.blockId] = clientId;
         }
       }, []);

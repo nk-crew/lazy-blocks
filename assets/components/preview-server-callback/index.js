@@ -75,7 +75,7 @@ export default function PreviewServerCallback(props) {
         context: 'editor',
         name: block,
         post_id: postId || 0,
-        ...(null !== attributes ? { attributes } : {}),
+        ...(attributes !== null ? { attributes } : {}),
         ...urlQueryArgs,
       },
     })
@@ -92,9 +92,9 @@ export default function PreviewServerCallback(props) {
           if (res && res.success) {
             updateResponse(res.response);
           } else if (res && !res.success && res.error_code) {
-            if ('lazy_block_invalid' === res.error_code) {
+            if (res.error_code === 'lazy_block_invalid') {
               updateResponse(null);
-            } else if ('lazy_block_no_render_callback' === res.error_code) {
+            } else if (res.error_code === 'lazy_block_no_render_callback') {
               updateResponse(null);
               setAllowRender(false);
             }

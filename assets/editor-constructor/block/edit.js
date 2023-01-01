@@ -39,7 +39,7 @@ export default function ConstructorBlock() {
 
   const { updateBlockData } = useDispatch('lazy-blocks/block-data');
 
-  if (!blockData || 'undefined' === typeof blockData.slug) {
+  if (!blockData || typeof blockData.slug === 'undefined') {
     return (
       <div className="lzb-constructor-loading">
         <Spinner />
@@ -53,7 +53,7 @@ export default function ConstructorBlock() {
         <DocumentTabs>
           {(tabData) => {
             // Selected control settings.
-            if ('control' === tabData.name) {
+            if (tabData.name === 'control') {
               return <SelectedControlSettings />;
             }
 

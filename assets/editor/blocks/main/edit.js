@@ -78,7 +78,7 @@ export default function BlockEdit(props) {
     Object.keys(lazyBlockData.controls).forEach((k) => {
       const control = lazyBlockData.controls[k];
 
-      if (control.required && 'true' === control.required) {
+      if (control.required && control.required === 'true') {
         thereIsRequired = true;
 
         // Child controls.
@@ -118,7 +118,7 @@ export default function BlockEdit(props) {
     }
 
     // lock or unlock post saving depending on required controls values.
-    if (0 < shouldLock) {
+    if (shouldLock > 0) {
       lockPostSaving();
     } else {
       unlockPostSaving();

@@ -4,7 +4,7 @@ export default function getControlValue(attributes, lazyBlockData, control, chil
   let result = attributes[control.name];
 
   // Prepare child items.
-  if (control.child_of && lazyBlockData.controls[control.child_of] && -1 < childIndex) {
+  if (control.child_of && lazyBlockData.controls[control.child_of] && childIndex > -1) {
     const childs = getControlValue(
       attributes,
       lazyBlockData,
@@ -13,8 +13,8 @@ export default function getControlValue(attributes, lazyBlockData, control, chil
 
     if (
       childs &&
-      'undefined' !== typeof childs[childIndex] &&
-      'undefined' !== typeof childs[childIndex][control.name]
+      typeof childs[childIndex] !== 'undefined' &&
+      typeof childs[childIndex][control.name] !== 'undefined'
     ) {
       result = childs[childIndex][control.name];
     }
@@ -26,7 +26,7 @@ export default function getControlValue(attributes, lazyBlockData, control, chil
 
   // Prevent rendering an undefined value, because it triggers a JS error
   // when change of new controls inside existing repeater.
-  if ('undefined' === typeof result) {
+  if (typeof result === 'undefined') {
     result = '';
   }
 

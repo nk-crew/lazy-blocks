@@ -7,7 +7,7 @@ export default function BlockSave(props) {
 
   // Return inner blocks content to use it in PHP render.
   Object.keys(lazyBlockData.controls).forEach((k) => {
-    if ('inner_blocks' === lazyBlockData.controls[k].type) {
+    if (lazyBlockData.controls[k].type === 'inner_blocks') {
       const innerBlocksProps = useInnerBlocksProps.save();
       result = innerBlocksProps.children;
     }

@@ -20,9 +20,9 @@ export default function ConditionSettings(props) {
         Object.keys(resp.response).forEach((name) => {
           const post = resp.response[name];
           if (
-            'lazyblocks' !== post.name &&
-            'lazyblocks_templates' !== post.name &&
-            'attachment' !== post.name
+            post.name !== 'lazyblocks' &&
+            post.name !== 'lazyblocks_templates' &&
+            post.name !== 'attachment'
           ) {
             result[post.name] = post.label;
           }

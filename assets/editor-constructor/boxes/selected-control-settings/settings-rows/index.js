@@ -47,7 +47,7 @@ export default function settingsRows(props) {
     let allow = true;
 
     // check restrictions.
-    if (controlTypeData && 'undefined' !== typeof controlTypeData.restrictions[`${i}_settings`]) {
+    if (controlTypeData && typeof controlTypeData.restrictions[`${i}_settings`] !== 'undefined') {
       allow = controlTypeData.restrictions[`${i}_settings`];
     }
 
@@ -59,7 +59,7 @@ export default function settingsRows(props) {
         break;
       case 'width':
       case 'hide_if_not_selected':
-        allow = !data.placement || 'content' === data.placement || 'both' === data.placement;
+        allow = !data.placement || data.placement === 'content' || data.placement === 'both';
         break;
       // no default
     }

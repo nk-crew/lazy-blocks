@@ -36,7 +36,7 @@
         display: none;
       }
 
-      tr:not(.inline-edit-row):not(.no-items) {
+      tr:not(.inline-edit-row, .no-items) {
         td.column-lazyblocks_post_icon {
           float: left;
           width: 42px !important;

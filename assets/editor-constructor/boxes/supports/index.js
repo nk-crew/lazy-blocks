@@ -65,7 +65,7 @@ export default function SupportsSettings(props) {
           value={(() => {
             if (supportsAlign && supportsAlign.length) {
               const result = supportsAlign
-                .filter((val) => 'none' !== val)
+                .filter((val) => val !== 'none')
                 .map((val) => ({
                   value: val,
                   label: val,

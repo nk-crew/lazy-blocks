@@ -27,11 +27,11 @@ export default function SaveInMetaRow(props) {
       >
         <ToggleControl
           label={__('Yes', 'lazy-blocks')}
-          checked={'true' === data.save_in_meta}
+          checked={data.save_in_meta === 'true'}
           onChange={(value) => updateData({ save_in_meta: value ? 'true' : 'false' })}
         />
       </BaseControl>
-      {'true' === data.save_in_meta ? (
+      {data.save_in_meta === 'true' ? (
         <TextControl
           label={__('Meta custom name (optional)', 'lazy-blocks')}
           value={data.save_in_meta_name}

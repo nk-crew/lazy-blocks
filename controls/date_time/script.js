@@ -14,7 +14,7 @@ const { __experimentalGetSettings: getSettings, dateI18n } = wp.date;
 const { Dropdown, PanelBody, ButtonGroup, Button, DatePicker, TimePicker } = wp.components;
 
 const currentTimezone =
-  'undefined' !== typeof Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 0;
+  typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : 0;
 
 /**
  * Date Time Picker.
@@ -154,11 +154,11 @@ addFilter('lzb.constructor.control.date_time.settings', 'lzb.constructor', (rend
           onClick={() => {
             let result = 'date';
 
-            if ('date_time' === dateTimePicker) {
+            if (dateTimePicker === 'date_time') {
               result = 'time';
-            } else if ('date' === dateTimePicker) {
+            } else if (dateTimePicker === 'date') {
               result = 'date';
-            } else if ('time' === dateTimePicker) {
+            } else if (dateTimePicker === 'time') {
               result = 'date_time';
             }
 
@@ -176,11 +176,11 @@ addFilter('lzb.constructor.control.date_time.settings', 'lzb.constructor', (rend
           onClick={() => {
             let result = 'time';
 
-            if ('date_time' === dateTimePicker) {
+            if (dateTimePicker === 'date_time') {
               result = 'date';
-            } else if ('time' === dateTimePicker) {
+            } else if (dateTimePicker === 'time') {
               result = 'time';
-            } else if ('date' === dateTimePicker) {
+            } else if (dateTimePicker === 'date') {
               result = 'date_time';
             }
 
