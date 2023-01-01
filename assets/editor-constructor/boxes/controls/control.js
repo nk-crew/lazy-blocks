@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import classnames from 'classnames/dedupe';
-import * as clipboard from 'clipboard-polyfill';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -47,15 +46,15 @@ export default function Control(props) {
   const { selectControl } = useDispatch('lazy-blocks/block-data');
 
   function copyName(name) {
-    clipboard.writeText(name);
+    navigator.clipboard.writeText(name).then(() => {
+      setCopied(true);
 
-    setCopied(true);
+      clearTimeout(copiedTimeout);
 
-    clearTimeout(copiedTimeout);
-
-    copiedTimeout = setTimeout(() => {
-      setCopied(false);
-    }, 350);
+      copiedTimeout = setTimeout(() => {
+        setCopied(false);
+      }, 350);
+    });
   }
 
   const { label, name, placeholder, save_in_meta, save_in_meta_name, type, required } = data;
@@ -63,7 +62,7 @@ export default function Control(props) {
   const controlTypeData = getControlTypeData(type);
 
   let controlName = name;
-  if ('true' === save_in_meta) {
+  if (save_in_meta === 'true') {
     controlName = save_in_meta_name || name;
   }
 
@@ -85,7 +84,7 @@ export default function Control(props) {
   let controlsItemAttributes = {
     className: classnames(
       'lzb-constructor-controls-item',
-      'undefined' === controlTypeData.name ? 'lzb-constructor-controls-item-undefined' : '',
+      controlTypeData.name === 'undefined' ? 'lzb-constructor-controls-item-undefined' : '',
       isSelected ? 'lzb-constructor-controls-item-selected' : '',
       isDragging ? 'lzb-constructor-controls-item-dragging' : ''
     ),
@@ -141,7 +140,7 @@ export default function Control(props) {
                 {__('(no label)', 'lazy-blocks')}
               </span>
             )}
-            {'true' === required ? <span className="required">*</span> : ''}
+            {required === 'true' ? <span className="required">*</span> : ''}
           </span>
         ) : (
           <span className="lzb-constructor-controls-item-label-text">&nbsp;</span>

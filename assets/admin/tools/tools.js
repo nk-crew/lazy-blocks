@@ -1,8 +1,4 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-/**
- * External Dependencies
- */
-import * as clipboard from 'clipboard-polyfill';
 
 /**
  * Internal Dependencies
@@ -87,23 +83,23 @@ export default function Templates() {
   function copyPHPStringCode(type = 'blocks') {
     const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-    clipboard.writeText(getPHPStringCode(type));
-
-    if ('Blocks' === typeLabel) {
-      setCopiedBlocks(true);
-    } else if ('Templates' === typeLabel) {
-      setCopiedTemplates(true);
-    }
-
-    clearTimeout(copiedTimeouts.current[typeLabel]);
-
-    copiedTimeouts.current[typeLabel] = setTimeout(() => {
-      if ('Blocks' === typeLabel) {
-        setCopiedBlocks(false);
-      } else if ('Templates' === typeLabel) {
-        setCopiedTemplates(false);
+    navigator.clipboard.writeText(getPHPStringCode(type)).then(() => {
+      if (typeLabel === 'Blocks') {
+        setCopiedBlocks(true);
+      } else if (typeLabel === 'Templates') {
+        setCopiedTemplates(true);
       }
-    }, 350);
+
+      clearTimeout(copiedTimeouts.current[typeLabel]);
+
+      copiedTimeouts.current[typeLabel] = setTimeout(() => {
+        if (typeLabel === 'Blocks') {
+          setCopiedBlocks(false);
+        } else if (typeLabel === 'Templates') {
+          setCopiedTemplates(false);
+        }
+      }, 350);
+    });
   }
 
   function renderExportContent(type = 'blocks') {
@@ -117,20 +113,20 @@ export default function Templates() {
           <BaseControl>
             <ToggleControl
               label={__('Select all', 'lazy-blocks')}
-              checked={0 === Object.keys(disabledStates[`disabled${typeLabel}`]).length}
+              checked={Object.keys(disabledStates[`disabled${typeLabel}`]).length === 0}
               onChange={() => {
                 const newDisabled = {};
 
                 // disable all
-                if (0 === Object.keys(disabledStates[`disabled${typeLabel}`]).length) {
+                if (Object.keys(disabledStates[`disabled${typeLabel}`]).length === 0) {
                   data[type].forEach((item) => {
                     newDisabled[item.data.id] = true;
                   });
                 }
 
-                if ('Blocks' === typeLabel) {
+                if (typeLabel === 'Blocks') {
                   setDisabledBlocks(newDisabled);
-                } else if ('Templates' === typeLabel) {
+                } else if (typeLabel === 'Templates') {
                   setDisabledTemplates(newDisabled);
                 }
               }}
@@ -144,7 +140,7 @@ export default function Templates() {
                   label={
                     // eslint-disable-next-line react/jsx-wrap-multilines
                     <Fragment>
-                      {'blocks' === type ? (
+                      {type === 'blocks' ? (
                         <Fragment>
                           {item.data.icon && /^dashicons/.test(item.data.icon) ? (
                             <span className={item.data.icon} />
@@ -173,13 +169,13 @@ export default function Templates() {
 
                     if (isSelected && !newDisabled[item.data.id]) {
                       newDisabled[item.data.id] = true;
-                    } else if (!isSelected && 'undefined' !== typeof newDisabled[item.data.id]) {
+                    } else if (!isSelected && typeof newDisabled[item.data.id] !== 'undefined') {
                       delete newDisabled[item.data.id];
                     }
 
-                    if ('Blocks' === typeLabel) {
+                    if (typeLabel === 'Blocks') {
                       setDisabledBlocks(newDisabled);
-                    } else if ('Templates' === typeLabel) {
+                    } else if (typeLabel === 'Templates') {
                       setDisabledTemplates(newDisabled);
                     }
                   }}
@@ -224,9 +220,9 @@ export default function Templates() {
             <button
               className="button"
               onClick={() => {
-                if ('Blocks' === typeLabel) {
+                if (typeLabel === 'Blocks') {
                   setShowBlocksPHP(true);
-                } else if ('Templates' === typeLabel) {
+                } else if (typeLabel === 'Templates') {
                   setShowTemplatesPHP(true);
                 }
               }}
