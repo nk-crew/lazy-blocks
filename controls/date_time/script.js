@@ -13,6 +13,9 @@ const { __experimentalGetSettings: getSettings, dateI18n } = wp.date;
 
 const { Dropdown, PanelBody, ButtonGroup, Button, DatePicker, TimePicker } = wp.components;
 
+const currentTimezone =
+  'undefined' !== typeof Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 0;
+
 /**
  * Date Time Picker.
  */
@@ -32,16 +35,22 @@ function DateTimePicker(props) {
       .join('') // Reverse the string and test for "a" not followed by a slash
   );
 
+  // Date.
   let buttonLabel = __('Select Date', 'lazy-blocks');
   let resolvedFormat = settings.formats.date || 'F j, Y';
 
+  // Date + Time.
   if (allowTimePicker && allowDatePicker) {
     buttonLabel = __('Select Date and Time', 'lazy-blocks');
     resolvedFormat = settings.formats.datetime || 'F j, Y g:i a';
+
+    // Time.
   } else if (allowTimePicker) {
     buttonLabel = __('Select Time', 'lazy-blocks');
     resolvedFormat = settings.formats.time || 'g:i a';
   }
+
+  const formattedDate = value ? dateI18n(resolvedFormat, value, currentTimezone) : buttonLabel;
 
   return (
     <BaseControl label={label} help={help}>
@@ -83,7 +92,7 @@ function DateTimePicker(props) {
                 </svg>
               )}
 
-              {value ? dateI18n(resolvedFormat, value) : buttonLabel}
+              {formattedDate}
             </Button>
           )}
           renderContent={() => (
