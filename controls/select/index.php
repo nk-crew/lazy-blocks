@@ -62,8 +62,8 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
     /**
      * Filter block attribute.
      *
-     * @param string $attribute_data - attribute data.
-     * @param mixed  $control - control data.
+     * @param array $attribute_data - attribute data.
+     * @param mixed $control - control data.
      *
      * @return array filtered attribute data.
      */
@@ -177,7 +177,7 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
     /**
      * Change get_lzb_meta output to custom output if needed.
      *
-     * @param string $result - meta data.
+     * @param array  $result - meta data.
      * @param string $name - meta name.
      * @param mixed  $id - post id.
      * @param mixed  $control - control data.

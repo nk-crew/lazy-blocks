@@ -61,8 +61,8 @@ class LazyBlocks_Control_Checkbox extends LazyBlocks_Control {
     /**
      * Filter block attribute.
      *
-     * @param string $attribute_data - attribute data.
-     * @param mixed  $control - control data.
+     * @param array $attribute_data - attribute data.
+     * @param mixed $control - control data.
      *
      * @return array filtered attribute data.
      */

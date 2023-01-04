@@ -61,9 +61,9 @@ class LazyBlocks_Control_File extends LazyBlocks_Control {
     /**
      * Change block render attribute to array.
      *
-     * @param string $attributes - block attributes.
-     * @param mixed  $content - block content.
-     * @param mixed  $block - block data.
+     * @param array $attributes - block attributes.
+     * @param mixed $content - block content.
+     * @param mixed $block - block data.
      *
      * @return array filtered attribute data.
      */
@@ -85,7 +85,7 @@ class LazyBlocks_Control_File extends LazyBlocks_Control {
     /**
      * Change get_lzb_meta output to array.
      *
-     * @param string $result - meta data.
+     * @param array  $result - meta data.
      * @param string $name - meta name.
      * @param mixed  $id - post id.
      * @param mixed  $control - control data.

@@ -121,7 +121,7 @@ class LazyBlocks_Control_Radio extends LazyBlocks_Control {
     /**
      * Change get_lzb_meta output to custom output if needed.
      *
-     * @param string $result - meta data.
+     * @param array  $result - meta data.
      * @param string $name - meta name.
      * @param mixed  $id - post id.
      * @param mixed  $control - control data.
