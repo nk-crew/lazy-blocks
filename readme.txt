@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.1
 * Requires PHP: 7.2
-* Stable tag: 3.2.1
+* Stable tag: 3.3.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,19 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.3.0 =
+
+PRO plugin:
+
+* added support for Repeater control in the Conditional Logic
+
+FREE plugin:
+
+* added notice for invalid control name when creating block
+* fixed Preview component JS actions call after fetch complete
+* fixed displaying Date and Time pickers
+* fixed Date Time Picker displaying date in the toggle label
 
 = 3.2.1 =
 
