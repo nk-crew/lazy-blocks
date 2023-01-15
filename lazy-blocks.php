@@ -289,6 +289,37 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
         public function add_template( $data ) {
             return $this->templates()->add_template( $data );
         }
+
+        /**
+         * Include plugin with theme or plugin.
+         *
+         * @link https://www.lazyblocks.com/docs/examples/include-lazy-blocks-within-theme-or-plugin/
+         *
+         * @param string $url  - url for the new root of the Lazy Blocks.
+         */
+        public function include_within( $url ) {
+            // Allow calling this method a single time only.
+            if ( defined( 'LZB_INCLUDE_WITHIN_URL' ) ) {
+                return;
+            }
+
+            define( 'LZB_INCLUDE_WITHIN_URL', $url );
+
+            // Customize the url setting to fix incorrect asset URLs.
+            add_filter(
+                'lzb/plugin_url',
+                function() {
+                    return LZB_INCLUDE_WITHIN_URL . ( defined( 'LAZY_BLOCKS_PRO' ) ? 'core-plugin/' : '' );
+                }
+            );
+
+            add_filter(
+                'lzb_pro/plugin_url',
+                function() {
+                    return LZB_INCLUDE_WITHIN_URL;
+                }
+            );
+        }
     }
 
     /**
