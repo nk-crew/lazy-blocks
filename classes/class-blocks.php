@@ -1337,9 +1337,12 @@ class LazyBlocks_Blocks {
                 'apiVersion'      => 2,
                 'attributes'      => $attributes,
                 'render_callback' => function( $render_attributes, $render_content = null ) {
+                    // Usually this context is used to properly preload content in the Pro plugin.
+                    $render_context = is_admin() ? 'editor' : 'frontend';
+
                     // We should run our function in this way because Gutenberg
                     // has a 3rd parameter in the `render_callback` which conflicts with ours.
-                    return $this->render_callback( $render_attributes, $render_content );
+                    return $this->render_callback( $render_attributes, $render_content, $render_context );
                 },
                 'example'         => array(),
                 'editor_script'   => 'lazyblocks-editor',
