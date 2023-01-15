@@ -473,7 +473,7 @@ class LazyBlocks_Tools {
      *
      * @param array $data - new block data.
      */
-    private function import_block( $data ) {
+    public function import_block( $data ) {
         $meta        = array();
         $meta_prefix = 'lazyblocks_';
         $post_id     = wp_insert_post(
