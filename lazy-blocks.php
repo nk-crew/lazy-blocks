@@ -101,13 +101,6 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
         private $tools;
 
         /**
-         * URL to include Lazy Blocks withing theme or plugin.
-         *
-         * @var string
-         */
-        private $include_within_url;
-
-        /**
          * LazyBlocks constructor.
          */
         public function __construct() {
@@ -305,25 +298,18 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
          * @param string $url  - url for the new root of the Lazy Blocks.
          */
         public function include_within( $url ) {
-            // Allow calling this method a single time only.
-            if ( ! empty( $this->include_within_url ) ) {
-                return;
-            }
-
-            $this->include_within_url = $url;
-
             // Customize the url setting to fix incorrect asset URLs.
             add_filter(
                 'lzb/plugin_url',
-                function() {
-                    return $this->include_within_url . ( lazyblocks()->is_pro() ? 'core-plugin/' : '' );
+                function() use ( $url ) {
+                    return $url . ( lazyblocks()->is_pro() ? 'core-plugin/' : '' );
                 }
             );
 
             add_filter(
                 'lzb_pro/plugin_url',
-                function() {
-                    return $this->include_within_url;
+                function() use ( $url ) {
+                    return $url;
                 }
             );
         }
