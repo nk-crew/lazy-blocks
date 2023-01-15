@@ -1336,7 +1336,11 @@ class LazyBlocks_Blocks {
             $data = array(
                 'apiVersion'      => 2,
                 'attributes'      => $attributes,
-                'render_callback' => array( $this, 'render_callback' ),
+                'render_callback' => function( $render_attributes, $render_content = null ) {
+                    // We should run our function in this way because Gutenberg
+                    // has a 3rd parameter in the `render_callback` which conflicts with ours.
+                    return $this->render_callback( $render_attributes, $render_content );
+                },
                 'example'         => array(),
                 'editor_script'   => 'lazyblocks-editor',
                 'editor_style'    => 'lazyblocks-editor',
