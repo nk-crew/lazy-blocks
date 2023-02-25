@@ -39,8 +39,8 @@ export default function ClassicEdit(props) {
   }, [content]);
 
   useEffect(() => {
-    const { baseURL, suffix } = window.wpEditorL10n.tinymce;
-    // const { baseURL, suffix } = window.wpEditorL10n ? window.wpEditorL10n.tinymce : window.tinymce;
+    // const { baseURL, suffix } = window.wpEditorL10n.tinymce;
+    const { baseURL, suffix } = window.wpEditorL10n ? window.wpEditorL10n.tinymce : window.tinymce;
 
     didMount.current = true;
 
@@ -123,7 +123,8 @@ export default function ClassicEdit(props) {
     }
 
     function initialize() {
-      const { settings } = window.wpEditorL10n.tinymce;
+      // const { settings } = window.wpEditorL10n.tinymce;
+      const { settings } = window.wpEditorL10n ? window.wpEditorL10n.tinymce : window.tinymce;
       wp.oldEditor.initialize(`editor-${editorId}`, {
         tinymce: {
           ...settings,
