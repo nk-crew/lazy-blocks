@@ -1,15 +1,15 @@
-# Copyright (C) 2022 Lazy Blocks Team
+# Copyright (C) 2023 Lazy Blocks Team
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.1.0\n"
+"Project-Id-Version: Lazy Blocks 3.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-29T11:16:57+00:00\n"
+"POT-Creation-Date: 2023-02-27T08:59:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: lazy-blocks\n"
@@ -64,7 +64,7 @@ msgid "Duplicate “%1$s”"
 msgstr ""
 
 #: classes/class-blocks.php:459
-#: assets/editor-constructor/boxes/controls/control.js:184
+#: assets/editor-constructor/boxes/controls/control.js:183
 msgid "Duplicate"
 msgstr ""
 
@@ -120,6 +120,11 @@ msgstr ""
 
 #: classes/class-deactivate-duplicate-plugin.php:71
 msgid "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks Pro."
+msgstr ""
+
+#. translators: 1: WordPress hook name, 2: Version number, 3: Alternative hook name.
+#: classes/class-deprecated.php:131
+msgid "Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead."
 msgstr ""
 
 #: classes/class-dummy.php:54
@@ -188,43 +193,43 @@ msgstr ""
 msgid "Export / Import"
 msgstr ""
 
-#: classes/class-tools.php:293
+#: classes/class-tools.php:295
 msgid "No file selected"
 msgstr ""
 
-#: classes/class-tools.php:303
+#: classes/class-tools.php:305
 msgid "Error uploading file. Please try again"
 msgstr ""
 
-#: classes/class-tools.php:309
+#: classes/class-tools.php:311
 msgid "Incorrect file type"
 msgstr ""
 
-#: classes/class-tools.php:320
+#: classes/class-tools.php:322
 msgid "Import file empty"
 msgstr ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:359
+#: classes/class-tools.php:361
 msgid "Imported %s block"
 msgid_plural "Imported %s blocks"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - number of templates.
-#: classes/class-tools.php:379
+#: classes/class-tools.php:381
 msgid "Imported %s template"
 msgid_plural "Imported %s templates"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - post type.
-#: classes/class-tools.php:553
+#: classes/class-tools.php:556
 msgid "Template for these post types '%s' already exists."
 msgstr ""
 
 #. translators: %s - post title.
-#: classes/class-tools.php:599
+#: classes/class-tools.php:602
 msgid "Added new block '%s'."
 msgstr ""
 
@@ -341,32 +346,32 @@ msgstr ""
 msgid "Template Settings"
 msgstr ""
 
-#: assets/admin/tools/tools.js:119
+#: assets/admin/tools/tools.js:115
 msgid "Select all"
 msgstr ""
 
-#: assets/admin/tools/tools.js:209
+#: assets/admin/tools/tools.js:205
 msgid "Copy to Clipboard"
 msgstr ""
 
-#: assets/admin/tools/tools.js:221
+#: assets/admin/tools/tools.js:217
 msgid "Export JSON"
 msgstr ""
 
-#: assets/admin/tools/tools.js:235
+#: assets/admin/tools/tools.js:231
 msgid "Generate PHP"
 msgstr ""
 
-#: assets/admin/tools/tools.js:250
+#: assets/admin/tools/tools.js:246
 msgid "Export Blocks"
 msgstr ""
 
-#: assets/admin/tools/tools.js:270
+#: assets/admin/tools/tools.js:266
 msgid "Export Templates"
 msgstr ""
 
-#: assets/admin/tools/tools.js:292
-#: assets/admin/tools/tools.js:310
+#: assets/admin/tools/tools.js:288
+#: assets/admin/tools/tools.js:306
 msgid "Import"
 msgstr ""
 
@@ -396,12 +401,44 @@ msgstr ""
 msgid "Icon Picker"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:18
-msgid "Unlock Extra Features"
+#: assets/components/preview-server-callback/index.js:201
+msgid "Error loading block preview: %s"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:23
-msgid "Upgrade to Lazy Blocks Pro"
+#: assets/components/pro-notice/index.js:18
+msgid "Lazy Blocks Pro"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:28
+msgid "Upgrade Now"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:31
+msgid "Controls Conditional Logic"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:32
+msgid "Panels and Dividers"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:33
+msgid "Posts, Taxonomy, User Controls"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:34
+msgid "Blocks Preloading"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:35
+msgid "SEO Enhancements"
+msgstr ""
+
+#: assets/components/pro-notice/index.js:38
+msgid "And much more..."
+msgstr ""
+
+#: assets/components/render-controls/index.js:250
+msgid "This field is required"
 msgstr ""
 
 #: assets/editor-constructor/block/edit.js:65
@@ -523,19 +560,19 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:141
+#: assets/editor-constructor/boxes/controls/control.js:140
 msgid "(no label)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:159
+#: assets/editor-constructor/boxes/controls/control.js:158
 msgid "(copy)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:197
+#: assets/editor-constructor/boxes/controls/control.js:196
 msgid "Do you really want to remove control?"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:220
+#: assets/editor-constructor/boxes/controls/control.js:219
 msgid "Remove"
 msgstr ""
 
@@ -610,6 +647,7 @@ msgstr ""
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:12
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:12
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:29
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:12
 #: controls/checkbox/script.js:43
 #: controls/color/script.js:43
 #: controls/radio/script.js:55
@@ -631,12 +669,12 @@ msgstr ""
 msgid "This is the name which will appear on the block edit control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:13
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:27
 msgid "Name"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:14
-msgid "Unique control name, no spaces. Underscores and dashes allowed"
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:33
+msgid "Control name must include only alphanumeric characters, dashes or underscores. Example: my-control-name"
 msgstr ""
 
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:27
@@ -651,10 +689,6 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:13
-msgid "Experimental feature, may not work as expected."
-msgstr ""
-
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:13
 msgid "Save in Meta"
 msgstr ""
@@ -665,6 +699,14 @@ msgstr ""
 
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
 msgid "Unique metabox name"
+msgstr ""
+
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:10
+msgid "WPML Translation"
+msgstr ""
+
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:13
+msgid "Experimental feature, may not work as expected."
 msgstr ""
 
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:89
@@ -804,17 +846,9 @@ msgstr ""
 msgid "Block used for adding blocks inside it in cases when template locked from adding blocks."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:316
-msgid "This field is required"
-msgstr ""
-
-#: assets/editor/blocks/main/edit.js:489
+#: assets/editor/blocks/main/edit.js:211
 #: assets/editor/blocks/main/index.js:54
 msgid "Edit Block"
-msgstr ""
-
-#: assets/editor/components/preview-server-callback.js:182
-msgid "Error loading block preview: %s"
 msgstr ""
 
 #: controls/checkbox/script.js:34
@@ -831,11 +865,7 @@ msgstr ""
 msgid "Checked"
 msgstr ""
 
-#: controls/classic_editor/tmce.js:130
-msgid "Insert Media"
-msgstr ""
-
-#: controls/classic_editor/tmce.js:195
+#: controls/classic_editor/tmce.js:183
 msgid "Classic"
 msgstr ""
 
@@ -867,23 +897,23 @@ msgstr ""
 msgid "Array (Color + Slug)"
 msgstr ""
 
-#: controls/date_time/script.js:35
+#: controls/date_time/script.js:39
 msgid "Select Date"
 msgstr ""
 
-#: controls/date_time/script.js:39
+#: controls/date_time/script.js:44
 msgid "Select Date and Time"
 msgstr ""
 
-#: controls/date_time/script.js:42
+#: controls/date_time/script.js:49
 msgid "Select Time"
 msgstr ""
 
-#: controls/date_time/script.js:156
+#: controls/date_time/script.js:170
 msgid "Date"
 msgstr ""
 
-#: controls/date_time/script.js:178
+#: controls/date_time/script.js:192
 msgid "Time"
 msgstr ""
 

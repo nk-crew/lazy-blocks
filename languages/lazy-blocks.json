@@ -74,6 +74,9 @@
          "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks Pro.": [
             ""
          ],
+         "Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.": [
+            ""
+         ],
          "Example Block": [
             ""
          ],
@@ -268,10 +271,34 @@
          "Icon Picker": [
             ""
          ],
-         "Unlock Extra Features": [
+         "Error loading block preview: %s": [
             ""
          ],
-         "Upgrade to Lazy Blocks Pro": [
+         "Lazy Blocks Pro": [
+            ""
+         ],
+         "Upgrade Now": [
+            ""
+         ],
+         "Controls Conditional Logic": [
+            ""
+         ],
+         "Panels and Dividers": [
+            ""
+         ],
+         "Posts, Taxonomy, User Controls": [
+            ""
+         ],
+         "Blocks Preloading": [
+            ""
+         ],
+         "SEO Enhancements": [
+            ""
+         ],
+         "And much more...": [
+            ""
+         ],
+         "This field is required": [
             ""
          ],
          "Supports": [
@@ -436,7 +463,7 @@
          "Name": [
             ""
          ],
-         "Unique control name, no spaces. Underscores and dashes allowed": [
+         "Control name must include only alphanumeric characters, dashes or underscores. Example: my-control-name": [
             ""
          ],
          "Placement": [
@@ -448,9 +475,6 @@
          "Required": [
             ""
          ],
-         "Experimental feature, may not work as expected.": [
-            ""
-         ],
          "Save in Meta": [
             ""
          ],
@@ -458,6 +482,12 @@
             ""
          ],
          "Unique metabox name": [
+            ""
+         ],
+         "WPML Translation": [
+            ""
+         ],
+         "Experimental feature, may not work as expected.": [
             ""
          ],
          "Type": [
@@ -562,13 +592,7 @@
          "Block used for adding blocks inside it in cases when template locked from adding blocks.": [
             ""
          ],
-         "This field is required": [
-            ""
-         ],
          "Edit Block": [
-            ""
-         ],
-         "Error loading block preview: %s": [
             ""
          ],
          "Alongside Text": [
@@ -578,9 +602,6 @@
             ""
          ],
          "Checked": [
-            ""
-         ],
-         "Insert Media": [
             ""
          ],
          "Classic": [
