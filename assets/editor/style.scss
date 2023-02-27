@@ -111,6 +111,29 @@
   }
 }
 
+/**
+ * Better appender styles for Free block.
+ */
+.wp-block.lazyblocks-free:not(.is-selected) > .block-list-appender:only-child {
+  pointer-events: none;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    content: "";
+    border: 1px dashed;
+    border-radius: 2px;
+  }
+
+  .block-editor-inserter {
+    visibility: hidden;
+  }
+}
+
 // Fix for long words.
 .lazyblock .lzb-content-title h6,
 .lzb-content-controls .components-base-control__label,
