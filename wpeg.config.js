@@ -16,6 +16,7 @@ cfg.compile_scss_files_src = [
   '{src}/*assets/admin/tools/style.scss',
   '{src}/*assets/editor/style.scss',
   '{src}/*assets/editor-constructor/style.scss',
+  '{src}/*assets/editor-constructor/3rd/astra.scss',
 ];
 cfg.compile_scss_files_rtl = true;
 

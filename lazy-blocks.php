@@ -235,6 +235,8 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             require_once $this->plugin_path() . '/classes/class-force-gutenberg.php';
             require_once $this->plugin_path() . '/classes/class-deactivate-duplicate-plugin.php';
             require_once $this->plugin_path() . '/classes/class-wpml.php';
+
+            require_once $this->plugin_path() . '/classes/3rd/class-astra.php';
         }
 
         /**
