@@ -99,7 +99,7 @@
     <!-- Additional hook names delimiter. -->
     <rule ref="WordPress.NamingConventions.ValidHookName">
         <properties>
-            <property name="additionalWordDelimiters" value="/"/>
+            <property name="additionalWordDelimiters" value="/="/>
         </properties>
     </rule>
 

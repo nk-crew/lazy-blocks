@@ -1393,6 +1393,22 @@ class LazyBlocks_Blocks {
 
         // phpcs:disable
 
+        if ( isset( $block['controls'] ) && ! empty( $block['controls'] ) ) {
+            foreach ( $block['controls'] as $control ) {
+                $control_val = $attributes[ $control['name'] ] ?? null;
+
+                // apply filters for control values in the same way as in the `get_lzb_meta` function.
+                $control_val = apply_filters( 'lzb/control_value', $control_val, $control, $block, $context );
+                $control_val = apply_filters( 'lzb/control_value/control_type=' . $control['type'], $control_val, $control, $block, $context );
+                $control_val = apply_filters( 'lzb/control_value/control_name=' . $control['name'], $control_val, $control, $block, $context );
+                $control_val = apply_filters( 'lzb/control_value/block_slug=' . $block['slug'], $control_val, $control, $block, $context );
+
+                if ( null !== $control_val ) {
+                    $attributes[ $control['name'] ] = $control_val;
+                }
+            }
+        }
+
         // apply filter for block attributes.
         $attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block, $context );
         $attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $content, $block );
