@@ -28,6 +28,11 @@
         margin-left: 2px;
       }
 
+      &::before,
+      &::after {
+        content: none;
+      }
+
       &.lazyblocks-control-tabs-tab-hidden:not(.is-active) {
         display: none;
       }
