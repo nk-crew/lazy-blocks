@@ -38,8 +38,6 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
 
         // Filters.
         add_filter( 'lzb/prepare_block_attribute', array( $this, 'filter_lzb_prepare_block_attribute' ), 10, 5 );
-        add_filter( 'lzb/block_render/attributes', array( $this, 'filter_lzb_block_render_attributes' ), 10, 3 );
-        add_filter( 'lzb/get_meta', array( $this, 'filter_get_lzb_meta_json' ), 10, 4 );
 
         parent::__construct();
     }
@@ -92,45 +90,21 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
     }
 
     /**
-     * Change block render attribute to array.
+     * Change control output to array.
      *
-     * @param array $attributes - block attributes.
-     * @param mixed $content - block content.
-     * @param mixed $block - block data.
+     * @param mixed  $result - control value.
+     * @param array  $control_data - control data.
+     * @param array  $block_data - block data.
+     * @param string $context - block render context.
      *
-     * @return array filtered attribute data.
+     * @return string|array filtered control value.
      */
-    public function filter_lzb_block_render_attributes( $attributes, $content, $block ) {
-        if ( ! isset( $block['controls'] ) || empty( $block['controls'] ) ) {
-            return $attributes;
-        }
-
-        // prepare decoded array to actual array.
-        foreach ( $block['controls'] as $control ) {
-            if ( $this->name === $control['type'] && isset( $attributes[ $control['name'] ] ) && is_string( $attributes[ $control['name'] ] ) ) {
-                $attributes[ $control['name'] ] = json_decode( rawurldecode( $attributes[ $control['name'] ] ), true );
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Change get_lzb_meta output to array.
-     *
-     * @param array  $result - meta data.
-     * @param string $name - meta name.
-     * @param mixed  $id - post id.
-     * @param mixed  $control - control data.
-     *
-     * @return array filtered meta.
-     */
-    public function filter_get_lzb_meta_json( $result, $name, $id, $control ) {
-        if ( ! $control || $this->name !== $control['type'] || ! is_string( $result ) ) {
+    public function filter_control_value( $result, $control_data, $block_data, $context ) {
+        if ( ! is_string( $result ) ) {
             return $result;
         }
 
-        return json_decode( urldecode( $result ), true );
+        return json_decode( rawurldecode( $result ), true );
     }
 }
 

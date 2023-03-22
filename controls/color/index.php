@@ -34,10 +34,6 @@ class LazyBlocks_Control_Color extends LazyBlocks_Control {
             'output_format' => '',
         );
 
-        // Filters.
-        add_filter( 'lzb/block_render/attributes', array( $this, 'filter_lzb_block_render_attributes' ), 10, 3 );
-        add_filter( 'lzb/get_meta', array( $this, 'filter_get_lzb_meta_json' ), 10, 4 );
-
         parent::__construct();
     }
 
@@ -102,91 +98,24 @@ class LazyBlocks_Control_Color extends LazyBlocks_Control {
     }
 
     /**
-     * Get color data by control value.
+     * Change color control output to array if needed.
      *
-     * @param string $value - attribute value.
+     * @param mixed  $result - control value.
+     * @param array  $control_data - control data.
+     * @param array  $block_data - block data.
+     * @param string $context - block render context.
      *
-     * @return array
+     * @return string|array filtered control value.
      */
-    public function get_color_data_by_value( $value ) {
-        $color_data = array(
-            'color' => $value,
-            'slug'  => $this->get_slug_by_color( $value ),
-        );
-
-        return $color_data;
-    }
-
-    /**
-     * Get new attribute value.
-     *
-     * @param string $value - attribute value.
-     * @param array  $control - control data.
-     *
-     * @return array
-     */
-    public function get_new_attribute_value( $value, $control ) {
-        if ( 'array' === $control['output_format'] ) {
-            $value = $this->get_color_data_by_value( $value );
-        }
-
-        return $value;
-    }
-
-    /**
-     * Change block render attribute to custom output if needed.
-     *
-     * @param array $attributes - block attributes.
-     * @param mixed $content - block content.
-     * @param mixed $block - block data.
-     *
-     * @return array filtered attribute data.
-     */
-    public function filter_lzb_block_render_attributes( $attributes, $content, $block ) {
-        if ( ! isset( $block['controls'] ) || empty( $block['controls'] ) ) {
-            return $attributes;
-        }
-
-        // prepare custom output.
-        foreach ( $block['controls'] as $control ) {
-            if (
-                $this->name === $control['type'] &&
-                isset( $attributes[ $control['name'] ] ) &&
-                isset( $control['output_format'] ) &&
-                $control['output_format']
-            ) {
-                $attributes[ $control['name'] ] = $this->get_new_attribute_value( $attributes[ $control['name'] ], $control );
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Change get_lzb_meta output to custom output if needed.
-     *
-     * @param array  $result - meta data.
-     * @param string $name - meta name.
-     * @param mixed  $id - post id.
-     * @param mixed  $control - control data.
-     *
-     * @return array filtered meta.
-     */
-    public function filter_get_lzb_meta_json( $result, $name, $id, $control ) {
-        if ( ! $control || $this->name !== $control['type'] ) {
+    public function filter_control_value( $result, $control_data, $block_data, $context ) {
+        if ( 'array' !== $control_data['output_format'] ) {
             return $result;
         }
 
-        if (
-            $this->name === $control['type'] &&
-            isset( $result ) &&
-            isset( $control['output_format'] ) &&
-            $control['output_format']
-        ) {
-            $result = $this->get_new_attribute_value( $result, $control );
-        }
-
-        return $result;
+        return array(
+            'color' => $result,
+            'slug'  => $this->get_slug_by_color( $result ),
+        );
     }
 }
 

@@ -31,8 +31,6 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
 
         // Filters.
         add_filter( 'lzb/prepare_block_attribute', array( $this, 'filter_lzb_prepare_block_attribute' ), 10, 2 );
-        add_filter( 'lzb/block_render/attributes', array( $this, 'filter_lzb_block_render_attributes' ), 10, 3 );
-        add_filter( 'lzb/get_meta', array( $this, 'filter_get_lzb_meta_json' ), 10, 4 );
 
         parent::__construct();
     }
@@ -146,59 +144,21 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
     }
 
     /**
-     * Change block render attribute to custom output if needed.
+     * Change control output to array.
      *
-     * @param array $attributes - block attributes.
-     * @param mixed $content - block content.
-     * @param mixed $block - block data.
+     * @param mixed  $result - control value.
+     * @param array  $control_data - control data.
+     * @param array  $block_data - block data.
+     * @param string $context - block render context.
      *
-     * @return array filtered attribute data.
+     * @return string|array filtered control value.
      */
-    public function filter_lzb_block_render_attributes( $attributes, $content, $block ) {
-        if ( ! isset( $block['controls'] ) || empty( $block['controls'] ) ) {
-            return $attributes;
-        }
-
-        // prepare custom output.
-        foreach ( $block['controls'] as $control ) {
-            if (
-                $this->name === $control['type'] &&
-                isset( $attributes[ $control['name'] ] ) &&
-                isset( $control['output_format'] ) &&
-                $control['output_format']
-            ) {
-                $attributes[ $control['name'] ] = $this->get_new_attribute_value( $attributes[ $control['name'] ], $control );
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Change get_lzb_meta output to custom output if needed.
-     *
-     * @param array  $result - meta data.
-     * @param string $name - meta name.
-     * @param mixed  $id - post id.
-     * @param mixed  $control - control data.
-     *
-     * @return array filtered meta.
-     */
-    public function filter_get_lzb_meta_json( $result, $name, $id, $control ) {
-        if ( ! $control || $this->name !== $control['type'] ) {
+    public function filter_control_value( $result, $control_data, $block_data, $context ) {
+        if ( ! isset( $control_data['output_format'] ) || ! $control_data['output_format'] ) {
             return $result;
         }
 
-        if (
-            $this->name === $control['type'] &&
-            isset( $result ) &&
-            isset( $control['output_format'] ) &&
-            $control['output_format']
-        ) {
-            $result = $this->get_new_attribute_value( $result, $control );
-        }
-
-        return $result;
+        return $this->get_new_attribute_value( $result, $control_data );
     }
 }
 
