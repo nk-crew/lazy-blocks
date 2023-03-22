@@ -69,7 +69,7 @@ class LazyBlocks_Control_File extends LazyBlocks_Control {
             return $result;
         }
 
-        return json_decode( urldecode( $result ), true );
+        return json_decode( rawurldecode( $result ), true );
     }
 }
 

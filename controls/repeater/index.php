@@ -90,6 +90,28 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
     }
 
     /**
+     * Find control ID by name.
+     *
+     * @param string $name - control name.
+     * @param array  $block_data - block data.
+     *
+     * @return mixed
+     */
+    public function get_control_id_by_name( $name, $block_data ) {
+        $control_id = null;
+
+        // Find control ID.
+        foreach ( $block_data['controls'] as $id => $control ) {
+            if ( $name === $control['name'] ) {
+                $control_id = $id;
+                break;
+            }
+        }
+
+        return $control_id;
+    }
+
+    /**
      * Change control output to array.
      *
      * @param mixed  $result - control value.
@@ -100,11 +122,38 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
      * @return string|array filtered control value.
      */
     public function filter_control_value( $result, $control_data, $block_data, $context ) {
-        if ( ! is_string( $result ) ) {
+        if ( ! is_string( $result ) && ! is_array( $result ) ) {
             return $result;
         }
 
-        return json_decode( rawurldecode( $result ), true );
+        // Maybe decode.
+        if ( is_string( $result ) ) {
+            $result = json_decode( rawurldecode( $result ), true );
+        }
+
+        if ( ! empty( $block_data['controls'] ) && ! empty( $result ) ) {
+            // Find repeater control ID.
+            $repeater_control_id = $this->get_control_id_by_name( $control_data['name'], $block_data );
+
+            if ( $repeater_control_id ) {
+                // Find all repeater inner controls data.
+                foreach ( $block_data['controls'] as $id => $inner_control_data ) {
+                    if ( isset( $inner_control_data['child_of'] ) && $inner_control_data['child_of'] === $repeater_control_id ) {
+                        // Filter repeater each control output.
+                        foreach ( $result as $k => $row_data ) {
+                            foreach ( $row_data as $i => $inner_control ) {
+                                if ( $i === $inner_control_data['name'] ) {
+                                    // apply filters for control values.
+                                    $result[ $k ][ $i ] = lazyblocks()->controls()->filter_control_value( $result[ $k ][ $i ], $inner_control_data, $block_data, $context );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }
 

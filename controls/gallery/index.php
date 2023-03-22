@@ -106,11 +106,14 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
      * @return string|array filtered control value.
      */
     public function filter_control_value( $result, $control_data, $block_data, $context ) {
-        if ( ! is_string( $result ) ) {
+        if ( ! is_string( $result ) && ! is_array( $result ) ) {
             return $result;
         }
 
-        $result = json_decode( rawurldecode( $result ), true );
+        // Maybe decode.
+        if ( is_string( $result ) ) {
+            $result = json_decode( rawurldecode( $result ), true );
+        }
 
         if ( ! empty( $result ) ) {
             $new_result = array();
