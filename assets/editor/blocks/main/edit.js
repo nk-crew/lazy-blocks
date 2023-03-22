@@ -252,7 +252,7 @@ export default function BlockEdit(props) {
         ) : null}
       </div>
       <InspectorControls>
-        <div className="lzb-inspector-controls">
+        <div className="lzb-inspector-controls" data-lazyblocks-block-name={props.name}>
           <RenderControls
             placement="inspector"
             isLazyBlockSelected={isLazyBlockSelected}
@@ -260,7 +260,7 @@ export default function BlockEdit(props) {
           />
         </div>
       </InspectorControls>
-      <div className="lzb-content-controls">
+      <div className="lzb-content-controls" data-lazyblocks-block-name={props.name}>
         <RenderControls placement="content" isLazyBlockSelected={isLazyBlockSelected} {...props} />
       </div>
       {showPreview ? (
