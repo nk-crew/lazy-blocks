@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable indent */
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import ImageControl from './image-control';
 
@@ -16,7 +17,7 @@ const { PanelBody, SelectControl } = wp.components;
  * Control render in editor.
  */
 addFilter('lzb.editor.control.image.render', 'lzb.editor', (render, props) => (
-  <BaseControl label={props.data.label} help={props.data.help}>
+  <BaseControl {...useBlockControlProps(props)}>
     <ImageControl
       previewSize={props.data.preview_size}
       value={props.getValue()}

@@ -1,4 +1,5 @@
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const { __ } = wp.i18n;
 
@@ -12,7 +13,7 @@ const { PanelBody, RangeControl, TextControl } = wp.components;
  * Control render in editor.
  */
 addFilter('lzb.editor.control.range.render', 'lzb.editor', (render, props) => (
-  <BaseControl help={props.data.help}>
+  <BaseControl {...useBlockControlProps(props, { label: false })}>
     <RangeControl
       label={props.data.label}
       min={props.data.min}

@@ -18,6 +18,7 @@ addFilter('lzb.editor.control.gallery.render', 'lzb.editor', (render, props) => 
     help={props.data.help}
     previewSize={props.data.preview_size}
     value={props.getValue()}
+    controlProps={props}
     onChange={(val) => {
       const result = val.map((image) => ({
         alt: image.alt || '',

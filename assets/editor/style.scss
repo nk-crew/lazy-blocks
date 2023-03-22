@@ -144,7 +144,7 @@
 }
 
 // Select control
-.lzb-gutenberg-select {
+.lazyblocks-control-select {
   select {
     max-width: none;
   }
@@ -196,7 +196,7 @@
 }
 
 // Color Picker control
-.lzb-gutenberg-color {
+.lazyblocks-control-color {
   .components-base-control__label {
     display: flex;
     align-items: center;
@@ -217,7 +217,7 @@
 }
 
 // URL picker
-.lzb-gutenberg-url {
+.lazyblocks-control-url {
   position: relative;
 
   .block-editor-link-control {
@@ -272,7 +272,6 @@
 }
 
 // Gallery and Image controls
-.lzb-gutenberg-gallery-wrap,
 .lzb-gutenberg-image-wrap {
   position: relative;
 }
@@ -406,7 +405,7 @@
 }
 
 // Rich Text control
-.lzb-gutenberg-rich-text {
+.lazyblocks-control-rich_text {
   .block-editor-rich-text__inline-toolbar {
     position: relative;
     top: 0;
@@ -436,7 +435,7 @@
 }
 
 // Classic Editor control
-.lzb-gutenberg-classic-editor {
+.lazyblocks-control-classic_editor {
   .block-library-rich-text__tinymce {
     padding: 20px;
     border: 1px solid #757575;
@@ -470,7 +469,7 @@
 }
 
 // Code Editor control
-.lzb-gutenberg-code-editor textarea {
+.lazyblocks-control-code_editor textarea {
   padding: 15px;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 13px;

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
 
-const { BaseControl, ColorPalette } = wp.components;
+const { ColorPalette } = wp.components;
 
 const { __experimentalUseMultipleOriginColorsAndGradients: useMultipleOriginColorsAndGradients } =
   wp.blockEditor;
@@ -32,23 +32,21 @@ function useColors() {
 }
 
 function ColorControl(props) {
-  const { label, value, help, alpha = false, onChange = () => {} } = props;
+  const { value, alpha = false, onChange = () => {} } = props;
 
   const colors = useColors();
 
   return (
-    <BaseControl label={label} help={help} className="lzb-gutenberg-color">
-      <ColorPalette
-        colors={colors}
-        value={value}
-        enableAlpha={alpha}
-        onChange={(val) => {
-          onChange(val);
-        }}
-        __experimentalHasMultipleOrigins
-        __experimentalIsRenderedInSidebar
-      />
-    </BaseControl>
+    <ColorPalette
+      colors={colors}
+      value={value}
+      enableAlpha={alpha}
+      onChange={(val) => {
+        onChange(val);
+      }}
+      __experimentalHasMultipleOrigins
+      __experimentalIsRenderedInSidebar
+    />
   );
 }
 

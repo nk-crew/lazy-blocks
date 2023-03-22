@@ -1,6 +1,7 @@
 import shorthash from 'shorthash';
 
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const { useState } = wp.element;
 
@@ -12,24 +13,22 @@ function ComponentRender(props) {
   const [key, setKey] = useState(shorthash.unique(`${new Date()}`));
 
   return (
-    <BaseControl label={props.data.label} help={props.data.help}>
-      <div className="lzb-gutenberg-url">
-        <LinkControl
-          key={key}
-          className="wp-block-navigation-link__inline-link-input"
-          opensInNewTab={false}
-          value={{
-            url: props.getValue(),
-          }}
-          onChange={({ url: newURL = '' }) => {
-            props.onChange(newURL);
-          }}
-          onRemove={() => {
-            props.onChange('');
-            setKey(shorthash.unique(`${new Date()}`));
-          }}
-        />
-      </div>
+    <BaseControl {...useBlockControlProps(props)}>
+      <LinkControl
+        key={key}
+        className="wp-block-navigation-link__inline-link-input"
+        opensInNewTab={false}
+        value={{
+          url: props.getValue(),
+        }}
+        onChange={({ url: newURL = '' }) => {
+          props.onChange(newURL);
+        }}
+        onRemove={() => {
+          props.onChange('');
+          setKey(shorthash.unique(`${new Date()}`));
+        }}
+      />
     </BaseControl>
   );
 }

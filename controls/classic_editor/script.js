@@ -1,4 +1,5 @@
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import TMCE from './tmce';
 
@@ -13,12 +14,7 @@ addFilter('lzb.editor.control.classic_editor.render', 'lzb.editor', (render, pro
   }-${props.childIndex || 0}`;
 
   return (
-    <BaseControl
-      key={uniqueKey}
-      label={props.data.label}
-      help={props.data.help}
-      className="lzb-gutenberg-classic-editor"
-    >
+    <BaseControl key={uniqueKey} {...useBlockControlProps(props)}>
       <TMCE
         content={props.getValue()}
         onChange={(val) => {

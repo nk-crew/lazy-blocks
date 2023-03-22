@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import ComponentChoices from './component-choices';
 
@@ -29,13 +30,12 @@ addFilter('lzb.editor.control.select.render', 'lzb.editor', (render, props) => {
   }
 
   return (
-    <BaseControl help={props.data.help}>
+    <BaseControl {...useBlockControlProps(props, { label: false })}>
       <SelectControl
         label={props.data.label}
         options={choices}
         multiple={props.data.multiple === 'true'}
         value={props.getValue()}
-        className="lzb-gutenberg-select"
         onChange={(val) => {
           props.onChange(val);
         }}

@@ -2,6 +2,7 @@
 /* eslint-disable indent */
 import Select from '../../assets/components/select';
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import FileControl from './file-control';
 
@@ -18,7 +19,7 @@ const { allowed_mime_types: wpAllowedMimeTypes } =
  * Control render in editor.
  */
 addFilter('lzb.editor.control.file.render', 'lzb.editor', (render, props) => (
-  <BaseControl label={props.data.label} help={props.data.help}>
+  <BaseControl {...useBlockControlProps(props)}>
     <FileControl
       label={props.data.label}
       allowedMimeTypes={props.data.allowed_mime_types}

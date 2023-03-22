@@ -4,6 +4,7 @@
 import classnames from 'classnames/dedupe';
 
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const { __ } = wp.i18n;
 
@@ -20,7 +21,15 @@ const currentTimezone =
  * Date Time Picker.
  */
 function DateTimePicker(props) {
-  const { value, onChange, label, help, allowTimePicker = true, allowDatePicker = true } = props;
+  const {
+    value,
+    onChange,
+    label,
+    help,
+    allowTimePicker = true,
+    allowDatePicker = true,
+    controlProps,
+  } = props;
 
   const settings = getSettings();
 
@@ -53,7 +62,7 @@ function DateTimePicker(props) {
   const formattedDate = value ? dateI18n(resolvedFormat, value, currentTimezone) : buttonLabel;
 
   return (
-    <BaseControl label={label} help={help}>
+    <BaseControl {...useBlockControlProps(controlProps, { label, help })}>
       <div>
         <Dropdown
           popoverProps={{
@@ -132,6 +141,7 @@ addFilter('lzb.editor.control.date_time.render', 'lzb.editor', (render, props) =
       allowDatePicker={/date/.test(dateTimePicker)}
       value={props.getValue()}
       onChange={props.onChange}
+      controlProps={props}
     />
   );
 });

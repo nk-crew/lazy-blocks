@@ -1,4 +1,5 @@
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import ColorControl from './color-control';
 
@@ -14,7 +15,7 @@ const { PanelBody, ToggleControl, RadioControl } = wp.components;
  * Control render in editor.
  */
 addFilter('lzb.editor.control.color.render', 'lzb.editor', (render, props) => (
-  <BaseControl label={props.data.label} help={props.data.help}>
+  <BaseControl {...useBlockControlProps(props)}>
     <ColorControl
       alpha={props.data.alpha === 'true'}
       value={props.getValue()}

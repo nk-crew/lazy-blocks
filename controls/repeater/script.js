@@ -3,6 +3,7 @@ import { arrayMoveImmutable } from 'array-move';
 import classnames from 'classnames/dedupe';
 
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import RepeaterControl from './repeater-control';
 
@@ -21,7 +22,7 @@ addFilter('lzb.editor.control.repeater.render', 'lzb.editor', (render, props) =>
   const val = props.getValue() || [];
 
   return (
-    <BaseControl label={props.data.label} help={props.data.help}>
+    <BaseControl {...useBlockControlProps(props)}>
       <RepeaterControl
         controlData={props.data}
         count={val.length}

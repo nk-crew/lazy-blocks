@@ -1,4 +1,5 @@
 import BaseControl from '../../assets/components/base-control';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const { __ } = wp.i18n;
 
@@ -15,7 +16,7 @@ addFilter('lzb.editor.control.textarea.render', 'lzb.editor', (render, props) =>
   const maxlength = props.data.characters_limit ? parseInt(props.data.characters_limit, 10) : '';
 
   return (
-    <BaseControl help={props.data.help}>
+    <BaseControl {...useBlockControlProps(props, { label: false })}>
       <TextareaControl
         label={props.data.label}
         maxLength={maxlength}

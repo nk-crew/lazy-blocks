@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import BaseControl from '../../assets/components/base-control';
 import ComponentChoices from '../select/component-choices';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const { __ } = wp.i18n;
 
@@ -14,7 +15,7 @@ const { PanelBody, RadioControl, ToggleControl } = wp.components;
  * Control render in editor.
  */
 addFilter('lzb.editor.control.radio.render', 'lzb.editor', (render, props) => (
-  <BaseControl help={props.data.help}>
+  <BaseControl {...useBlockControlProps(props, { label: false })}>
     <RadioControl
       label={props.data.label}
       selected={props.getValue()}
