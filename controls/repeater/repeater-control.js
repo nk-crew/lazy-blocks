@@ -254,6 +254,11 @@ function RepeaterControl(props) {
           disabled={controlData.rows_max && count >= controlData.rows_max}
           onClick={() => {
             addRow();
+
+            // Open newly added row.
+            if (activeItem !== -2) {
+              setActiveItem(items.length);
+            }
           }}
         >
           {controlData.rows_add_button_label || __('+ Add Row', 'lazy-blocks')}
