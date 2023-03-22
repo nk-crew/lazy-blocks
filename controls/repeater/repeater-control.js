@@ -17,7 +17,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 const { __ } = wp.i18n;
 const { useEffect, useState } = wp.element;
-const { Button, Tooltip, ToggleControl } = wp.components;
+const { Button, ToggleControl } = wp.components;
 
 const { withInstanceId } = wp.compose;
 
@@ -264,17 +264,13 @@ function RepeaterControl(props) {
           {controlData.rows_add_button_label || __('+ Add Row', 'lazy-blocks')}
         </Button>
         {controlData.rows_collapsible === 'true' && items.length && items.length > 1 ? (
-          <Tooltip text={__('Toggle all rows', 'lazy-blocks')}>
-            <div>
-              {/* For some reason Tooltip is not working without this <div> */}
-              <ToggleControl
-                checked={activeItem === -2}
-                onChange={() => {
-                  setActiveItem(activeItem === -2 ? -1 : -2);
-                }}
-              />
-            </div>
-          </Tooltip>
+          <ToggleControl
+            label={__('Toggle all', 'lazy-blocks')}
+            checked={activeItem === -2}
+            onChange={() => {
+              setActiveItem(activeItem === -2 ? -1 : -2);
+            }}
+          />
         ) : (
           ''
         )}
