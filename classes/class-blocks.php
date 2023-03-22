@@ -1398,11 +1398,8 @@ class LazyBlocks_Blocks {
                 if ( ! isset( $control['child_of'] ) || ! $control['child_of'] ) {
                     $control_val = $attributes[ $control['name'] ] ?? null;
 
-                    // apply filters for control values in the same way as in the `get_lzb_meta` function.
-                    $control_val = apply_filters( 'lzb/control_value', $control_val, $control, $block, $context );
-                    $control_val = apply_filters( 'lzb/control_value/control_type=' . $control['type'], $control_val, $control, $block, $context );
-                    $control_val = apply_filters( 'lzb/control_value/control_name=' . $control['name'], $control_val, $control, $block, $context );
-                    $control_val = apply_filters( 'lzb/control_value/block_slug=' . $block['slug'], $control_val, $control, $block, $context );
+                    // apply filters for control values.
+                    $control_val = lazyblocks()->controls()->filter_control_value( $control_val, $control, $block, $context );
 
                     if ( null !== $control_val ) {
                         $attributes[ $control['name'] ] = $control_val;

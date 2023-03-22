@@ -48,6 +48,29 @@ class LazyBlocks_Controls {
     }
 
     /**
+     * Filter control value.
+     * Used in block render callback, get meta function and inside repeater items render.
+     *
+     * @param mixed  $value - control value.
+     * @param array  $control_data - control data.
+     * @param array  $block_data - block data.
+     * @param string $context - block render context.
+     *
+     * @return mixed
+     */
+    public function filter_control_value( $value, $control_data, $block_data, $context ) {
+        // apply filters for control values in the same way as in class-blocks.php.
+        if ( $control_data ) {
+            $value = apply_filters( 'lzb/control_value', $value, $control_data, $block_data, $context );
+            $value = apply_filters( 'lzb/control_value/control_type=' . $control_data['type'], $value, $control_data, $block_data, $context );
+            $value = apply_filters( 'lzb/control_value/control_name=' . $control_data['name'], $value, $control_data, $block_data, $context );
+            $value = apply_filters( 'lzb/control_value/block_slug=' . $block_data['slug'], $value, $control_data, $block_data, $context );
+        }
+
+        return $value;
+    }
+
+    /**
      * Include controls.
      */
     private function include_controls() {

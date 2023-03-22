@@ -396,13 +396,8 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
             $result = get_post_meta( $id, $name, true );
         }
 
-        // apply filters for control values in the same way as in class-blocks.php.
-        if ( $control_data ) {
-            $result = apply_filters( 'lzb/control_value', $result, $control_data, $block_data, $context );
-            $result = apply_filters( 'lzb/control_value/control_type=' . $control_data['type'], $result, $control_data, $block_data, $context );
-            $result = apply_filters( 'lzb/control_value/control_name=' . $control_data['name'], $result, $control_data, $block_data, $context );
-            $result = apply_filters( 'lzb/control_value/block_slug=' . $block_data['slug'], $result, $control_data, $block_data, $context );
-        }
+        // apply filters for control values.
+        $result = lazyblocks()->controls()->filter_control_value( $result, $control_data, $block_data, $context );
 
         return apply_filters( 'lzb/get_meta', $result, $name, $id, $control_data );
     }
