@@ -126,11 +126,39 @@ class LazyBlocks_Control {
 
         // Filters.
         add_filter( 'lzb/controls/all', array( $this, 'get_control_data' ) );
+        add_filter(
+            'lzb/control_value',
+            function( $result, $control_data, $block_data, $context ) {
+                if ( ! $control_data || $this->name !== $control_data['type'] ) {
+                    return $result;
+                }
+
+                return $this->filter_control_value( $result, $control_data, $block_data, $context );
+            },
+            5,
+            4
+        );
 
         // Actions.
         add_action( 'enqueue_block_editor_assets', array( $this, 'register_assets' ) );
-        add_action( 'enqueue_block_editor_assets', array( $this, 'action_script_depends' ), 11 );
-        add_action( 'enqueue_block_editor_assets', array( $this, 'action_style_depends' ), 11 );
+        add_action(
+            'enqueue_block_editor_assets',
+            function() {
+                foreach ( (array) $this->get_script_depends() as $script ) {
+                    wp_enqueue_script( $script );
+                }
+            },
+            11
+        );
+        add_action(
+            'enqueue_block_editor_assets',
+            function() {
+                foreach ( (array) $this->get_style_depends() as $style ) {
+                    wp_enqueue_style( $style );
+                }
+            },
+            11
+        );
     }
 
     /**
@@ -158,28 +186,24 @@ class LazyBlocks_Control {
     }
 
     /**
+     * Filter control value.
+     *
+     * @param mixed  $result - control value.
+     * @param array  $control_data - control data.
+     * @param array  $block_data - block data.
+     * @param string $context - block render context.
+     *
+     * @return mixed
+     */
+    public function filter_control_value( $result, $control_data, $block_data, $context ) {
+        return $result;
+    }
+
+    /**
      * Register assets action.
      */
     public function register_assets() {
         // nothing here.
-    }
-
-    /**
-     * Action script dependencies
-     */
-    public function action_script_depends() {
-        foreach ( (array) $this->get_script_depends() as $script ) {
-            wp_enqueue_script( $script );
-        }
-    }
-
-    /**
-     * Action style dependencies
-     */
-    public function action_style_depends() {
-        foreach ( (array) $this->get_style_depends() as $style ) {
-            wp_enqueue_style( $style );
-        }
     }
 
     /**
