@@ -76,23 +76,26 @@ class LazyBlocks_Control_Radio extends LazyBlocks_Control {
 	/**
 	 * Change control output to array.
 	 *
-	 * @param mixed $result - control value.
-	 * @param array $control_data - control data.
+	 * @param mixed  $value - control value.
+	 * @param array  $control_data - control data.
+	 * @param array  $block_data - block data.
+	 * @param string $context - block render context.
 	 *
-	 * @return string|array filtered control value.
+	 * @return string|array
 	 */
-	public function filter_control_value( $result, $control_data ) {
+	// phpcs:ignore
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
 		if ( isset( $control_data['output_format'] ) && $control_data['output_format'] ) {
-			$choice_data = $this->get_choice_data_by_value( $result, $control_data );
+			$choice_data = $this->get_choice_data_by_value( $value, $control_data );
 
 			if ( 'label' === $control_data['output_format'] ) {
-				$result = $choice_data['label'];
+				$value = $choice_data['label'];
 			} elseif ( 'array' === $control_data['output_format'] ) {
-				$result = $choice_data;
+				$value = $choice_data;
 			}
 		}
 
-		return $result;
+		return $value;
 	}
 }
 

@@ -51,16 +51,20 @@ class LazyBlocks_Control_File extends LazyBlocks_Control {
 	/**
 	 * Change control output to array.
 	 *
-	 * @param mixed $result - control value.
+	 * @param mixed  $value - control value.
+	 * @param array  $control_data - control data.
+	 * @param array  $block_data - block data.
+	 * @param string $context - block render context.
 	 *
-	 * @return string|array filtered control value.
+	 * @return string|array
 	 */
-	public function filter_control_value( $result ) {
-		if ( ! is_string( $result ) ) {
-			return $result;
+	// phpcs:ignore
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
 		}
 
-		return json_decode( rawurldecode( $result ), true );
+		return json_decode( rawurldecode( $value ), true );
 	}
 }
 

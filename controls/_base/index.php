@@ -128,12 +128,12 @@ class LazyBlocks_Control {
 		add_filter( 'lzb/controls/all', array( $this, 'get_control_data' ) );
 		add_filter(
 			'lzb/control_value',
-			function( $result, $control_data, $block_data, $context ) {
+			function( $value, $control_data, $block_data, $context ) {
 				if ( ! $control_data || $this->name !== $control_data['type'] ) {
-					return $result;
+					return $value;
 				}
 
-				return $this->filter_control_value( $result, $control_data, $block_data, $context );
+				return $this->filter_control_value( $value, $control_data, $block_data, $context );
 			},
 			5,
 			4
@@ -188,7 +188,7 @@ class LazyBlocks_Control {
 	/**
 	 * Filter control value.
 	 *
-	 * @param mixed  $result - control value.
+	 * @param mixed  $value - control value.
 	 * @param array  $control_data - control data.
 	 * @param array  $block_data - block data.
 	 * @param string $context - block render context.
@@ -196,8 +196,8 @@ class LazyBlocks_Control {
 	 * @return mixed
 	 */
 	// phpcs:ignore
-	public function filter_control_value( $result, $control_data, $block_data, $context ) {
-		return $result;
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
+		return $value;
 	}
 
 	/**

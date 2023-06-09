@@ -92,21 +92,25 @@ class LazyBlocks_Control_Image extends LazyBlocks_Control {
 	/**
 	 * Change control output to array.
 	 *
-	 * @param mixed $result - control value.
+	 * @param mixed  $value - control value.
+	 * @param array  $control_data - control data.
+	 * @param array  $block_data - block data.
+	 * @param string $context - block render context.
 	 *
-	 * @return string|array filtered control value.
+	 * @return string|array
 	 */
-	public function filter_control_value( $result ) {
-		if ( ! is_string( $result ) && ! is_array( $result ) ) {
-			return $result;
+	// phpcs:ignore
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
+		if ( ! is_string( $value ) && ! is_array( $value ) ) {
+			return $value;
 		}
 
 		// Maybe decode.
-		if ( is_string( $result ) ) {
-			$result = json_decode( rawurldecode( $result ), true );
+		if ( is_string( $value ) ) {
+			$value = json_decode( rawurldecode( $value ), true );
 		}
 
-		return $this->maybe_update_image_data( $result );
+		return $this->maybe_update_image_data( $value );
 	}
 }
 

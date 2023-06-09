@@ -140,17 +140,20 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
 	/**
 	 * Change control output to array.
 	 *
-	 * @param mixed $result - control value.
-	 * @param array $control_data - control data.
+	 * @param mixed  $value - control value.
+	 * @param array  $control_data - control data.
+	 * @param array  $block_data - block data.
+	 * @param string $context - block render context.
 	 *
-	 * @return string|array filtered control value.
+	 * @return string|array
 	 */
-	public function filter_control_value( $result, $control_data ) {
+	// phpcs:ignore
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
 		if ( ! isset( $control_data['output_format'] ) || ! $control_data['output_format'] ) {
-			return $result;
+			return $value;
 		}
 
-		return $this->get_new_attribute_value( $result, $control_data );
+		return $this->get_new_attribute_value( $value, $control_data );
 	}
 }
 

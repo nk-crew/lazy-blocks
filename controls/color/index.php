@@ -94,19 +94,22 @@ class LazyBlocks_Control_Color extends LazyBlocks_Control {
 	/**
 	 * Change color control output to array if needed.
 	 *
-	 * @param mixed $result - control value.
-	 * @param array $control_data - control data.
+	 * @param mixed  $value - control value.
+	 * @param array  $control_data - control data.
+	 * @param array  $block_data - block data.
+	 * @param string $context - block render context.
 	 *
-	 * @return string|array filtered control value.
+	 * @return string|array
 	 */
-	public function filter_control_value( $result, $control_data ) {
+	// phpcs:ignore
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
 		if ( 'array' !== $control_data['output_format'] ) {
-			return $result;
+			return $value;
 		}
 
 		return array(
-			'color' => $result,
-			'slug'  => $this->get_slug_by_color( $result ),
+			'color' => $value,
+			'slug'  => $this->get_slug_by_color( $value ),
 		);
 	}
 }
