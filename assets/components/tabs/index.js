@@ -1,14 +1,19 @@
-// Import CSS
+/**
+ * Styles.
+ */
 import './editor.scss';
 
-const { BaseControl, TabPanel } = wp.components;
+/**
+ * WordPress dependencies.
+ */
+import { BaseControl, TabPanel } from '@wordpress/components';
 
 export default function Tabs({ tabs, children }) {
-  return (
-    <BaseControl>
-      <TabPanel tabs={tabs} className="lazyblocks-component-tabs">
-        {children}
-      </TabPanel>
-    </BaseControl>
-  );
+	return (
+		<BaseControl>
+			<TabPanel tabs={tabs} className="lazyblocks-component-tabs">
+				{children}
+			</TabPanel>
+		</BaseControl>
+	);
 }

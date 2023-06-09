@@ -1,10 +1,17 @@
-// Import CSS
+/**
+ * Styles.
+ */
 import './editor.scss';
 
-const { __ } = wp.i18n;
+/**
+ * WordPress dependencies.
+ */
+import { __ } from '@wordpress/i18n';
 
 export default function Copied({ children }) {
-  return (
-    <div className="lazyblocks-component-copied">{children || __('Copied!', 'lazy-blocks')}</div>
-  );
+	return (
+		<div className="lazyblocks-component-copied">
+			{children || __('Copied!', 'lazy-blocks')}
+		</div>
+	);
 }

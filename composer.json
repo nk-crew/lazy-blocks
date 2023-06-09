@@ -1,29 +1,30 @@
 {
-  "name": "nk-crew/lazy-blocks",
-  "type": "package",
-  "description": "Lazy Blocks plugin for WordPress custom block",
-  "keywords": [
-    "WordPress",
-    "Plugins",
-    "Blocks"
-  ],
-  "require": {
-    "php": ">=7.2"
-  },
-  "require-dev": {
-    "wp-coding-standards/wpcs": "^2.3.0",
-    "phpcompatibility/phpcompatibility-wp": "^2.1.3",
-    "wp-cli/i18n-command": "^2.4.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-    "php-parallel-lint/php-parallel-lint": "^1.3.2",
-    "php-stubs/wordpress-stubs": "^6.1"
-  },
-  "scripts": {
-    "phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "phpcbf": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
-    "wp": "\"vendor/wp-cli/wp-cli/bin/wp\""
-  },
-  "config": {
-    "allow-plugins": true
-  }
+	"name": "nk-crew/lazy-blocks",
+	"type": "package",
+	"description": "Lazy Blocks plugin for WordPress custom block",
+	"keywords": [
+		"WordPress",
+		"Plugins",
+		"Blocks"
+	],
+	"require": {
+		"php": ">=7.2"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^2.3.0",
+		"sirbrillig/phpcs-variable-analysis": "^2.8",
+		"phpcompatibility/phpcompatibility-wp": "^2.1.3",
+		"wp-cli/i18n-command": "^2.4.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+		"php-parallel-lint/php-parallel-lint": "^1.3.2",
+		"php-stubs/wordpress-stubs": "^6.1"
+	},
+	"scripts": {
+		"phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"phpcbf": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
+		"wp": "\"vendor/wp-cli/wp-cli/bin/wp\""
+	},
+	"config": {
+		"allow-plugins": true
+	}
 }

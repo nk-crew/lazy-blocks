@@ -1,25 +1,25 @@
 @import "../../variables";
 
 .post-type-lazyblocks {
-  // fixed overflow and dropdowns in editor sidebar.
-  .edit-post-sidebar > .components-panel {
-    min-height: 100%;
-  }
+	// fixed overflow and dropdowns in editor sidebar.
+	.edit-post-sidebar > .components-panel {
+		min-height: 100%;
+	}
 
-  .lazyblocks-component-document-tabs .components-panel__header.edit-post-sidebar-header {
-    display: flex;
-    margin-bottom: -1px;
-    background-color: #fff;
-  }
+	.lazyblocks-component-document-tabs .components-panel__header.edit-post-sidebar-header {
+		display: flex;
+		margin-bottom: -1px;
+		background-color: #fff;
+	}
 }
 
 .lazyblocks-component-document-tabs .lazyblocks-component-document-tabs-content {
-  .components-base-control__label {
-    display: inline-block;
-    margin-bottom: 8px;
-  }
+	.components-base-control__label {
+		display: inline-block;
+		margin-bottom: 8px;
+	}
 
-  .components-panel__body:first-child {
-    margin-top: 0;
-  }
+	.components-panel__body:first-child {
+		margin-top: 0;
+	}
 }

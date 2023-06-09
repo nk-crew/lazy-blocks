@@ -1,16 +1,18 @@
 /**
+ * WordPress dependencies.
+ */
+import { createReduxStore, register } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import * as selectors from './selectors';
 
-/**
- * WordPress dependencies
- */
-const { registerStore } = wp.data;
-
-registerStore('lazy-blocks/hooks', {
-  selectors,
-  reducer(state) {
-    return state;
-  },
+const store = createReduxStore('lazy-blocks/hooks', {
+	selectors,
+	reducer(state) {
+		return state;
+	},
 });
+
+register(store);

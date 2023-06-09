@@ -1,0 +1,86 @@
+.lazyblocks-tools-page {
+	#normal-sortables {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		justify-content: space-between;
+
+		> .postbox-container {
+			width: calc(50% - 15px);
+
+			@media screen and (max-width: 782px) {
+				width: 100%;
+			}
+		}
+	}
+
+	.lzb-export-select-items {
+		padding: 12px;
+		background-color: #f1f1f1;
+		border: 1px solid #ccd0d4;
+		border-radius: 4px;
+	}
+
+	.lzb-export-textarea {
+		margin-top: 12px;
+	}
+
+	.lzb-export-textarea textarea {
+		width: 100%;
+		min-height: 500px;
+	}
+
+	.lzb-export-buttons {
+		margin-top: 12px;
+
+		.button {
+			position: relative;
+		}
+
+		.button + .button {
+			margin-left: 10px;
+		}
+	}
+
+	.components-base-control + .components-base-control {
+		margin-top: 10px;
+	}
+
+	.components-base-control > .components-base-control__field > .components-base-control__label {
+		display: block;
+		margin-bottom: 10px;
+		font-weight: 600;
+	}
+
+	.components-toggle-control {
+		> .components-base-control__field {
+			display: flex;
+		}
+
+		.components-form-toggle {
+			padding-top: 3px;
+		}
+
+		.components-form-toggle__on,
+		.components-form-toggle__off {
+			display: none;
+		}
+
+		.components-toggle-control__label {
+			display: inline-flex;
+			align-items: flex-start;
+			margin-left: 5px;
+			word-break: break-word;
+
+			.dashicons,
+			svg {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 24px;
+				height: 24px;
+				margin-right: 5px;
+			}
+		}
+	}
+}

@@ -4,5 +4,6 @@
 **/*.build.css
 node_modules
 dist
+build
 vendor
 vendors

@@ -1,15 +1,6 @@
 module.exports = {
-  extends: ['eslint-config-nk'],
-  globals: {
-    wp: true,
-  },
-  settings: {
-    react: {
-      pragma: 'wp',
-    },
-  },
-  rules: {
-    'react/prefer-stateless-function': 'off',
-    'react/prop-types': 'off',
-  },
+	extends: ['plugin:@wordpress/eslint-plugin/recommended'],
+	rules: {
+		'@wordpress/no-unsafe-wp-apis': 0,
+	},
 };

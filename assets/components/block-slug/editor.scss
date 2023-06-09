@@ -1,31 +1,31 @@
 @import "../../variables";
 
 .lazyblocks-component-block-slug {
-  display: flex;
-  align-items: flex-start;
+	display: flex;
+	align-items: flex-start;
 
-  > .lazyblocks-component-block-slug-prefix {
-    padding: 7px 8px;
-    line-height: normal;
-    color: #fff;
-    background-color: $gray-900;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-  }
+	> .lazyblocks-component-block-slug-prefix {
+		padding: 7px 8px;
+		line-height: normal;
+		color: #fff;
+		background-color: $gray-900;
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+	}
 
-  > .components-base-control {
-    flex: 1;
-    margin-bottom: 0 !important;
+	> .components-base-control {
+		flex: 1;
+		margin-bottom: 0 !important;
 
-    input {
-      margin-left: 0;
-      border-left: none;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
+		input {
+			margin-left: 0;
+			border-left: none;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
 
-    .components-base-control__field {
-      margin-bottom: 0;
-    }
-  }
+		.components-base-control__field {
+			margin-bottom: 0;
+		}
+	}
 }

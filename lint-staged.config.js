@@ -2,20 +2,24 @@
 const micromatch = require('micromatch');
 
 function excludeVendor(lint) {
-  return (filenames) => {
-    const files = micromatch(filenames, ['!**/vendor/**/*', '!**/dist/**/*']);
+	return (filenames) => {
+		const files = micromatch(filenames, [
+			'!**/.*',
+			'!**/vendor/**/*',
+			'!**/build/**/*',
+			'!**/dist/**/*',
+		]);
 
-    if (files && files.length) {
-      return `${lint} ${files.join(' ')}`;
-    }
+		if (files && files.length) {
+			return `${lint} ${files.join(' ')}`;
+		}
 
-    return [];
-  };
+		return [];
+	};
 }
 
 module.exports = {
-  '**/*.php': excludeVendor('composer run-script phpcs'),
-  '**/*.css': excludeVendor('stylelint'),
-  '**/*.scss': excludeVendor('stylelint --custom-syntax postcss-scss'),
-  '**/*.{js,jsx}': excludeVendor('eslint'),
+	'**/*.php': excludeVendor('composer run-script phpcs'),
+	'**/*.{css,scss}': excludeVendor('wp-scripts lint-style'),
+	'**/*.{js,jsx}': excludeVendor('wp-scripts lint-js'),
 };

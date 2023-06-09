@@ -1,4 +1,15 @@
-// Internal Dependencies
+/**
+ * WordPress dependencies.
+ */
+import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { Spinner, PanelBody } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
+
+/**
+ * Internal dependencies.
+ */
 import ProNotice from '../../components/pro-notice';
 import DocumentTabs from '../../components/document-tabs';
 import Box from '../../components/box';
@@ -14,82 +25,90 @@ import PreviewErrorBoundary from '../boxes/code-preview/preview-error-boundary';
 
 import '../../components/tab-panel';
 
-/**
- * Internal dependencies
- */
-const { __ } = wp.i18n;
-
-const { Fragment, useState } = wp.element;
-
-const { useSelect, useDispatch } = wp.data;
-
-const { Spinner, PanelBody } = wp.components;
-
-const { InspectorControls } = wp.blockEditor;
-
 export default function ConstructorBlock() {
-  const [codeContext, setCodeContext] = useState('frontend');
+	const [codeContext, setCodeContext] = useState('frontend');
 
-  const { blockData } = useSelect(
-    (select) => ({
-      blockData: select('lazy-blocks/block-data').getBlockData(),
-    }),
-    []
-  );
+	const { blockData } = useSelect(
+		(select) => ({
+			blockData: select('lazy-blocks/block-data').getBlockData(),
+		}),
+		[]
+	);
 
-  const { updateBlockData } = useDispatch('lazy-blocks/block-data');
+	const { updateBlockData } = useDispatch('lazy-blocks/block-data');
 
-  if (!blockData || typeof blockData.slug === 'undefined') {
-    return (
-      <div className="lzb-constructor-loading">
-        <Spinner />
-      </div>
-    );
-  }
+	if (!blockData || typeof blockData.slug === 'undefined') {
+		return (
+			<div className="lzb-constructor-loading">
+				<Spinner />
+			</div>
+		);
+	}
 
-  return (
-    <Fragment>
-      <InspectorControls>
-        <DocumentTabs>
-          {(tabData) => {
-            // Selected control settings.
-            if (tabData.name === 'control') {
-              return <SelectedControlSettings />;
-            }
+	return (
+		<>
+			<InspectorControls>
+				<DocumentTabs>
+					{(tabData) => {
+						// Selected control settings.
+						if (tabData.name === 'control') {
+							return <SelectedControlSettings />;
+						}
 
-            // Block settings.
-            return (
-              <Fragment>
-                <GeneralSettings data={blockData} updateData={updateBlockData} />
-                <ProNotice />
-                <PanelBody title={__('Supports', 'lazy-blocks')} initialOpen={false}>
-                  <SupportsSettings data={blockData} updateData={updateBlockData} />
-                </PanelBody>
-                <PanelBody title={__('Condition', 'lazy-blocks')} initialOpen={false}>
-                  <ConditionSettings data={blockData} updateData={updateBlockData} />
-                </PanelBody>
-              </Fragment>
-            );
-          }}
-        </DocumentTabs>
-      </InspectorControls>
-      <div className="lzb-constructor">
-        <TitleSettings data={blockData} updateData={updateBlockData} />
-        <ControlsSettings data={blockData} updateData={updateBlockData} />
-        <Box no-paddings>
-          <CustomCodeSettings
-            data={blockData}
-            updateData={updateBlockData}
-            onTabChange={(value) => setCodeContext(value)}
-          />
-        </Box>
-        {/* Code/Template Preview */}
-        <PreviewErrorBoundary>
-          <Box no-paddings>
-            <CodePreview data={blockData} codeContext={codeContext} />
-          </Box>
-        </PreviewErrorBoundary>
-      </div>
-    </Fragment>
-  );
+						// Block settings.
+						return (
+							<>
+								<GeneralSettings
+									data={blockData}
+									updateData={updateBlockData}
+								/>
+								<ProNotice />
+								<PanelBody
+									title={__('Supports', 'lazy-blocks')}
+									initialOpen={false}
+								>
+									<SupportsSettings
+										data={blockData}
+										updateData={updateBlockData}
+									/>
+								</PanelBody>
+								<PanelBody
+									title={__('Condition', 'lazy-blocks')}
+									initialOpen={false}
+								>
+									<ConditionSettings
+										data={blockData}
+										updateData={updateBlockData}
+									/>
+								</PanelBody>
+							</>
+						);
+					}}
+				</DocumentTabs>
+			</InspectorControls>
+			<div className="lzb-constructor">
+				<TitleSettings data={blockData} updateData={updateBlockData} />
+				<ControlsSettings
+					data={blockData}
+					updateData={updateBlockData}
+				/>
+				<Box no-paddings>
+					<CustomCodeSettings
+						data={blockData}
+						updateData={updateBlockData}
+						onTabChange={(value) => setCodeContext(value)}
+					/>
+				</Box>
+				{/* Code/Template Preview */}
+				<PreviewErrorBoundary>
+					<Box no-paddings>
+						<CodePreview
+							data={blockData}
+							codeContext={codeContext}
+						/>
+					</Box>
+				</PreviewErrorBoundary>
+			</div>
+		</>
+	);
 }

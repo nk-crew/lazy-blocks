@@ -10,21 +10,19 @@ import DocumentTabs from '../../../components/document-tabs';
 import IconPicker from '../../../components/icon-picker';
 import Modal from '../../../components/modal';
 import Select from '../../../components/select';
-import TabPanel from '../../../components/tab-panel';
 import Tabs from '../../../components/tabs';
 
 export function get() {
-  return {
-    BaseControl,
-    BlockSlug,
-    Box,
-    CodeEditor,
-    Copied,
-    DocumentTabs,
-    IconPicker,
-    Modal,
-    Select,
-    TabPanel,
-    Tabs,
-  };
+	return {
+		BaseControl,
+		BlockSlug,
+		Box,
+		CodeEditor,
+		Copied,
+		DocumentTabs,
+		IconPicker,
+		Modal,
+		Select,
+		Tabs,
+	};
 }

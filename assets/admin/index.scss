@@ -1,0 +1,128 @@
+/**
+ * Admin pages.
+ */
+.post-type-lazyblocks {
+	.lzb-admin-block-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 42px;
+		height: 42px;
+		font-size: 16px;
+		color: #4f5052;
+		background: #e8e8e8;
+		border-radius: 4px;
+
+		.dashicons {
+			width: auto;
+			height: 1em;
+			font-size: 1em;
+		}
+	}
+
+	.wp-list-table {
+		th.column-lazyblocks_post_icon {
+			width: 42px;
+			text-align: center;
+		}
+
+		th.column-lazyblocks_post_category {
+			width: 200px;
+		}
+
+		@media screen and (max-width: 782px) {
+			/* Hide column on mobile device */
+			th.column-lazyblocks_post_icon {
+				display: none;
+			}
+
+			tr:not(.inline-edit-row, .no-items) {
+				td.column-lazyblocks_post_icon {
+					float: left;
+					width: 42px !important;
+					min-width: 42px;
+				}
+
+				td.column-lazyblocks_post_icon::before {
+					content: none;
+				}
+
+				td.column-title {
+					overflow: hidden;
+					clear: right;
+				}
+			}
+		}
+	}
+}
+
+// Admin toolbar.
+.lzb-admin-toolbar {
+	background-color: #fff;
+	border-bottom: 1px solid #d7dbde;
+
+	@media screen and (max-width: 600px) {
+		display: none;
+	}
+
+	#wpcontent & {
+		padding-left: 20px;
+		margin-left: -20px;
+	}
+
+	h2 {
+		display: inline-block;
+		padding: 5px 0;
+		margin: 0 10px 0 0;
+		font-size: 14px;
+		line-height: 2.5714;
+
+		img {
+			margin-top: -5px;
+			margin-right: 5px;
+			vertical-align: middle;
+			opacity: 0.75;
+		}
+	}
+
+	.lzb-admin-toolbar-tab {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 0 2px;
+		font-size: 14px;
+		line-height: 2.5714;
+		color: inherit;
+		text-decoration: none;
+
+		&.is-active {
+			padding-bottom: 2px;
+			border-bottom: #007cba solid 3px;
+		}
+
+		&:hover,
+		&:focus {
+			color: #007cba;
+		}
+
+		.dashicons {
+			line-height: 2;
+		}
+	}
+}
+
+// Go Pro links.
+#adminmenu a[href*="lazyblocks.com/pro/"],
+.wp-list-table.plugins a[href*="lazyblocks.com/pro/"],
+.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"] {
+	font-weight: 700;
+	color: #e24a62;
+
+	.dashicons {
+		transition: none;
+	}
+
+	&:hover,
+	&:focus {
+		color: #e11937;
+	}
+}

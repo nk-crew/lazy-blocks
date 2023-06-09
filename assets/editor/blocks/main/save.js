@@ -1,17 +1,20 @@
-const { useInnerBlocksProps } = wp.blockEditor;
+/**
+ * WordPress dependencies.
+ */
+import { useInnerBlocksProps } from '@wordpress/block-editor';
 
 export default function BlockSave(props) {
-  const { lazyBlockData } = props;
+	const { lazyBlockData } = props;
 
-  let result = null;
+	let result = null;
 
-  // Return inner blocks content to use it in PHP render.
-  Object.keys(lazyBlockData.controls).forEach((k) => {
-    if (lazyBlockData.controls[k].type === 'inner_blocks') {
-      const innerBlocksProps = useInnerBlocksProps.save();
-      result = innerBlocksProps.children;
-    }
-  });
+	// Return inner blocks content to use it in PHP render.
+	Object.keys(lazyBlockData.controls).forEach((k) => {
+		if (lazyBlockData.controls[k].type === 'inner_blocks') {
+			const innerBlocksProps = useInnerBlocksProps.save();
+			result = innerBlocksProps.children;
+		}
+	});
 
-  return result;
+	return result;
 }

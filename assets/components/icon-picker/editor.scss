@@ -1,121 +1,121 @@
 @import "../../variables";
 
 .lazyblocks-component-icon-picker-wrapper {
-  > .components-base-control__field {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 8px;
-  }
+	> .components-base-control__field {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 8px;
+	}
 }
 
 .lazyblocks-component-icon-picker-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  font-size: 15px;
-  text-align: center;
-  border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	font-size: 15px;
+	text-align: center;
+	border-radius: 4px;
 
-  svg {
-    display: block;
-  }
+	svg {
+		display: block;
+	}
 
-  path {
-    fill: currentcolor;
-  }
+	path {
+		fill: currentcolor;
+	}
 
-  &.lazyblocks-component-icon-picker-preview {
-    cursor: pointer;
-    border: none;
-    transition: 0.15s background-color, 0.15s box-shadow;
+	&.lazyblocks-component-icon-picker-preview {
+		cursor: pointer;
+		border: none;
+		transition: 0.15s background-color, 0.15s box-shadow;
 
-    &:hover,
-    &.hover {
-      box-shadow: rgba(0, 0, 0, 20%) 0 0 0 1px, rgba(0, 0, 0, 10%) 0 2px 4px 0;
-    }
+		&:hover,
+		&.hover {
+			box-shadow: rgba(0, 0, 0, 20%) 0 0 0 1px, rgba(0, 0, 0, 10%) 0 2px 4px 0;
+		}
 
-    &.hover:hover,
-    &.lazyblocks-component-icon-picker-button-active {
-      box-shadow: rgba(0, 0, 0, 40%) 0 0 0 1px;
-    }
+		&.hover:hover,
+		&.lazyblocks-component-icon-picker-button-active {
+			box-shadow: rgba(0, 0, 0, 40%) 0 0 0 1px;
+		}
 
-    &.lazyblocks-component-icon-picker-button-active {
-      color: #fff;
-      background-color: $blue-wordpress;
-      box-shadow: $blue-wordpress 0 0 0 1px, rgba($blue-wordpress, 0.1) 0 2px 4px 0;
-    }
-  }
+		&.lazyblocks-component-icon-picker-button-active {
+			color: #fff;
+			background-color: $blue-wordpress;
+			box-shadow: $blue-wordpress 0 0 0 1px, rgba($blue-wordpress, 0.1) 0 2px 4px 0;
+		}
+	}
 }
 
 .lazyblocks-component-icon-picker-preview-clickable {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .lazyblocks-component-icon-picker {
-  .components-base-control {
-    // fix hidden right part of inputs.
-    padding-right: 2px;
+	.components-base-control {
+		// fix hidden right part of inputs.
+		padding-right: 2px;
 
-    + .components-base-control {
-      margin-top: 15px;
-      margin-bottom: 0;
-    }
-  }
+		+ .components-base-control {
+			margin-top: 15px;
+			margin-bottom: 0;
+		}
+	}
 
-  .lazyblocks-component-icon-picker-list-wrap {
-    padding: 15px;
+	.lazyblocks-component-icon-picker-list-wrap {
+		padding: 15px;
 
-    .ReactVirtualized__Grid__innerScrollContainer > div {
-      padding-bottom: 10px;
-    }
-  }
+		.ReactVirtualized__Grid__innerScrollContainer > div {
+			padding-bottom: 10px;
+		}
+	}
 
-  .lazyblocks-component-icon-picker-list-panel-toggle {
-    border-bottom: none;
+	.lazyblocks-component-icon-picker-list-panel-toggle {
+		border-bottom: none;
 
-    &.is-opened > .components-panel__body-title {
-      margin-bottom: -16px;
-    }
-  }
+		&.is-opened > .components-panel__body-title {
+			margin-bottom: -16px;
+		}
+	}
 
-  .lazyblocks-component-icon-picker-list {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: -10px;
+	.lazyblocks-component-icon-picker-list {
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: -10px;
 
-    > * {
-      width: calc(33.33% - 10px);
-      max-width: calc(33.33% - 10px);
-      margin-left: 10px;
-    }
+		> * {
+			width: calc(33.33% - 10px);
+			max-width: calc(33.33% - 10px);
+			margin-left: 10px;
+		}
 
-    .lazyblocks-component-icon-picker-button {
-      width: 100%;
-      height: 55px;
-      font-size: 20px;
-    }
-  }
+		.lazyblocks-component-icon-picker-button {
+			width: 100%;
+			height: 55px;
+			font-size: 20px;
+		}
+	}
 }
 
 // add max height to popover.
 .lazyblocks-component-icon-picker-content > .components-popover__content {
-  overflow-y: hidden !important;
+	overflow-y: hidden !important;
 
-  .lazyblocks-component-icon-picker-sizer {
-    min-width: 240px;
-    height: 100vh;
-  }
+	.lazyblocks-component-icon-picker-sizer {
+		min-width: 240px;
+		height: 100vh;
+	}
 
-  .lazyblocks-component-icon-picker {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+	.lazyblocks-component-icon-picker {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
 }

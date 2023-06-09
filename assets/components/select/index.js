@@ -8,33 +8,33 @@ import selectStyles from 'gutenberg-react-select-styles';
 import './editor.scss';
 
 export default function Select(props) {
-  let ThisSelect = ReactSelect;
+	let ThisSelect = ReactSelect;
 
-  if (props.isAsync) {
-    ThisSelect = AsyncSelect;
-  } else if (props.isCreatable) {
-    ThisSelect = CreatableSelect;
-  }
+	if (props.isAsync) {
+		ThisSelect = AsyncSelect;
+	} else if (props.isCreatable) {
+		ThisSelect = CreatableSelect;
+	}
 
-  return (
-    <ThisSelect
-      menuPlacement="auto"
-      className="lazyblocks-component-select"
-      styles={selectStyles}
-      {...{
-        ...props,
-        ...(props.isTags
-          ? {
-              isMulti: true,
-              components: {
-                DropdownIndicator: () => null,
-                IndicatorSeparator: () => null,
-                ClearIndicator: () => null,
-                Menu: () => null,
-              },
-            }
-          : {}),
-      }}
-    />
-  );
+	return (
+		<ThisSelect
+			menuPlacement="auto"
+			className="lazyblocks-component-select"
+			styles={selectStyles}
+			{...{
+				...props,
+				...(props.isTags
+					? {
+							isMulti: true,
+							components: {
+								DropdownIndicator: () => null,
+								IndicatorSeparator: () => null,
+								ClearIndicator: () => null,
+								Menu: () => null,
+							},
+					  }
+					: {}),
+			}}
+		/>
+	);
 }

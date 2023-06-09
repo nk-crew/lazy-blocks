@@ -1,0 +1,8 @@
+.lzb-template-settings-panel .components-select-control select[multiple] {
+	height: auto;
+	padding-right: 8px;
+
+	~ .components-input-control__suffix {
+		display: none;
+	}
+}

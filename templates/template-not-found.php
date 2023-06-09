@@ -7,16 +7,18 @@
  * @package lazyblocks
  */
 
+// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+
 ?>
 
 <div class="notice notice-warning">
-    <?php
-    echo wp_kses_post(
-        sprintf(
-            // translators: %1$s - template file path.
-            __( 'Template file <code>%1$s</code> not found.', 'lazy-blocks' ),
-            'blocks/' . $template_name . '/block.php'
-        )
-    );
-    ?>
+	<?php
+	echo wp_kses_post(
+		sprintf(
+			// translators: %1$s - template file path.
+			__( 'Template file <code>%1$s</code> not found.', 'lazy-blocks' ),
+			'blocks/' . $template_name . '/block.php'
+		)
+	);
+	?>
 </div>

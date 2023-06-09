@@ -1,11 +1,24 @@
-const { applyFilters } = wp.hooks;
+/**
+ * WordPress dependencies.
+ */
+import { applyFilters } from '@wordpress/hooks';
 
 export default function isControlValueValid(val, control) {
-  let isValid = val !== '' && typeof val !== 'undefined';
+	let isValid = val !== '' && typeof val !== 'undefined';
 
-  // custom validation filter.
-  isValid = applyFilters(`lzb.editor.control.${control.type}.isValueValid`, isValid, val, control);
-  isValid = applyFilters('lzb.editor.control.isValueValid', isValid, val, control);
+	// custom validation filter.
+	isValid = applyFilters(
+		`lzb.editor.control.${control.type}.isValueValid`,
+		isValid,
+		val,
+		control
+	);
+	isValid = applyFilters(
+		'lzb.editor.control.isValueValid',
+		isValid,
+		val,
+		control
+	);
 
-  return isValid;
+	return isValid;
 }

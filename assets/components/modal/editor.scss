@@ -1,61 +1,61 @@
 @import "../../variables";
 
 .lzb-component-modal {
-  @media (min-width: 600px) {
-    &.lzb-component-modal-size-md {
-      min-width: 600px;
-      max-width: 600px;
+	@media (min-width: 600px) {
+		&.lzb-component-modal-size-md {
+			min-width: 600px;
+			max-width: 600px;
 
-      // fix for Ace editor tooltips
-      margin-left: -300px;
-      transform: none;
+			// fix for Ace editor tooltips
+			margin-left: -300px;
+			transform: none;
 
-      // position
-      &.lzb-component-modal-position-top {
-        top: 112px;
-      }
-    }
-  }
+			// position
+			&.lzb-component-modal-position-top {
+				top: 112px;
+			}
+		}
+	}
 
-  // size
-  @media (min-width: 840px) {
-    &.lzb-component-modal-size-lg {
-      min-width: 800px;
-      max-width: 800px;
+	// size
+	@media (min-width: 840px) {
+		&.lzb-component-modal-size-lg {
+			min-width: 800px;
+			max-width: 800px;
 
-      // fix for Ace editor tooltips
-      margin-left: -400px;
-      transform: none;
-    }
-  }
+			// fix for Ace editor tooltips
+			margin-left: -400px;
+			transform: none;
+		}
+	}
 
-  // header
-  .components-modal__header {
-    .components-modal__icon-container svg {
-      display: block;
-      margin-right: 10px;
-    }
+	// header
+	.components-modal__header {
+		.components-modal__icon-container svg {
+			display: block;
+			margin-right: 10px;
+		}
 
-    .components-modal__header-heading {
-      font-weight: 600;
-    }
-  }
+		.components-modal__header-heading {
+			font-weight: 600;
+		}
+	}
 
-  // tab panel
-  .lzb-component-modal-tab-panel {
-    .components-tab-panel__tabs {
-      margin-top: -16px;
-      margin-right: -16px;
-      margin-left: -16px;
+	// tab panel
+	.lzb-component-modal-tab-panel {
+		.components-tab-panel__tabs {
+			margin-top: -16px;
+			margin-right: -16px;
+			margin-left: -16px;
 
-      .lzb-control-tabs-tab {
-        padding: 12px 16px;
-        color: inherit;
+			.lzb-control-tabs-tab {
+				padding: 12px 16px;
+				color: inherit;
 
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-  }
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+	}
 }
