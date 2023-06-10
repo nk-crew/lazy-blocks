@@ -1,21 +1,14 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/jsx-curly-newline */
 /**
  * Styles.
  */
 import './editor.scss';
 
 /**
- * External dependencies.
- */
-import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
-
-/**
  * WordPress dependencies.
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
-import { useSelect, select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 import {
 	PanelBody,
@@ -31,80 +24,10 @@ import {
 /**
  * Internal dependencies.
  */
-import CodeEditor from '../../../components/code-editor';
+import CodeEditor from './component-react-ace';
+import FixCssFrame from './fix-css-frame';
 
 const { plugin_version: pluginVersion } = window.lazyblocksConstructorData;
-
-// Add autocompleter with control names.
-addCompleter({
-	getCompletions(editor, session, pos, prefix, callback) {
-		if (editor.id === 'lzb-editor-php') {
-			const { getBlockData } = select('lazy-blocks/block-data');
-
-			const blockData = getBlockData();
-
-			if (blockData.controls) {
-				const result = [];
-
-				Object.keys(blockData.controls).forEach((k) => {
-					const control = blockData.controls[k];
-
-					if (control.name && !control.child_of) {
-						result.push({
-							caption: `$attributes['${control.name}']`,
-							value: `$attributes['${control.name}']`,
-							meta: sprintf(
-								// translators: %1$s - control name.
-								__('Control "%1$s"', 'lazy-blocks'),
-								control.label
-							),
-						});
-					}
-				});
-
-				if (result.length) {
-					callback(null, result);
-				}
-			}
-		}
-	},
-	identifierRegexps: [/\$/],
-});
-
-addCompleter({
-	getCompletions(editor, session, pos, prefix, callback) {
-		if (editor.id === 'lzb-editor-html') {
-			const { getBlockData } = select('lazy-blocks/block-data');
-
-			const blockData = getBlockData();
-
-			if (blockData.controls) {
-				const result = [];
-
-				Object.keys(blockData.controls).forEach((k) => {
-					const control = blockData.controls[k];
-
-					if (control.name && !control.child_of) {
-						result.push({
-							caption: `{{${control.name}}}`,
-							value: `{{${control.name}}}`,
-							meta: sprintf(
-								// translators: %1$s - control name.
-								__('Control "%1$s"', 'lazy-blocks'),
-								control.label
-							),
-						});
-					}
-				});
-
-				if (result.length) {
-					callback(null, result);
-				}
-			}
-		}
-	},
-	identifierRegexps: [/\{/],
-});
 
 export default function CustomCodeSettings(props) {
 	const { data, updateData, onTabChange } = props;
@@ -136,23 +59,6 @@ export default function CustomCodeSettings(props) {
 			setTab('frontend');
 		}
 	}, [data, tab]);
-
-	function getEditor(name = 'frontend') {
-		const metaName = `code_${name}_html`;
-
-		return (
-			<CodeEditor
-				key={metaName + data.code_output_method}
-				mode={data.code_output_method}
-				onChange={(value) => updateData({ [metaName]: value })}
-				value={data[metaName]}
-				height="30rem"
-				editorProps={{
-					id: `lzb-editor-${data.code_output_method}`,
-				}}
-			/>
-		);
-	}
 
 	// add ajax check for filter
 	//
@@ -236,7 +142,19 @@ export default function CustomCodeSettings(props) {
 								{() => null}
 							</TabPanel>
 						) : null}
-						{getEditor(tab)}
+						<CodeEditor
+							key={`code_${tab}_html` + data.code_output_method}
+							mode={data.code_output_method}
+							onChange={(value) =>
+								updateData({ [`code_${tab}_html`]: value })
+							}
+							value={data[`code_${tab}_html`]}
+							height="30rem"
+							editorProps={{
+								id: `lzb-editor-${data.code_output_method}`,
+							}}
+						/>
+						<FixCssFrame />
 					</BaseControl>
 					<BaseControl>
 						{!showInfo ? (

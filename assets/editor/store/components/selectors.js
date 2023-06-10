@@ -4,7 +4,6 @@
 import BaseControl from '../../../components/base-control';
 import BlockSlug from '../../../components/block-slug';
 import Box from '../../../components/box';
-import CodeEditor from '../../../components/code-editor';
 import Copied from '../../../components/copied';
 import DocumentTabs from '../../../components/document-tabs';
 import IconPicker from '../../../components/icon-picker';
@@ -17,7 +16,6 @@ export function get() {
 		BaseControl,
 		BlockSlug,
 		Box,
-		CodeEditor,
 		Copied,
 		DocumentTabs,
 		IconPicker,
