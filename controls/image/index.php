@@ -26,7 +26,8 @@ class LazyBlocks_Control_Image extends LazyBlocks_Control {
 			'default_settings' => false,
 		);
 		$this->attributes   = array(
-			'preview_size' => 'medium',
+			'insert_from_url' => 'false',
+			'preview_size'    => 'medium',
 		);
 
 		parent::__construct();

@@ -6,7 +6,7 @@
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { useSelect } from '@wordpress/data';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -23,6 +23,7 @@ addFilter('lzb.editor.control.image.render', 'lzb.editor', (render, props) => (
 	<BaseControl {...useBlockControlProps(props)}>
 		<ImageControl
 			previewSize={props.data.preview_size}
+			allowInsertFromURL={props.data.insert_from_url === 'true'}
 			value={props.getValue()}
 			onChange={(val) => {
 				const result = val
@@ -103,27 +104,50 @@ function AdditionalAttributes(props) {
 	});
 
 	return (
-		<PanelBody>
-			<SelectControl
-				label={__('Preview Size', 'lazy-blocks')}
-				options={imageSizes.map((sizeData) => {
-					let sizeLabel = sizeData.name;
+		<>
+			<PanelBody>
+				<BaseControl
+					id="lazyblocks-control-image-insert-from-url"
+					label={__('Allow insert from URL', 'lazy-blocks')}
+					help={__(
+						'Will be added option that allow you to use custom URL to insert image',
+						'lazy-blocks'
+					)}
+				>
+					<ToggleControl
+						id="lazyblocks-control-image-insert-from-url"
+						label={__('Yes', 'lazy-blocks')}
+						checked={data.insert_from_url === 'true'}
+						onChange={(value) =>
+							updateData({
+								insert_from_url: value ? 'true' : 'false',
+							})
+						}
+					/>
+				</BaseControl>
+			</PanelBody>
+			<PanelBody>
+				<SelectControl
+					label={__('Preview Size', 'lazy-blocks')}
+					options={imageSizes.map((sizeData) => {
+						let sizeLabel = sizeData.name;
 
-					if (imageDimensions[sizeData.slug]) {
-						sizeLabel += ` (${
-							imageDimensions[sizeData.slug].width
-						} × ${imageDimensions[sizeData.slug].height})`;
-					}
+						if (imageDimensions[sizeData.slug]) {
+							sizeLabel += ` (${
+								imageDimensions[sizeData.slug].width
+							} × ${imageDimensions[sizeData.slug].height})`;
+						}
 
-					return {
-						label: sizeLabel,
-						value: sizeData.slug,
-					};
-				})}
-				value={data.preview_size || 'medium'}
-				onChange={(value) => updateData({ preview_size: value })}
-			/>
-		</PanelBody>
+						return {
+							label: sizeLabel,
+							value: sizeData.slug,
+						};
+					})}
+					value={data.preview_size || 'medium'}
+					onChange={(value) => updateData({ preview_size: value })}
+				/>
+			</PanelBody>
+		</>
 	);
 }
 
