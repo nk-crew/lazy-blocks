@@ -23,7 +23,7 @@ if (!options || !options.blocks || !options.blocks.length) {
 // each registered block.
 options.blocks.forEach((item) => {
 	// conditionally show for specific post type.
-	if (item.supports.inserter && item.condition.length) {
+	if (item.supports.inserter && item?.condition?.length) {
 		let preventInsertion = false;
 		item.condition.forEach((val) => {
 			if (window.pagenow && val === window.pagenow) {
