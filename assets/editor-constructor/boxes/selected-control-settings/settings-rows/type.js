@@ -152,56 +152,67 @@ export default function TypeRow(props) {
 								// eslint-disable-next-line jsx-a11y/no-autofocus
 								autoFocus
 							/>
-							{Object.keys(availableCategories).map((cat) => (
-								<PanelBody
-									key={cat}
-									title={allCategories[cat] || cat}
-									initialOpen={!hiddenIconCategories[cat]}
-									onToggle={() => {
-										hiddenIconCategories[cat] =
-											typeof hiddenIconCategories[cat] ===
-											'undefined'
-												? true
-												: !hiddenIconCategories[cat];
-									}}
-								>
-									{types.map((thisType) => {
-										if (
-											thisType.category !== cat ||
-											thisType.isHiddenFromSelect
-										) {
-											return null;
-										}
+							{Object.keys(allCategories).map((cat) => {
+								if (!availableCategories[cat]) {
+									return null;
+								}
 
-										return (
-											// eslint-disable-next-line react/button-has-type
-											<button
-												key={cat + thisType.name}
-												onClick={() => {
-													updateData({
-														type: thisType.name,
-													});
-													setModalOpened(false);
-												}}
-												disabled={thisType.isDisabled}
-												className={
-													type === thisType.name
-														? 'is-active'
-														: ''
-												}
-											>
-												{/* eslint-disable-next-line react/no-danger */}
-												<span
-													dangerouslySetInnerHTML={{
-														__html: thisType.icon,
+								return (
+									<PanelBody
+										key={cat}
+										title={allCategories[cat] || cat}
+										initialOpen={!hiddenIconCategories[cat]}
+										onToggle={() => {
+											hiddenIconCategories[cat] =
+												typeof hiddenIconCategories[
+													cat
+												] === 'undefined'
+													? true
+													: !hiddenIconCategories[
+															cat
+													  ];
+										}}
+									>
+										{types.map((thisType) => {
+											if (
+												thisType.category !== cat ||
+												thisType.isHiddenFromSelect
+											) {
+												return null;
+											}
+
+											return (
+												// eslint-disable-next-line react/button-has-type
+												<button
+													key={cat + thisType.name}
+													onClick={() => {
+														updateData({
+															type: thisType.name,
+														});
+														setModalOpened(false);
 													}}
-												/>
-												{thisType.label}
-											</button>
-										);
-									})}
-								</PanelBody>
-							))}
+													disabled={
+														thisType.isDisabled
+													}
+													className={
+														type === thisType.name
+															? 'is-active'
+															: ''
+													}
+												>
+													{/* eslint-disable-next-line react/no-danger */}
+													<span
+														dangerouslySetInnerHTML={{
+															__html: thisType.icon,
+														}}
+													/>
+													{thisType.label}
+												</button>
+											);
+										})}
+									</PanelBody>
+								);
+							})}
 						</div>
 					</Modal>
 				) : (
