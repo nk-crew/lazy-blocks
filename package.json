@@ -20,7 +20,7 @@
 		"css-lint-fix": "stylelint --fix --custom-syntax postcss-scss \"assets/**/*.scss\"",
 		"js-lint": "eslint --ext .js assets/ controls/",
 		"js-lint-fix": "eslint --ext .js --fix assets/ controls/",
-		"make-pot": "composer wp -- i18n make-pot ./ ./languages/lazy-blocks.pot --skip-audit --exclude=vendor,vendors,node_modules,dist-zip --headers='{\"Last-Translator\":\"Lazy Blocks Team\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-crew/lazyblocks/issues\"}'",
+		"make-pot": "composer wp -- i18n make-pot ./ ./languages/lazy-blocks.pot --skip-audit --exclude=vendor,vendors,node_modules,build,dist-zip --headers='{\"Last-Translator\":\"Lazy Blocks Team\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-crew/lazyblocks/issues\"}'",
 		"make-json": "po2json ./languages/lazy-blocks.pot ./languages/lazy-blocks.json --format=jed1.x --pretty --domain=lazy-blocks",
 		"prepare": "husky install",
 		"postinstall": "composer install"

@@ -68,6 +68,9 @@
          "Layout": [
             ""
          ],
+         "Deprecated": [
+            ""
+         ],
          "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks.": [
             ""
          ],
@@ -262,7 +265,7 @@
          "Search Icon": [
             ""
          ],
-         "Type to Search...": [
+         "Type to Search…": [
             ""
          ],
          "No icons found.": [
@@ -272,6 +275,9 @@
             ""
          ],
          "Error loading block preview: %s": [
+            ""
+         ],
+         "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\".": [
             ""
          ],
          "Lazy Blocks Pro": [
@@ -295,7 +301,7 @@
          "SEO Enhancements": [
             ""
          ],
-         "And much more...": [
+         "And much more…": [
             ""
          ],
          "This field is required": [
@@ -385,7 +391,7 @@
          "In all posts by default": [
             ""
          ],
-         "Loading...": [
+         "Loading…": [
             ""
          ],
          "(no label)": [
@@ -677,6 +683,18 @@
             ""
          ],
          "Remove Image": [
+            ""
+         ],
+         "Allow insert from URL": [
+            ""
+         ],
+         "Will be added option that allow you to use custom URL to insert image": [
+            ""
+         ],
+         "The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates.": [
+            ""
+         ],
+         "Read More": [
             ""
          ],
          "Minimum Value": [

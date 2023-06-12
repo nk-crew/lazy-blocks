@@ -9,13 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-05T08:20:38+00:00\n"
+"POT-Creation-Date: 2023-06-12T19:16:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
-#: classes/class-admin.php:244
+#: classes/class-admin.php:236
 #: classes/class-blocks.php:318
 #: classes/class-blocks.php:1158
 msgid "Lazy Blocks"
@@ -43,7 +43,7 @@ msgstr ""
 msgid "Go Pro"
 msgstr ""
 
-#: classes/class-admin.php:278
+#: classes/class-admin.php:270
 msgid "and"
 msgstr ""
 
@@ -53,8 +53,8 @@ msgid "Blocks"
 msgstr ""
 
 #: classes/class-blocks.php:321
-#: assets/components/document-tabs/index.js:56
-#: assets/components/document-tabs/index.js:58
+#: assets/components/document-tabs/index.js:62
+#: assets/components/document-tabs/index.js:64
 msgid "Block"
 msgstr ""
 
@@ -64,7 +64,7 @@ msgid "Duplicate “%1$s”"
 msgstr ""
 
 #: classes/class-blocks.php:459
-#: assets/editor-constructor/boxes/controls/control.js:183
+#: assets/editor-constructor/boxes/controls/control.js:246
 msgid "Duplicate"
 msgstr ""
 
@@ -79,17 +79,17 @@ msgid "Export"
 msgstr ""
 
 #: classes/class-blocks.php:526
-#: assets/editor-constructor/boxes/general/index.js:81
+#: assets/editor-constructor/boxes/general/index.js:95
 msgid "Icon"
 msgstr ""
 
 #: classes/class-blocks.php:528
-#: assets/editor-constructor/boxes/general/index.js:87
+#: assets/editor-constructor/boxes/general/index.js:103
 msgid "Category"
 msgstr ""
 
 #: classes/class-blocks.php:529
-#: assets/editor-constructor/boxes/general/index.js:138
+#: assets/editor-constructor/boxes/general/index.js:170
 msgid "Description"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgid "Basic"
 msgstr ""
 
 #: classes/class-controls.php:42
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:51
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:74
 msgid "Content"
 msgstr ""
 
@@ -112,6 +112,10 @@ msgstr ""
 
 #: classes/class-controls.php:45
 msgid "Layout"
+msgstr ""
+
+#: classes/class-controls.php:46
+msgid "Deprecated"
 msgstr ""
 
 #: classes/class-deactivate-duplicate-plugin.php:69
@@ -170,12 +174,12 @@ msgid "Template"
 msgstr ""
 
 #: classes/class-templates.php:298
-#: assets/admin/templates/index.js:163
+#: assets/admin/templates/index.js:183
 msgid "Post Types"
 msgstr ""
 
 #: classes/class-templates.php:299
-#: assets/admin/templates/index.js:176
+#: assets/admin/templates/index.js:196
 msgid "Template Lock"
 msgstr ""
 
@@ -193,43 +197,43 @@ msgstr ""
 msgid "Export / Import"
 msgstr ""
 
-#: classes/class-tools.php:295
+#: classes/class-tools.php:287
 msgid "No file selected"
 msgstr ""
 
-#: classes/class-tools.php:305
+#: classes/class-tools.php:297
 msgid "Error uploading file. Please try again"
 msgstr ""
 
-#: classes/class-tools.php:311
+#: classes/class-tools.php:303
 msgid "Incorrect file type"
 msgstr ""
 
-#: classes/class-tools.php:322
+#: classes/class-tools.php:314
 msgid "Import file empty"
 msgstr ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:361
+#: classes/class-tools.php:353
 msgid "Imported %s block"
 msgid_plural "Imported %s blocks"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - number of templates.
-#: classes/class-tools.php:381
+#: classes/class-tools.php:373
 msgid "Imported %s template"
 msgid_plural "Imported %s templates"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - post type.
-#: classes/class-tools.php:556
+#: classes/class-tools.php:548
 msgid "Template for these post types '%s' already exists."
 msgstr ""
 
 #. translators: %s - post title.
-#: classes/class-tools.php:602
+#: classes/class-tools.php:594
 msgid "Added new block '%s'."
 msgstr ""
 
@@ -322,776 +326,800 @@ msgid "URL"
 msgstr ""
 
 #. translators: %1$s - template file path.
-#: templates/template-not-found.php:17
+#: templates/template-not-found.php:19
 msgid "Template file <code>%1$s</code> not found."
 msgstr ""
 
-#: assets/admin/templates/index.js:90
+#: assets/admin/templates/index.js:110
 msgid "None"
 msgstr ""
 
-#: assets/admin/templates/index.js:94
+#: assets/admin/templates/index.js:114
 msgid "All - prevents all operations"
 msgstr ""
 
-#: assets/admin/templates/index.js:98
+#: assets/admin/templates/index.js:118
 msgid "Insert - prevents inserting new blocks, but allows moving existing ones"
 msgstr ""
 
-#: assets/admin/templates/index.js:105
+#: assets/admin/templates/index.js:125
 msgid "Content Only - prevents all operations, except the content editing."
 msgstr ""
 
-#: assets/admin/templates/index.js:157
+#: assets/admin/templates/index.js:177
 msgid "Template Settings"
 msgstr ""
 
-#: assets/admin/tools/tools.js:115
+#: assets/admin/tools/tools.js:117
 msgid "Select all"
 msgstr ""
 
-#: assets/admin/tools/tools.js:205
+#: assets/admin/tools/tools.js:241
 msgid "Copy to Clipboard"
 msgstr ""
 
-#: assets/admin/tools/tools.js:217
+#: assets/admin/tools/tools.js:257
 msgid "Export JSON"
 msgstr ""
 
-#: assets/admin/tools/tools.js:231
+#: assets/admin/tools/tools.js:271
 msgid "Generate PHP"
 msgstr ""
 
-#: assets/admin/tools/tools.js:246
+#: assets/admin/tools/tools.js:287
 msgid "Export Blocks"
 msgstr ""
 
-#: assets/admin/tools/tools.js:266
+#: assets/admin/tools/tools.js:311
 msgid "Export Templates"
 msgstr ""
 
-#: assets/admin/tools/tools.js:288
-#: assets/admin/tools/tools.js:306
+#: assets/admin/tools/tools.js:338
+#: assets/admin/tools/tools.js:367
 msgid "Import"
 msgstr ""
 
-#: assets/components/copied/index.js:8
+#: assets/components/copied/index.js:14
 msgid "Copied!"
 msgstr ""
 
-#: assets/components/document-tabs/index.js:70
-#: assets/components/document-tabs/index.js:72
+#: assets/components/document-tabs/index.js:76
+#: assets/components/document-tabs/index.js:78
 msgid "Control"
 msgstr ""
 
-#: assets/components/icon-picker/index.js:63
+#: assets/components/icon-picker/index.js:86
 msgid "Search Icon"
 msgstr ""
 
-#: assets/components/icon-picker/index.js:66
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:120
-msgid "Type to Search..."
+#: assets/components/icon-picker/index.js:89
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:146
+msgid "Type to Search…"
 msgstr ""
 
-#: assets/components/icon-picker/index.js:207
+#: assets/components/icon-picker/index.js:242
 msgid "No icons found."
 msgstr ""
 
-#: assets/components/icon-picker/index.js:277
+#: assets/components/icon-picker/index.js:316
 msgid "Icon Picker"
 msgstr ""
 
-#: assets/components/preview-server-callback/index.js:201
+#. Translators: %s - error text.
+#: assets/components/preview-server-callback/index.js:221
 msgid "Error loading block preview: %s"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:18
+#. Translators: %s - block slug.
+#: assets/components/preview-server-callback/render-block-content.js:159
+msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
+msgstr ""
+
+#: assets/components/pro-notice/index.js:23
 msgid "Lazy Blocks Pro"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:28
+#: assets/components/pro-notice/index.js:33
 msgid "Upgrade Now"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:31
+#: assets/components/pro-notice/index.js:37
 msgid "Controls Conditional Logic"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:32
+#: assets/components/pro-notice/index.js:39
 msgid "Panels and Dividers"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:33
+#: assets/components/pro-notice/index.js:41
 msgid "Posts, Taxonomy, User Controls"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:34
+#: assets/components/pro-notice/index.js:46
 msgid "Blocks Preloading"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:35
+#: assets/components/pro-notice/index.js:47
 msgid "SEO Enhancements"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:38
-msgid "And much more..."
+#: assets/components/pro-notice/index.js:54
+msgid "And much more…"
 msgstr ""
 
-#: assets/components/render-controls/index.js:250
+#: assets/components/render-controls/index.js:299
 msgid "This field is required"
 msgstr ""
 
-#: assets/editor-constructor/block/edit.js:65
+#: assets/editor-constructor/block/edit.js:67
 msgid "Supports"
 msgstr ""
 
-#: assets/editor-constructor/block/edit.js:68
+#: assets/editor-constructor/block/edit.js:76
 msgid "Condition"
 msgstr ""
 
-#: assets/editor-constructor/block/index.js:18
+#: assets/editor-constructor/block/index.js:17
 msgid "Blocks Constructor"
 msgstr ""
 
 #: assets/editor-constructor/boxes/code-preview/index.js:126
-#: assets/editor-constructor/boxes/code-preview/preview-error-boundary.js:21
+#: assets/editor-constructor/boxes/code-preview/preview-error-boundary.js:23
 msgid "Error: Could not generate the preview."
 msgstr ""
 
-#: assets/editor-constructor/boxes/code-preview/index.js:157
+#: assets/editor-constructor/boxes/code-preview/index.js:159
 msgid "Preview"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:47
-#: assets/editor-constructor/boxes/code/index.js:78
+#. translators: %1$s - control name.
+#: assets/editor-constructor/boxes/code/component-react-ace/index.js:49
+#: assets/editor-constructor/boxes/code/component-react-ace/index.js:84
 msgid "Control \"%1$s\""
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:155
+#: assets/editor-constructor/boxes/code/index.js:79
 msgid "Frontend"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:163
+#: assets/editor-constructor/boxes/code/index.js:87
 msgid "Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:174
+#: assets/editor-constructor/boxes/code/index.js:100
 msgid "Output Method"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:178
+#: assets/editor-constructor/boxes/code/index.js:106
 msgid "HTML + Handlebars"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:182
+#: assets/editor-constructor/boxes/code/index.js:110
 msgid "PHP"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:186
+#: assets/editor-constructor/boxes/code/index.js:114
 msgid "Theme Template"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:225
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:24
+#: assets/editor-constructor/boxes/code/index.js:167
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:33
 msgid "How to use?"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:230
+#: assets/editor-constructor/boxes/code/index.js:176
 msgid "Simple text field example see here:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:241
+#: assets/editor-constructor/boxes/code/index.js:190
 msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:247
+#: assets/editor-constructor/boxes/code/index.js:196
 msgid "Note 2: supported custom PHP callback to output block"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:265
+#: assets/editor-constructor/boxes/code/index.js:217
 msgid "Single output code for Frontend and Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:287
+#: assets/editor-constructor/boxes/code/index.js:246
 msgid "To output block code, Lazy Blocks will look for template file in your theme directory:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:312
+#: assets/editor-constructor/boxes/code/index.js:271
 msgid "Read more:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:318
+#: assets/editor-constructor/boxes/code/index.js:277
 msgid "How to use theme template"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:331
+#: assets/editor-constructor/boxes/code/index.js:292
 msgid "Code Output in Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:335
+#: assets/editor-constructor/boxes/code/index.js:298
 msgid "Display Always"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:339
+#: assets/editor-constructor/boxes/code/index.js:302
 msgid "Display within `selected` block only"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:343
+#: assets/editor-constructor/boxes/code/index.js:309
 msgid "Display within `unselected` block only"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:347
+#: assets/editor-constructor/boxes/code/index.js:316
 msgid "Never Display"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:369
+#: assets/editor-constructor/boxes/code/index.js:340
 msgid "Code"
 msgstr ""
 
-#: assets/editor-constructor/boxes/condition/index.js:39
+#: assets/editor-constructor/boxes/condition/index.js:46
 msgid "Show in posts"
 msgstr ""
 
-#: assets/editor-constructor/boxes/condition/index.js:42
+#: assets/editor-constructor/boxes/condition/index.js:51
 msgid "In all posts by default"
 msgstr ""
 
-#: assets/editor-constructor/boxes/condition/index.js:73
-msgid "Loading..."
+#: assets/editor-constructor/boxes/condition/index.js:82
+msgid "Loading…"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:140
+#: assets/editor-constructor/boxes/controls/control.js:194
 msgid "(no label)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:158
+#: assets/editor-constructor/boxes/controls/control.js:218
 msgid "(copy)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:196
+#: assets/editor-constructor/boxes/controls/control.js:261
 msgid "Do you really want to remove control?"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/control.js:219
+#: assets/editor-constructor/boxes/controls/control.js:295
 msgid "Remove"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:123
+#: assets/editor-constructor/boxes/controls/index.js:148
 msgid "Add Child Control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:123
+#: assets/editor-constructor/boxes/controls/index.js:149
 msgid "Add Control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:175
+#: assets/editor-constructor/boxes/controls/index.js:209
 msgid "Content Controls"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:199
+#: assets/editor-constructor/boxes/controls/index.js:240
 msgid "Inspector Controls"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:219
+#: assets/editor-constructor/boxes/controls/index.js:260
 msgid "Hidden"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:64
+#: assets/editor-constructor/boxes/general/index.js:74
 msgid "Slug"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:70
+#: assets/editor-constructor/boxes/general/index.js:84
 msgid "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:90
+#: assets/editor-constructor/boxes/general/index.js:108
 msgid "Select category"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:99
+#: assets/editor-constructor/boxes/general/index.js:122
 msgid "Keywords"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:100
+#: assets/editor-constructor/boxes/general/index.js:123
 msgid "Make it easier to discover a block with keyword aliases"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:105
+#: assets/editor-constructor/boxes/general/index.js:132
 msgid "Type keyword and push Enter"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/index.js:33
+#: assets/editor-constructor/boxes/selected-control-settings/index.js:44
 msgid "Select control to see settings."
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/default.js:23
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/default.js:25
 msgid "Default value"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/default.js:24
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/default.js:26
 msgid "Appears when inserting a new block"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/help.js:11
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/help.js:13
 msgid "Help text"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/help.js:12
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/help.js:14
 msgid "Instructions under control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:10
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:14
 msgid "Hide if block is not selected"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:12
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:12
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:29
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:12
-#: controls/checkbox/script.js:44
-#: controls/color/script.js:44
-#: controls/radio/script.js:56
-#: controls/repeater/script.js:233
-#: controls/select/script.js:75
-#: controls/select/script.js:87
-#: controls/toggle/script.js:44
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:18
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:18
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:38
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:18
+#: controls/checkbox/script.js:62
+#: controls/color/script.js:51
+#: controls/image/script.js:119
+#: controls/radio/script.js:70
+#: controls/repeater/script.js:280
+#: controls/select/script.js:94
+#: controls/select/script.js:115
+#: controls/toggle/script.js:57
 msgid "Yes"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:36
-#: controls/radio/script.js:74
-#: controls/select/component-choices.js:46
-#: controls/select/script.js:105
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:44
+#: controls/radio/script.js:97
+#: controls/select/component-choices.js:59
+#: controls/select/script.js:142
 msgid "Label"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:37
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:45
 msgid "This is the name which will appear on the block edit control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:27
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:30
 msgid "Name"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:33
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/name.js:40
 msgid "Control name must include only alphanumeric characters, dashes or underscores. Example: my-control-name"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:27
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:42
 msgid "Placement"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:74
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/placement.js:103
 msgid "Inspector"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:10
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:14
 msgid "Required"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:13
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:22
 msgid "Save in Meta"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:36
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:47
 msgid "Meta custom name (optional)"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:53
 msgid "Unique metabox name"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:10
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:14
 msgid "WPML Translation"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:13
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:19
 msgid "Experimental feature, may not work as expected."
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:89
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:109
 msgid "Type"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:112
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/type.js:138
 msgid "Control Type"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:9
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:16
 msgid "25%"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:10
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:17
 msgid "50%"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:11
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:18
 msgid "75%"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:12
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:19
 msgid "100%"
 msgstr ""
 
-#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:19
+#: assets/editor-constructor/boxes/selected-control-settings/settings-rows/width.js:27
 msgid "Width"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:34
-#: controls/select/script.js:83
+#: assets/editor-constructor/boxes/supports/index.js:45
+#: controls/select/script.js:107
 msgid "Multiple"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:35
+#: assets/editor-constructor/boxes/supports/index.js:46
 msgid "Allow use block multiple times on the page."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:40
+#: assets/editor-constructor/boxes/supports/index.js:54
 msgid "Class Name"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:41
+#: assets/editor-constructor/boxes/supports/index.js:55
 msgid "Additional field to add custom class name."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:46
+#: assets/editor-constructor/boxes/supports/index.js:63
 msgid "Anchor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:47
+#: assets/editor-constructor/boxes/supports/index.js:64
 msgid "Additional field to add block ID attribute."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:52
+#: assets/editor-constructor/boxes/supports/index.js:72
 msgid "Inserter"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:53
+#: assets/editor-constructor/boxes/supports/index.js:73
 msgid "Show block in blocks inserter."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:57
+#: assets/editor-constructor/boxes/supports/index.js:79
 msgid "Align"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:60
+#: assets/editor-constructor/boxes/supports/index.js:84
 msgid "Select align options"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:92
+#: assets/editor-constructor/boxes/supports/index.js:118
 msgid "Ghost Kit Extensions"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:96
+#: assets/editor-constructor/boxes/supports/index.js:126
 msgid "Install Ghost Kit plugin to use the following settings."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:104
+#: assets/editor-constructor/boxes/supports/index.js:138
 msgid "Install"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:116
+#: assets/editor-constructor/boxes/supports/index.js:158
 msgid "To use these extensions required \"Class Name\" support."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:124
+#: assets/editor-constructor/boxes/supports/index.js:170
 msgid "Spacings"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:125
+#: assets/editor-constructor/boxes/supports/index.js:171
 msgid "Change block margins and paddings."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:130
+#: assets/editor-constructor/boxes/supports/index.js:181
 msgid "Display"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:131
+#: assets/editor-constructor/boxes/supports/index.js:182
 msgid "Display / Hide blocks on different screen sizes."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:136
+#: assets/editor-constructor/boxes/supports/index.js:192
 msgid "Animate on Scroll"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:137
+#: assets/editor-constructor/boxes/supports/index.js:193
 msgid "Display block with animation on scroll."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:142
+#: assets/editor-constructor/boxes/supports/index.js:203
 msgid "Frame"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:143
+#: assets/editor-constructor/boxes/supports/index.js:204
 msgid "Add border and box shadow to block."
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:148
+#: assets/editor-constructor/boxes/supports/index.js:214
 msgid "Custom CSS"
 msgstr ""
 
-#: assets/editor-constructor/boxes/supports/index.js:149
+#: assets/editor-constructor/boxes/supports/index.js:215
 msgid "Write custom CSS on each inserted blocks."
 msgstr ""
 
-#: assets/editor-constructor/boxes/title/index.js:54
+#: assets/editor-constructor/boxes/title/index.js:73
 msgid "Block Name"
 msgstr ""
 
-#: assets/editor/blocks/free/index.js:11
+#: assets/editor/blocks/free/index.js:16
 msgid "Free Content"
 msgstr ""
 
-#: assets/editor/blocks/free/index.js:12
+#: assets/editor/blocks/free/index.js:17
 msgid "Block used for adding blocks inside it in cases when template locked from adding blocks."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:211
-#: assets/editor/blocks/main/index.js:54
+#: assets/editor/blocks/main/edit.js:232
+#: assets/editor/blocks/main/index.js:59
 msgid "Edit Block"
 msgstr ""
 
-#: controls/checkbox/script.js:35
-#: controls/toggle/script.js:35
+#: controls/checkbox/script.js:44
+#: controls/toggle/script.js:40
 msgid "Alongside Text"
 msgstr ""
 
-#: controls/checkbox/script.js:36
+#: controls/checkbox/script.js:45
 msgid "Displays text alongside the checkbox"
 msgstr ""
 
-#: controls/checkbox/script.js:42
-#: controls/toggle/script.js:42
+#: controls/checkbox/script.js:58
+#: controls/toggle/script.js:53
 msgid "Checked"
 msgstr ""
 
-#: controls/classic_editor/tmce.js:184
+#: controls/classic_editor/tmce.js:195
 msgid "Classic"
 msgstr ""
 
-#: controls/color/script.js:37
+#: controls/color/script.js:43
 msgid "Alpha Channel"
 msgstr ""
 
-#: controls/color/script.js:38
+#: controls/color/script.js:44
 msgid "Will be added option that allow you to set semi-transparent colors with rgba"
 msgstr ""
 
-#: controls/color/script.js:52
-#: controls/radio/script.js:64
-#: controls/select/script.js:95
+#: controls/color/script.js:62
+#: controls/radio/script.js:83
+#: controls/select/script.js:128
 msgid "Output Format"
 msgstr ""
 
-#: controls/color/script.js:53
-#: controls/radio/script.js:65
-#: controls/select/script.js:96
+#: controls/color/script.js:63
+#: controls/radio/script.js:84
+#: controls/select/script.js:129
 msgid "Allows you to change attribute output format"
 msgstr ""
 
-#: controls/color/script.js:58
+#: controls/color/script.js:72
 msgid "Color"
 msgstr ""
 
-#: controls/color/script.js:62
+#: controls/color/script.js:76
 msgid "Array (Color + Slug)"
 msgstr ""
 
-#: controls/date_time/script.js:48
+#: controls/date_time/script.js:67
 msgid "Select Date"
 msgstr ""
 
-#: controls/date_time/script.js:53
+#: controls/date_time/script.js:72
 msgid "Select Date and Time"
 msgstr ""
 
-#: controls/date_time/script.js:58
+#: controls/date_time/script.js:77
 msgid "Select Time"
 msgstr ""
 
-#: controls/date_time/script.js:180
+#: controls/date_time/script.js:230
 msgid "Date"
 msgstr ""
 
-#: controls/date_time/script.js:202
+#: controls/date_time/script.js:252
 msgid "Time"
 msgstr ""
 
-#: controls/email/script.js:42
-#: controls/number/script.js:73
-#: controls/password/script.js:42
-#: controls/text/script.js:41
-#: controls/textarea/script.js:41
+#: controls/email/script.js:49
+#: controls/number/script.js:80
+#: controls/password/script.js:53
+#: controls/text/script.js:48
+#: controls/textarea/script.js:52
 msgid "Placeholder"
 msgstr ""
 
-#: controls/email/script.js:49
-#: controls/password/script.js:49
-#: controls/text/script.js:48
-#: controls/textarea/script.js:48
+#: controls/email/script.js:56
+#: controls/password/script.js:60
+#: controls/text/script.js:55
+#: controls/textarea/script.js:59
 msgid "Characters Limit"
 msgstr ""
 
-#: controls/email/script.js:50
-#: controls/password/script.js:50
-#: controls/text/script.js:49
-#: controls/textarea/script.js:49
+#: controls/email/script.js:57
+#: controls/password/script.js:61
+#: controls/text/script.js:56
+#: controls/textarea/script.js:60
 msgid "Maximum number of characters allowed. Leave blank to no limit."
 msgstr ""
 
-#: controls/file/file-control.js:48
+#: controls/file/file-control.js:55
 msgid "file"
 msgstr ""
 
-#: controls/file/file-control.js:99
+#: controls/file/file-control.js:111
 msgid "Remove File"
 msgstr ""
 
-#: controls/file/script.js:87
+#: controls/file/script.js:95
 msgid "Allowed Mime Types"
 msgstr ""
 
-#: controls/file/script.js:88
+#: controls/file/script.js:96
 msgid "If nothing selected, all file types will be allowed to use."
 msgstr ""
 
-#: controls/gallery/gallery-control.js:71
+#: controls/gallery/gallery-control.js:77
 msgid "images"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:112
+#: controls/gallery/gallery-control.js:126
 msgid "Edit Gallery"
 msgstr ""
 
-#: controls/gallery/script.js:80
-#: controls/image/script.js:85
+#: controls/gallery/script.js:91
+#: controls/image/script.js:93
 msgid "Medium"
 msgstr ""
 
-#: controls/gallery/script.js:96
-#: controls/image/script.js:101
+#: controls/gallery/script.js:107
+#: controls/image/script.js:131
 msgid "Preview Size"
 msgstr ""
 
-#: controls/image/image-control.js:66
+#: controls/image/image-control.js:92
 msgid "image"
 msgstr ""
 
-#: controls/image/image-control.js:104
+#: controls/image/image-control.js:139
 msgid "Remove Image"
 msgstr ""
 
-#: controls/number/script.js:47
-#: controls/range/script.js:40
+#: controls/image/script.js:111
+msgid "Allow insert from URL"
+msgstr ""
+
+#: controls/image/script.js:112
+msgid "Will be added option that allow you to use custom URL to insert image"
+msgstr ""
+
+#: controls/inner_blocks/script.js:65
+msgid "The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates."
+msgstr ""
+
+#: controls/inner_blocks/script.js:75
+msgid "Read More"
+msgstr ""
+
+#: controls/number/script.js:54
+#: controls/range/script.js:45
 msgid "Minimum Value"
 msgstr ""
 
-#: controls/number/script.js:56
-#: controls/range/script.js:49
+#: controls/number/script.js:63
+#: controls/range/script.js:54
 msgid "Maximum Value"
 msgstr ""
 
-#: controls/number/script.js:65
-#: controls/range/script.js:58
+#: controls/number/script.js:72
+#: controls/range/script.js:63
 msgid "Step Size"
 msgstr ""
 
-#: controls/radio/script.js:52
-#: controls/select/script.js:71
+#: controls/radio/script.js:62
+#: controls/select/script.js:86
 msgid "Allow Null"
 msgstr ""
 
-#: controls/radio/script.js:53
-#: controls/select/script.js:72
+#: controls/radio/script.js:63
+#: controls/select/script.js:87
 msgid "Allows you to reset selected option value to null"
 msgstr ""
 
-#: controls/radio/script.js:70
-#: controls/select/component-choices.js:52
-#: controls/select/script.js:101
+#: controls/radio/script.js:93
+#: controls/select/component-choices.js:66
+#: controls/select/script.js:138
 msgid "Value"
 msgstr ""
 
-#: controls/radio/script.js:78
-#: controls/select/script.js:109
+#: controls/radio/script.js:101
+#: controls/select/script.js:146
 msgid "Both (Array)"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:141
-#: controls/repeater/script.js:193
+#: controls/repeater/repeater-control.js:165
+#: controls/repeater/script.js:234
 msgid "Row {{#}}"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:264
-#: controls/repeater/script.js:205
+#: controls/repeater/repeater-control.js:303
+#: controls/repeater/script.js:246
 msgid "+ Add Row"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:268
+#: controls/repeater/repeater-control.js:309
 msgid "Toggle all"
 msgstr ""
 
-#: controls/repeater/script.js:125
+#: controls/repeater/script.js:150
 msgid "Show Child Controls"
 msgstr ""
 
-#: controls/repeater/script.js:127
+#: controls/repeater/script.js:152
 msgid "Hide Child Controls"
 msgstr ""
 
-#: controls/repeater/script.js:192
+#: controls/repeater/script.js:233
 msgid "Row Label"
 msgstr ""
 
-#: controls/repeater/script.js:194
+#: controls/repeater/script.js:235
 msgid "Example: \"My row number {{#}} with inner control {{control_name}}\""
 msgstr ""
 
-#: controls/repeater/script.js:204
+#: controls/repeater/script.js:245
 msgid "Add Button Label"
 msgstr ""
 
-#: controls/repeater/script.js:213
+#: controls/repeater/script.js:256
 msgid "Minimum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:223
+#: controls/repeater/script.js:266
 msgid "Maximum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:231
+#: controls/repeater/script.js:276
 msgid "Collapsible Rows"
 msgstr ""
 
-#: controls/repeater/script.js:239
+#: controls/repeater/script.js:290
 msgid "Collapsed by Default"
 msgstr ""
 
-#: controls/rich_text/script.js:38
+#: controls/rich_text/script.js:48
 msgid "Multiline"
 msgstr ""
 
-#: controls/select/component-choices.js:174
+#: controls/select/component-choices.js:214
 msgid "Choices"
 msgstr ""
 
-#: controls/select/component-choices.js:205
+#: controls/select/component-choices.js:253
 msgid "+ Add Choice"
 msgstr ""
 
-#: controls/select/script.js:26
+#: controls/select/script.js:33
 msgid "-- Select --"
 msgstr ""
 
-#: controls/select/script.js:84
+#: controls/select/script.js:108
 msgid "Allows you to select multiple values"
 msgstr ""
 
-#: controls/toggle/script.js:36
+#: controls/toggle/script.js:41
 msgid "Displays text alongside the toggle"
 msgstr ""
 
-#: controls/undefined/script.js:16
 #: controls/undefined/script.js:25
+#: controls/undefined/script.js:40
 msgid "Looks like this control does not exists."
 msgstr ""
