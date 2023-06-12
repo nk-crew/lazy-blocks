@@ -297,6 +297,7 @@ export default function BlockEdit(props) {
 			{showPreview ? (
 				<PreviewServerCallback
 					block={lazyBlockData.slug}
+					clientId={clientId}
 					attributes={attsForRender}
 				/>
 			) : null}

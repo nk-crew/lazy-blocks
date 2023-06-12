@@ -1,18 +1,20 @@
 /**
- * External dependencies.
- */
-import deepEqual from 'deep-equal';
-
-/**
  * WordPress dependencies.
  */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { isEqual } from 'lodash';
 import { __, sprintf } from '@wordpress/i18n';
-import { useEffect, useState, useRef, RawHTML } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { doAction, applyFilters } from '@wordpress/hooks';
 import { useSelect } from '@wordpress/data';
 import { usePrevious } from '@wordpress/compose';
 import { Spinner } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Internal dependencies.
+ */
+import RenderBlockContent from './render-block-content';
 
 /**
  * Block Editor custom PHP preview.
@@ -191,7 +193,7 @@ export default function PreviewServerCallback(props) {
 		// shows data as soon as possible
 		if (prevProps === undefined) {
 			fetchData();
-		} else if (!deepEqual(prevProps.attributes, props.attributes)) {
+		} else if (!isEqual(prevProps.attributes, props.attributes)) {
 			debouncedFetchData();
 		}
 	});
@@ -225,8 +227,10 @@ export default function PreviewServerCallback(props) {
 	} else {
 		result = (
 			<>
-				{response ? <RawHTML>{response}</RawHTML> : ''}
-				{isLoading ? <Spinner /> : ''}
+				{response ? (
+					<RenderBlockContent content={response} props={props} />
+				) : null}
+				{isLoading ? <Spinner /> : null}
 			</>
 		);
 	}

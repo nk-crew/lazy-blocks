@@ -1,8 +1,10 @@
 /**
  * WordPress dependencies.
  */
+import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { useInnerBlocksProps } from '@wordpress/block-editor';
+import { PanelBody, Notice, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -18,7 +20,9 @@ import BaseControl from '../../assets/components/base-control';
  */
 function ComponentRender(props) {
 	const { data } = props;
-	const innerBlocksProps = useInnerBlocksProps();
+	const innerBlocksProps = useInnerBlocksProps({
+		className: 'lazyblock-inner-blocks',
+	});
 
 	let result = <div {...innerBlocksProps} />;
 
@@ -39,5 +43,40 @@ addFilter(
 	'lzb.editor',
 	(render, props) => {
 		return <ComponentRender {...props} />;
+	}
+);
+
+/**
+ * Control settings render in constructor.
+ */
+addFilter(
+	'lzb.constructor.control.inner_blocks.settings',
+	'lzb.constructor',
+	() => {
+		return (
+			<>
+				<PanelBody>
+					<Notice
+						status="error"
+						isDismissible={false}
+						className="lzb-constructor-notice"
+					>
+						<p>
+							{__(
+								'The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates.',
+								'lazy-blocks'
+							)}
+						</p>
+						<Button
+							href="https://www.lazyblocks.com/docs/blocks-controls/inner-blocks/"
+							target="_blank"
+							variant="primary"
+						>
+							{__('Read More', 'lazy-blocks')}
+						</Button>
+					</Notice>
+				</PanelBody>
+			</>
+		);
 	}
 );

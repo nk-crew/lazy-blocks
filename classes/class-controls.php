@@ -38,11 +38,12 @@ class LazyBlocks_Controls {
 		return apply_filters(
 			'lzb/controls/categories',
 			array(
-				'basic'    => __( 'Basic', 'lazy-blocks' ),
-				'content'  => __( 'Content', 'lazy-blocks' ),
-				'choice'   => __( 'Choice', 'lazy-blocks' ),
-				'advanced' => __( 'Advanced', 'lazy-blocks' ),
-				'layout'   => __( 'Layout', 'lazy-blocks' ),
+				'basic'      => __( 'Basic', 'lazy-blocks' ),
+				'content'    => __( 'Content', 'lazy-blocks' ),
+				'choice'     => __( 'Choice', 'lazy-blocks' ),
+				'advanced'   => __( 'Advanced', 'lazy-blocks' ),
+				'layout'     => __( 'Layout', 'lazy-blocks' ),
+				'deprecated' => __( 'Deprecated', 'lazy-blocks' ),
 			)
 		);
 	}

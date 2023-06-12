@@ -163,9 +163,12 @@ html {
 
 // Notice
 .lzb-constructor-notice {
-	margin-top: 20px;
 	margin-right: 0;
 	margin-left: 0;
+
+	&:not(:first-child) {
+		margin-top: 20px;
+	}
 
 	&.is-info {
 		color: $blue-50;

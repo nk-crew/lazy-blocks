@@ -21,7 +21,7 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
 		$this->icon         = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="14" cy="12" r="8.25" stroke="currentColor" stroke-width="1.5"/><path d="M5.34267 4C3.30367 5.64996 2 9.17273 2 12C2 14.8273 3.30367 18.35 5.34267 20" stroke="currentColor" stroke-width="1.5"/><path d="M9 12H19" stroke="currentColor" stroke-width="1.5"/><path d="M14 7V17" stroke="currentColor" stroke-width="1.5"/></svg>';
 		$this->type         = 'string';
 		$this->label        = __( 'Inner Blocks', 'lazy-blocks' );
-		$this->category     = 'content';
+		$this->category     = 'deprecated';
 		$this->restrictions = array(
 			'once'                  => true,
 			'as_child'              => false,

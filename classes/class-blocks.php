@@ -1470,6 +1470,11 @@ class LazyBlocks_Blocks {
 			}
 		}
 
+		// Replace the <InnerBlocks /> with the block content.
+		if ( 'frontend' === $context ) {
+			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', '<div class="lazyblock-inner-blocks">' . $content . '</div>', $result );
+		}
+
 		// add wrapper.
 		$allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $result && 'frontend' === $context, $attributes, $context );
 		// phpcs:ignore
