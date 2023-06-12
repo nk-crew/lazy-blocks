@@ -11,13 +11,13 @@
 		"php": ">=7.2"
 	},
 	"require-dev": {
-		"wp-coding-standards/wpcs": "^2.3.0",
-		"sirbrillig/phpcs-variable-analysis": "^2.8",
-		"phpcompatibility/phpcompatibility-wp": "^2.1.3",
-		"wp-cli/i18n-command": "^2.4.0",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-		"php-parallel-lint/php-parallel-lint": "^1.3.2",
-		"php-stubs/wordpress-stubs": "^6.1"
+		"wp-coding-standards/wpcs": "^2.3",
+		"sirbrillig/phpcs-variable-analysis": "^2.11",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"wp-cli/i18n-command": "^2.4",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"php-parallel-lint/php-parallel-lint": "^1.3",
+		"php-stubs/wordpress-stubs": "^6.2"
 	},
 	"scripts": {
 		"phpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
