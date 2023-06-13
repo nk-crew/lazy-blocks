@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /**
  * TinyMCE Component from https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/freeform/edit.js
  * With changes to work as control.
@@ -7,14 +6,11 @@
 /**
  * WordPress dependencies.
  */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { debounce } from 'lodash';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { F10, isKeyboardEvent } from '@wordpress/keycodes';
-
-/**
- * External dependencies
- */
-import { debounce } from 'throttle-debounce';
 
 /**
  * WordPress dependencies
@@ -85,14 +81,14 @@ export default function ClassicEdit(props) {
 				bookmark = null;
 			});
 
-			const debouncedOnChange = debounce(250, () => {
+			const debouncedOnChange = debounce(() => {
 				const value = editor.getContent();
 
 				if (value !== editor._lastChange) {
 					editor._lastChange = value;
 					onChange(value);
 				}
-			});
+			}, 250);
 			editor.on('Paste Change input Undo Redo', debouncedOnChange);
 
 			// We need to cancel the debounce call because when we remove
