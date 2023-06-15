@@ -12,7 +12,7 @@ import BlockSave from './save';
 
 // register block.
 registerBlockType('lazyblock-core/free', {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __('Free Content', 'lazy-blocks'),
 	description: __(
 		'Block used for adding blocks inside it in cases when template locked from adding blocks.',

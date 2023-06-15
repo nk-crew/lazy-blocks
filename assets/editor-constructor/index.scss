@@ -93,6 +93,7 @@ html {
 	display: block;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-size: 14px;
+	max-width: 100% !important;
 
 	// Inner blocks max width.
 	> * {
