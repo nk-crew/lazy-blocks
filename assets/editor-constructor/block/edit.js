@@ -16,6 +16,7 @@ import Box from '../../components/box';
 import TitleSettings from '../boxes/title';
 import GeneralSettings from '../boxes/general';
 import SupportsSettings from '../boxes/supports';
+import SupportsGhostKitSettings from '../boxes/supports-ghost-kit';
 import ConditionSettings from '../boxes/condition';
 import ControlsSettings from '../boxes/controls';
 import SelectedControlSettings from '../boxes/selected-control-settings';
@@ -68,6 +69,18 @@ export default function ConstructorBlock() {
 									initialOpen={false}
 								>
 									<SupportsSettings
+										data={blockData}
+										updateData={updateBlockData}
+									/>
+								</PanelBody>
+								<PanelBody
+									title={__(
+										'Supports Ghost Kit',
+										'lazy-blocks'
+									)}
+									initialOpen={false}
+								>
+									<SupportsGhostKitSettings
 										data={blockData}
 										updateData={updateBlockData}
 									/>
