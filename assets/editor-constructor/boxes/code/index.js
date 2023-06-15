@@ -100,7 +100,6 @@ export default function CustomCodeSettings(props) {
 				label={__('Output Method', 'lazy-blocks')}
 			>
 				<RadioControl
-					id="lazyblocks-settings-output-method"
 					options={[
 						{
 							label: __('HTML + Handlebars', 'lazy-blocks'),

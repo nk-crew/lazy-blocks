@@ -132,7 +132,6 @@ addFilter(
 						)}
 					>
 						<RadioControl
-							id="lzb-control-select-output-format"
 							options={[
 								{
 									label: __('Value', 'lazy-blocks'),

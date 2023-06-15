@@ -66,7 +66,6 @@ addFilter(
 						)}
 					>
 						<RadioControl
-							id="lazyblocks-control-color-output-format"
 							options={[
 								{
 									label: __('Color', 'lazy-blocks'),

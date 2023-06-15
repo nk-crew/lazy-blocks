@@ -87,7 +87,6 @@ addFilter(
 						)}
 					>
 						<RadioControl
-							id="lazyblocks-control-radio-output-format"
 							options={[
 								{
 									label: __('Value', 'lazy-blocks'),
