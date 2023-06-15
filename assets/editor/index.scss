@@ -609,18 +609,21 @@
 
 	// Repeater item content with columns support
 	.lzb-gutenberg-repeater-item-content {
+		$columns_gap: 15px;
+
 		display: flex;
 		flex-wrap: wrap;
 		padding-bottom: 13px;
 		margin: 0;
+		margin-left: -$columns_gap;
+
+		> div {
+			padding-left: $columns_gap;
+		}
 
 		.components-notice {
 			margin: 0;
 			margin-top: 15px;
-		}
-
-		> div {
-			padding-left: 15px;
 		}
 
 		> .components-panel__body {
