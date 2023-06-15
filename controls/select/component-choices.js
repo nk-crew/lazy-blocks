@@ -5,14 +5,11 @@ import classnames from 'classnames/dedupe';
 import {
 	DndContext,
 	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import {
 	SortableContext,
-	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 	useSortable,
 } from '@dnd-kit/sortable';
@@ -25,6 +22,11 @@ import { arrayMoveImmutable } from 'array-move';
 import { __ } from '@wordpress/i18n';
 import { BaseControl, TextControl, Button } from '@wordpress/components';
 import { usePrevious } from '@wordpress/compose';
+
+/**
+ * Internal dependencies.
+ */
+import CustomPointerSensor from '../../assets/utils/dnd-kit-custom-pointer-sensor';
 
 const SortableItem = function (props) {
 	const {
@@ -145,12 +147,7 @@ export default function ChoicesRow(props) {
 
 	const prevChoicesLength = usePrevious(choices && choices.length);
 
-	const sensors = useSensors(
-		useSensor(PointerSensor),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		})
-	);
+	const sensors = useSensors(useSensor(CustomPointerSensor));
 
 	function addChoice() {
 		choices.push({

@@ -10,14 +10,11 @@ import classnames from 'classnames/dedupe';
 import {
 	DndContext,
 	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import {
 	SortableContext,
-	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
@@ -34,18 +31,14 @@ import { useDispatch } from '@wordpress/data';
  */
 import Control from './control';
 import DeselectActiveControlOnClickOutside from './deselect-active-on-click-outside';
+import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 
 const constructorData = window.lazyblocksConstructorData;
 
 let initialActiveTab = '';
 
 export default function ControlsSettings(props) {
-	const sensors = useSensors(
-		useSensor(PointerSensor),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		})
-	);
+	const sensors = useSensors(useSensor(CustomPointerSensor));
 
 	const { data } = props;
 

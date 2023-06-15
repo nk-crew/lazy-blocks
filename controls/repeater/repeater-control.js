@@ -5,14 +5,11 @@ import classnames from 'classnames/dedupe';
 import {
 	DndContext,
 	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import {
 	SortableContext,
-	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 	useSortable,
 } from '@dnd-kit/sortable';
@@ -25,6 +22,11 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { Button, ToggleControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import CustomPointerSensor from '../../assets/utils/dnd-kit-custom-pointer-sensor';
 
 const RepeaterItem = function (props) {
 	const {
@@ -135,12 +137,7 @@ function RepeaterControl(props) {
 		getInnerControls = () => {},
 	} = props;
 
-	const sensors = useSensors(
-		useSensor(PointerSensor),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		})
-	);
+	const sensors = useSensors(useSensor(CustomPointerSensor));
 
 	let activeItemDefault = -1;
 
