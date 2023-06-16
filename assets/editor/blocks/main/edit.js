@@ -9,10 +9,14 @@ import classnames from 'classnames/dedupe';
  */
 import { __ } from '@wordpress/i18n';
 import { useRef, useEffect } from '@wordpress/element';
-import { Tooltip } from '@wordpress/components';
+import { ToolbarButton } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useThrottle } from '@wordpress/compose';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	useBlockProps,
+	BlockControls,
+} from '@wordpress/block-editor';
 
 /**
  * Internal dependencies.
@@ -227,50 +231,6 @@ export default function BlockEdit(props) {
 				) : null}
 
 				<h6>{lazyBlockData.title}</h6>
-
-				{lazyBlockData.edit_url ? (
-					<Tooltip text={__('Edit Block', 'lazy-blocks')}>
-						<a
-							href={lazyBlockData.edit_url.replace('&amp;', '&')}
-							className="lzb-content-edit-link"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M11.9287 18C15.2424 18 17.9287 15.3137 17.9287 12C17.9287 8.68629 15.2424 6 11.9287 6C8.61497 6 5.92868 8.68629 5.92868 12C5.92868 15.3137 8.61497 18 11.9287 18ZM11.9287 15C13.5855 15 14.9287 13.6569 14.9287 12C14.9287 10.3431 13.5855 9 11.9287 9C10.2718 9 8.92868 10.3431 8.92868 12C8.92868 13.6569 10.2718 15 11.9287 15Z"
-									fill="currentColor"
-								/>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M11.2758 4C10.787 4 10.3698 4.35341 10.2894 4.8356L9.92868 7H13.9287L13.5679 4.8356C13.4876 4.35341 13.0704 4 12.5816 4H11.2758ZM12.5816 20C13.0704 20 13.4876 19.6466 13.5679 19.1644L13.9287 17H9.92868L10.2894 19.1644C10.3698 19.6466 10.787 20 11.2758 20H12.5816Z"
-									fill="currentColor"
-								/>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M18.53 7.43472C18.2856 7.01138 17.7709 6.82678 17.3131 6.99828L15.2583 7.76808L17.2583 11.2322L18.9524 9.83757C19.3298 9.52688 19.4273 8.98888 19.1829 8.56553L18.53 7.43472ZM5.32645 16.5655C5.57087 16.9889 6.08553 17.1735 6.5433 17.002L8.59809 16.2322L6.59809 12.7681L4.90404 14.1627C4.52663 14.4734 4.42916 15.0114 4.67358 15.4347L5.32645 16.5655Z"
-									fill="currentColor"
-								/>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M4.6745 8.56553C4.43008 8.98888 4.52755 9.52688 4.90495 9.83757L6.59901 11.2322L8.59901 7.76808L6.54422 6.99828C6.08645 6.82678 5.57179 7.01138 5.32737 7.43472L4.6745 8.56553ZM19.1838 15.4347C19.4282 15.0114 19.3307 14.4734 18.9533 14.1627L17.2593 12.7681L15.2593 16.2322L17.3141 17.002C17.7718 17.1735 18.2865 16.9889 18.5309 16.5655L19.1838 15.4347Z"
-									fill="currentColor"
-								/>
-							</svg>
-						</a>
-					</Tooltip>
-				) : null}
 			</div>
 			<InspectorControls>
 				<div
@@ -284,6 +244,32 @@ export default function BlockEdit(props) {
 					/>
 				</div>
 			</InspectorControls>
+			{lazyBlockData.edit_url ? (
+				<BlockControls group="other">
+					<ToolbarButton
+						icon={
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									fillRule="evenodd"
+									clipRule="evenodd"
+									d="M10.2894 4.8356C10.3698 4.35341 10.787 4 11.2758 4H12.5816C13.0704 4 13.4876 4.35341 13.5679 4.8356L13.8083 6.27728C14.6162 6.53233 15.3503 6.95375 15.9703 7.50134L17.3131 6.99826C17.7709 6.82676 18.2856 7.01136 18.53 7.4347L19.1829 8.56551C19.4273 8.98886 19.3298 9.52686 18.9524 9.83755L17.8658 10.7321C17.9537 11.1408 18 11.565 18 12C18 12.4348 17.9537 12.8588 17.8659 13.2674L18.9534 14.1627C19.3308 14.4734 19.4283 15.0114 19.1839 15.4347L18.531 16.5655C18.2866 16.9889 17.7719 17.1735 17.3142 17.002L15.9704 16.4986C15.3503 17.0462 14.6162 17.4677 13.8083 17.7227L13.5679 19.1644C13.4876 19.6466 13.0704 20 12.5816 20H11.2758C10.787 20 10.3698 19.6466 10.2894 19.1644L10.0408 17.6729C9.27409 17.4081 8.57776 16.9923 7.98745 16.461L6.5433 17.002C6.08553 17.1735 5.57087 16.9889 5.32645 16.5655L4.67358 15.4347C4.42916 15.0114 4.52663 14.4734 4.90404 14.1627L6.11343 13.1671C6.03901 12.7896 6 12.3993 6 12C6 11.6005 6.03905 11.2101 6.11353 10.8325L4.90501 9.83755C4.52761 9.52686 4.43014 8.98886 4.67456 8.56551L5.32743 7.4347C5.57185 7.01136 6.08651 6.82676 6.54428 6.99826L7.98755 7.53896C8.57784 7.00768 9.27413 6.59188 10.0408 6.32714L10.2894 4.8356ZM15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+									fill="currentColor"
+								/>
+							</svg>
+						}
+						label={__('Edit Block', '@@text_domain')}
+						href={lazyBlockData.edit_url.replace('&amp;', '&')}
+						target="_blank"
+						rel="noopener noreferrer"
+					/>
+				</BlockControls>
+			) : null}
 			<div
 				className="lzb-content-controls"
 				data-lazyblocks-block-name={props.name}

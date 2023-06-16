@@ -2,8 +2,6 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { RawHTML } from '@wordpress/element';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
@@ -47,20 +45,7 @@ options.blocks.forEach((item) => {
 	registerBlockType(item.slug, {
 		apiVersion: 3,
 		title: item.title || item.slug,
-		description: (
-			<RawHTML>
-				{item.description}
-				{item.edit_url
-					? `${item.description ? '<br />' : ''}
-            <a href="${item.edit_url.replace('&amp;', '&')}"
-              class="lzb-description-edit-link"
-              target="_blank"
-              rel="noopener noreferrer">
-              ${__('Edit Block', 'lazy-blocks')}
-            </a>`
-					: ''}
-			</RawHTML>
-		),
+		description: item.description,
 		icon: registerIcon,
 		category: item.category,
 		keywords: item.keywords,
