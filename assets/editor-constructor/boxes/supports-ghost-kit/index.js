@@ -44,7 +44,7 @@ export default function SupportsGhostKitSettings(props) {
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							{__('Install', 'lazy-blocks')}
+							{__('Read More', 'lazy-blocks')}
 						</Button>
 					</Notice>
 				</BaseControl>

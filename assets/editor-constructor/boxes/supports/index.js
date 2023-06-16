@@ -18,6 +18,8 @@ export default function SupportsSettings(props) {
 		supports_classname: supportsClassname,
 		supports_anchor: supportsAnchor,
 		supports_inserter: supportsInserter,
+		supports_reusable: supportsReusable,
+		supports_lock: supportsLock,
 		supports_align: supportsAlign,
 	} = data;
 
@@ -55,6 +57,24 @@ export default function SupportsSettings(props) {
 				help={__('Show block in blocks inserter.', 'lazy-blocks')}
 				checked={supportsInserter}
 				onChange={(value) => updateData({ supports_inserter: value })}
+			/>
+			<ToggleControl
+				label={__('Reusable', 'lazy-blocks')}
+				help={__(
+					'Allow converting block into reusable block.',
+					'lazy-blocks'
+				)}
+				checked={supportsReusable}
+				onChange={(value) => updateData({ supports_reusable: value })}
+			/>
+			<ToggleControl
+				label={__('Lock', 'lazy-blocks')}
+				help={__(
+					'Allow block locking/unlocking by a user.',
+					'lazy-blocks'
+				)}
+				checked={supportsLock}
+				onChange={(value) => updateData({ supports_lock: value })}
 			/>
 			<BaseControl
 				id="lazyblocks-supports-align"

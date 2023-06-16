@@ -612,6 +612,8 @@ class LazyBlocks_Blocks {
 		'lazyblocks_supports_anchor'                 => 'false',
 		'lazyblocks_supports_html'                   => 'false',
 		'lazyblocks_supports_inserter'               => 'true',
+		'lazyblocks_supports_reusable'               => 'true',
+		'lazyblocks_supports_lock'                   => 'true',
 		'lazyblocks_supports_align'                  => array( 'wide', 'full' ),
 
 		// Ghost Kit Extensions.
@@ -940,10 +942,12 @@ class LazyBlocks_Blocks {
 				'supports'       => array(
 					'customClassName' => $get_meta_value( 'lazyblocks_supports_classname' ),
 					'anchor'          => $get_meta_value( 'lazyblocks_supports_anchor' ),
-					'align'           => $align,
 					'html'            => $get_meta_value( 'lazyblocks_supports_html' ),
 					'multiple'        => $get_meta_value( 'lazyblocks_supports_multiple' ),
 					'inserter'        => $get_meta_value( 'lazyblocks_supports_inserter' ),
+					'reusable'        => $get_meta_value( 'lazyblocks_supports_reusable' ),
+					'lock'            => $get_meta_value( 'lazyblocks_supports_lock' ),
+					'align'           => $align,
 				),
 				'ghostkit'       => array(
 					'supports' => array(
