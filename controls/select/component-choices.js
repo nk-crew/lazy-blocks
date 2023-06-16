@@ -29,6 +29,8 @@ import { usePrevious } from '@wordpress/compose';
 import CustomPointerSensor from '../../assets/utils/dnd-kit-custom-pointer-sensor';
 
 const SortableItem = function (props) {
+	const { id, values, focusInput } = props;
+
 	const {
 		attributes,
 		listeners,
@@ -38,7 +40,7 @@ const SortableItem = function (props) {
 		isDragging,
 		isSorting,
 	} = useSortable({
-		id: props.id,
+		id,
 	});
 
 	const style = {
@@ -57,18 +59,20 @@ const SortableItem = function (props) {
 			ref={setNodeRef}
 			style={style}
 		>
-			<TextControl
-				placeholder={__('Label', 'lazy-blocks')}
-				value={props.label}
-				onChange={(value) => props.updateChoice({ label: value })}
-				// eslint-disable-next-line jsx-a11y/no-autofocus
-				autoFocus={props.focusInput}
-			/>
-			<TextControl
-				placeholder={__('Value', 'lazy-blocks')}
-				value={props.value}
-				onChange={(value) => props.updateChoice({ value })}
-			/>
+			{values.map((opt, i) => {
+				return (
+					<TextControl
+						key={opt.name}
+						placeholder={opt.label}
+						value={opt.value}
+						onChange={(value) =>
+							props.updateChoice({ [opt.name]: value })
+						}
+						// eslint-disable-next-line jsx-a11y/no-autofocus
+						autoFocus={focusInput && i === 0}
+					/>
+				);
+			})}
 			<div
 				className="lzb-constructor-controls-item-settings-choices-item-handler"
 				{...attributes}
@@ -141,55 +145,81 @@ const SortableItem = function (props) {
 	);
 };
 
-export default function ChoicesRow(props) {
-	const { data, updateData } = props;
-	const { choices = [] } = data;
+export default function ComponentChoices(props) {
+	const {
+		value = [],
+		onChange,
+		options = [
+			{
+				name: 'label',
+				label: __('Label', 'lazy-blocks'),
+			},
+			{
+				name: 'value',
+				label: __('Value', 'lazy-blocks'),
+			},
+		],
+		label = __('Choices', 'lazy-blocks'),
+		labelAddChoice = __('+ Add Choice', 'lazy-blocks'),
+		id = 'lzb-component-choices',
+		help,
+	} = props;
 
-	const prevChoicesLength = usePrevious(choices && choices.length);
+	const prevValueLength = usePrevious(value && value.length);
 
 	const sensors = useSensors(useSensor(CustomPointerSensor));
 
 	function addChoice() {
-		choices.push({
-			label: '',
-			value: '',
+		const defaults = {};
+
+		options.forEach((val) => {
+			defaults[val.name] = val.defaults ?? '';
 		});
 
-		updateData({ choices });
+		onChange([...value, defaults]);
 	}
 
 	function removeChoice(i) {
-		choices.splice(i, 1);
+		value.splice(i, 1);
 
-		updateData({ choices });
+		onChange(value);
 	}
 
 	function updateChoice(i, newData) {
-		if (choices[i]) {
-			choices[i] = {
-				...choices[i],
+		if (value[i]) {
+			value[i] = {
+				...value[i],
 				...newData,
 			};
 
-			updateData({ choices });
+			onChange(value);
 		}
 	}
 
 	function resortChoice(oldIndex, newIndex) {
-		const newChoices = arrayMoveImmutable(choices, oldIndex, newIndex);
+		const newChoices = arrayMoveImmutable(value, oldIndex, newIndex);
 
-		updateData({ choices: newChoices });
+		onChange(newChoices);
 	}
 
 	const items = [];
 	let focusNewChoice = false;
 
-	if (choices && choices.length) {
-		choices.forEach((choice, i) => {
+	if (value && value.length) {
+		value.forEach((choice, i) => {
+			const values = [];
+
+			options.forEach((opt) => {
+				values.push({
+					name: opt.name,
+					label: opt.label,
+					value: choice[opt.name] ?? '',
+				});
+			});
+
 			items.push({
 				id: i + 1,
-				value: choice.value,
-				label: choice.label,
+				values,
 				removeChoice() {
 					removeChoice(i);
 				},
@@ -200,16 +230,13 @@ export default function ChoicesRow(props) {
 		});
 
 		// Focus newly added choice input.
-		if (prevChoicesLength < choices.length) {
+		if (prevValueLength < value.length) {
 			focusNewChoice = true;
 		}
 	}
 
 	return (
-		<BaseControl
-			id="lzb-component-choices"
-			label={__('Choices', 'lazy-blocks')}
-		>
+		<BaseControl id={id} label={label} help={help}>
 			<div className="lzb-constructor-controls-item-settings-choices">
 				{items.length ? (
 					<div className="lzb-constructor-controls-item-settings-choices-items">
@@ -228,13 +255,13 @@ export default function ChoicesRow(props) {
 								items={items}
 								strategy={verticalListSortingStrategy}
 							>
-								{items.map((value, index) => {
+								{items.map((item, i) => {
 									return (
 										<SortableItem
-											key={`lzb-constructor-controls-item-settings-choices-item-${value.id}`}
-											{...value}
+											key={`lzb-constructor-controls-item-settings-choices-item-${item.id}`}
+											{...item}
 											focusInput={
-												index + 1 === choices.length
+												i + 1 === value.length
 													? focusNewChoice
 													: false
 											}
@@ -247,7 +274,7 @@ export default function ChoicesRow(props) {
 				) : null}
 				<div>
 					<Button onClick={() => addChoice()} isSecondary isSmall>
-						{__('+ Add Choice', 'lazy-blocks')}
+						{labelAddChoice}
 					</Button>
 				</div>
 			</div>

@@ -74,11 +74,15 @@ addFilter(
 	'lzb.constructor',
 	(render, props) => {
 		const { updateData, data } = props;
+		const { choices } = data;
 
 		return (
 			<>
 				<PanelBody>
-					<ComponentChoices {...props} />
+					<ComponentChoices
+						value={choices}
+						onChange={(val) => updateData({ choices: val })}
+					/>
 				</PanelBody>
 				<PanelBody>
 					<BaseControl

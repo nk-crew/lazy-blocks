@@ -607,6 +607,8 @@ class LazyBlocks_Blocks {
 		'lazyblocks_code_frontend_callback'          => '',
 		'lazyblocks_code_frontend_css'               => '',
 
+		'lazyblocks_styles'                          => array(),
+
 		'lazyblocks_supports_multiple'               => 'true',
 		'lazyblocks_supports_classname'              => 'true',
 		'lazyblocks_supports_anchor'                 => 'false',
@@ -928,6 +930,8 @@ class LazyBlocks_Blocks {
 			unset( $align[ $align_none_key ] );
 		}
 
+		$styles = (array) $get_meta_value( 'lazyblocks_styles' );
+
 		return apply_filters(
 			'lzb/block_data',
 			array(
@@ -970,6 +974,7 @@ class LazyBlocks_Blocks {
 					'show_preview'      => $get_meta_value( 'lazyblocks_code_show_preview' ),
 					'single_output'     => $get_meta_value( 'lazyblocks_code_single_output' ),
 				),
+				'styles'         => $styles,
 				'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),
 				'edit_url'       => get_edit_post_link( $id ),
 			),
@@ -1342,6 +1347,7 @@ class LazyBlocks_Blocks {
 					return $this->render_callback( $render_attributes, $render_content, $render_context );
 				},
 				'example'         => array(),
+				'styles'          => $block['styles'],
 				'editor_script'   => 'lazyblocks-editor',
 				'editor_style'    => 'lazyblocks-editor',
 			);

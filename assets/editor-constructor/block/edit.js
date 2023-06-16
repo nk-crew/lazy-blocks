@@ -15,6 +15,7 @@ import DocumentTabs from '../../components/document-tabs';
 import Box from '../../components/box';
 import TitleSettings from '../boxes/title';
 import GeneralSettings from '../boxes/general';
+import StylesSettings from '../boxes/styles';
 import SupportsSettings from '../boxes/supports';
 import SupportsGhostKitSettings from '../boxes/supports-ghost-kit';
 import ConditionSettings from '../boxes/condition';
@@ -64,6 +65,15 @@ export default function ConstructorBlock() {
 									updateData={updateBlockData}
 								/>
 								<ProNotice />
+								<PanelBody
+									title={__('Styles', 'lazy-blocks')}
+									initialOpen={false}
+								>
+									<StylesSettings
+										data={blockData}
+										updateData={updateBlockData}
+									/>
+								</PanelBody>
 								<PanelBody
 									title={__('Supports', 'lazy-blocks')}
 									initialOpen={false}
