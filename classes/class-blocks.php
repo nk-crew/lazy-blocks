@@ -1331,7 +1331,7 @@ class LazyBlocks_Blocks {
 			$attributes = $this->prepare_block_attributes( $block['controls'], '', $block );
 
 			$data = array(
-				'apiVersion'      => 3,
+				'api_version'     => 3,
 				'attributes'      => $attributes,
 				'render_callback' => function( $render_attributes, $render_content = null ) {
 					// Usually this context is used to properly preload content in the Pro plugin.
