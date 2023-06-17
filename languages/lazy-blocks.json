@@ -307,7 +307,13 @@
          "This field is required": [
             ""
          ],
+         "Styles": [
+            ""
+         ],
          "Supports": [
+            ""
+         ],
+         "Supports Ghost Kit": [
             ""
          ],
          "Condition": [
@@ -517,46 +523,19 @@
          "Width": [
             ""
          ],
-         "Multiple": [
+         "+ Add Style": [
             ""
          ],
-         "Allow use block multiple times on the page.": [
+         "Add the style name, which will be used as class name on your block. For example, if you add the style with name `outline`, when user select this style, on the block will be added class name `is-style-outline`": [
             ""
          ],
-         "Class Name": [
+         "To see these settings in your block, you have to install Ghost Kit plugin.": [
             ""
          ],
-         "Additional field to add custom class name.": [
+         "Read More": [
             ""
          ],
-         "Anchor": [
-            ""
-         ],
-         "Additional field to add block ID attribute.": [
-            ""
-         ],
-         "Inserter": [
-            ""
-         ],
-         "Show block in blocks inserter.": [
-            ""
-         ],
-         "Align": [
-            ""
-         ],
-         "Select align options": [
-            ""
-         ],
-         "Ghost Kit Extensions": [
-            ""
-         ],
-         "Install Ghost Kit plugin to use the following settings.": [
-            ""
-         ],
-         "Install": [
-            ""
-         ],
-         "To use these extensions required \"Class Name\" support.": [
+         "\"Class Name\" support is required to use the following settings.": [
             ""
          ],
          "Spacings": [
@@ -589,6 +568,48 @@
          "Write custom CSS on each inserted blocks.": [
             ""
          ],
+         "Multiple": [
+            ""
+         ],
+         "Allow use block multiple times on the page.": [
+            ""
+         ],
+         "Class Name": [
+            ""
+         ],
+         "Additional field to add custom class name.": [
+            ""
+         ],
+         "Anchor": [
+            ""
+         ],
+         "Additional field to add block ID attribute.": [
+            ""
+         ],
+         "Inserter": [
+            ""
+         ],
+         "Show block in blocks inserter.": [
+            ""
+         ],
+         "Reusable": [
+            ""
+         ],
+         "Allow converting block into reusable block.": [
+            ""
+         ],
+         "Lock": [
+            ""
+         ],
+         "Allow block locking/unlocking by a user.": [
+            ""
+         ],
+         "Align": [
+            ""
+         ],
+         "Select align options": [
+            ""
+         ],
          "Block Name": [
             ""
          ],
@@ -596,9 +617,6 @@
             ""
          ],
          "Block used for adding blocks inside it in cases when template locked from adding blocks.": [
-            ""
-         ],
-         "Edit Block": [
             ""
          ],
          "Alongside Text": [
@@ -692,9 +710,6 @@
             ""
          ],
          "The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates.": [
-            ""
-         ],
-         "Read More": [
             ""
          ],
          "Minimum Value": [
