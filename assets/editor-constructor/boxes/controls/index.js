@@ -13,10 +13,7 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
-import {
-	SortableContext,
-	verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { SortableContext } from '@dnd-kit/sortable';
 
 /**
  * WordPress dependencies.
@@ -121,17 +118,25 @@ export default function ControlsSettings(props) {
 						}
 					}}
 				>
-					<div className="lzb-constructor-controls-items-sortable">
-						<SortableContext
-							items={items}
-							strategy={verticalListSortingStrategy}
-						>
-							{items.map((value) => (
-								<Control
-									key={`lzb-constructor-controls-items-sortable-${value.id}`}
-									{...value}
-								/>
-							))}
+					<div className="lzb-constructor-controls-items">
+						<SortableContext items={items}>
+							{items.map((value) => {
+								return (
+									<div
+										key={`lzb-constructor-controls-items-sortable-${value.id}`}
+										className="lzb-constructor-controls-item-wrap"
+										style={
+											placement !== 'inspector'
+												? {
+														width: `${value.data.width}%`,
+												  }
+												: null
+										}
+									>
+										<Control {...value} />
+									</div>
+								);
+							})}
 						</SortableContext>
 					</div>
 				</DndContext>

@@ -95,6 +95,11 @@ html {
 	font-size: 14px;
 	max-width: 100% !important;
 
+	&,
+	* {
+		box-sizing: border-box;
+	}
+
 	// Inner blocks max width.
 	> * {
 		max-width: 800px;
