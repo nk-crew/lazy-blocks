@@ -30,8 +30,10 @@ class LazyBlocks_Control_Color extends LazyBlocks_Control {
 		$this->label      = __( 'Color Picker', 'lazy-blocks' );
 		$this->category   = 'advanced';
 		$this->attributes = array(
-			'alpha'         => 'false',
-			'output_format' => '',
+			'alpha'          => 'false',
+			'palette'        => 'true',
+			'alongside_text' => '',
+			'output_format'  => '',
 		);
 
 		parent::__construct();

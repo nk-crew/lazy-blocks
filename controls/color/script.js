@@ -3,7 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
-import { PanelBody, ToggleControl, RadioControl } from '@wordpress/components';
+import {
+	PanelBody,
+	TextControl,
+	ToggleControl,
+	RadioControl,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -19,7 +24,9 @@ import ColorControl from './color-control';
 addFilter('lzb.editor.control.color.render', 'lzb.editor', (render, props) => (
 	<BaseControl {...useBlockControlProps(props)}>
 		<ColorControl
+			label={props.data.alongside_text}
 			alpha={props.data.alpha === 'true'}
+			palette={props.data.palette === 'true'}
 			value={props.getValue()}
 			onChange={props.onChange}
 		/>
@@ -38,11 +45,24 @@ addFilter(
 		return (
 			<>
 				<PanelBody>
+					<TextControl
+						label={__('Alongside Text', 'lazy-blocks')}
+						help={__(
+							'Displays text alongside the color indicator',
+							'lazy-blocks'
+						)}
+						value={data.alongside_text}
+						onChange={(value) =>
+							updateData({ alongside_text: value })
+						}
+					/>
+				</PanelBody>
+				<PanelBody>
 					<BaseControl
 						id="lazyblocks-control-color-alpha"
 						label={__('Alpha Channel', 'lazy-blocks')}
 						help={__(
-							'Will be added option that allow you to set semi-transparent colors with rgba',
+							'Allow set semi-transparent colors',
 							'lazy-blocks'
 						)}
 					>
@@ -52,6 +72,25 @@ addFilter(
 							checked={data.alpha === 'true'}
 							onChange={(value) =>
 								updateData({ alpha: value ? 'true' : 'false' })
+							}
+						/>
+					</BaseControl>
+					<BaseControl
+						id="lazyblocks-control-color-palette"
+						label={__('Color Palette', 'lazy-blocks')}
+						help={__(
+							'Display color palette with predefined colors',
+							'lazy-blocks'
+						)}
+					>
+						<ToggleControl
+							id="lazyblocks-control-color-palette"
+							label={__('Yes', 'lazy-blocks')}
+							checked={data.palette === 'true'}
+							onChange={(value) =>
+								updateData({
+									palette: value ? 'true' : 'false',
+								})
 							}
 						/>
 					</BaseControl>

@@ -1,53 +1,65 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/**
+ * External dependencies.
+ */
+import classnames from 'classnames/dedupe';
+
 /**
  * WordPress dependencies.
  */
-import { useSelect } from '@wordpress/data';
-import { __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients } from '@wordpress/blockEditor';
-import { ColorPalette } from '@wordpress/components';
+import { Dropdown, Button } from '@wordpress/components';
 
-function useColors() {
-	// New way to get colors and gradients.
-	if (
-		useMultipleOriginColorsAndGradients &&
-		useMultipleOriginColorsAndGradients()
-	) {
-		return useMultipleOriginColorsAndGradients().colors;
-	}
-
-	// Old way.
-	const { themeColors } = useSelect((select) => {
-		const settings = select('core/block-editor').getSettings();
-
-		return {
-			themeColors: settings.colors,
-		};
-	});
-
-	const colors = [];
-
-	if (themeColors && themeColors.length) {
-		colors.push({ name: 'Theme', colors: themeColors });
-	}
-
-	return colors;
-}
+/**
+ * Internal dependencies.
+ */
+import ColorPalette from './color-palette';
 
 function ColorControl(props) {
-	const { value, alpha = false, onChange = () => {} } = props;
-
-	const colors = useColors();
+	const {
+		value,
+		label = '',
+		alpha = false,
+		palette = true,
+		onChange = () => {},
+	} = props;
 
 	return (
-		<ColorPalette
-			colors={colors}
-			value={value}
-			enableAlpha={alpha}
-			onChange={(val) => {
-				onChange(val);
+		<Dropdown
+			className="lazyblocks-control-color-picker__dropdown"
+			contentClassName="lazyblocks-control-color-picker__dropdown-content"
+			popoverProps={{
+				placement: 'left-start',
+				offset: 36,
+				shift: true,
 			}}
-			__experimentalHasMultipleOrigins
-			__experimentalIsRenderedInSidebar
+			renderToggle={({ isOpen, onToggle }) => (
+				<Button
+					className={classnames(
+						'lazyblocks-control-color-toggle',
+						isOpen ? 'lazyblocks-control-color-toggle-active' : ''
+					)}
+					onClick={onToggle}
+				>
+					<span
+						className="lazyblocks-control-color-toggle-indicator"
+						style={{ background: value || '' }}
+					/>
+					<span className="lazyblocks-control-color-toggle-label">
+						{label}
+					</span>
+				</Button>
+			)}
+			renderContent={() => (
+				<div className="lazyblocks-control-color-picker">
+					<ColorPalette
+						value={value}
+						alpha={alpha}
+						palette={palette}
+						onChange={(val) => {
+							onChange(val);
+						}}
+					/>
+				</div>
+			)}
 		/>
 	);
 }
