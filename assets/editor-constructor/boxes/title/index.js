@@ -13,7 +13,8 @@ import slugify from 'slugify';
  */
 import { __ } from '@wordpress/i18n';
 import { useRef, useEffect } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
+import { useEntityProp } from '@wordpress/core-data';
 
 const REGEXP_NEWLINES = /[\r\n]+/g;
 
@@ -23,19 +24,19 @@ export default function TitleSettings(props) {
 	const { data, updateData } = props;
 	const { slug } = data;
 
-	const { postTitle } = useSelect((select) => {
-		const { getEditedPostAttribute } = select('core/editor');
+	const { postType } = useSelect((select) => {
+		const { getCurrentPostType } = select('core/editor');
 
 		return {
-			postTitle: getEditedPostAttribute('title'),
+			postType: getCurrentPostType(),
 		};
 	}, []);
 
-	const { editPost } = useDispatch('core/editor');
-
-	function updatePostTitle(title) {
-		editPost({ title });
-	}
+	const [postTitle, setPostTitle] = useEntityProp(
+		'postType',
+		postType,
+		'title'
+	);
 
 	function maybeAddSlug() {
 		if (slug || !postTitle) {
@@ -73,9 +74,7 @@ export default function TitleSettings(props) {
 				placeholder={__('Block Name', 'lazy-blocks')}
 				value={postTitle}
 				onChange={(e) => {
-					updatePostTitle(
-						e.target.value.replace(REGEXP_NEWLINES, ' ')
-					);
+					setPostTitle(e.target.value.replace(REGEXP_NEWLINES, ' '));
 				}}
 				onBlur={() => maybeAddSlug()}
 			/>

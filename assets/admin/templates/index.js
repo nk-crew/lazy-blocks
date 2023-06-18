@@ -10,7 +10,8 @@ import './index.scss';
 import { __ } from '@wordpress/i18n';
 import { registerPlugin } from '@wordpress/plugins';
 import { useCallback, useEffect } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
+import { useEntityProp } from '@wordpress/core-data';
 import { PanelRow, SelectControl } from '@wordpress/components';
 import { useDebounce } from '@wordpress/compose';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
@@ -22,23 +23,13 @@ const { used_post_types_for_templates: usedPostTypes } =
 	window.lazyblocksTemplatesData || {};
 
 function UpdateEditor() {
-	const {
-		templatePostTypes,
-		templateLock,
-		templateBlocks,
-		postTypes,
-		blocks,
-	} = useSelect((select) => {
-		const { getEditedPostAttribute } = select('core/editor');
+	const { postType, postTypes, blocks } = useSelect((select) => {
+		const { getCurrentPostType } = select('core/editor');
 		const { getPostTypes } = select('core');
 		const { getBlocks } = select('core/block-editor');
 
-		const meta = getEditedPostAttribute('meta') || {};
-
 		return {
-			templatePostTypes: meta._lzb_template_post_types || [],
-			templateLock: meta._lzb_template_lock || '',
-			templateBlocks: meta._lzb_template_blocks || '',
+			postType: getCurrentPostType(),
 			postTypes:
 				getPostTypes({
 					show_ui: true,
@@ -48,10 +39,14 @@ function UpdateEditor() {
 		};
 	}, []);
 
-	const { editPost } = useDispatch('core/editor');
+	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
+
+	const templatePostTypes = meta._lzb_template_post_types || [];
+	const templateLock = meta._lzb_template_lock || '';
+	const templateBlocks = meta._lzb_template_blocks || '';
 
 	function updateMeta(name, val) {
-		editPost({ meta: { [name]: val } });
+		setMeta({ ...meta, [name]: val });
 	}
 
 	/**
@@ -161,11 +156,11 @@ function UpdateEditor() {
 	// Display selected post type in select in case if it is not exists.
 	// For example, when removed plugin, which works with this custom post type.
 	if (templatePostTypes && templatePostTypes.length) {
-		templatePostTypes.forEach((postType) => {
-			if (!postTypesArray.includes(postType)) {
+		templatePostTypes.forEach((tplPostType) => {
+			if (!postTypesArray.includes(tplPostType)) {
 				postTypesOptions.push({
-					label: postType,
-					value: postType,
+					label: tplPostType,
+					value: tplPostType,
 				});
 			}
 		});
