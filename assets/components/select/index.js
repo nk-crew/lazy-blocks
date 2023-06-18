@@ -29,8 +29,63 @@ export default function Select(props) {
 		ThisSelect = CreatableSelect;
 	}
 
-	// Tags + Sortable.
-	if (props.isTags) {
+	const selectProps = { ...props };
+
+	// Tags.
+	if (selectProps.isTags) {
+		selectProps.isMulti = true;
+		selectProps.components = {
+			...(selectProps?.components || {}),
+			DropdownIndicator: () => null,
+			IndicatorSeparator: () => null,
+			ClearIndicator: () => null,
+			Menu: () => null,
+		};
+	}
+
+	// isMulti + Sortable.
+	if (selectProps.isMulti) {
+		selectProps.components = {
+			...(selectProps?.components || {}),
+			MultiValue: (valProps) => {
+				const onMouseDown = (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+				};
+				const innerProps = {
+					...valProps.innerProps,
+					onMouseDown,
+				};
+				const {
+					attributes,
+					listeners,
+					setNodeRef,
+					transform,
+					transition,
+				} = useSortable({
+					id: valProps.data.value,
+				});
+				const style = {
+					transform: CSS.Translate.toString(transform),
+					transition,
+				};
+
+				return (
+					<div
+						style={style}
+						ref={setNodeRef}
+						{...attributes}
+						{...listeners}
+					>
+						<components.MultiValue
+							{...valProps}
+							innerProps={innerProps}
+						/>
+					</div>
+				);
+			},
+		};
+
 		return (
 			<DndContext
 				modifiers={[restrictToParentElement]}
@@ -55,54 +110,7 @@ export default function Select(props) {
 						menuPlacement="auto"
 						className="lazyblocks-component-select"
 						styles={selectStyles}
-						{...{
-							...props,
-							isMulti: true,
-							components: {
-								DropdownIndicator: () => null,
-								IndicatorSeparator: () => null,
-								ClearIndicator: () => null,
-								Menu: () => null,
-								MultiValue: (valProps) => {
-									const onMouseDown = (e) => {
-										e.preventDefault();
-										e.stopPropagation();
-									};
-									const innerProps = {
-										...valProps.innerProps,
-										onMouseDown,
-									};
-									const {
-										attributes,
-										listeners,
-										setNodeRef,
-										transform,
-										transition,
-									} = useSortable({
-										id: valProps.data.value,
-									});
-									const style = {
-										transform:
-											CSS.Translate.toString(transform),
-										transition,
-									};
-
-									return (
-										<div
-											style={style}
-											ref={setNodeRef}
-											{...attributes}
-											{...listeners}
-										>
-											<components.MultiValue
-												{...valProps}
-												innerProps={innerProps}
-											/>
-										</div>
-									);
-								},
-							},
-						}}
+						{...selectProps}
 					/>
 				</SortableContext>
 			</DndContext>
@@ -114,7 +122,7 @@ export default function Select(props) {
 			menuPlacement="auto"
 			className="lazyblocks-component-select"
 			styles={selectStyles}
-			{...props}
+			{...selectProps}
 		/>
 	);
 }
