@@ -90,6 +90,17 @@
 		}
 	}
 
+	// Repeater item content with columns support.
+	.lzb-gutenberg-repeater-item .lzb-gutenberg-repeater-item-content {
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: calc(-1 * var(--lzb-controls-columns-gap));
+
+		> div {
+			padding-left: var(--lzb-controls-columns-gap);
+		}
+	}
+
 	.components-base-control__help {
 		margin-bottom: 8px;
 		font-size: 1em;
@@ -653,17 +664,8 @@
 
 	// Repeater item content with columns support
 	.lzb-gutenberg-repeater-item-content {
-		$columns_gap: 15px;
-
-		display: flex;
-		flex-wrap: wrap;
 		padding-bottom: 13px;
 		margin: 0;
-		margin-left: -$columns_gap;
-
-		> div {
-			padding-left: $columns_gap;
-		}
 
 		.components-notice {
 			margin: 0;
