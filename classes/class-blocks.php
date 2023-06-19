@@ -1493,26 +1493,16 @@ class LazyBlocks_Blocks {
 		$allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes, $context );
 
 		if ( $allow_wrapper ) {
-			$array_atts = array();
-
-			if ( ! isset( $attributes['className'] ) ) {
-				$attributes['className'] = '';
-			}
+			$array_atts = array(
+				'class' => '',
+			);
 
 			if ( $attributes['blockUniqueClass'] ) {
-				$attributes['className'] .= ' ' . $attributes['blockUniqueClass'];
+				$array_atts['class'] .= $attributes['blockUniqueClass'];
 			}
 
 			if ( $attributes['align'] ) {
-				$attributes['className'] .= ' align' . $attributes['align'];
-			}
-
-			if ( $attributes['className'] ) {
-				$attributes['className'] = trim( $attributes['className'] );
-				$array_atts['class']     = esc_attr( $attributes['className'] );
-			}
-			if ( $attributes['anchor'] ) {
-				$array_atts['id'] = esc_attr( $attributes['anchor'] );
+				$array_atts['class'] .= ' align' . $attributes['align'];
 			}
 
 			if ( isset( $attributes['ghostkitSR'] ) && $attributes['ghostkitSR'] ) {
