@@ -631,10 +631,19 @@
          "Classic": [
             ""
          ],
+         "Displays text alongside the color indicator": [
+            ""
+         ],
          "Alpha Channel": [
             ""
          ],
-         "Will be added option that allow you to set semi-transparent colors with rgba": [
+         "Allow set semi-transparent colors": [
+            ""
+         ],
+         "Color Palette": [
+            ""
+         ],
+         "Display color palette with predefined colors": [
             ""
          ],
          "Output Format": [

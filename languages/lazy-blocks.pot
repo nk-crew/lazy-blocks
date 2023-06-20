@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-17T07:13:07+00:00\n"
+"POT-Creation-Date: 2023-06-20T09:20:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: lazy-blocks\n"
@@ -174,12 +174,12 @@ msgid "Template"
 msgstr ""
 
 #: classes/class-templates.php:298
-#: assets/admin/templates/index.js:183
+#: assets/admin/templates/index.js:178
 msgid "Post Types"
 msgstr ""
 
 #: classes/class-templates.php:299
-#: assets/admin/templates/index.js:196
+#: assets/admin/templates/index.js:191
 msgid "Template Lock"
 msgstr ""
 
@@ -330,23 +330,23 @@ msgstr ""
 msgid "Template file <code>%1$s</code> not found."
 msgstr ""
 
-#: assets/admin/templates/index.js:110
+#: assets/admin/templates/index.js:105
 msgid "None"
 msgstr ""
 
-#: assets/admin/templates/index.js:114
+#: assets/admin/templates/index.js:109
 msgid "All - prevents all operations"
 msgstr ""
 
-#: assets/admin/templates/index.js:118
+#: assets/admin/templates/index.js:113
 msgid "Insert - prevents inserting new blocks, but allows moving existing ones"
 msgstr ""
 
-#: assets/admin/templates/index.js:125
+#: assets/admin/templates/index.js:120
 msgid "Content Only - prevents all operations, except the content editing."
 msgstr ""
 
-#: assets/admin/templates/index.js:177
+#: assets/admin/templates/index.js:172
 msgid "Template Settings"
 msgstr ""
 
@@ -447,7 +447,7 @@ msgstr ""
 msgid "And much more…"
 msgstr ""
 
-#: assets/components/render-controls/index.js:299
+#: assets/components/render-controls/index.js:310
 msgid "This field is required"
 msgstr ""
 
@@ -595,23 +595,23 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:141
+#: assets/editor-constructor/boxes/controls/index.js:146
 msgid "Add Child Control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:142
+#: assets/editor-constructor/boxes/controls/index.js:147
 msgid "Add Control"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:202
+#: assets/editor-constructor/boxes/controls/index.js:207
 msgid "Content Controls"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:233
+#: assets/editor-constructor/boxes/controls/index.js:238
 msgid "Inspector Controls"
 msgstr ""
 
-#: assets/editor-constructor/boxes/controls/index.js:253
+#: assets/editor-constructor/boxes/controls/index.js:258
 msgid "Hidden"
 msgstr ""
 
@@ -668,7 +668,8 @@ msgstr ""
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:38
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:18
 #: controls/checkbox/script.js:62
-#: controls/color/script.js:51
+#: controls/color/script.js:71
+#: controls/color/script.js:88
 #: controls/image/script.js:119
 #: controls/radio/script.js:74
 #: controls/repeater/script.js:280
@@ -877,7 +878,7 @@ msgstr ""
 msgid "Select align options"
 msgstr ""
 
-#: assets/editor-constructor/boxes/title/index.js:73
+#: assets/editor-constructor/boxes/title/index.js:74
 msgid "Block Name"
 msgstr ""
 
@@ -890,6 +891,7 @@ msgid "Block used for adding blocks inside it in cases when template locked from
 msgstr ""
 
 #: controls/checkbox/script.js:44
+#: controls/color/script.js:49
 #: controls/toggle/script.js:40
 msgid "Alongside Text"
 msgstr ""
@@ -907,31 +909,43 @@ msgstr ""
 msgid "Classic"
 msgstr ""
 
-#: controls/color/script.js:43
+#: controls/color/script.js:50
+msgid "Displays text alongside the color indicator"
+msgstr ""
+
+#: controls/color/script.js:63
 msgid "Alpha Channel"
 msgstr ""
 
-#: controls/color/script.js:44
-msgid "Will be added option that allow you to set semi-transparent colors with rgba"
+#: controls/color/script.js:64
+msgid "Allow set semi-transparent colors"
 msgstr ""
 
-#: controls/color/script.js:62
+#: controls/color/script.js:80
+msgid "Color Palette"
+msgstr ""
+
+#: controls/color/script.js:81
+msgid "Display color palette with predefined colors"
+msgstr ""
+
+#: controls/color/script.js:101
 #: controls/radio/script.js:87
 #: controls/select/script.js:132
 msgid "Output Format"
 msgstr ""
 
-#: controls/color/script.js:63
+#: controls/color/script.js:102
 #: controls/radio/script.js:88
 #: controls/select/script.js:133
 msgid "Allows you to change attribute output format"
 msgstr ""
 
-#: controls/color/script.js:71
+#: controls/color/script.js:110
 msgid "Color"
 msgstr ""
 
-#: controls/color/script.js:75
+#: controls/color/script.js:114
 msgid "Array (Color + Slug)"
 msgstr ""
 
