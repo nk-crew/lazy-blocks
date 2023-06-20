@@ -43,7 +43,8 @@ export default class RenderControls extends Component {
 	}
 
 	onControlChange(val, control, childIndex) {
-		const { lazyBlockData, attributes, setAttributes } = this.props;
+		const { lazyBlockData, attributes, setAttributes, meta, setMeta } =
+			this.props;
 		let { name } = control;
 
 		// prepare child items.
@@ -54,6 +55,7 @@ export default class RenderControls extends Component {
 		) {
 			const childs = getControlValue(
 				attributes,
+				meta,
 				lazyBlockData,
 				lazyBlockData.controls[control.child_of]
 			);
@@ -81,7 +83,14 @@ export default class RenderControls extends Component {
 			childIndex
 		);
 
-		setAttributes({ [name]: val });
+		// Save post Meta.
+		if (control.save_in_meta === 'true') {
+			setMeta({ ...meta, [control.save_in_meta_name || name]: val });
+
+			// Save block attribute.
+		} else {
+			setAttributes({ [name]: val });
+		}
 	}
 
 	/**
@@ -174,7 +183,8 @@ export default class RenderControls extends Component {
 	 * @return {object|boolean} react control.
 	 */
 	renderControl(controlData, placement, uniqueId, childIndex = false) {
-		const { lazyBlockData, isLazyBlockSelected, attributes } = this.props;
+		const { lazyBlockData, isLazyBlockSelected, attributes, meta } =
+			this.props;
 		let result = false;
 
 		let placementCheck =
@@ -249,6 +259,7 @@ export default class RenderControls extends Component {
 				) =>
 					getControlValue(
 						attributes,
+						meta,
 						lazyBlockData,
 						optionalControl,
 						optionalChildIndex

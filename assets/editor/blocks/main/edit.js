@@ -11,6 +11,7 @@ import { __ } from '@wordpress/i18n';
 import { useRef, useEffect } from '@wordpress/element';
 import { ToolbarButton } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { useEntityProp } from '@wordpress/core-data';
 import { useThrottle } from '@wordpress/compose';
 import {
 	InspectorControls,
@@ -41,16 +42,20 @@ export default function BlockEdit(props) {
 	const isFirstLoad = useRef(true);
 	const isMounted = useRef(true);
 
-	const { innerBlockSelected } = useSelect(
+	const { innerBlockSelected, postType } = useSelect(
 		(select) => {
 			const { hasSelectedInnerBlock } = select('core/block-editor');
+			const { getCurrentPostType } = select('core/editor');
 
 			return {
 				innerBlockSelected: hasSelectedInnerBlock(clientId, true),
+				postType: getCurrentPostType && getCurrentPostType(),
 			};
 		},
 		[clientId]
 	);
+
+	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
 
 	const isLazyBlockSelected = isSelected || innerBlockSelected;
 
@@ -98,6 +103,7 @@ export default function BlockEdit(props) {
 					if (lazyBlockData.controls[control.child_of]) {
 						const childs = getControlValue(
 							attributes,
+							meta,
 							lazyBlockData,
 							lazyBlockData.controls[control.child_of]
 						);
@@ -106,6 +112,7 @@ export default function BlockEdit(props) {
 							childs.forEach((childData, childIndex) => {
 								const val = getControlValue(
 									attributes,
+									meta,
 									lazyBlockData,
 									control,
 									childIndex
@@ -122,6 +129,7 @@ export default function BlockEdit(props) {
 				} else {
 					const val = getControlValue(
 						attributes,
+						meta,
 						lazyBlockData,
 						control
 					);
@@ -181,6 +189,7 @@ export default function BlockEdit(props) {
 		if (!lazyBlockData.controls[k].child_of) {
 			attsForRender[lazyBlockData.controls[k].name] = getControlValue(
 				attributes,
+				meta,
 				lazyBlockData,
 				lazyBlockData.controls[k]
 			);
@@ -240,6 +249,12 @@ export default function BlockEdit(props) {
 					<RenderControls
 						placement="inspector"
 						isLazyBlockSelected={isLazyBlockSelected}
+						meta={meta}
+						setMeta={(...args) => {
+							if (postType) {
+								setMeta(...args);
+							}
+						}}
 						{...props}
 					/>
 				</div>
@@ -277,6 +292,12 @@ export default function BlockEdit(props) {
 				<RenderControls
 					placement="content"
 					isLazyBlockSelected={isLazyBlockSelected}
+					meta={meta}
+					setMeta={(...args) => {
+						if (postType) {
+							setMeta(...args);
+						}
+					}}
 					{...props}
 				/>
 			</div>

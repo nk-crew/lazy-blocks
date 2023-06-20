@@ -1218,7 +1218,6 @@ class LazyBlocks_Blocks {
 
 	/**
 	 * Prepare attributes.
-	 * The same function placed in block JSX file.
 	 *
 	 * @param array          $controls - controls list.
 	 * @param string|boolean $child_of - childOf control name.
@@ -1236,15 +1235,16 @@ class LazyBlocks_Blocks {
 				$control['child_of'] === $child_of &&
 				$control['name']
 			) {
+				// Prevent registering Meta controls, as we don't save the meta inside the block.
+				// Meta controls prepared inside `prepare_block_meta_attributes` method.
+				if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
+					continue;
+				}
+
 				$attribute_data = array(
 					'type'    => 'string',
 					'default' => isset( $control['default'] ) ? $control['default'] : null,
 				);
-
-				if ( isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
-					$attribute_data['source'] = 'meta';
-					$attribute_data['meta']   = isset( $control['save_in_meta_name'] ) && $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'];
-				}
 
 				// get attribute type from control data.
 				if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) ) {
@@ -1296,6 +1296,50 @@ class LazyBlocks_Blocks {
 			'type'    => 'string',
 			'default' => '',
 		);
+
+		return $attributes;
+	}
+
+	/**
+	 * Prepare meta attributes.
+	 *
+	 * @param array          $controls - controls list.
+	 * @param string|boolean $child_of - childOf control name.
+	 * @param array          $block - block data.
+	 *
+	 * @return array.
+	 */
+	public function prepare_block_meta_attributes( $controls, $child_of = '', $block = null ) {
+		$all_controls = lazyblocks()->controls()->get_controls();
+		$attributes   = array();
+
+		foreach ( $controls as $k => $control ) {
+			if (
+				isset( $control['child_of'] ) &&
+				$control['child_of'] === $child_of &&
+				$control['name'] &&
+				isset( $control['save_in_meta'] ) &&
+				'true' === $control['save_in_meta']
+			) {
+				$attribute_data = array(
+					'source'  => 'meta',
+					'type'    => 'string',
+					'meta'    => isset( $control['save_in_meta_name'] ) && $control['save_in_meta_name'] ? $control['save_in_meta_name'] : $control['name'],
+					'default' => isset( $control['default'] ) ? $control['default'] : null,
+				);
+
+				// get attribute type from control data.
+				if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) ) {
+					$attribute_data['type'] = $all_controls[ $control['type'] ]['type'];
+
+					if ( 'number' === $attribute_data['type'] && null !== $attribute_data['default'] ) {
+						$attribute_data['default'] = (float) $attribute_data['default'];
+					}
+				}
+
+				$attributes[ $control['name'] ] = apply_filters( 'lzb/prepare_block_attribute', $attribute_data, $control, $controls, $k, $block );
+			}
+		}
 
 		return $attributes;
 	}
@@ -1356,7 +1400,8 @@ class LazyBlocks_Blocks {
 			register_block_type( $block['slug'], $data );
 
 			// Register meta.
-			foreach ( $attributes as $attribute ) {
+			$meta_attributes = $this->prepare_block_meta_attributes( $block['controls'], '', $block );
+			foreach ( $meta_attributes as $attribute ) {
 				if ( isset( $attribute['meta'] ) && $attribute['meta'] ) {
 					register_meta(
 						'post',

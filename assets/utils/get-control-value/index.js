@@ -5,11 +5,17 @@ import { applyFilters } from '@wordpress/hooks';
 
 export default function getControlValue(
 	attributes,
+	meta = {},
 	lazyBlockData,
 	control,
 	childIndex
 ) {
 	let result = attributes[control.name];
+
+	// Prepare Meta control value.
+	if (control.save_in_meta === 'true') {
+		result = meta[control.save_in_meta_name || control.name];
+	}
 
 	// Prepare child items.
 	if (
@@ -19,6 +25,7 @@ export default function getControlValue(
 	) {
 		const childs = getControlValue(
 			attributes,
+			meta,
 			lazyBlockData,
 			lazyBlockData.controls[control.child_of]
 		);
