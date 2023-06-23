@@ -4,9 +4,9 @@
 * Tags: gutenberg, blocks, custom, meta, fields
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 5.8
-* Tested up to: 6.1
+* Tested up to: 6.2
 * Requires PHP: 7.2
-* Stable tag: 3.3.0
+* Stable tag: 3.4.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,60 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.4.0 =
+
+PRO plugin:
+
+* added controls conditions based on selected block style or for a specific class name
+* added support for Term ID output in Taxonomy control
+* added `lazy-blocks.php` file as a helper when included within a theme or plugin
+* added support for Equal and Contains conditions for Units control
+* added `==class` and `!=class` condition operators
+* changed saved attribute of Taxonomy control to ID when selected Term Object
+* fixed Posts and URL controls not displaying all available post types
+
+FREE plugin:
+
+* added `<InnerBlocks />` component support. Learn more here - <https://www.lazyblocks.com/docs/blocks-code/inner-blocks/>
+  * it is required to change your block code to use `<InnerBlocks />` component if you use the InnerBlocks control
+  * the old InnerBlocks control is now marked as deprecated and will be removed in future plugin updates
+* added possibility to register Block Styles <https://developer.wordpress.org/block-editor/reference-guides/block-api/block-styles/>
+* added option for Image control to insert from URL
+* added new Supports settings - Reusable and Lock
+* added possibility to sort tags inside the Select component
+* added width support for controls in the constructor UI
+* added apiVersion 3 to blocks
+* added `include_within` method to include plugin within theme or plugin. Learn more here <https://www.lazyblocks.com/docs/examples/include-lazy-blocks-within-theme-or-plugin/#how-to-include-plugin-files>
+* added `lzb/control_value` filters. Learn more here <https://www.lazyblocks.com/docs/php-filters/lzb-control_value/>
+* added `filter_control_value` method into the Base control class for 3rd-party controls
+* added JS hook `useBlockControlProps` to use in 3rd-party controls
+* added helpful attributes to control wrappers such as `data-lazyblocks-control-name`
+* added control values filtering inside the repeater rows
+* added `Toggle all` label to Repeater control toggle
+* improved Repeater control to automatically open a newly added Row
+* improved Free block and InnerBlocks appender style in editor (Displays like in core blocks)
+* improved usage of Lazy Block's `render_callback` to prevent conflicts with Gutenberg's `render_callback`
+* improved meta controls, templates editor - use `useEntityProp` instead of `editPost`
+* improved Color Picker control:
+  * use a single toggle to open the full color palette
+  * added option to disable color palette
+  * added Alongside text option
+* moved Ghost Kit supports settings to separate panel in editor constructor
+* moved Edit Block icon to the block toolbar
+* changed `import_block` method to public in Tools class
+* changed bundler to `wp-scripts` - faster builds and development process
+* fixed styles loading inside the editor iframe
+* fixed block render duplicate custom CSS and anchor
+* fixed Classic Editor error in widgets editor
+* fixed block constructor styles in editor with Astra theme
+* fixed JS error when `condition` field is not added in the PHP block registration
+* fixed sortable inside editor iframe
+* fixed displaying label and help in controls, where these settings are disabled
+* fixed duplicate Redux store loading inside editor constructor
+* removed CodeEditor component from lazyblocks Redux store (reduced editor.js file size)
+* removed `throttle-debounce` usage, use lodash instead
+* removed HTML elements from block descriptions, as it is deprecated since WordPress v6.2
 
 = 3.3.0 =
 
