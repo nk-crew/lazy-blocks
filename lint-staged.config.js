@@ -19,7 +19,7 @@ function excludeVendor(lint) {
 }
 
 module.exports = {
-	'**/*.php': excludeVendor('composer run-script phpcs'),
+	'**/*.php': excludeVendor('composer run-script lint'),
 	'**/*.{css,scss}': excludeVendor('wp-scripts lint-style'),
 	'**/*.{js,jsx}': excludeVendor('wp-scripts lint-js'),
 };

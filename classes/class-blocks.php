@@ -633,7 +633,7 @@ class LazyBlocks_Blocks {
 	 *
 	 * @return array
 	 */
-	private function get_block_defaults() {
+	public function get_block_defaults() {
 		return apply_filters( 'lzb/block_defaults', $this->block_defaults );
 	}
 
@@ -846,6 +846,21 @@ class LazyBlocks_Blocks {
 		}
 
 		$this->user_blocks[] = apply_filters( 'lzb/add_user_block', $data );
+	}
+
+	/**
+	 * Remove block.
+	 *
+	 * @param string $block_slug - block slug.
+	 */
+	public function remove_block( $block_slug ) {
+		if ( is_array( $this->user_blocks ) ) {
+			foreach ( $this->user_blocks as $k => $val ) {
+				if ( isset( $val['slug'] ) && $val['slug'] === $block_slug ) {
+					unset( $this->user_blocks[ $k ] );
+				}
+			}
+		}
 	}
 
 	/**

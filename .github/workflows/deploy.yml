@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Disable xDebug - fixes PHP Fatal Error for `i18n make-pot`
         uses: shivammathur/setup-php@v2
@@ -18,8 +18,8 @@ jobs:
           php-version: '7.4'
           coverage: none
 
-      - name: Install NPM and Composer Dependencies
-        run: npm install
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/setup-node
 
       - name: Run Production Task
         run: npm run build:prod

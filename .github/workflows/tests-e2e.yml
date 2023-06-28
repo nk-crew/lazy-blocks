@@ -1,0 +1,48 @@
+name: End-to-End Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name for pull requests
+  # or the commit hash for any other events.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright - ${{ matrix.part }}
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [1, 2, 3, 4]
+        totalParts: [4]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/setup-node
+
+      - name: Npm build
+        run: npm run build
+
+      - name: Install Playwright dependencies
+        run: |
+          npx playwright install chromium firefox webkit --with-deps
+
+      - name: Install WordPress and start the server
+        run: |
+          npm run wp-env start
+
+      - name: Run the tests
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e -- --shard=${{ matrix.part }}/${{ matrix.totalParts }}

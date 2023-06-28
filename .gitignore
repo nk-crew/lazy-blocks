@@ -4,6 +4,17 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.phpunit.result.cache
+/artifacts
+/tests/e2e/artifacts
+
+# The /.cache folder is needed for phpcs to cache results between runs, while other .cache folders must be ignored
+# It is not possible to re-include a file if a parent directory of that file is excluded
+# So, both /.cache and /.cache./.gitkeep must be re-included
+.cache
+!/.cache/
+/.cache/**
+!/.cache/.gitkeep
 
 # Coverage directory used by tools like istanbul
 coverage
@@ -47,3 +58,4 @@ node_modules/
 
 # system files
 .DS_Store
+Thumbs.db

@@ -2,6 +2,7 @@
 **/*.scss
 **/*.html
 **/*.php
+**/*.yml
 node_modules
 dist
 build

@@ -29,11 +29,20 @@ We use `pre-commit` and `pre-push` hooks for Git to lint sources with `phpcs`, `
 
 NPM commands to work with linting:
 
-- `npm run php-lint` to show `phpcs` errors
-- `npm run php-lint-fix` to automatically fix some of the `phpcs` errors
-- `npm run js-lint` to show `eslint` errors
-- `npm run js-lint-fix` to automatically fix some of the `eslint` errors
-- `npm run css-lint` to show `stylelint` errors
-- `npm run css-lint-fix` to automatically fix some of the `stylelint` errors
+- `npm run lint:php` to show `phpcs` errors
+- `npm run format:php` to automatically fix some of the `phpcs` errors
+- `npm run lint:js` to show `eslint` errors
+- `npm run format:js` to automatically fix some of the `eslint` errors
+- `npm run lint:css` to show `stylelint` errors
+- `npm run format:css` to automatically fix some of the `stylelint` errors
 
 All linters compatible with the modern IDE and code editors.
+
+### Testing
+
+We are using the testing solution provided by the Gutenberg team. To get started you need to [install Docker](https://www.docker.com/). And that's it... All other work will made by `wp-env` package.
+
+NPM commands to work with testing:
+
+- `npm run test:e2e` to run end to end tests in the headless browser using Playwright
+- `npm run test:unit:php` tp run PHPUnit tests
