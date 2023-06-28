@@ -891,10 +891,17 @@ class LazyBlocks_Blocks {
 	 */
 	public function marshal_block_data_with_controls( $id = null, $post_title = null, $block_data = null, $all_controls = null ) {
 		$get_meta_value = function( $name ) use ( $id, $block_data ) {
+			// Get post meta data.
 			if ( $id ) {
 				return $this->get_meta_value_by_id( $name, $id );
-			} else {
+
+				// Get provided block data.
+			} elseif ( $block_data ) {
 				return $this->get_meta_value_by_block( $name, $block_data );
+
+				// Get defaults.
+			} else {
+				return $this->get_meta_value( $name, '' );
 			}
 		};
 
@@ -1022,9 +1029,11 @@ class LazyBlocks_Blocks {
 			$all_controls    = lazyblocks()->controls()->get_controls();
 
 			foreach ( $all_user_blocks as $block ) {
-				$block['controls'] = $this->prepare_block_controls( $block['controls'], $all_controls );
+				$user_block = array_merge( $this->marshal_block_data_with_controls(), $block );
 
-				$result[] = $block;
+				$user_block['controls'] = $this->prepare_block_controls( $user_block['controls'], $all_controls );
+
+				$result[] = $user_block;
 			}
 		}
 
