@@ -144,6 +144,13 @@ class LazyBlocks_Control {
 		add_action(
 			'enqueue_block_editor_assets',
 			function() {
+				$blocks = lazyblocks()->blocks()->get_blocks();
+
+				// Skip assets enqueue if there are no blocks.
+				if ( empty( $blocks ) ) {
+					return;
+				}
+
 				foreach ( (array) $this->get_script_depends() as $script ) {
 					wp_enqueue_script( $script );
 				}
@@ -153,6 +160,13 @@ class LazyBlocks_Control {
 		add_action(
 			'enqueue_block_editor_assets',
 			function() {
+				$blocks = lazyblocks()->blocks()->get_blocks();
+
+				// Skip assets enqueue if there are no blocks.
+				if ( empty( $blocks ) ) {
+					return;
+				}
+
 				foreach ( (array) $this->get_style_depends() as $style ) {
 					wp_enqueue_style( $style );
 				}
