@@ -1,11 +1,23 @@
 /**
  * Better appender styles.
  */
-.lazyblock:not(.is-selected) .lazyblock-inner-blocks > .block-list-appender:only-child {
-	pointer-events: none;
+// We use these variables in order to support nested inner blocks.
+.lazyblock {
+	--lazyblocks-appender_pointer-events: initial;
+	--lazyblocks-appender-overlay_display: none;
+	--lazyblocks-appender-inserter_visibility: visible;
+}
+.lazyblock:not(.is-selected) {
+	--lazyblocks-appender_pointer-events: none;
+	--lazyblocks-appender-overlay_display: block;
+	--lazyblocks-appender-inserter_visibility: hidden;
+}
+.lazyblock-inner-blocks > .block-list-appender:only-child {
+	pointer-events: var(--lazyblocks-appender_pointer-events);
 
 	&::after {
 		position: absolute;
+		display: var(--lazyblocks-appender-overlay_display);
 		top: 0;
 		right: 0;
 		bottom: 0;
@@ -17,6 +29,6 @@
 	}
 
 	.block-editor-inserter {
-		visibility: hidden;
+		visibility: var(--lazyblocks-appender-inserter_visibility);
 	}
 }
