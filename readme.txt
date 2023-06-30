@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.2
 * Requires PHP: 7.2
-* Stable tag: 3.4.0
+* Stable tag: 3.4.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,21 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.4.1 =
+
+PRO plugin:
+
+* added higher priority for block preloading feature to let 3rd-parties hook the output before preloading
+
+FREE plugin:
+
+* added defaults to user registered blocks (fixes the problem, when old registration configs fails when we add new parameters)
+* added `remove_block` method to the Blocks class to allow removing user registered blocks
+* added filter `lzb/block_render/allow_inner_blocks_wrapper`
+* added support for `className` attribute in `<InnerBlocks />` component
+* skip control assets enqueue if there are no blocks registered (fixes the JS error in editor)
+* fixed nested blocks not displaying appender button with InnerBlocks component
 
 = 3.4.0 =
 

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.4.0\n"
+"Project-Id-Version: Lazy Blocks 3.4.1\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-29T22:45:19+00:00\n"
+"POT-Creation-Date: 2023-06-30T09:04:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: lazy-blocks\n"
@@ -411,7 +411,7 @@ msgid "Error loading block preview: %s"
 msgstr ""
 
 #. Translators: %s - block slug.
-#: assets/components/preview-server-callback/render-block-content.js:159
+#: assets/components/preview-server-callback/render-block-content.js:160
 msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
 msgstr ""
 
