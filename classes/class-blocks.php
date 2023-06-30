@@ -1592,6 +1592,14 @@ class LazyBlocks_Blocks {
 				$array_atts['class'] .= ' align' . $attributes['align'];
 			}
 
+			// The anchor rendering was removed in v3.4.0 because of Gutenberg added support for automatic anchor render.
+			// Then they are removed this option and we reverted this anchor render back
+			//
+			// @link https://github.com/WordPress/gutenberg/pull/51288.
+			if ( isset( $attributes['anchor'] ) && $attributes['anchor'] ) {
+				$array_atts['id'] = esc_attr( $attributes['anchor'] );
+			}
+
 			if ( isset( $attributes['ghostkitSR'] ) && $attributes['ghostkitSR'] ) {
 				$array_atts['data-ghostkit-sr'] = esc_attr( $attributes['ghostkitSR'] );
 			}
