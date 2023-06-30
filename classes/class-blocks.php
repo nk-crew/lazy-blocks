@@ -1463,8 +1463,6 @@ class LazyBlocks_Blocks {
 		$context = 'editor' === $context ? 'editor' : 'frontend';
 		$result  = null;
 
-		// phpcs:disable
-
 		if ( isset( $block['controls'] ) && ! empty( $block['controls'] ) ) {
 			foreach ( $block['controls'] as $control ) {
 				if ( ! isset( $control['child_of'] ) || ! $control['child_of'] ) {
@@ -1479,6 +1477,8 @@ class LazyBlocks_Blocks {
 				}
 			}
 		}
+
+		// phpcs:disable
 
 		// apply filter for block attributes.
 		$attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block, $context );
