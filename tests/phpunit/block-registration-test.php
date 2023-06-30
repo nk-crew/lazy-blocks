@@ -5,22 +5,22 @@ class Block_Registration_Test extends WP_UnitTestCase {
 
 		lazyblocks()->add_block( array(
 			'title' => 'Test Custom Block',
-			'slug' => 'lazyblock/test-custom-block',
+			'slug' => 'lazyblock/test',
 		) );
 	}
 
 	public function tear_down() {
-		lazyblocks()->blocks()->remove_block( 'lazyblock/test-custom-block' );
+		lazyblocks()->blocks()->remove_block( 'lazyblock/test' );
 
 		parent::tear_down();
 	}
 
 	// Test if the latest registered block is test block.
 	public function test_block_registered() {
-		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test-custom-block' );
+		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test' );
 
 		$this->assertEquals(
-			'lazyblock/test-custom-block',
+			'lazyblock/test',
 			$block['slug']
 		);
 	}
@@ -72,11 +72,11 @@ class Block_Registration_Test extends WP_UnitTestCase {
 	public function test_no_duplicated_blocks() {
 		lazyblocks()->add_block( array(
 			'title' => 'Test Custom Block 2',
-			'slug' => 'lazyblock/test-custom-block',
+			'slug' => 'lazyblock/test',
 		) );
 		lazyblocks()->add_block( array(
 			'title' => 'Test Custom Block 3',
-			'slug' => 'lazyblock/test-custom-block',
+			'slug' => 'lazyblock/test',
 		) );
 
 		$blocks = lazyblocks()->blocks()->get_blocks();
@@ -85,7 +85,7 @@ class Block_Registration_Test extends WP_UnitTestCase {
 			count( $blocks )
 		);
 
-		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test-custom-block' );
+		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test' );
 		$this->assertEquals(
 			'Test Custom Block',
 			$block['title']
