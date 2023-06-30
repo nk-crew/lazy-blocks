@@ -28,6 +28,7 @@ const { elementContext: __stableElementContext, __unstableElementContext } =
 const elementContext = __stableElementContext || __unstableElementContext;
 
 const CONVERT_ATTRIBUTES = {
+	classname: 'className',
 	allowedblocks: 'allowedBlocks',
 	templatelock: 'templateLock',
 	prioritizedinserterblocks: 'prioritizedInserterBlocks',
@@ -131,7 +132,7 @@ export default function RenderBlockContent({ content, props }) {
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'lazyblock-inner-blocks',
+			className: innerBlocksOptions.className || 'lazyblock-inner-blocks',
 		},
 		{
 			...innerBlocksOptions,

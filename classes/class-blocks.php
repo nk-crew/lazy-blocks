@@ -1551,7 +1551,25 @@ class LazyBlocks_Blocks {
 
 		// Replace the <InnerBlocks /> with the block content.
 		if ( 'frontend' === $context ) {
-			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', '<div class="lazyblock-inner-blocks">' . $content . '</div>', $result );
+			// Add inner-blocks wrapper with class lazyblock-inner-blocks.
+			$allow_inner_blocks_wrapper = apply_filters( 'lzb/block_render/allow_inner_blocks_wrapper', true, $attributes );
+			// phpcs:ignore
+			$allow_inner_blocks_wrapper = apply_filters( $block['slug'] . '/allow_inner_blocks_wrapper', $allow_inner_blocks_wrapper, $attributes );
+
+			if ( $allow_inner_blocks_wrapper ) {
+				// Check for a class/className attribute provided in the template to become the InnerBlocks wrapper class.
+				$matches = array();
+
+				if ( preg_match( '/<InnerBlocks(?:[^<]+?)(?:class|className)=(?:["\']\W+\s*(?:\w+)\()?["\']([^\'"]+)[\'"]/', $result, $matches ) ) {
+					$class = isset( $matches[1] ) ? $matches[1] : 'lazyblock-inner-blocks';
+				} else {
+					$class = 'lazyblock-inner-blocks';
+				}
+
+				$content = '<div class="' . $class . '">' . $content . '</div>';
+			}
+
+			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
 		}
 
 		// add wrapper.
