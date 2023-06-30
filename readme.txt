@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.2
 * Requires PHP: 7.2
-* Stable tag: 3.4.1
+* Stable tag: 3.4.2
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,13 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.4.2 =
+
+PRO plugin:
+FREE plugin:
+
+* fixed Anchor option and ID attribute rendering in the block wrapper (Gutenberg reverted feature for automatic Anchor render in the dynamic blocks)
 
 = 3.4.1 =
 
