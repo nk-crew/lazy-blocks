@@ -1,13 +1,8 @@
 {
 	"core": null,
-	"themes": ["https://downloads.wordpress.org/theme/twentytwentythree.zip"],
-	"plugins": ["."],
-	"env": {
-		"tests": {
-			"mappings": {
-				"wp-content/plugins/lazy-blocks": ".",
-				"wp-content/plugins/gutenberg-test-plugin-disables-the-css-animations": "./tests/plugins/gutenberg-test-plugin-disables-the-css-animations"
-			}
-		}
-	}
+	"themes": ["./tests/themes/empty-theme"],
+	"plugins": [
+		".",
+		"./tests/plugins/gutenberg-test-plugin-disables-the-css-animations"
+	]
 }

@@ -5,10 +5,6 @@ import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('constructor create block', () => {
-	test.beforeAll(async ({ requestUtils }) => {
-		await requestUtils.activatePlugin('lazy-blocks');
-	});
-
 	test.afterEach(async ({ requestUtils }) => {
 		await removeAllBlocks({ requestUtils });
 	});

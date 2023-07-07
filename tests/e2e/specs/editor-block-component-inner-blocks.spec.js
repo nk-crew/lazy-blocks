@@ -6,10 +6,6 @@ import { createBlock } from '../utils/create-block';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block component <InnerBlocks />', () => {
-	test.beforeAll(async ({ requestUtils }) => {
-		await requestUtils.activatePlugin('lazy-blocks');
-	});
-
 	test.afterEach(async ({ requestUtils }) => {
 		await removeAllBlocks({ requestUtils });
 	});
