@@ -35,6 +35,7 @@ const zipFiles = [
 	'languages/**/*',
 	'templates/**/*',
 	'vendors/**/*',
+	'index.php',
 	'lazy-blocks.php',
 	'LICENSE.txt',
 	'readme.txt',
