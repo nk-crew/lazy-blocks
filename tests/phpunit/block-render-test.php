@@ -39,6 +39,22 @@ class Block_Render_Test extends WP_UnitTestCase {
 		$this->remove_test_block();
 	}
 
+	public function test_empty_block_render() {
+		$this->add_test_block( array(
+			'code' => array(
+				'frontend_html' => '',
+			),
+		) );
+
+		// Should not render anything.
+		$this->assertEquals(
+			'',
+			do_blocks( '<!-- wp:lazyblock/test /-->' )
+		);
+
+		$this->remove_test_block();
+	}
+
 	public function test_block_render_attributes() {
 		$this->add_test_block( array(
 			'supports' => array(
