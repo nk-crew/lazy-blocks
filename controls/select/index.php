@@ -72,7 +72,7 @@ class LazyBlocks_Control_Select extends LazyBlocks_Control {
 		if ( 'true' === $control['multiple'] ) {
 			$attribute_data['type']    = 'array';
 			$attribute_data['items']   = array( 'type' => 'string' );
-			$attribute_data['default'] = explode( ',', $attribute_data['default'] );
+			$attribute_data['default'] = $attribute_data['default'] ? explode( ',', $attribute_data['default'] ) : array();
 		}
 
 		return $attribute_data;
