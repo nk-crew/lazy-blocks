@@ -105,7 +105,11 @@ export default function Select(props) {
 				}}
 				collisionDetection={closestCenter}
 			>
-				<SortableContext items={value.map((o) => o.value)}>
+				<SortableContext
+					items={
+						value && value.length ? value.map((o) => o.value) : []
+					}
+				>
 					<ThisSelect
 						menuPlacement="auto"
 						className="lazyblocks-component-select"
