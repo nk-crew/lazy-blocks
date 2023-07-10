@@ -1,45 +1,25 @@
 <?php
 class Block_Registration_Test extends WP_UnitTestCase {
-	public function set_up() {
-		parent::set_up();
-
-		lazyblocks()->add_block( array(
-			'title' => 'Test Custom Block',
-			'slug' => 'lazyblock/test',
-		) );
-	}
-
-	public function tear_down() {
-		lazyblocks()->blocks()->remove_block( 'lazyblock/test' );
-
-		parent::tear_down();
-	}
-
 	// Test if the latest registered block is test block.
 	public function test_block_registered() {
-		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test' );
+		$block_slug = 'lazyblock/test';
 
-		$this->assertEquals(
-			'lazyblock/test',
-			$block['slug']
-		);
-	}
-
-	public function test_block_removed() {
 		lazyblocks()->add_block( array(
-			'title' => 'Test Removable Custom Block',
-			'slug' => 'lazyblock/test-removable-custom-block',
+			'slug' => $block_slug,
 		) );
 
-		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test-removable-custom-block' );
+		$block = lazyblocks()->blocks()->get_block( $block_slug );
+
 		$this->assertEquals(
-			'lazyblock/test-removable-custom-block',
+			$block_slug,
 			$block['slug']
 		);
 
-		lazyblocks()->blocks()->remove_block( 'lazyblock/test-removable-custom-block' );
+		lazyblocks()->blocks()->remove_block( $block_slug );
 
-		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test-removable-custom-block' );
+		// Check if block is removed.
+		$block = lazyblocks()->blocks()->get_block( $block_slug );
+
 		$this->assertEquals(
 			null,
 			$block
@@ -50,6 +30,12 @@ class Block_Registration_Test extends WP_UnitTestCase {
 	// it is not specified in the registration block array.
 	// But we will test just a few parameters, not all.
 	public function test_block_defaults() {
+		$block_slug = 'lazyblock/test';
+
+		lazyblocks()->add_block( array(
+			'slug' => $block_slug,
+		) );
+
 		$defaults = lazyblocks()->blocks()->get_block_defaults();
 		$blocks = lazyblocks()->blocks()->get_blocks();
 
@@ -65,18 +51,22 @@ class Block_Registration_Test extends WP_UnitTestCase {
 			$defaults['lazyblocks_supports_multiple'],
 			$blocks[0]['supports']['multiple']
 		);
+
+		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
 
 	// If the block with the selected slug is already registered,
 	// next registration attempts should not work.
 	public function test_no_duplicated_blocks() {
+		$block_slug = 'lazyblock/test';
+
 		lazyblocks()->add_block( array(
-			'title' => 'Test Custom Block 2',
-			'slug' => 'lazyblock/test',
+			'title' => 'Block Registration Duplicates Test 1',
+			'slug' => $block_slug,
 		) );
 		lazyblocks()->add_block( array(
-			'title' => 'Test Custom Block 3',
-			'slug' => 'lazyblock/test',
+			'title' => 'Block Registration Duplicates Test 2',
+			'slug' => $block_slug,
 		) );
 
 		$blocks = lazyblocks()->blocks()->get_blocks();
@@ -85,10 +75,12 @@ class Block_Registration_Test extends WP_UnitTestCase {
 			count( $blocks )
 		);
 
-		$block = lazyblocks()->blocks()->get_block( 'lazyblock/test' );
+		$block = lazyblocks()->blocks()->get_block( $block_slug );
 		$this->assertEquals(
-			'Test Custom Block',
+			'Block Registration Duplicates Test 1',
 			$block['title']
 		);
+
+		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
 }

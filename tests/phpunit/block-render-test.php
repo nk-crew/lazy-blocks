@@ -1,21 +1,27 @@
 <?php
 class Block_Render_Test extends WP_UnitTestCase {
 	public function add_test_block( $attrs = array() ) {
-		lazyblocks()->add_block( array_merge( array(
-			'title' => 'Test Block',
-			'slug' => 'lazyblock/test',
-		), $attrs ) );
+		$block_slug = 'lazyblock/test';
+
+		lazyblocks()->add_block( array_merge(
+			array(
+				'slug' => $block_slug,
+			),
+			$attrs
+		) );
 
 		lazyblocks()->blocks()->register_block_render();
 	}
 
 	public function remove_test_block() {
+		$block_slug = 'lazyblock/test';
+
 		$registry = WP_Block_Type_Registry::get_instance();
-		if ( $registry->is_registered( 'lazyblock/test' ) ) {
-			$registry->unregister( 'lazyblock/test' );
+		if ( $registry->is_registered( $block_slug ) ) {
+			$registry->unregister( $block_slug );
 		}
 
-		lazyblocks()->blocks()->remove_block( 'lazyblock/test' );
+		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
 
 	public function test_simple_block_render() {
