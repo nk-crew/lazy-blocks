@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.2
 * Requires PHP: 7.2
-* Stable tag: 3.4.2
+* Stable tag: 3.4.3
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,18 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.4.3 =
+
+PRO plugin:
+
+* fixed JS error in Posts control in editor
+
+FREE plugin:
+
+* fixed blocks rendering on Widgets screen
+* fixed default value with an empty array element of multi select
+* fixed JS error in multiple Select control in editor when null value
 
 = 3.4.2 =
 
