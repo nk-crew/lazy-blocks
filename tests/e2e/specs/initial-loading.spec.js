@@ -5,7 +5,7 @@ import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 
 test.describe('initial loading', () => {
 	test.beforeAll(async ({ requestUtils }) => {
-		await requestUtils.activatePlugin('lazy-blocks');
+		await requestUtils.activateTheme('empty-theme');
 	});
 
 	test('should have lazy blocks in admin menu', async ({ page, admin }) => {

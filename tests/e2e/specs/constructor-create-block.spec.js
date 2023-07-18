@@ -6,7 +6,7 @@ import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('constructor create block', () => {
 	test.beforeAll(async ({ requestUtils }) => {
-		await requestUtils.activatePlugin('lazy-blocks');
+		await requestUtils.activateTheme('empty-theme');
 	});
 
 	test.afterEach(async ({ requestUtils }) => {

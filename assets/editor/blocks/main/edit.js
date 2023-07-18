@@ -45,7 +45,9 @@ export default function BlockEdit(props) {
 	const { innerBlockSelected, postType } = useSelect(
 		(select) => {
 			const { hasSelectedInnerBlock } = select('core/block-editor');
-			const { getCurrentPostType } = select('core/editor');
+
+			// This select is not available in the Widgets editor, so we have to check it.
+			const { getCurrentPostType } = select('core/editor') || {};
 
 			return {
 				innerBlockSelected: hasSelectedInnerBlock(clientId, true),

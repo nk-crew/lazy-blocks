@@ -7,7 +7,7 @@ import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block component <InnerBlocks />', () => {
 	test.beforeAll(async ({ requestUtils }) => {
-		await requestUtils.activatePlugin('lazy-blocks');
+		await requestUtils.activateTheme('empty-theme');
 	});
 
 	test.afterEach(async ({ requestUtils }) => {
