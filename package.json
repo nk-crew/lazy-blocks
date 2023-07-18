@@ -25,7 +25,7 @@
 		"lint": "concurrently \"npm run lint:js\" \"npm run lint:css\"",
 		"lint:css": "stylelint --custom-syntax postcss-scss \"assets/**/*.scss\"",
 		"lint:js": "eslint --ext .js assets/ controls/",
-		"prelint:php": "wp-env run --env-cwd='wp-content/plugins/lazy-blocks' cli composer update --no-interaction",
+		"prelint:php": "wp-env run --env-cwd='wp-content/plugins/lazy-blocks' cli composer install --no-interaction",
 		"lint:php": "wp-env run --env-cwd='wp-content/plugins/lazy-blocks' cli composer run-script lint",
 		"format:css": "stylelint --fix --custom-syntax postcss-scss \"assets/**/*.scss\"",
 		"format:js": "eslint --ext .js --fix assets/ controls/",
