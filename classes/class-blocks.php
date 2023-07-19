@@ -1569,6 +1569,9 @@ class LazyBlocks_Blocks {
 				$content = '<div class="' . $class . '">' . $content . '</div>';
 			}
 
+			// Escape "$" to prevent it's replacement with preg_replace.
+			$content = str_replace( '$', '\$', $content );
+
 			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
 		}
 
