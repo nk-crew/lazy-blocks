@@ -6,7 +6,7 @@
 * Requires at least: 5.8
 * Tested up to: 6.2
 * Requires PHP: 7.2
-* Stable tag: 3.4.3
+* Stable tag: 3.4.4
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,13 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.4.4 =
+
+PRO plugin:
+FREE plugin:
+
+* fixed InnerBlocks component rendering number values with `$` character
 
 = 3.4.3 =
 
