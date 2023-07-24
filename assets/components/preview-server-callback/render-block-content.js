@@ -6,7 +6,7 @@ import './editor.scss';
 /**
  * External dependencies.
  */
-import HTMLReactParser from 'html-react-parser';
+import HTMLReactParser, { domToReact } from 'html-react-parser';
 import json5 from 'json5';
 
 /**
@@ -145,7 +145,7 @@ export default function RenderBlockContent({ content, props }) {
 	function parse(str) {
 		let thereIsInnerBlocks = false;
 
-		return HTMLReactParser(str, {
+		const options = {
 			replace(domNode) {
 				// Replace the `innerblocks` component to proper output.
 				if (
@@ -178,6 +178,18 @@ export default function RenderBlockContent({ content, props }) {
 						setInnerBlocksOptions(newInnerBlockProps);
 					}
 
+					// Fix elements placed after the self-closing <InnerBlocks /> component.
+					// There is a problem with parser, which is not support the self-closing tags
+					// and move next elements as children of the self-closing tag.
+					if (domNode.children && domNode.children.length) {
+						return (
+							<>
+								<div {...innerBlocksProps} />
+								{domToReact(domNode.children, options)}
+							</>
+						);
+					}
+
 					return <div {...innerBlocksProps} />;
 				}
 
@@ -196,7 +208,11 @@ export default function RenderBlockContent({ content, props }) {
 					return <RenderScript {...scriptData} />;
 				}
 			},
-		});
+		};
+
+		const result = HTMLReactParser(str, options);
+
+		return result;
 	}
 
 	return parse(content);

@@ -105,17 +105,18 @@ class Block_Render_Test extends WP_UnitTestCase {
 				),
 			),
 			'code' => array(
-				'frontend_html' => '<p>Test</p><InnerBlocks />',
+				'frontend_html' => '<p>Hello:</p><InnerBlocks /><p>there.</p>',
 			),
 		) );
 
 		$this->assertEquals(
 			'<div class="wp-block-lazyblock-test">' .
-				'<p>Test</p>' .
+				'<p>Hello:</p>' .
 				'<div class="lazyblock-inner-blocks">' .
 					'<p>Inner Blocks</p>' .
 					'<p>Number with $ character should not be replaced here -> $10</p>' .
 				'</div>' .
+				'<p>there.</p>' .
 			'</div>',
 			do_blocks(
 				'<!-- wp:lazyblock/test -->' .
@@ -139,14 +140,15 @@ class Block_Render_Test extends WP_UnitTestCase {
 				),
 			),
 			'code' => array(
-				'frontend_html' => '<p>Test</p><InnerBlocks className="custom-class" />',
+				'frontend_html' => '<p>Hello:</p><InnerBlocks className="custom-class" /><p>there.</p>',
 			),
 		) );
 
 		$this->assertEquals(
 			'<div class="wp-block-lazyblock-test">' .
-				'<p>Test</p>' .
+				'<p>Hello:</p>' .
 				'<div class="custom-class"><p>Inner</p></div>' .
+				'<p>there.</p>' .
 			'</div>',
 			do_blocks(
 				'<!-- wp:lazyblock/test -->' .
@@ -169,7 +171,7 @@ class Block_Render_Test extends WP_UnitTestCase {
 				),
 			),
 			'code' => array(
-				'frontend_html' => '<p>Test</p><InnerBlocks className="custom-class" />',
+				'frontend_html' => '<p>Hello:</p><InnerBlocks className="custom-class" /><p>there.</p>',
 			),
 		) );
 
@@ -177,8 +179,9 @@ class Block_Render_Test extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			'<div class="wp-block-lazyblock-test">' .
-				'<p>Test</p>' .
+				'<p>Hello:</p>' .
 				'<p>Inner</p>' .
+				'<p>there.</p>' .
 			'</div>',
 			do_blocks(
 				'<!-- wp:lazyblock/test -->' .

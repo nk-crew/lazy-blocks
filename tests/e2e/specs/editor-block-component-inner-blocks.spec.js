@@ -14,6 +14,29 @@ test.describe('editor block component <InnerBlocks />', () => {
 		await removeAllBlocks({ requestUtils });
 	});
 
+	test('should render block template correctly', async ({
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		await createBlock({
+			requestUtils,
+			title: 'Block with InnerBlocks',
+			slug: 'test',
+			code: '<p>Hello:</p><InnerBlocks /><p>there.</p>',
+			codeSingleOutput: true,
+		});
+
+		await admin.createNewPost();
+
+		await editor.insertBlock({
+			name: 'lazyblock/test',
+		});
+
+		await expect(editor.canvas.locator('text="Hello:"')).toBeVisible();
+		await expect(editor.canvas.locator('text="there."')).toBeVisible();
+	});
+
 	test('should hide the appender if block is not selected', async ({
 		page,
 		editor,
