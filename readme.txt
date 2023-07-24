@@ -136,10 +136,11 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
-= 3.4.4 =
+= 3.4.5 =
 
-PRO plugin:
-FREE plugin:
+* fixed wrong template rendering in Editor after InnerBlocks component used
+
+= 3.4.4 =
 
 * fixed InnerBlocks component rendering number values with `$` character
 
