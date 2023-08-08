@@ -59,8 +59,6 @@ options.blocks.forEach((item) => {
 			return <BlockEdit {...props} lazyBlockData={item} />;
 		},
 
-		save(props) {
-			return <BlockSave {...props} lazyBlockData={item} />;
-		},
+		save: BlockSave,
 	});
 });
