@@ -14,7 +14,7 @@ import BlockSave from './save';
  * Constructor block
  */
 registerBlockType('lzb-constructor/main', {
-	apiVersion: 2,
+	apiVersion: 3,
 	title: __('Blocks Constructor', 'lazy-blocks'),
 	category: 'design',
 	supports: {
