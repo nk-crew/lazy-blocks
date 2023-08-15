@@ -20,7 +20,7 @@ test.describe('constructor create block', () => {
 			status: 'publish',
 		});
 
-		await editor.canvas
+		await page
 			.locator('.lazyblocks-component-block-slug input')
 			.fill('test');
 
