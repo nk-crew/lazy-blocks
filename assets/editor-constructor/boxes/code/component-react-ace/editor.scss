@@ -1,8 +1,6 @@
 @import "../../../../variables";
 
 .lazyblocks-component-code-editor {
-	// fix editor height jumping after init
-	min-height: 117px;
 	border: 1px solid $color_gray;
 	border-radius: $radius_large;
 

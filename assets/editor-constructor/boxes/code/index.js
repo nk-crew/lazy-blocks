@@ -148,7 +148,8 @@ export default function CustomCodeSettings(props) {
 								updateData({ [`code_${tab}_html`]: value })
 							}
 							value={data[`code_${tab}_html`]}
-							height="30rem"
+							minLines={5}
+							maxLines={30}
 							editorProps={{
 								id: `lzb-editor-${data.code_output_method}`,
 							}}
