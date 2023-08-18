@@ -15,10 +15,11 @@ import {
 	BaseControl,
 	SelectControl,
 	ToggleControl,
-	RadioControl,
 	Button,
 	TabPanel,
 	Notice,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
 /**
@@ -95,31 +96,28 @@ export default function CustomCodeSettings(props) {
 	const settingsOutputMethod = applyFilters(
 		`lzb.constructor.code-settings.output-method`,
 		<PanelBody>
-			<BaseControl
-				id="lazyblocks-settings-output-method"
+			<ToggleGroupControl
 				label={__('Output Method', 'lazy-blocks')}
+				value={data.code_output_method || 'html'}
+				onChange={(value) => updateData({ code_output_method: value })}
+				isAdaptiveWidth
 			>
-				<RadioControl
-					options={[
-						{
-							label: __('HTML + Handlebars', 'lazy-blocks'),
-							value: 'html',
-						},
-						{
-							label: __('PHP', 'lazy-blocks'),
-							value: 'php',
-						},
-						{
-							label: __('Theme Template', 'lazy-blocks'),
-							value: 'template',
-						},
-					]}
-					selected={data.code_output_method || 'html'}
-					onChange={(value) =>
-						updateData({ code_output_method: value })
-					}
+				<ToggleGroupControlOption
+					value="html"
+					icon=""
+					label={__('HTML + Handlebars', 'lazy-blocks')}
 				/>
-			</BaseControl>
+				<ToggleGroupControlOption
+					value="php"
+					icon=""
+					label={__('PHP', 'lazy-blocks')}
+				/>
+				<ToggleGroupControlOption
+					value="template"
+					icon=""
+					label={__('Theme Template', 'lazy-blocks')}
+				/>
+			</ToggleGroupControl>
 		</PanelBody>,
 		settingsFilterData
 	);
