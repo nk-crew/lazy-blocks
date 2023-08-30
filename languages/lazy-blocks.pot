@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.4.4\n"
+"Project-Id-Version: Lazy Blocks 3.5.1\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-15T19:11:46+00:00\n"
+"POT-Creation-Date: 2023-08-30T10:34:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: lazy-blocks\n"
@@ -411,7 +411,7 @@ msgid "Error loading block preview: %s"
 msgstr ""
 
 #. Translators: %s - block slug.
-#: assets/components/preview-server-callback/render-block-content.js:160
+#: assets/components/preview-server-callback/render-block-content.js:162
 msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
 msgstr ""
 
@@ -486,11 +486,11 @@ msgstr ""
 msgid "Control \"%1$s\""
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:79
+#: assets/editor-constructor/boxes/code/index.js:80
 msgid "Frontend"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:87
+#: assets/editor-constructor/boxes/code/index.js:88
 msgid "Editor"
 msgstr ""
 
@@ -498,72 +498,72 @@ msgstr ""
 msgid "Output Method"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:105
+#: assets/editor-constructor/boxes/code/index.js:108
 msgid "HTML + Handlebars"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:109
+#: assets/editor-constructor/boxes/code/index.js:113
 msgid "PHP"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:113
+#: assets/editor-constructor/boxes/code/index.js:118
 msgid "Theme Template"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:166
+#: assets/editor-constructor/boxes/code/index.js:165
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:33
 msgid "How to use?"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:175
+#: assets/editor-constructor/boxes/code/index.js:174
 msgid "Simple text field example see here:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:189
+#: assets/editor-constructor/boxes/code/index.js:188
 msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:195
+#: assets/editor-constructor/boxes/code/index.js:194
 msgid "Note 2: supported custom PHP callback to output block"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:216
+#: assets/editor-constructor/boxes/code/index.js:215
 msgid "Single output code for Frontend and Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:245
+#: assets/editor-constructor/boxes/code/index.js:244
 msgid "To output block code, Lazy Blocks will look for template file in your theme directory:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:270
+#: assets/editor-constructor/boxes/code/index.js:269
 msgid "Read more:"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:276
+#: assets/editor-constructor/boxes/code/index.js:275
 msgid "How to use theme template"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:291
+#: assets/editor-constructor/boxes/code/index.js:290
 msgid "Code Output in Editor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:297
+#: assets/editor-constructor/boxes/code/index.js:296
 msgid "Display Always"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:301
+#: assets/editor-constructor/boxes/code/index.js:300
 msgid "Display within `selected` block only"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:308
+#: assets/editor-constructor/boxes/code/index.js:307
 msgid "Display within `unselected` block only"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:315
+#: assets/editor-constructor/boxes/code/index.js:314
 msgid "Never Display"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code/index.js:339
+#: assets/editor-constructor/boxes/code/index.js:338
 msgid "Code"
 msgstr ""
 
