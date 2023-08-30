@@ -57,10 +57,12 @@ function RenderScript(props) {
 			script.innerHTML = innerHTML;
 		}
 
-		doc.body.appendChild(script);
+		doc?.body?.appendChild(script);
 
 		return () => {
-			doc.body.removeChild(script);
+			// We have to check if the element is still mounted
+			// to prevent unwanted JS errors.
+			doc?.body?.removeChild(script);
 		};
 	}, [element, src, innerHTML]);
 }
