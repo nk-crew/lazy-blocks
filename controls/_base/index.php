@@ -158,8 +158,12 @@ class LazyBlocks_Control {
 			11
 		);
 		add_action(
-			'enqueue_block_editor_assets',
+			'enqueue_block_assets',
 			function() {
+				if ( ! is_admin() ) {
+					return;
+				}
+
 				$blocks = lazyblocks()->blocks()->get_blocks();
 
 				// Skip assets enqueue if there are no blocks.
