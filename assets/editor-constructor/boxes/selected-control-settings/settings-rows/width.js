@@ -44,7 +44,7 @@ export default function WidthRow(props) {
 						return (
 							<Button
 								key={w}
-								isPrimary={isActive}
+								variant={isActive && 'primary'}
 								isPressed={isActive}
 								isSmall
 								onClick={() => {

@@ -282,7 +282,7 @@ function RepeaterControl(props) {
 			</DndContext>
 			<div className="lzb-gutenberg-repeater-options">
 				<Button
-					isSecondary
+					variant="secondary"
 					isSmall
 					disabled={
 						controlData.rows_max && count >= controlData.rows_max

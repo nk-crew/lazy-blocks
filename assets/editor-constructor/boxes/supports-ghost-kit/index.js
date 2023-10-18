@@ -38,7 +38,7 @@ export default function SupportsGhostKitSettings(props) {
 							)}
 						</p>
 						<Button
-							isPrimary
+							variant="primary"
 							isSmall
 							href="https://wordpress.org/plugins/ghostkit/"
 							target="_blank"

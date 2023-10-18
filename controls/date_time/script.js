@@ -93,7 +93,7 @@ function DateTimePicker(props) {
 					}}
 					renderToggle={({ isOpen, onToggle }) => (
 						<Button
-							isLink
+							variant="link"
 							aria-expanded={isOpen}
 							onClick={onToggle}
 							className="lzb-date-time-picker-toggle"
@@ -209,7 +209,7 @@ addFilter(
 				<ButtonGroup>
 					<Button
 						isSmall
-						isPrimary={/date/.test(dateTimePicker)}
+						variant={/date/.test(dateTimePicker) && 'primary'}
 						isPressed={/date/.test(dateTimePicker)}
 						onClick={() => {
 							let result = 'date';
@@ -231,7 +231,7 @@ addFilter(
 					</Button>
 					<Button
 						isSmall
-						isPrimary={/time/.test(dateTimePicker)}
+						variant={/time/.test(dateTimePicker) && 'primary'}
 						isPressed={/time/.test(dateTimePicker)}
 						onClick={() => {
 							let result = 'time';

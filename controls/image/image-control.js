@@ -130,7 +130,7 @@ function ImageControl(props) {
 						/>
 						<div className="lzb-gutenberg-image-button">
 							<Button
-								isSecondary
+								variant="secondary"
 								isSmall
 								onClick={() => {
 									onChange('');

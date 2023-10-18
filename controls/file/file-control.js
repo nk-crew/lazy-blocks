@@ -102,7 +102,7 @@ function FileControl(props) {
 					</div>
 					<div className="lzb-gutenberg-file-button">
 						<Button
-							isSecondary
+							variant="secondary"
 							isSmall
 							onClick={() => {
 								onChange('');

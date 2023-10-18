@@ -157,7 +157,7 @@ export default function CustomCodeSettings(props) {
 					<BaseControl>
 						{!showInfo ? (
 							<Button
-								isLink
+								variant="link"
 								onClick={() => {
 									setShowInfo(true);
 								}}
