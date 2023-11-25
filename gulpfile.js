@@ -13,12 +13,12 @@ const currentVersion = pkg.version;
 const currentVersionData = parseVersionString(pkg.version);
 const bumpFiles = {
 	// Version in the package file.
-	'./package.json': /("version": ")[0-9][0-9.]*(",$)/gm,
+	'./package.json': /("version": ")[0-9][0-9.a-zA-Z-]*(",$)/gm,
 	// Version in the readme file.
-	'./readme.txt': /(^\* Stable tag: )[0-9][0-9.]*($)/gm,
+	'./readme.txt': /(^\* Stable tag: )[0-9][0-9.a-zA-Z-]*($)/gm,
 	'./lazy-blocks.php': [
 		// Version in the file header.
-		/(\* Version:\s\s+)[0-9][0-9.]*($)/gm,
+		/(\* Version:\s\s+)[0-9][0-9.a-zA-Z-]*($)/gm,
 
 		// Version in the constant definition.
 		/(define\( 'LAZY_BLOCKS_VERSION', ').*(' \);$)/gm,
