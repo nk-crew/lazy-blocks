@@ -50,7 +50,13 @@ addFilter('lzb.editor.control.gallery.getValue', 'lzb.editor', (value) => {
 	// change string value to array.
 	if (typeof value === 'string') {
 		try {
-			value = JSON.parse(decodeURI(value));
+			// WPML decodes string in a different way, so we have to use decodeURIComponent
+			// when string does not contains ':'.
+			if (value.includes(':')) {
+				value = JSON.parse(decodeURI(value));
+			} else {
+				value = JSON.parse(decodeURIComponent(value));
+			}
 		} catch (e) {
 			value = [];
 		}
