@@ -1,19 +1,13 @@
 /**
  * WordPress dependencies.
  */
-import { useContext, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
-import { BlockList } from '@wordpress/block-editor';
 
-const { elementContext: __stableElementContext, __unstableElementContext } =
-	BlockList;
-
-const elementContext = __stableElementContext || __unstableElementContext;
-
-export default function DeselectActiveControlOnClickOutside() {
-	const element = useContext(elementContext);
-
+export default function DeselectActiveControlOnClickOutside(props) {
 	useEffect(() => {
+		const element = props.controlsWrapper.current;
+
 		if (!element) {
 			return;
 		}
@@ -77,7 +71,7 @@ export default function DeselectActiveControlOnClickOutside() {
 		return () => {
 			doc.removeEventListener('click', maybeDeselect);
 		};
-	}, [element]);
+	}, [props]);
 
 	return null;
 }

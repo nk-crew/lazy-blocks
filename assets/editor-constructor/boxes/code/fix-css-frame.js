@@ -1,12 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useContext } from '@wordpress/element';
-import { BlockList } from '@wordpress/block-editor';
-
-const { elementContext: __stableElementContext, __unstableElementContext } =
-	BlockList;
-const elementContext = __stableElementContext || __unstableElementContext;
+import { useEffect } from '@wordpress/element';
 
 const STYLE_IDS = [
 	'autocompletion.css',
@@ -17,11 +12,11 @@ const STYLE_IDS = [
 	'ace_scrollbar.css',
 ];
 
-export default function FixCssFrame() {
-	const element = useContext(elementContext);
-
+export default function FixCssFrame(props) {
 	// Find available styles and save it to the state.
 	useEffect(() => {
+		const element = props.codeWrapper.current;
+
 		if (!element) {
 			return;
 		}
@@ -48,7 +43,7 @@ export default function FixCssFrame() {
 
 			documentFrame.head.appendChild(styleTag.cloneNode(true));
 		});
-	}, [element]);
+	}, [props]);
 
 	return null;
 }
