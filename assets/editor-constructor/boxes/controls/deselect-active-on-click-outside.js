@@ -1,12 +1,14 @@
 /**
  * WordPress dependencies.
  */
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { select, dispatch } from '@wordpress/data';
 
-export default function DeselectActiveControlOnClickOutside(props) {
+export default function DeselectActiveControlOnClickOutside() {
+	const ref = useRef();
+
 	useEffect(() => {
-		const element = props.controlsWrapper.current;
+		const element = ref.current;
 
 		if (!element) {
 			return;
@@ -71,7 +73,7 @@ export default function DeselectActiveControlOnClickOutside(props) {
 		return () => {
 			doc.removeEventListener('click', maybeDeselect);
 		};
-	}, [props]);
+	}, [ref]);
 
-	return null;
+	return <link ref={ref} />;
 }

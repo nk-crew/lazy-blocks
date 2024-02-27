@@ -19,7 +19,7 @@ import { SortableContext } from '@dnd-kit/sortable';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import { Tooltip, TabPanel } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
 
@@ -36,8 +36,6 @@ let initialActiveTab = '';
 
 export default function ControlsSettings(props) {
 	const sensors = useSensors(useSensor(CustomPointerSensor));
-
-	const $controlsWrapper = useRef();
 
 	const { data } = props;
 
@@ -298,10 +296,8 @@ export default function ControlsSettings(props) {
 	}
 
 	return (
-		<div className="lzb-constructor-controls" ref={$controlsWrapper}>
-			<DeselectActiveControlOnClickOutside
-				controlsWrapper={$controlsWrapper}
-			/>
+		<div className="lzb-constructor-controls">
+			<DeselectActiveControlOnClickOutside />
 			<TabPanel
 				className="lazyblocks-control-tabs"
 				activeClass="is-active"
