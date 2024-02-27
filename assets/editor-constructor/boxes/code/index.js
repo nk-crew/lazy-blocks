@@ -7,7 +7,7 @@ import './editor.scss';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 import {
@@ -26,7 +26,6 @@ import {
  * Internal dependencies.
  */
 import CodeEditor from './component-react-ace';
-import FixCssFrame from './fix-css-frame';
 
 const { plugin_version: pluginVersion } = window.lazyblocksConstructorData;
 
@@ -35,7 +34,6 @@ export default function CustomCodeSettings(props) {
 
 	const [showInfo, setShowInfo] = useState(false);
 	const [tab, setTab] = useState('frontend');
-	const $codeWrapper = useRef();
 
 	const { currentTheme } = useSelect(($select) => {
 		const { getCurrentTheme } = $select('core');
@@ -128,7 +126,7 @@ export default function CustomCodeSettings(props) {
 		`lzb.constructor.code-settings.output-code`,
 		data.code_output_method !== 'template' ? (
 			<>
-				<PanelBody ref={$codeWrapper}>
+				<PanelBody>
 					<BaseControl>
 						{tabs.length > 1 ? (
 							<TabPanel
@@ -153,7 +151,6 @@ export default function CustomCodeSettings(props) {
 								id: `lzb-editor-${data.code_output_method}`,
 							}}
 						/>
-						<FixCssFrame codeWrapper={$codeWrapper} />
 					</BaseControl>
 					<BaseControl>
 						{!showInfo ? (

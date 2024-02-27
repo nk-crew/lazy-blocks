@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 
 const STYLE_IDS = [
 	'autocompletion.css',
@@ -12,10 +12,12 @@ const STYLE_IDS = [
 	'ace_scrollbar.css',
 ];
 
-export default function FixCssFrame(props) {
+export default function FixCssFrame() {
+	const codeWrapper = useRef();
+
 	// Find available styles and save it to the state.
 	useEffect(() => {
-		const element = props.codeWrapper.current;
+		const element = codeWrapper.current;
 
 		if (!element) {
 			return;
@@ -43,7 +45,7 @@ export default function FixCssFrame(props) {
 
 			documentFrame.head.appendChild(styleTag.cloneNode(true));
 		});
-	}, [props]);
+	}, [codeWrapper]);
 
-	return null;
+	return <link ref={codeWrapper} />;
 }
