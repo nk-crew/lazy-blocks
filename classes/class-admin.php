@@ -26,6 +26,8 @@ class LazyBlocks_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_scripts' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_script_translations' ), 9 );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_styles' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'constructor_enqueue_styles' ) );
 
 		add_action( 'in_admin_header', array( $this, 'in_admin_header' ) );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ) );
@@ -121,7 +123,7 @@ class LazyBlocks_Admin {
 	}
 
 	/**
-	 * Enqueue constructor styles and scripts.
+	 * Enqueue constructor scripts.
 	 */
 	public function constructor_enqueue_scripts() {
 		if ( 'lazyblocks' === get_post_type() ) {
@@ -156,6 +158,16 @@ class LazyBlocks_Admin {
 
 		LazyBlocks_Assets::enqueue_script( 'lazyblocks-translation', 'build/editor-translation' );
 		wp_set_script_translations( 'lazyblocks-translation', 'lazy-blocks', lazyblocks()->plugin_path() . 'languages' );
+	}
+
+	/**
+	 * Enqueue constructor styles.
+	 */
+	public function constructor_enqueue_styles() {
+		if ( is_admin() && 'lazyblocks' === get_post_type() ) {
+			LazyBlocks_Assets::enqueue_style( 'lazyblocks-constructor', 'build/editor-constructor' );
+			wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
+		}
 	}
 
 	/**
