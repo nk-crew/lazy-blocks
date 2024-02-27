@@ -9,8 +9,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { debounce } from 'lodash';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { F10, isKeyboardEvent } from '@wordpress/keycodes';
+
+import Modal from '../../assets/components/modal';
 
 /**
  * WordPress dependencies
@@ -22,6 +24,8 @@ export default function ClassicEdit(props) {
 
 	const didMount = useRef(false);
 
+	const [modalOpenedEditor, setModalOpenedEditor] = useState(false);
+
 	useEffect(() => {
 		if (!didMount.current) {
 			return;
@@ -30,10 +34,10 @@ export default function ClassicEdit(props) {
 		const editor = window.tinymce.get(`editor-${editorId}`);
 		const currentContent = editor?.getContent();
 
-		if (currentContent !== content) {
+		if (currentContent !== content && null !== editor) {
 			editor.setContent(content || '');
 		}
-	}, [content, editorId]);
+	}, [content, editorId, modalOpenedEditor]);
 
 	useEffect(() => {
 		// const { baseURL, suffix } = window.wpEditorL10n.tinymce;
@@ -159,7 +163,7 @@ export default function ClassicEdit(props) {
 			wp.oldEditor.remove(`editor-${editorId}`);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [modalOpenedEditor]);
 
 	function focus() {
 		const editor = window.tinymce.get(`editor-${editorId}`);
@@ -174,15 +178,8 @@ export default function ClassicEdit(props) {
 		// Prevent Mousetrap from moving focus to the top toolbar when pressing `alt+f10` on this block toolbar.
 		event.nativeEvent.stopImmediatePropagation();
 	}
-
-	// Disable reasons:
-	//
-	// jsx-a11y/no-static-element-interactions
-	//  - the toolbar itself is non-interactive, but must capture events
-	//    from the KeyboardShortcuts component to stop their propagation.
-
-	/* eslint-disable jsx-a11y/no-static-element-interactions */
-	return [
+	const tmce = [
+		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
 		<div
 			key="toolbar"
 			id={`toolbar-${editorId}`}
@@ -197,5 +194,39 @@ export default function ClassicEdit(props) {
 			className="block-library-rich-text__tinymce"
 		/>,
 	];
-	/* eslint-enable jsx-a11y/no-static-element-interactions */
+
+	// Disable reasons:
+	//
+	// jsx-a11y/no-static-element-interactions
+	//  - the toolbar itself is non-interactive, but must capture events
+	//    from the KeyboardShortcuts component to stop their propagation.
+	return (
+		<>
+			<br />
+			<button
+				id={`lazyblocks-settings-row-type-${editorId}`}
+				onClick={() => setModalOpenedEditor(!modalOpenedEditor)}
+				className="lzb-constructor-type-toggle"
+			>
+				{__('Open Editor', 'lazy-blocks')}
+			</button>
+			{modalOpenedEditor ? (
+				<Modal
+					title={__('Editor', 'lazy-blocks')}
+					position="top"
+					onRequestClose={() =>
+						setModalOpenedEditor(!modalOpenedEditor)
+					}
+					id={`modal-${editorId}`}
+					className={
+						'lazyblocks-control lazyblocks-control-classic_editor'
+					}
+				>
+					{tmce || null}
+				</Modal>
+			) : (
+				''
+			)}
+		</>
+	);
 }
