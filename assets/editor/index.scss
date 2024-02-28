@@ -490,12 +490,20 @@
 }
 
 // Classic Editor control
-.lazyblocks-control-classic_editor {
+.lazyblocks-control-classic_editor-modal {
+	max-height: 70%;
+	max-width: calc(100% - 32px);
+	min-width: 350px;
+
 	.block-library-rich-text__tinymce {
 		padding: 20px;
 		border: 1px solid #757575;
 		border-radius: 0 0 2px 2px;
 		outline: none;
+	}
+
+	.mce-container-body {
+		min-width: 50vw;
 	}
 
 	.block-library-classic__toolbar {

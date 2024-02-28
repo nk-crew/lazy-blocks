@@ -22,9 +22,12 @@ addFilter(
 			props.uniqueId
 		}-${props.data.name}-${props.childIndex || 0}`;
 
+		const controlProps = useBlockControlProps(props);
+
 		return (
-			<BaseControl key={uniqueKey} {...useBlockControlProps(props)}>
+			<BaseControl key={uniqueKey} {...controlProps}>
 				<TMCE
+					label={controlProps.label}
 					content={props.getValue()}
 					onChange={(val) => {
 						props.onChange(val);
