@@ -43,6 +43,7 @@ export default function PreviewServerCallback(props) {
 	const isMountedRef = useRef(true);
 	const currentFetchRequest = useRef(null);
 	const fetchTimeout = useRef();
+	const blockContentWrapper = useRef();
 
 	const prevProps = usePrevious(props);
 
@@ -228,12 +229,20 @@ export default function PreviewServerCallback(props) {
 		result = (
 			<>
 				{response ? (
-					<RenderBlockContent content={response} props={props} />
+					<RenderBlockContent
+						content={response}
+						props={props}
+						blockContentWrapper={blockContentWrapper}
+					/>
 				) : null}
 				{isLoading ? <Spinner /> : null}
 			</>
 		);
 	}
 
-	return <div className="lzb-preview-server">{result}</div>;
+	return (
+		<div ref={blockContentWrapper} className="lzb-preview-server">
+			{result}
+		</div>
+	);
 }

@@ -1,12 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useContext } from '@wordpress/element';
-import { BlockList } from '@wordpress/block-editor';
-
-const { elementContext: __stableElementContext, __unstableElementContext } =
-	BlockList;
-const elementContext = __stableElementContext || __unstableElementContext;
+import { useEffect, useRef } from '@wordpress/element';
 
 const STYLE_IDS = [
 	'autocompletion.css',
@@ -18,10 +13,12 @@ const STYLE_IDS = [
 ];
 
 export default function FixCssFrame() {
-	const element = useContext(elementContext);
+	const codeWrapper = useRef();
 
 	// Find available styles and save it to the state.
 	useEffect(() => {
+		const element = codeWrapper.current;
+
 		if (!element) {
 			return;
 		}
@@ -48,7 +45,7 @@ export default function FixCssFrame() {
 
 			documentFrame.head.appendChild(styleTag.cloneNode(true));
 		});
-	}, [element]);
+	}, [codeWrapper]);
 
-	return null;
+	return <link ref={codeWrapper} />;
 }
