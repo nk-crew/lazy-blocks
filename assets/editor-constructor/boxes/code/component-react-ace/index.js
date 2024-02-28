@@ -26,6 +26,8 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
+import FixCssFrame from '../fix-css-frame';
+
 // Add autocompleter with control names.
 addCompleter({
 	getCompletions(editor, session, pos, prefix, callback) {
@@ -143,6 +145,7 @@ export default function CodeEditor(props) {
 					...(props.setOptions || {}),
 				}}
 			/>
+			<FixCssFrame />
 		</div>
 	);
 }
