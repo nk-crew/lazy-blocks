@@ -26,7 +26,6 @@ import {
  * Internal dependencies.
  */
 import CodeEditor from './component-react-ace';
-import FixCssFrame from './fix-css-frame';
 
 const { plugin_version: pluginVersion } = window.lazyblocksConstructorData;
 
@@ -152,7 +151,6 @@ export default function CustomCodeSettings(props) {
 								id: `lzb-editor-${data.code_output_method}`,
 							}}
 						/>
-						<FixCssFrame />
 					</BaseControl>
 					<BaseControl>
 						{!showInfo ? (

@@ -15,17 +15,9 @@ import json5 from 'json5';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { isEqual } from 'lodash';
 import { __, sprintf } from '@wordpress/i18n';
-import { useState, useEffect, useContext } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import {
-	InnerBlocks,
-	useInnerBlocksProps,
-	BlockList,
-} from '@wordpress/block-editor';
-
-const { elementContext: __stableElementContext, __unstableElementContext } =
-	BlockList;
-const elementContext = __stableElementContext || __unstableElementContext;
+import { InnerBlocks, useInnerBlocksProps } from '@wordpress/block-editor';
 
 const CONVERT_ATTRIBUTES = {
 	classname: 'className',
@@ -41,13 +33,10 @@ const CONVERT_TO_JSON = [
 ];
 
 function RenderScript(props) {
-	const { src = '', innerHTML = '' } = props;
-
-	const element = useContext(elementContext);
+	const { src = '', innerHTML = '', blockContentWrapper } = props;
 
 	useEffect(() => {
-		const doc = element?.ownerDocument || document;
-
+		const doc = blockContentWrapper.current?.ownerDocument || document;
 		const script = doc.createElement('script');
 
 		if (src) {
@@ -64,7 +53,7 @@ function RenderScript(props) {
 			// to prevent unwanted JS errors.
 			doc?.body?.removeChild(script);
 		};
-	}, [element, src, innerHTML]);
+	}, [blockContentWrapper, src, innerHTML]);
 }
 
 /**
@@ -116,7 +105,11 @@ function prepareAttributes(attrs) {
 	return newAttrs;
 }
 
-export default function RenderBlockContent({ content, props }) {
+export default function RenderBlockContent({
+	content,
+	props,
+	blockContentWrapper,
+}) {
 	const [innerBlocksOptions, setInnerBlocksOptions] = useState({});
 
 	const { hasChildBlocks } = useSelect(
@@ -205,6 +198,10 @@ export default function RenderBlockContent({ content, props }) {
 					}
 					if (domNode?.children[0]?.data) {
 						scriptData.innerHTML = domNode.children[0].data;
+					}
+
+					if (typeof blockContentWrapper !== 'undefined') {
+						scriptData.blockContentWrapper = blockContentWrapper;
 					}
 
 					return <RenderScript {...scriptData} />;
