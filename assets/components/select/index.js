@@ -13,7 +13,14 @@ import AsyncSelect from 'react-select/async';
 import ReactSelect, { components } from 'react-select';
 import selectStyles from 'gutenberg-react-select-styles';
 
-import { closestCenter, DndContext } from '@dnd-kit/core';
+import {
+	DndContext,
+	MouseSensor,
+	TouchSensor,
+	closestCenter,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -32,6 +39,13 @@ export default function Select(props) {
 	}
 
 	const selectProps = { ...props };
+
+	// Set activation distance to prevent conflict with remove button.
+	const activationConstraint = { distance: 4 };
+	const sensors = useSensors(
+		useSensor(MouseSensor, { activationConstraint }),
+		useSensor(TouchSensor, { activationConstraint })
+	);
 
 	// Tags.
 	if (selectProps.isTags) {
@@ -91,6 +105,8 @@ export default function Select(props) {
 		return (
 			<DndContext
 				modifiers={[restrictToParentElement]}
+				collisionDetection={closestCenter}
+				sensors={sensors}
 				onDragEnd={(event) => {
 					const { active, over } = event;
 
@@ -105,7 +121,6 @@ export default function Select(props) {
 						onChange(arrayMoveImmutable(value, oldIndex, newIndex));
 					}
 				}}
-				collisionDetection={closestCenter}
 			>
 				<SortableContext
 					items={
