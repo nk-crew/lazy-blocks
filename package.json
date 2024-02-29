@@ -42,6 +42,8 @@
 		"@dnd-kit/modifiers": "^6.0.1",
 		"@dnd-kit/sortable": "^7.0.2",
 		"@dnd-kit/utilities": "^3.2.1",
+		"@emotion/cache": "^11.11.0",
+		"@emotion/react": "^11.11.4",
 		"@wordpress/base-styles": "^3.6.0",
 		"ace-builds": "^1.22.0",
 		"array-move": "^4.0.0",
@@ -50,10 +52,11 @@
 		"html-react-parser": "^4.0.0",
 		"json5": "^2.2.3",
 		"react-ace": "^10.1.0",
-		"react-select": "^5.7.3",
+		"react-select": "^5.8.0",
 		"react-virtualized": "^9.22.5",
 		"shorthash": "0.0.2",
-		"slugify": "^1.6.6"
+		"slugify": "^1.6.6",
+		"uuid": "^9.0.1"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.37.0",
