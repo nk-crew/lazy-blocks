@@ -3,8 +3,6 @@
  */
 import './editor.scss';
 
-import { useRef } from '@wordpress/element';
-
 import StyleProvider from './style-provider';
 
 /**
@@ -24,7 +22,6 @@ import { arrayMoveImmutable } from 'array-move';
 
 export default function Select(props) {
 	const { value, onChange } = props;
-	const ref = useRef();
 
 	let ThisSelect = ReactSelect;
 
@@ -115,32 +112,27 @@ export default function Select(props) {
 						value && value.length ? value.map((o) => o.value) : []
 					}
 				>
-					<ThisSelect
-						menuPlacement="auto"
-						className="lazyblocks-component-select"
-						styles={selectStyles}
-						{...selectProps}
-					/>
+					<StyleProvider>
+						<ThisSelect
+							menuPlacement="auto"
+							className="lazyblocks-component-select"
+							styles={selectStyles}
+							{...selectProps}
+						/>
+					</StyleProvider>
 				</SortableContext>
 			</DndContext>
 		);
 	}
 
 	return (
-		<>
-			{/*
-			 * Add style provider to fix styles render inside the editor iframe.
-			 * thanks to https://github.com/WordPress/gutenberg/issues/38226#issuecomment-1492422260
-			 */}
-			<link ref={ref} />
-			<StyleProvider document={ref?.current?.ownerDocument || document}>
-				<ThisSelect
-					menuPlacement="auto"
-					className="lazyblocks-component-select"
-					styles={selectStyles}
-					{...selectProps}
-				/>
-			</StyleProvider>
-		</>
+		<StyleProvider>
+			<ThisSelect
+				menuPlacement="auto"
+				className="lazyblocks-component-select"
+				styles={selectStyles}
+				{...selectProps}
+			/>
+		</StyleProvider>
 	);
 }

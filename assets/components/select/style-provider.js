@@ -9,6 +9,8 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import * as uuid from 'uuid';
 
+import { useRef } from '@wordpress/element';
+
 const uuidCache = new Set();
 // Use a weak map so that when the container is detached it's automatically
 // dereferenced to avoid memory leak.
@@ -32,7 +34,7 @@ const memoizedCreateCacheWithContainer = (container) => {
 	return cache;
 };
 
-export function StyleProvider(props) {
+function StyleProvider(props) {
 	const { children, document } = props;
 
 	if (!document) {
@@ -44,4 +46,17 @@ export function StyleProvider(props) {
 	return <CacheProvider value={cache}>{children}</CacheProvider>;
 }
 
-export default StyleProvider;
+export default function StyleProviderWrapper(props) {
+	const { children } = props;
+
+	const ref = useRef();
+
+	return (
+		<>
+			<link ref={ref} />
+			<StyleProvider document={ref?.current?.ownerDocument || document}>
+				{children}
+			</StyleProvider>
+		</>
+	);
+}
