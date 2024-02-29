@@ -15,8 +15,7 @@ import selectStyles from 'gutenberg-react-select-styles';
 
 import {
 	DndContext,
-	MouseSensor,
-	TouchSensor,
+	PointerSensor,
 	closestCenter,
 	useSensor,
 	useSensors,
@@ -43,8 +42,7 @@ export default function Select(props) {
 	// Set activation distance to prevent conflict with remove button.
 	const activationConstraint = { distance: 4 };
 	const sensors = useSensors(
-		useSensor(MouseSensor, { activationConstraint }),
-		useSensor(TouchSensor, { activationConstraint })
+		useSensor(PointerSensor, { activationConstraint })
 	);
 
 	// Tags.
