@@ -256,12 +256,15 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 * @return boolean
 	 */
 	public function is_valid_html( $html ) {
+		// Remove <InnerBlocks> tags using regular expression.
+		$cleaned_html = preg_replace( '/<InnerBlocks\s*\/?>/', '', $html );
+
 		$dom = new DOMDocument();
 
 		// Disable libxml errors and error handling.
 		libxml_use_internal_errors( true );
 
-		$dom->loadHTML( $html );
+		$dom->loadHTML( $cleaned_html );
 
 		// Get any errors from libxml.
 		$errors = libxml_get_errors();
