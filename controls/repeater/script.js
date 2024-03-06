@@ -73,8 +73,11 @@ addFilter(
 						Object.keys(innerControls).forEach((i) => {
 							const innerControl = innerControls[i];
 
+							// Add default values of controls.
 							newRow[innerControl.name] =
-								innerControl.default || '';
+								innerControl.default ||
+								innerControl.checked ||
+								'';
 						});
 
 						val.push(newRow);
