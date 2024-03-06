@@ -239,7 +239,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		$block_result = lazyblocks()->blocks()->render_callback( $block_attributes, null, $block_context, $block );
 
 		if ( isset( $block_result ) && null !== $block_result ) {
-			if ( $this->is_valid_html( $block_result ) ) {
+			if ( ! $this->is_valid_html( $block_result ) ) {
 				return $this->error( 'lazy_block_invalid', esc_html__( 'Please ensure that the output is a valid HTML structure.', 'lazy-blocks' ) );
 			}
 
