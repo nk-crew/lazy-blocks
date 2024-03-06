@@ -24,10 +24,16 @@ export default function ConditionSettings(props) {
 				const result = {};
 				Object.keys(resp.response).forEach((name) => {
 					const post = resp.response[name];
+
 					if (
-						post.name !== 'lazyblocks' &&
-						post.name !== 'lazyblocks_templates' &&
-						post.name !== 'attachment'
+						![
+							'lazyblocks',
+							'lazyblocks_templates',
+							'attachment',
+							'wp_block',
+							'wp_navigation',
+							'ghostkit_template',
+						].includes(post.name)
 					) {
 						result[post.name] = post.label;
 					}
