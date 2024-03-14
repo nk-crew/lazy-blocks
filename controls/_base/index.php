@@ -147,7 +147,8 @@ class LazyBlocks_Control {
 				$blocks = lazyblocks()->blocks()->get_blocks();
 
 				// Skip assets enqueue if there are no blocks.
-				if ( empty( $blocks ) ) {
+				// Allow on constructor page even if no blocks, since we need control assets here.
+				if ( empty( $blocks ) && 'lazyblocks' !== get_post_type() ) {
 					return;
 				}
 
@@ -167,7 +168,8 @@ class LazyBlocks_Control {
 				$blocks = lazyblocks()->blocks()->get_blocks();
 
 				// Skip assets enqueue if there are no blocks.
-				if ( empty( $blocks ) ) {
+				// Allow on constructor page even if no blocks, since we need control assets here.
+				if ( empty( $blocks ) && 'lazyblocks' !== get_post_type() ) {
 					return;
 				}
 

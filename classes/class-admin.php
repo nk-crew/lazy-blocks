@@ -142,9 +142,6 @@ class LazyBlocks_Admin {
 					'pro_url'             => lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'constructor' ) ),
 				)
 			);
-
-			LazyBlocks_Assets::enqueue_style( 'lazyblocks-constructor', 'build/editor-constructor' );
-			wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
 		}
 	}
 
