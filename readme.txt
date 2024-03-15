@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.5
 * Requires PHP: 7.2
-* Stable tag: 3.5.1
+* Stable tag: 3.6.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,26 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.6.0 - Mar 15, 2024 =
+
+PRO plugin:
+
+* fixed decoding of WPML encoded strings in conditional logic in editor
+
+Free + PRO plugin:
+
+* added compatibility for the latest Gutenberg and WordPress 6.5
+* added error handler for invalid HTML. The block will no longer crash, it will display the error message
+* added support for new Ghost Kit extensions
+* changed Classic control to use Modal since we can no longer use the TinyMCE inside editor iframe
+* fixed styles enqueue in editor iframe
+* fixed adding default toggle/checkbox value in the new repeater row
+* fixed `react-select` styles render inside editor iframe
+* fixed `react-select` removing items by clicking on X button
+* fixed decoding of WPML encoded strings in repeater, gallery, file and image controls in editor
+* fixed displaying Navigation and Patterns in block Condition selector
+* fixed loading block control scripts in constructor when no blocks registered yet
 
 = 3.5.1 - Aug 30, 2023 =
 
