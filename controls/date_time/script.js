@@ -208,7 +208,7 @@ addFilter(
 			<PanelBody>
 				<ButtonGroup>
 					<Button
-						isSmall
+						size="small"
 						isPrimary={/date/.test(dateTimePicker)}
 						isPressed={/date/.test(dateTimePicker)}
 						onClick={() => {
@@ -230,7 +230,7 @@ addFilter(
 						{__('Date', 'lazy-blocks')}
 					</Button>
 					<Button
-						isSmall
+						size="small"
 						isPrimary={/time/.test(dateTimePicker)}
 						isPressed={/time/.test(dateTimePicker)}
 						onClick={() => {

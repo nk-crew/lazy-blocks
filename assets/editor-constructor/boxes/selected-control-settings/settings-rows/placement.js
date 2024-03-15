@@ -54,7 +54,7 @@ export default function PlacementRow(props) {
 						disabled={
 							placementRestrictions.indexOf('content') === -1
 						}
-						isSmall
+						size="small"
 						onClick={() => {
 							let newPlacement = 'content';
 
@@ -83,7 +83,7 @@ export default function PlacementRow(props) {
 						disabled={
 							placementRestrictions.indexOf('inspector') === -1
 						}
-						isSmall
+						size="small"
 						onClick={() => {
 							let newPlacement = 'inspector';
 

@@ -122,7 +122,7 @@ function GalleryControl(props) {
 								}}
 							/>
 							<div className="lzb-gutenberg-gallery-button">
-								<Button isSecondary isSmall>
+								<Button variant="secondary" size="small">
 									{__('Edit Gallery', 'lazy-blocks')}
 								</Button>
 							</div>

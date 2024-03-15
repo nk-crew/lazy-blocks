@@ -273,7 +273,11 @@ export default function ComponentChoices(props) {
 					</div>
 				) : null}
 				<div>
-					<Button onClick={() => addChoice()} isSecondary isSmall>
+					<Button
+						onClick={() => addChoice()}
+						variant="secondary"
+						size="small"
+					>
 						{labelAddChoice}
 					</Button>
 				</div>

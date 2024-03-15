@@ -56,7 +56,7 @@ export default function SupportsGhostKitSettings(props) {
 						</p>
 						<Button
 							isPrimary
-							isSmall
+							size="small"
 							href="https://wordpress.org/plugins/ghostkit/"
 							target="_blank"
 							rel="noopener noreferrer"

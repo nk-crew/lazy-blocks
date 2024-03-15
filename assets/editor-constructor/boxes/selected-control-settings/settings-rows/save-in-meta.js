@@ -23,7 +23,7 @@ export default function SaveInMetaRow(props) {
 				help={
 					<Button
 						id="lazyblocks-settings-row-save-in-meta"
-						isSmall
+						size="small"
 						variant="secondary"
 						href={`https://www.lazyblocks.com/docs/examples/display-custom-fields-meta/?utm_source=plugin&utm_medium=constructor&utm_campaign=how_to_use_meta&utm_content=${pluginVersion}`}
 						target="_blank"
