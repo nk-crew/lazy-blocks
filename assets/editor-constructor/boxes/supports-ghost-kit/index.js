@@ -3,6 +3,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 import {
 	Notice,
 	BaseControl,
@@ -16,12 +17,28 @@ export default function SupportsGhostKitSettings(props) {
 	const {
 		supports_classname: supportsClassname,
 
+		supports_ghostkit_effects: supportsGktEffects,
+		supports_ghostkit_position: supportsGktPosition,
 		supports_ghostkit_spacings: supportsGktSpacings,
-		supports_ghostkit_display: supportsGktDisplay,
-		supports_ghostkit_scroll_reveal: supportsGktScrollReveal,
 		supports_ghostkit_frame: supportsGktFrame,
+		supports_ghostkit_transform: supportsGktTransform,
 		supports_ghostkit_custom_css: supportsGktCustomCSS,
+		supports_ghostkit_display: supportsGktDisplay,
+		supports_ghostkit_attributes: supportsGktAttributes,
+
+		// Deprecated.
+		supports_ghostkit_scroll_reveal: supportsGktScrollReveal,
 	} = data;
+
+	// Migrate old attribute.
+	useEffect(() => {
+		if (typeof supportsGktScrollReveal !== 'undefined') {
+			updateData({
+				supports_ghostkit_scroll_reveal: undefined,
+				supports_ghostkit_effects: supportsGktScrollReveal,
+			});
+		}
+	}, [supportsGktScrollReveal, updateData]);
 
 	return (
 		<>
@@ -50,10 +67,13 @@ export default function SupportsGhostKitSettings(props) {
 				</BaseControl>
 			) : null}
 
-			{(supportsGktSpacings ||
+			{(supportsGktPosition ||
+				supportsGktSpacings ||
 				supportsGktDisplay ||
 				supportsGktFrame ||
-				supportsGktCustomCSS) &&
+				supportsGktTransform ||
+				supportsGktCustomCSS ||
+				supportsGktAttributes) &&
 			!supportsClassname ? (
 				<BaseControl>
 					<Notice
@@ -72,12 +92,75 @@ export default function SupportsGhostKitSettings(props) {
 			) : null}
 
 			<ToggleControl
+				label={__('Effects', 'lazy-blocks')}
+				help={__(
+					'Add visual effects, reveal, scroll animations, etc.',
+					'lazy-blocks'
+				)}
+				checked={supportsGktEffects}
+				onChange={(value) =>
+					updateData({
+						supports_ghostkit_effects: value,
+					})
+				}
+			/>
+			<ToggleControl
+				label={__('Position', 'lazy-blocks')}
+				help={__(
+					'Change block position to either absolute or fixed.',
+					'lazy-blocks'
+				)}
+				checked={supportsGktPosition}
+				onChange={(value) =>
+					updateData({
+						supports_ghostkit_position: value,
+						supports_classname: value || supportsClassname,
+					})
+				}
+			/>
+			<ToggleControl
 				label={__('Spacings', 'lazy-blocks')}
 				help={__('Change block margins and paddings.', 'lazy-blocks')}
 				checked={supportsGktSpacings}
 				onChange={(value) =>
 					updateData({
 						supports_ghostkit_spacings: value,
+						supports_classname: value || supportsClassname,
+					})
+				}
+			/>
+			<ToggleControl
+				label={__('Frame', 'lazy-blocks')}
+				help={__('Add border and box shadow to block.', 'lazy-blocks')}
+				checked={supportsGktFrame}
+				onChange={(value) =>
+					updateData({
+						supports_ghostkit_frame: value,
+						supports_classname: value || supportsClassname,
+					})
+				}
+			/>
+			<ToggleControl
+				label={__('Transform', 'lazy-blocks')}
+				help={__('Add CSS transformations to block.', 'lazy-blocks')}
+				checked={supportsGktTransform}
+				onChange={(value) =>
+					updateData({
+						supports_ghostkit_transform: value,
+						supports_classname: value || supportsClassname,
+					})
+				}
+			/>
+			<ToggleControl
+				label={__('Custom CSS', 'lazy-blocks')}
+				help={__(
+					'Write custom CSS on each inserted blocks.',
+					'lazy-blocks'
+				)}
+				checked={supportsGktCustomCSS}
+				onChange={(value) =>
+					updateData({
+						supports_ghostkit_custom_css: value,
 						supports_classname: value || supportsClassname,
 					})
 				}
@@ -97,39 +180,14 @@ export default function SupportsGhostKitSettings(props) {
 				}
 			/>
 			<ToggleControl
-				label={__('Animate on Scroll', 'lazy-blocks')}
+				label={__('Attributes', 'lazy-blocks')}
 				help={__(
-					'Display block with animation on scroll.',
+					'Insert custom HTML attributes with custom content.',
 					'lazy-blocks'
 				)}
-				checked={supportsGktScrollReveal}
+				checked={supportsGktAttributes}
 				onChange={(value) =>
-					updateData({ supports_ghostkit_scroll_reveal: value })
-				}
-			/>
-			<ToggleControl
-				label={__('Frame', 'lazy-blocks')}
-				help={__('Add border and box shadow to block.', 'lazy-blocks')}
-				checked={supportsGktFrame}
-				onChange={(value) =>
-					updateData({
-						supports_ghostkit_frame: value,
-						supports_classname: value || supportsClassname,
-					})
-				}
-			/>
-			<ToggleControl
-				label={__('Custom CSS', 'lazy-blocks')}
-				help={__(
-					'Write custom CSS on each inserted blocks.',
-					'lazy-blocks'
-				)}
-				checked={supportsGktCustomCSS}
-				onChange={(value) =>
-					updateData({
-						supports_ghostkit_custom_css: value,
-						supports_classname: value || supportsClassname,
-					})
+					updateData({ supports_ghostkit_attributes: value })
 				}
 			/>
 		</>

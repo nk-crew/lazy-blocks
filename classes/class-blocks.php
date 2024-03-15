@@ -954,6 +954,28 @@ class LazyBlocks_Blocks {
 
 		$styles = (array) $get_meta_value( 'lazyblocks_styles' );
 
+		// Prepare supports.
+		$supports = array(
+			'customClassName' => $get_meta_value( 'lazyblocks_supports_classname' ),
+			'anchor'          => $get_meta_value( 'lazyblocks_supports_anchor' ),
+			'html'            => $get_meta_value( 'lazyblocks_supports_html' ),
+			'multiple'        => $get_meta_value( 'lazyblocks_supports_multiple' ),
+			'inserter'        => $get_meta_value( 'lazyblocks_supports_inserter' ),
+			'reusable'        => $get_meta_value( 'lazyblocks_supports_reusable' ),
+			'lock'            => $get_meta_value( 'lazyblocks_supports_lock' ),
+			'align'           => $align,
+			'ghostkit'        => array(
+				'effects'    => $get_meta_value( 'lazyblocks_supports_ghostkit_effects' ) || $get_meta_value( 'lazyblocks_supports_ghostkit_scroll_reveal' ) || false,
+				'position'   => $get_meta_value( 'lazyblocks_supports_ghostkit_position' ) || false,
+				'spacings'   => $get_meta_value( 'lazyblocks_supports_ghostkit_spacings' ) || false,
+				'frame'      => $get_meta_value( 'lazyblocks_supports_ghostkit_frame' ) || false,
+				'transform'  => $get_meta_value( 'lazyblocks_supports_ghostkit_transform' ) || false,
+				'customCSS'  => $get_meta_value( 'lazyblocks_supports_ghostkit_custom_css' ) || false,
+				'display'    => $get_meta_value( 'lazyblocks_supports_ghostkit_display' ) || false,
+				'attributes' => $get_meta_value( 'lazyblocks_supports_ghostkit_attributes' ) || false,
+			),
+		);
+
 		return apply_filters(
 			'lzb/block_data',
 			array(
@@ -965,25 +987,7 @@ class LazyBlocks_Blocks {
 				'description'    => $get_meta_value( 'lazyblocks_description' ),
 				'category'       => $this->sanitize_slug( esc_html( $get_meta_value( 'lazyblocks_category' ) ) ),
 				'category_label' => esc_html( $get_meta_value( 'lazyblocks_category' ) ),
-				'supports'       => array(
-					'customClassName' => $get_meta_value( 'lazyblocks_supports_classname' ),
-					'anchor'          => $get_meta_value( 'lazyblocks_supports_anchor' ),
-					'html'            => $get_meta_value( 'lazyblocks_supports_html' ),
-					'multiple'        => $get_meta_value( 'lazyblocks_supports_multiple' ),
-					'inserter'        => $get_meta_value( 'lazyblocks_supports_inserter' ),
-					'reusable'        => $get_meta_value( 'lazyblocks_supports_reusable' ),
-					'lock'            => $get_meta_value( 'lazyblocks_supports_lock' ),
-					'align'           => $align,
-				),
-				'ghostkit'       => array(
-					'supports' => array(
-						'spacings'     => $get_meta_value( 'lazyblocks_supports_ghostkit_spacings' ),
-						'display'      => $get_meta_value( 'lazyblocks_supports_ghostkit_display' ),
-						'scrollReveal' => $get_meta_value( 'lazyblocks_supports_ghostkit_scroll_reveal' ),
-						'frame'        => $get_meta_value( 'lazyblocks_supports_ghostkit_frame' ),
-						'customCSS'    => $get_meta_value( 'lazyblocks_supports_ghostkit_custom_css' ),
-					),
-				),
+				'supports'       => $supports,
 				'controls'       => $controls,
 				'code'           => array(
 					'output_method'     => $get_meta_value( 'lazyblocks_code_output_method' ),
@@ -1406,6 +1410,7 @@ class LazyBlocks_Blocks {
 			$data = array(
 				'api_version'     => 3,
 				'attributes'      => $attributes,
+				'supports'        => $block['supports'],
 				'render_callback' => function( $render_attributes, $render_content = null ) {
 					// Usually this context is used to properly preload content in the Pro plugin.
 					$render_context = is_admin() ? 'editor' : 'frontend';
@@ -1601,10 +1606,6 @@ class LazyBlocks_Blocks {
 			// @link https://github.com/WordPress/gutenberg/pull/51288.
 			if ( isset( $attributes['anchor'] ) && $attributes['anchor'] ) {
 				$array_atts['id'] = esc_attr( $attributes['anchor'] );
-			}
-
-			if ( isset( $attributes['ghostkitSR'] ) && $attributes['ghostkitSR'] ) {
-				$array_atts['data-ghostkit-sr'] = esc_attr( $attributes['ghostkitSR'] );
 			}
 
 			$html_atts = get_block_wrapper_attributes( $array_atts );

@@ -51,8 +51,6 @@ options.blocks.forEach((item) => {
 		keywords: item.keywords,
 		supports: item.supports,
 
-		ghostkit: item.ghostkit,
-
 		lazyblock: true,
 
 		edit(props) {
