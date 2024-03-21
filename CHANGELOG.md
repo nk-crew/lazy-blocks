@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 3.6.1 - Mar 21, 2024 =
+
+* reverted the code for validating HTML as it does more harm than good. In the next update, we will need to add error handlers in JS instead of trying to validate HTML inside PHP.
+
 = 3.6.0 - Mar 15, 2024 =
 
 PRO plugin:
