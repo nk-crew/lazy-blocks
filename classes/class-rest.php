@@ -239,40 +239,10 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		$block_result = lazyblocks()->blocks()->render_callback( $block_attributes, null, $block_context, $block );
 
 		if ( isset( $block_result ) && null !== $block_result ) {
-			if ( ! $this->is_valid_html( $block_result ) ) {
-				return $this->error( 'lazy_block_invalid', esc_html__( 'Please ensure that the output is a valid HTML structure.', 'lazy-blocks' ) );
-			}
-
 			return $this->success( $block_result );
 		} else {
 			return $this->error( 'lazy_block_no_render_callback', esc_html__( 'Render callback is not specified.', 'lazy-blocks' ) );
 		}
-	}
-
-	/**
-	 * Check HTML valid.
-	 *
-	 * @param string $html - Layout of the current block.
-	 * @return boolean
-	 */
-	public function is_valid_html( $html ) {
-		// Remove <InnerBlocks> tags using regular expression.
-		$cleaned_html = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', '', $html );
-
-		$dom = new DOMDocument();
-
-		// Disable libxml errors and error handling.
-		libxml_use_internal_errors( true );
-
-		$dom->loadHTML( $cleaned_html );
-
-		// Get any errors from libxml.
-		$errors = libxml_get_errors();
-
-		// Clear libxml error buffer.
-		libxml_clear_errors();
-
-		return empty( $errors );
 	}
 
 	/**
