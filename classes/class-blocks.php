@@ -693,7 +693,7 @@ class LazyBlocks_Blocks {
 	 * @return mixed
 	 */
 	private function get_meta_value_by_block( $name, $block_data ) {
-		$result = $block_data[ $name ];
+		$result = $block_data[ $name ] ?? null;
 
 		return $this->get_meta_value( $name, $result );
 	}
