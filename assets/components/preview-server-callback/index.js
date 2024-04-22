@@ -243,9 +243,7 @@ export default function PreviewServerCallback(props) {
 
 	return (
 		<div ref={blockContentWrapper} className="lzb-preview-server">
-			<PreviewErrorBoundary key={Math.random()}>
-				{result}
-			</PreviewErrorBoundary>
+			<PreviewErrorBoundary key={response}>{result}</PreviewErrorBoundary>
 		</div>
 	);
 }
