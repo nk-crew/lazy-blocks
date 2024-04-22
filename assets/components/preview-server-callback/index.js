@@ -15,7 +15,7 @@ import apiFetch from '@wordpress/api-fetch';
  * Internal dependencies.
  */
 import RenderBlockContent from './render-block-content';
-import isValidBlockHTML from '../../utils/is-valid-block-html';
+import PreviewErrorBoundary from '../../components/preview-error-boundary';
 
 /**
  * Block Editor custom PHP preview.
@@ -214,8 +214,6 @@ export default function PreviewServerCallback(props) {
 
 	let result = '';
 
-	const isValid = isValidBlockHTML(response);
-
 	if (!allowRender) {
 		result = '';
 	} else if (response && response.error) {
@@ -228,7 +226,7 @@ export default function PreviewServerCallback(props) {
 				response.response
 		);
 		result = errorMessage;
-	} else if (isValid && typeof isValid === 'boolean') {
+	} else {
 		result = (
 			<>
 				{response ? (
@@ -241,17 +239,13 @@ export default function PreviewServerCallback(props) {
 				{isLoading ? <Spinner /> : null}
 			</>
 		);
-	} else {
-		result = (
-			<div className="block-editor-warning">
-				<div className="block-editor-warning__message">{isValid}</div>
-			</div>
-		);
 	}
 
 	return (
 		<div ref={blockContentWrapper} className="lzb-preview-server">
-			{result}
+			<PreviewErrorBoundary key={Math.random()}>
+				{result}
+			</PreviewErrorBoundary>
 		</div>
 	);
 }
