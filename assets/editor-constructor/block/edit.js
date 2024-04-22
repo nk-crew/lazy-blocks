@@ -23,7 +23,7 @@ import ControlsSettings from '../boxes/controls';
 import SelectedControlSettings from '../boxes/selected-control-settings';
 import CustomCodeSettings from '../boxes/code';
 import CodePreview from '../boxes/code-preview';
-import PreviewErrorBoundary from '../boxes/code-preview/preview-error-boundary';
+import PreviewErrorBoundary from '../../components/preview-error-boundary';
 
 import '../../components/tab-panel';
 
