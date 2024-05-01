@@ -101,9 +101,6 @@
          "Invalid block.": [
             ""
          ],
-         "Please ensure that the output is a valid HTML structure.": [
-            ""
-         ],
          "Render callback is not specified.": [
             ""
          ],
@@ -277,6 +274,9 @@
          "Icon Picker": [
             ""
          ],
+         "Error: Could not generate the preview.": [
+            ""
+         ],
          "Error loading block preview: %s": [
             ""
          ],
@@ -323,9 +323,6 @@
             ""
          ],
          "Blocks Constructor": [
-            ""
-         ],
-         "Error: Could not generate the preview.": [
             ""
          ],
          "Preview": [

@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.5
 * Requires PHP: 7.2
-* Stable tag: 3.6.1
+* Stable tag: 3.6.2
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,11 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.6.2 - May 1, 2024 =
+
+* added error handler to prevent block from breaking in editor when there are invalid HTML in block output
+* fixed get_meta_value_by_block method to not crash if no meta available
 
 = 3.6.1 - Mar 21, 2024 =
 

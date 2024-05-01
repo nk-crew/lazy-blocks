@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+= 3.6.2 - May 1, 2024 =
+
+* added error handler to prevent block from breaking in editor when there are invalid HTML in block output
+* fixed get_meta_value_by_block method to not crash if no meta available
+
 = 3.6.1 - Mar 21, 2024 =
 
 * reverted the code for validating HTML as it does more harm than good. In the next update, we will need to add error handlers in JS instead of trying to validate HTML inside PHP.
