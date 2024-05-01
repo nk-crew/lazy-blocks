@@ -15,6 +15,7 @@ import apiFetch from '@wordpress/api-fetch';
  * Internal dependencies.
  */
 import RenderBlockContent from './render-block-content';
+import PreviewErrorBoundary from '../../components/preview-error-boundary';
 
 /**
  * Block Editor custom PHP preview.
@@ -242,7 +243,7 @@ export default function PreviewServerCallback(props) {
 
 	return (
 		<div ref={blockContentWrapper} className="lzb-preview-server">
-			{result}
+			<PreviewErrorBoundary key={response}>{result}</PreviewErrorBoundary>
 		</div>
 	);
 }
