@@ -42,6 +42,13 @@ class LazyBlocks_Control_ClassicEditor extends LazyBlocks_Control {
 	 * @return array script dependencies.
 	 */
 	public function get_script_depends() {
+		global $current_screen;
+
+		// Fixed Classic control error on legacy Widgets screen.
+		if ( isset( $current_screen->id ) && 'widgets' === $current_screen->id ) {
+			wp_tinymce_inline_scripts();
+		}
+
 		return array( 'lazyblocks-control-classic-editor' );
 	}
 }
