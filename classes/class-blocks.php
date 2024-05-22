@@ -1278,7 +1278,9 @@ class LazyBlocks_Blocks {
 				if ( isset( $control['type'] ) && isset( $all_controls[ $control['type'] ] ) ) {
 					$attribute_data['type'] = $all_controls[ $control['type'] ]['type'];
 
-					if ( 'number' === $attribute_data['type'] && null !== $attribute_data['default'] ) {
+					// We also check for an empty string, as it is the default value when no default is provided.
+					// If this empty string is converted to a float, the control will default to `0`.
+					if ( 'number' === $attribute_data['type'] && null !== $attribute_data['default'] && '' !== $attribute_data['default'] ) {
 						$attribute_data['default'] = (float) $attribute_data['default'];
 					}
 				}
