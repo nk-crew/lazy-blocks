@@ -168,6 +168,39 @@ function DateTimePicker(props) {
 }
 
 /**
+ * Required check.
+ *
+ * @param {Object} validationData
+ * @param {number} value
+ * @param {Object} data
+ *
+ * @return {Object} validation data.
+ */
+function validate(validationData, value, data) {
+	if (!value) {
+		if ('date' === data.date_time_picker) {
+			return {
+				valid: false,
+				message: 'Please select date.',
+			};
+		} else if ('time' === data.date_time_picker) {
+			return {
+				valid: false,
+				message: 'Please select time.',
+			};
+		}
+
+		return {
+			valid: false,
+			message: 'Please select date and time.',
+		};
+	}
+
+	return validationData;
+}
+addFilter('lzb.editor.control.date_time.validate', 'lzb.editor', validate);
+
+/**
  * Control render in editor.
  */
 addFilter(

@@ -34,6 +34,26 @@ addFilter('lzb.editor.control.color.render', 'lzb.editor', (render, props) => (
 ));
 
 /**
+ * Required check.
+ *
+ * @param {Object} validationData
+ * @param {number} value
+ *
+ * @return {Object} validation data.
+ */
+function validate(validationData, value) {
+	if (!value) {
+		return {
+			valid: false,
+			message: 'Please choose a color.',
+		};
+	}
+
+	return validationData;
+}
+addFilter('lzb.editor.control.color.validate', 'lzb.editor', validate);
+
+/**
  * Control settings render in constructor.
  */
 addFilter(

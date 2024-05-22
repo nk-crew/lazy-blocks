@@ -29,6 +29,27 @@ addFilter(
 );
 
 /**
+ * Required check.
+ *
+ * @param {Object} validationData
+ * @param {number} value
+ *
+ * @return {Object} validation data.
+ */
+function validate(validationData, value) {
+	if (!value) {
+		return {
+			valid: false,
+			message: 'Please tick this box if you want to proceed.',
+		};
+	}
+
+	return validationData;
+}
+addFilter('lzb.editor.control.checkbox.validate', 'lzb.editor', validate);
+addFilter('lzb.editor.control.toggle.validate', 'lzb.editor', validate);
+
+/**
  * Control settings render in constructor.
  */
 addFilter(

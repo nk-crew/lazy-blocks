@@ -3,7 +3,6 @@
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { cloneDeep } from 'lodash';
-import { __ } from '@wordpress/i18n';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
 import { PanelBody, Notice } from '@wordpress/components';
@@ -13,7 +12,7 @@ import { PanelBody, Notice } from '@wordpress/components';
  */
 import getControlTypeData from '../../utils/get-control-type-data';
 import getControlValue from '../../utils/get-control-value';
-import isControlValueValid from '../../utils/is-control-value-valid';
+import checkControlValidity from '../../utils/check-control-validity';
 
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {
@@ -288,29 +287,22 @@ export default class RenderControls extends Component {
 			}
 
 			if (controlResult) {
+				const val = controlRenderData.getValue();
 				let controlNotice = '';
 
 				// show error for required fields
-				if (
-					controlTypeData &&
-					controlTypeData.restrictions.required_settings &&
-					controlData.required &&
-					controlData.required === 'true'
-				) {
-					const val = controlRenderData.getValue();
-
-					if (!isControlValueValid(val, controlData)) {
-						controlNotice = (
-							<Notice
-								key={`notice-${controlData.name}`}
-								status="warning"
-								isDismissible={false}
-								className="lzb-constructor-notice"
-							>
-								{__('This field is required', 'lazy-blocks')}
-							</Notice>
-						);
-					}
+				const requiredError = checkControlValidity(val, controlData);
+				if (requiredError) {
+					controlNotice = (
+						<Notice
+							key={`notice-${controlData.name}`}
+							status="warning"
+							isDismissible={false}
+							className="lzb-constructor-notice"
+						>
+							{requiredError}
+						</Notice>
+					);
 				}
 
 				if (placement === 'inspector') {

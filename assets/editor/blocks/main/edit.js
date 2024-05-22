@@ -25,7 +25,7 @@ import {
 import PreviewServerCallback from '../../../components/preview-server-callback';
 import RenderControls from '../../../components/render-controls';
 import getControlValue from '../../../utils/get-control-value';
-import isControlValueValid from '../../../utils/is-control-value-valid';
+import checkControlValidity from '../../../utils/check-control-validity';
 
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {
@@ -120,7 +120,7 @@ export default function BlockEdit(props) {
 									childIndex
 								);
 
-								if (!isControlValueValid(val, control)) {
+								if (checkControlValidity(val, control)) {
 									shouldLock += 1;
 								}
 							});
@@ -136,7 +136,7 @@ export default function BlockEdit(props) {
 						control
 					);
 
-					if (!isControlValueValid(val, control)) {
+					if (checkControlValidity(val, control)) {
 						shouldLock += 1;
 					}
 				}

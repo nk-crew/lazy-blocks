@@ -18,9 +18,9 @@ addFilter('lzb.editor.control.range.render', 'lzb.editor', (render, props) => (
 	<BaseControl {...useBlockControlProps(props, { label: false })}>
 		<RangeControl
 			label={props.data.label}
-			min={props.data.min}
-			max={props.data.max}
-			step={props.data.step}
+			min={props.data.min === '' ? -Infinity : parseFloat(props.data.min)}
+			max={props.data.max === '' ? Infinity : parseFloat(props.data.max)}
+			step={props.data.step === '' ? 1 : parseFloat(props.data.step)}
 			value={props.getValue()}
 			onChange={(val) => {
 				props.onChange(parseFloat(val));
