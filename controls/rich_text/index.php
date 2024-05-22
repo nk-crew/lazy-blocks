@@ -22,9 +22,6 @@ class LazyBlocks_Control_RichText extends LazyBlocks_Control {
 		$this->type         = 'string';
 		$this->label        = __( 'Rich Text (WYSIWYG)', 'lazy-blocks' );
 		$this->category     = 'content';
-		$this->attributes   = array(
-			'multiline' => 'false',
-		);
 		$this->restrictions = array(
 			'translate_settings' => true,
 		);

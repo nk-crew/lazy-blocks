@@ -1,9 +1,7 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
 /**
@@ -23,7 +21,6 @@ addFilter(
 			<RichText
 				inlineToolbar
 				format="string"
-				multiline={props.data.multiline === 'true' ? 'p' : false}
 				value={props.getValue()}
 				onChange={(val) => {
 					props.onChange(val);
@@ -31,27 +28,4 @@ addFilter(
 			/>
 		</BaseControl>
 	)
-);
-
-/**
- * Control settings render in constructor.
- */
-addFilter(
-	'lzb.constructor.control.rich_text.settings',
-	'lzb.constructor',
-	(render, props) => {
-		const { updateData, data } = props;
-
-		return (
-			<PanelBody>
-				<ToggleControl
-					label={__('Multiline', 'lazy-blocks')}
-					checked={data.multiline === 'true'}
-					onChange={(value) =>
-						updateData({ multiline: value ? 'true' : 'false' })
-					}
-				/>
-			</PanelBody>
-		);
-	}
 );
