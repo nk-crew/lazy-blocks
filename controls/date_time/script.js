@@ -8,10 +8,7 @@ import classnames from 'classnames/dedupe';
  */
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
-import {
-	__experimentalGetSettings as getSettings,
-	dateI18n,
-} from '@wordpress/date';
+import { getSettings, dateI18n } from '@wordpress/date';
 import {
 	Dropdown,
 	PanelBody,
