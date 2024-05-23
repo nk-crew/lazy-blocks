@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.5
 * Requires PHP: 7.2
-* Stable tag: 3.6.2
+* Stable tag: 3.7.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,14 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.7.0 - May 23, 2024 =
+
+* improved Required control options - added more validation checks and better error messages
+* fixed Classic control loading in legacy Widgets screen
+* fixed Number/Range controls default value `0` when it is not selected
+* changed `lzb.editor.control.isValueValid` hook to `lzb.editor.control.validate`
+* removed Multiline option from RichText control as it is deprecated
 
 = 3.6.2 - May 1, 2024 =
 
