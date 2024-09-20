@@ -104,7 +104,7 @@ jobs:
       - name: Docker debug information
         run: |
           docker -v
-          docker-compose -v
+          docker compose version
 
       - name: General debug information
         run: |
