@@ -182,8 +182,13 @@ export default class RenderControls extends Component {
 	 * @return {object|boolean} react control.
 	 */
 	renderControl(controlData, placement, uniqueId, childIndex = false) {
-		const { lazyBlockData, isLazyBlockSelected, attributes, meta } =
-			this.props;
+		const {
+			lazyBlockData,
+			isLazyBlockSelected,
+			allowErrorNotice,
+			attributes,
+			meta,
+		} = this.props;
 		let result = false;
 
 		let placementCheck =
@@ -292,11 +297,11 @@ export default class RenderControls extends Component {
 
 				// show error for required fields
 				const requiredError = checkControlValidity(val, controlData);
-				if (requiredError) {
+				if (allowErrorNotice && requiredError) {
 					controlNotice = (
 						<Notice
 							key={`notice-${controlData.name}`}
-							status="warning"
+							status="error"
 							isDismissible={false}
 							className="lzb-constructor-notice"
 						>

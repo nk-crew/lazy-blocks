@@ -165,7 +165,8 @@ function ControlsRepeaterItem(props) {
 			_n(
 				'Show %d Child Control',
 				'Show %d Child Controls',
-				childItemsNum
+				childItemsNum,
+				'lazy-blocks'
 			),
 			childItemsNum
 		);

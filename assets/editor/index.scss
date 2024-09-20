@@ -123,6 +123,17 @@
 }
 
 /**
+ * Block validation.
+ */
+.lzb-invalid {
+	box-shadow: 0 0 0 2px #cc1818 !important;
+}
+.lzb-invalid-notice {
+	padding: 16px;
+	background-color: #f4a2a2;
+}
+
+/**
  * Better appender styles for Free block.
  */
 .wp-block.lazyblocks-free:not(.is-selected) > .block-list-appender:only-child {

@@ -33,7 +33,7 @@ export default function checkControlValidity(val, control) {
 		);
 
 		if (!valid) {
-			result = message || __('This field is required.', 'lazy-blocks');
+			result = message || __('This control is required.', 'lazy-blocks');
 		}
 	}
 
