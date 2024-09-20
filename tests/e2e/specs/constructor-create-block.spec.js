@@ -43,9 +43,7 @@ test.describe('constructor create block', () => {
 			.locator('role=button[name="Publish"i]')
 			.click();
 
-		await expect(
-			page.locator('role=button[name="Update"i]')
-		).toBeDisabled();
+		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
 
 		let postID = await page.locator('input[name="post_ID"]').inputValue();
 		postID = typeof postID === 'string' ? parseInt(postID, 10) : null;
