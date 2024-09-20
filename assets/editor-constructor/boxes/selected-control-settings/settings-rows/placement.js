@@ -35,6 +35,9 @@ export default function PlacementRow(props) {
 		return null;
 	}
 
+	const isContent = placement === 'content' || placement === 'both';
+	const isInspector = placement === 'inspector' || placement === 'both';
+
 	return (
 		<PanelBody>
 			<BaseControl
@@ -45,13 +48,10 @@ export default function PlacementRow(props) {
 				<ButtonGroup>
 					<Button
 						id="lazyblocks-settings-row-placement"
-						isPrimary={
-							placement === 'content' || placement === 'both'
-						}
-						isPressed={
-							placement === 'content' || placement === 'both'
-						}
+						isPrimary={isContent}
+						isPressed={isContent}
 						disabled={
+							!isContent &&
 							placementRestrictions.indexOf('content') === -1
 						}
 						size="small"
@@ -74,13 +74,10 @@ export default function PlacementRow(props) {
 						{__('Content', 'lazy-blocks')}
 					</Button>
 					<Button
-						isPrimary={
-							placement === 'inspector' || placement === 'both'
-						}
-						isPressed={
-							placement === 'inspector' || placement === 'both'
-						}
+						isPrimary={isInspector}
+						isPressed={isInspector}
 						disabled={
+							!isInspector &&
 							placementRestrictions.indexOf('inspector') === -1
 						}
 						size="small"
