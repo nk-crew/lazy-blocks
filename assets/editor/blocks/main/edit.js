@@ -48,7 +48,7 @@ export default function BlockEdit(props) {
 	// as this indicates we've just inserted the block and don't want
 	// to alarm the user with error messages.
 	const [allowErrorNotice, setAllowErrorNotice] = useState(!isSelected);
-	const [isBlockInvalid, setIsBlockInvalid] = useState(0);
+	const [invalidControlsCount, setInvalidControlsCount] = useState(0);
 
 	const { innerBlockSelected, postType } = useSelect(
 		(select) => {
@@ -90,11 +90,11 @@ export default function BlockEdit(props) {
 		if (errorsCount) {
 			blocksWithErrors[clientId] = errorsCount;
 
-			setIsBlockInvalid(errorsCount);
+			setInvalidControlsCount(errorsCount);
 		} else if (typeof blocksWithErrors[clientId] !== 'undefined') {
 			delete blocksWithErrors[clientId];
 
-			setIsBlockInvalid(0);
+			setInvalidControlsCount(0);
 		}
 
 		if (Object.keys(blocksWithErrors).length) {
@@ -232,7 +232,7 @@ export default function BlockEdit(props) {
 
 	const className = classnames(
 		'lazyblock',
-		isBlockInvalid && !isSelected && 'lzb-invalid',
+		invalidControlsCount > 0 && !isSelected && 'lzb-invalid',
 		blockUniqueClass
 	);
 
@@ -300,17 +300,17 @@ export default function BlockEdit(props) {
 					className="lzb-inspector-controls"
 					data-lazyblocks-block-name={props.name}
 				>
-					{allowErrorNotice && isBlockInvalid && (
+					{allowErrorNotice && invalidControlsCount > 0 && (
 						<div className="lzb-invalid-notice">
 							{sprintf(
 								// translators: %d: number of child controls.
 								_n(
 									'Validation failed. %d control require attention.',
 									'Validation failed. %d controls require attention.',
-									isBlockInvalid,
+									invalidControlsCount,
 									'lazy-blocks'
 								),
-								isBlockInvalid
+								invalidControlsCount
 							)}
 						</div>
 					)}
