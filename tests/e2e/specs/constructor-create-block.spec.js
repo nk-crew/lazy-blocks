@@ -9,6 +9,21 @@ test.describe('constructor create block', () => {
 		await removeAllBlocks({ requestUtils });
 	});
 
+	test('make sure editor API is available in constructor UI', async ({
+		page,
+		admin,
+	}) => {
+		// We should add this API always even when no blocks available.
+		// It is used in the Pro plugin controls.
+		await admin.visitAdminPage('post-new.php?post_type=lazyblocks');
+
+		const apiAvailable = await page.evaluate(async () => {
+			return !!wp.data.select('lazy-blocks/components');
+		});
+
+		await expect(apiAvailable).toEqual(true);
+	});
+
 	test('create block manually in constructor UI', async ({
 		page,
 		editor,
