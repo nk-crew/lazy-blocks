@@ -127,6 +127,9 @@ class LazyBlocks_Admin {
 	 */
 	public function constructor_enqueue_scripts() {
 		if ( 'lazyblocks' === get_post_type() ) {
+			// We also need to enqueue editor script because it contains some essential components and it is not enqueued automatically when there are no blocks available.
+			LazyBlocks_Assets::enqueue_script( 'lazyblocks-editor' );
+
 			LazyBlocks_Assets::enqueue_script( 'lazyblocks-constructor', 'build/editor-constructor' );
 			wp_localize_script(
 				'lazyblocks-constructor',
@@ -162,6 +165,9 @@ class LazyBlocks_Admin {
 	 */
 	public function constructor_enqueue_styles() {
 		if ( is_admin() && 'lazyblocks' === get_post_type() ) {
+			// We also need to enqueue editor style because it contains some essential components and it is not enqueued automatically when there are no blocks available.
+			LazyBlocks_Assets::enqueue_style( 'lazyblocks-editor' );
+
 			LazyBlocks_Assets::enqueue_style( 'lazyblocks-constructor', 'build/editor-constructor' );
 			wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
 		}

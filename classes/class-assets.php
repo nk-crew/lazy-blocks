@@ -86,8 +86,10 @@ class LazyBlocks_Assets {
 	 * @param string  $path file path.
 	 * @param boolean $in_footer render in footer.
 	 */
-	public static function enqueue_script( $name, $path, $in_footer = true ) {
-		self::register_script( $name, $path, $in_footer );
+	public static function enqueue_script( $name, $path = '', $in_footer = true ) {
+		if ( $path ) {
+			self::register_script( $name, $path, $in_footer );
+		}
 
 		wp_enqueue_script( $name );
 	}
@@ -115,8 +117,10 @@ class LazyBlocks_Assets {
 	 * @param string $name asset name.
 	 * @param string $path file path.
 	 */
-	public static function enqueue_style( $name, $path ) {
-		self::register_style( $name, $path );
+	public static function enqueue_style( $name, $path = '' ) {
+		if ( $path ) {
+			self::register_style( $name, $path );
+		}
 
 		wp_enqueue_style( $name );
 	}
