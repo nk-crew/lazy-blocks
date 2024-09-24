@@ -50,13 +50,15 @@ export default function CodePreview(props) {
 	function setIframeHeight() {
 		const iframe = iframeRef.current;
 
-		// Pick the maximum of these two values to account for margin collapsing.
-		const height = Math.max(
-			iframe.contentDocument.documentElement.offsetHeight,
-			iframe.contentDocument.body.offsetHeight
-		);
+		if (iframe.contentDocument.documentElement) {
+			// Pick the maximum of these two values to account for margin collapsing.
+			const height = Math.max(
+				iframe.contentDocument.documentElement.offsetHeight,
+				iframe.contentDocument.body.offsetHeight
+			);
 
-		iframe.style.height = `${height}px`;
+			iframe.style.height = `${height}px`;
+		}
 	}
 
 	function calculateIframeHeight(iframe) {
