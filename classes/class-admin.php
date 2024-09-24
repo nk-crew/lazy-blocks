@@ -143,6 +143,7 @@ class LazyBlocks_Admin {
 					'plugin_version'      => LAZY_BLOCKS_VERSION,
 					'is_pro'              => lazyblocks()->is_pro(),
 					'pro_url'             => lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'constructor' ) ),
+					'wp_content_dir'      => defined( 'WP_CONTENT_DIR' ) ? str_replace( ABSPATH, '', WP_CONTENT_DIR ) : 'wp-content',
 				)
 			);
 		}

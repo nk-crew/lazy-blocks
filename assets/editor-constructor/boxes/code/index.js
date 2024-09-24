@@ -27,7 +27,8 @@ import {
  */
 import CodeEditor from './component-react-ace';
 
-const { plugin_version: pluginVersion } = window.lazyblocksConstructorData;
+const { plugin_version: pluginVersion, wp_content_dir: woContentDir } =
+	window.lazyblocksConstructorData;
 
 export default function CustomCodeSettings(props) {
 	const { data, updateData, onTabChange } = props;
@@ -245,7 +246,7 @@ export default function CustomCodeSettings(props) {
 						)}
 					</p>
 					<code>
-						{`/wp-content/themes/${currentTheme.stylesheet}/blocks/`}
+						{`/${woContentDir}/themes/${currentTheme.stylesheet}/blocks/`}
 						<span>{`lazyblock-${data.slug}`}</span>
 						/block.php
 					</code>
