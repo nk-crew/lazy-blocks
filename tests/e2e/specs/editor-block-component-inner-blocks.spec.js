@@ -98,9 +98,9 @@ test.describe('editor block component <InnerBlocks />', () => {
 		await expect($innerAppender).toBeHidden();
 
 		// Select the inner block.
-		await editor.canvas.click(
-			'.wp-block-lazyblock-test .wp-block-lazyblock-test'
-		);
+		await editor.canvas
+			.locator('.wp-block-lazyblock-test .wp-block-lazyblock-test')
+			.click();
 
 		// Once inner block focused, our block should show the InnerBlocks appender.
 		await expect($innerAppender).toBeVisible();

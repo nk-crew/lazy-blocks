@@ -75,7 +75,7 @@ test.describe('editor block rendering', () => {
 
 		await page.getByPlaceholder('My pattern').fill('Test pattern');
 
-		await page.getByRole('button', { name: 'Create' }).click();
+		await page.getByRole('button', { name: 'Add' }).click();
 
 		await expect(page.getByLabel('Test pattern')).toBeVisible();
 
