@@ -98,7 +98,7 @@ function ImageControl(props) {
 							allowInsertFromURL
 								? (url) => {
 										onChange({ url });
-								  }
+									}
 								: null
 						}
 						notices={noticeUI}

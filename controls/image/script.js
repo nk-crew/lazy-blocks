@@ -36,7 +36,7 @@ addFilter('lzb.editor.control.image.render', 'lzb.editor', (render, props) => (
 							link: val.link || '',
 							url: val.url || '',
 							sizes: val.sizes || '',
-					  }
+						}
 					: '';
 
 				props.onChange(result);

@@ -170,7 +170,7 @@ export default function TypeRow(props) {
 													? true
 													: !hiddenIconCategories[
 															cat
-													  ];
+														];
 										}}
 									>
 										{types.map((thisType) => {

@@ -129,7 +129,7 @@ export default function ControlsSettings(props) {
 											placement !== 'inspector'
 												? {
 														width: `${value.data.width}%`,
-												  }
+													}
 												: null
 										}
 									>

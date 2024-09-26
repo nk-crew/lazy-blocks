@@ -37,7 +37,7 @@ addFilter('lzb.editor.control.file.render', 'lzb.editor', (render, props) => (
 							id: val.id || '',
 							link: val.link || '',
 							url: val.url || '',
-					  }
+						}
 					: '';
 
 				props.onChange(result);
