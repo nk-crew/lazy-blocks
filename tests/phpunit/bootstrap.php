@@ -19,11 +19,8 @@ if ( ! defined( 'LOCAL_WP_ENVIRONMENT_TYPE' ) ) {
 	define( 'LOCAL_WP_ENVIRONMENT_TYPE', 'local' );
 }
 
-// Pretend that these are Core unit tests. This is needed so that
-// wp_theme_has_theme_json() does not cache its return value between each test.
-if ( ! defined( 'WP_RUN_CORE_TESTS' ) ) {
-	define( 'WP_RUN_CORE_TESTS', true );
-}
+// We removed the WP_RUN_CORE_TESTS constant
+// Because it caused the WordPress Importer plugin to not grip error when running tests.
 
 // Determine the tests directory (from a WP dev checkout).
 // Try the WP_TESTS_DIR environment variable first.
