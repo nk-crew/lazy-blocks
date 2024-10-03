@@ -30,6 +30,9 @@ class Block_Render_Test extends WP_UnitTestCase {
 				'frontend_html' => '<p>Test</p>',
 			),
 			'align' => 'none',
+			'supports' => array(
+				'align' => array( 'none' ),
+			),
 		) );
 
 		$this->assertEquals(
