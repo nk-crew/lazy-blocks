@@ -32,7 +32,7 @@ class Block_Render_Test extends WP_UnitTestCase {
 		) );
 
 		$this->assertEquals(
-			'<div class="wp-block-lazyblock-test"><p>Test</p></div>',
+			'<div class="align  wp-block-lazyblock-test"><p>Test</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test /-->' )
 		);
 
@@ -67,7 +67,7 @@ class Block_Render_Test extends WP_UnitTestCase {
 		) );
 
 		$this->assertEquals(
-			'<div class="test-class wp-block-lazyblock-test" id="test-id"><p>Test</p></div>',
+			'<div class="align test-class wp-block-lazyblock-test" id="test-id"><p>Test</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test {"anchor":"test-id","className":"test-class"} /-->' )
 		);
 
