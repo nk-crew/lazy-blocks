@@ -29,10 +29,11 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'code' => array(
 				'frontend_html' => '<p>Test</p>',
 			),
+			'align' => 'none',
 		) );
 
 		$this->assertEquals(
-			'<div class="align  wp-block-lazyblock-test"><p>Test</p></div>',
+			'<div class="alignnone wp-block-lazyblock-test"><p>Test</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test /-->' )
 		);
 
@@ -44,6 +45,7 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'code' => array(
 				'frontend_html' => '',
 			),
+			'align' => 'none',
 		) );
 
 		// Should not render anything.
@@ -64,10 +66,11 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'code' => array(
 				'frontend_html' => '<p>Test</p>',
 			),
+			'align' => 'none',
 		) );
 
 		$this->assertEquals(
-			'<div class="align test-class wp-block-lazyblock-test" id="test-id"><p>Test</p></div>',
+			'<div class="alignnone test-class wp-block-lazyblock-test" id="test-id"><p>Test</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test {"anchor":"test-id","className":"test-class"} /-->' )
 		);
 
