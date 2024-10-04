@@ -1594,11 +1594,11 @@ class LazyBlocks_Blocks {
 				'class' => '',
 			);
 
-			if ( $attributes['blockUniqueClass'] ) {
+			if ( isset( $attributes['blockUniqueClass'] ) && $attributes['blockUniqueClass'] ) {
 				$array_atts['class'] .= $attributes['blockUniqueClass'];
 			}
 
-			if ( $attributes['align'] ) {
+			if ( isset( $attributes['align'] ) && $attributes['align'] ) {
 				$array_atts['class'] .= ' align' . $attributes['align'];
 			}
 
