@@ -29,6 +29,10 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'code' => array(
 				'frontend_html' => '<p>Test</p>',
 			),
+			'align' => 'none',
+			'supports' => array(
+				'align' => array( 'none' ),
+			),
 		) );
 
 		$this->assertEquals(
@@ -44,6 +48,7 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'code' => array(
 				'frontend_html' => '',
 			),
+			'align' => 'none',
 		) );
 
 		// Should not render anything.
@@ -64,6 +69,7 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'code' => array(
 				'frontend_html' => '<p>Test</p>',
 			),
+			'align' => 'none',
 		) );
 
 		$this->assertEquals(
