@@ -210,6 +210,9 @@ export default class RenderControls extends Component {
 				placementCheck =
 					controlTypeData.restrictions.placement_settings.indexOf(
 						placement
+					) > -1 ||
+					controlTypeData.restrictions.placement_settings.indexOf(
+						`${placement}-fallback`
 					) > -1;
 			}
 
