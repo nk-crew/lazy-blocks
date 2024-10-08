@@ -128,7 +128,7 @@ class LazyBlocks_Dummy {
 						),
 					),
 					'lazyblocks_slug'                   => 'example-block',
-					'lazyblocks_icon'                   => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect opacity="0.25" width="15" height="15" rx="4" transform="matrix(-1 0 0 1 22 7)" fill="currentColor" /><rect width="15" height="15" rx="4" transform="matrix(-1 0 0 1 17 2)" fill="currentColor" /></svg>',
+					'lazyblocks_icon'                   => '',
 					'lazyblocks_description'            => esc_html__( 'Example block that helps you to get started with Lazy Blocks plugin', 'lazy-blocks' ),
 					'lazyblocks_keywords'               => 'example,sample,template',
 					'lazyblocks_category'               => 'design',

@@ -541,7 +541,7 @@ class LazyBlocks_Blocks {
 		global $post;
 
 		if ( 'lazyblocks_post_icon' === $column_name ) {
-			$icon      = $this->get_meta_value_by_id( 'lazyblocks_icon' );
+			$icon      = $this->prepare_block_icon( $this->get_meta_value_by_id( 'lazyblocks_icon' ) );
 			$admin_url = get_edit_post_link( $post->ID );
 
 			echo '<a class="lzb-admin-block-icon" href="' . esc_url( $admin_url ) . '">';
@@ -549,7 +549,8 @@ class LazyBlocks_Blocks {
 			if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
 				echo '<span class="dashicons ' . esc_attr( $icon ) . '"></span>';
 			} elseif ( $icon ) {
-				echo wp_kses( $icon, $this->kses_svg );
+				// XSS:OK - this variable is already escaped in the `prepare_block_icon` function.
+				echo $icon;
 			}
 
 			echo '</a>';
@@ -897,6 +898,30 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Summary of prepare_block_icon
+	 *
+	 * @param string $icon - icon string.
+	 *
+	 * @return string
+	 */
+	public function prepare_block_icon( $icon ) {
+		// add default icon.
+		if ( ! $icon ) {
+			// phpcs:ignore
+			$icon = file_get_contents( lazyblocks()->plugin_path() . 'assets/svg/icon-lazyblocks.svg' );
+			$icon = str_replace( 'fill="white"', 'fill="currentColor"', $icon );
+		}
+
+		if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
+			$icon = esc_attr( str_replace( 'dashicons-', 'dashicons dashicons-', $icon ) );
+		} elseif ( $icon ) {
+			$icon = wp_kses( $icon, $this->kses_svg );
+		}
+
+		return $icon;
+	}
+
+	/**
 	 * Convert block format.
 	 *
 	 * @param int   $id - registered block id.
@@ -920,20 +945,7 @@ class LazyBlocks_Blocks {
 			}
 		};
 
-		$icon = $get_meta_value( 'lazyblocks_icon' );
-
-		// add default icon.
-		if ( ! $icon ) {
-			// phpcs:ignore
-			$icon = file_get_contents( lazyblocks()->plugin_path() . 'assets/svg/icon-lazyblocks.svg' );
-			$icon = str_replace( 'fill="white"', 'fill="currentColor"', $icon );
-		}
-
-		if ( $icon && strpos( $icon, 'dashicons' ) === 0 ) {
-			$icon = esc_attr( str_replace( 'dashicons-', 'dashicons dashicons-', $icon ) );
-		} elseif ( $icon ) {
-			$icon = wp_kses( $icon, $this->kses_svg );
-		}
+		$icon = $this->prepare_block_icon( $get_meta_value( 'lazyblocks_icon' ) );
 
 		$keywords = esc_attr( $get_meta_value( 'lazyblocks_keywords' ) );
 		if ( $keywords ) {
