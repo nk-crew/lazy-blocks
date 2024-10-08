@@ -624,7 +624,7 @@ class LazyBlocks_Tools {
 			$post_title   = $post->post_title;
 			$copy_postfix = esc_html__( '(Copy)', 'lazy-blocks' );
 
-			// Added (Copy) postfix to duplicated block title if needed.
+			// Add (Copy) postfix to duplicated block title if needed.
 			if ( ! empty( $post_title ) && ! str_contains( $post_title, $copy_postfix ) ) {
 				$post_title = $post_title . ' ' . $copy_postfix;
 			}
