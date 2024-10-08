@@ -567,9 +567,12 @@
 
 	.lzb-gutenberg-repeater-btn {
 		position: relative;
+		display: flex;
+		align-items: center;
 		width: 100%;
 		padding: 15px;
-		padding-left: 25px;
+		padding-left: 0;
+		padding-right: 0;
 		margin-bottom: -1px;
 		text-align: left;
 		cursor: pointer;
@@ -579,6 +582,8 @@
 	}
 
 	.lzb-gutenberg-repeater-btn-title {
+		flex: 1;
+
 		img {
 			width: auto;
 			height: 17px;
@@ -588,13 +593,9 @@
 
 	// Button Arrow.
 	.lzb-gutenberg-repeater-btn-arrow {
-		position: absolute;
-		top: 50%;
-		right: 0;
 		display: block;
 		font-size: 1.7em;
 		border-radius: 50%;
-		transform: translateY(-50%);
 
 		svg {
 			display: block;
@@ -611,14 +612,12 @@
 	.lzb-gutenberg-repeater-btn-active .lzb-gutenberg-repeater-btn-arrow {
 		color: #fff;
 		background-color: #1e1e1e;
-		transform: translateY(-50%) rotate(180deg);
+		transform: rotate(180deg);
 	}
 
-	// Button Remove.
+	// Button Clone & Remove.
+	.lzb-gutenberg-repeater-btn-duplicate,
 	.lzb-gutenberg-repeater-btn-remove {
-		position: absolute;
-		top: 12px;
-		right: 30px;
 		display: block;
 		width: 1.13em;
 		height: 1.13em;
@@ -632,17 +631,24 @@
 
 		> svg {
 			display: block;
-			width: 1em;
-			height: 1em;
+			width: 0.8em;
+			height: 0.8em;
 			margin: 0 auto;
-			fill: currentcolor;
 		}
 	}
+	.lzb-gutenberg-repeater-btn-duplicate {
+		right: 50px;
+	}
 
+	&:hover .lzb-gutenberg-repeater-btn-duplicate,
 	&:hover .lzb-gutenberg-repeater-btn-remove {
 		opacity: 1;
 	}
 
+	.lzb-gutenberg-repeater-btn-duplicate:hover,
+	.lzb-gutenberg-repeater-btn-duplicate:focus {
+		color: #2279ea;
+	}
 	.lzb-gutenberg-repeater-btn-remove:hover,
 	.lzb-gutenberg-repeater-btn-remove:focus {
 		color: #ea2c22;
@@ -650,17 +656,15 @@
 
 	// Button Drag.
 	.lzb-gutenberg-repeater-btn-drag {
-		position: absolute;
-		top: 50%;
 		left: 0;
 		display: block;
 		height: auto;
 		padding: 0;
 		margin: 0;
+		margin-right: 5px;
 		font-size: 1.3em;
 		cursor: move;
 		opacity: 0.3;
-		transform: translateY(-50%);
 
 		svg {
 			display: block;

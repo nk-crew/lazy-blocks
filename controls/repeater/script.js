@@ -2,6 +2,8 @@
 /**
  * External dependencies.
  */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { cloneDeep } from 'lodash';
 import { arrayMoveImmutable } from 'array-move';
 import classnames from 'classnames/dedupe';
 
@@ -82,6 +84,16 @@ addFilter(
 
 						val.push(newRow);
 						props.onChange(val);
+					}}
+					duplicateRow={(i) => {
+						val.push(cloneDeep(val[i]));
+
+						const newVal = arrayMoveImmutable(
+							val,
+							val.length - 1,
+							i + 1
+						);
+						props.onChange(newVal);
 					}}
 					resortRow={(oldIndex, newIndex) => {
 						const newVal = arrayMoveImmutable(

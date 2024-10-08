@@ -87,6 +87,62 @@ const RepeaterItem = function (props) {
 					// eslint-disable-next-line react/no-danger
 					dangerouslySetInnerHTML={{ __html: props.title }}
 				/>
+				{!props.controlData.rows_max ||
+				props.count < props.controlData.rows_max ? (
+					// eslint-disable-next-line react/button-has-type
+					<button
+						className="lzb-gutenberg-repeater-btn-duplicate"
+						onClick={props.onDuplicate}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
+							<rect
+								width="14"
+								height="14"
+								x="8"
+								y="8"
+								rx="2"
+								ry="2"
+							/>
+							<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+						</svg>
+					</button>
+				) : null}
+				{!props.controlData.rows_min ||
+				props.count > props.controlData.rows_min ? (
+					// eslint-disable-next-line react/button-has-type
+					<button
+						className="lzb-gutenberg-repeater-btn-remove"
+						onClick={props.onRemove}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
+							<path d="M3 6h18" />
+							<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+							<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+							<line x1="10" x2="10" y1="11" y2="17" />
+							<line x1="14" x2="14" y1="11" y2="17" />
+						</svg>
+					</button>
+				) : null}
 				<div className="lzb-gutenberg-repeater-btn-arrow">
 					<svg
 						width="24"
@@ -101,26 +157,6 @@ const RepeaterItem = function (props) {
 					</svg>
 				</div>
 			</div>
-			{!props.controlData.rows_min ||
-			props.count > props.controlData.rows_min ? (
-				// eslint-disable-next-line react/button-has-type
-				<button
-					className="lzb-gutenberg-repeater-btn-remove"
-					onClick={props.onRemove}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="-2 -2 24 24"
-						width="24"
-						height="24"
-						role="img"
-						aria-hidden="true"
-						focusable="false"
-					>
-						<path d="M12 4h3c.6 0 1 .4 1 1v1H3V5c0-.6.5-1 1-1h3c.2-1.1 1.3-2 2.5-2s2.3.9 2.5 2zM8 4h3c-.2-.6-.9-1-1.5-1S8.2 3.4 8 4zM4 7h11l-.9 10.1c0 .5-.5.9-1 .9H5.9c-.5 0-.9-.4-1-.9L4 7z" />
-					</svg>
-				</button>
-			) : null}
 			{props.active ? props.renderContent() : ''}
 		</div>
 	);
@@ -132,6 +168,7 @@ function RepeaterControl(props) {
 		controlData,
 		renderRow = () => {},
 		addRow = () => {},
+		duplicateRow = () => {},
 		removeRow = () => {},
 		resortRow = () => {},
 		getInnerControls = () => {},
@@ -237,7 +274,19 @@ function RepeaterControl(props) {
 			onRemove: (e) => {
 				e.preventDefault();
 				e.stopPropagation();
+
 				removeRow(i);
+			},
+			onDuplicate: (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
+				duplicateRow(i);
+
+				// Open newly added row.
+				if (activeItem === i) {
+					setActiveItem(i + 1);
+				}
 			},
 			renderContent: () => (
 				<div className="lzb-gutenberg-repeater-item-content">
