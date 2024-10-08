@@ -620,6 +620,15 @@ class LazyBlocks_Tools {
 		$new_post_author = $current_user->ID;
 
 		if ( isset( $post ) && $post ) {
+			$post_name    = $post->post_name;
+			$post_title   = $post->post_title;
+			$copy_postfix = esc_html__( '(Copy)', 'lazy-blocks' );
+
+			// Add (Copy) postfix to duplicated block title if needed.
+			if ( ! empty( $post_title ) && ! str_contains( $post_title, $copy_postfix ) ) {
+				$post_title = $post_title . ' ' . $copy_postfix;
+			}
+
 			// New post data array.
 			$args = array(
 				'comment_status' => $post->comment_status,
@@ -627,11 +636,12 @@ class LazyBlocks_Tools {
 				'post_author'    => $new_post_author,
 				'post_content'   => $post->post_content,
 				'post_excerpt'   => $post->post_excerpt,
-				'post_name'      => $post->post_name,
+				'post_name'      => $post_name,
 				'post_parent'    => $post->post_parent,
 				'post_password'  => $post->post_password,
-				'post_status'    => 'draft',
-				'post_title'     => $post->post_title,
+				// We must set the status to publish for the slug generation function (wp_unique_post_slug) to work correctly.
+				'post_status'    => 'publish',
+				'post_title'     => $post_title,
 				'post_type'      => $post->post_type,
 				'to_ping'        => $post->to_ping,
 				'menu_order'     => $post->menu_order,
@@ -640,7 +650,7 @@ class LazyBlocks_Tools {
 			// Insert new post.
 			$new_post_id = wp_insert_post( $args );
 
-			// Get all current post terms ad set them to the new post draft.
+			// Get all current post terms ad set them to the new post.
 			$taxonomies = get_object_taxonomies( $post->post_type );
 
 			foreach ( $taxonomies as $taxonomy ) {
@@ -685,10 +695,26 @@ class LazyBlocks_Tools {
 
 					foreach ( $meta_values as $meta_value ) {
 						$meta_value = maybe_unserialize( $meta_value );
+
+						if ( 'lazyblocks_slug' === $meta_key ) {
+							// Copy new post slug to meta.
+							$new_post   = get_post( $new_post_id );
+							$meta_value = $new_post->post_name;
+						}
+
 						add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
 					}
 				}
 			}
+
+			// Change the status to draft after all manipulations with the slug.
+			wp_update_post(
+				array(
+					'post_type'   => $post->post_type,
+					'ID'          => $new_post_id,
+					'post_status' => 'draft',
+				)
+			);
 
 			// Redirect.
 			wp_safe_redirect( admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_duplicate_complete=' . $new_post_id ) );
