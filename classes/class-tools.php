@@ -690,8 +690,9 @@ class LazyBlocks_Tools {
 						$meta_value = maybe_unserialize( $meta_value );
 
 						if ( 'lazyblocks_slug' === $meta_key ) {
+							$new_post = get_post( $new_post_id );
 							// Now when cloning a block, we change its slug to a unique one, using the standard functionality of WordPress.
-							$meta_value = wp_unique_post_slug( $post_name, $new_post_id, 'publish', $post->post_type, $post->post_parent );
+							$meta_value = $new_post->post_name;
 						}
 
 						add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
