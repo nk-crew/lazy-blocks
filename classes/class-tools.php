@@ -632,7 +632,7 @@ class LazyBlocks_Tools {
 				'post_name'      => $post_name,
 				'post_parent'    => $post->post_parent,
 				'post_password'  => $post->post_password,
-				// we must set the status to publish for the slug generation function (wp_unique_post_slug) to work correctly.
+				// We must set the status to publish for the slug generation function (wp_unique_post_slug) to work correctly.
 				'post_status'    => 'publish',
 				'post_title'     => $post->post_title,
 				'post_type'      => $post->post_type,
@@ -690,8 +690,8 @@ class LazyBlocks_Tools {
 						$meta_value = maybe_unserialize( $meta_value );
 
 						if ( 'lazyblocks_slug' === $meta_key ) {
-							$new_post = get_post( $new_post_id );
-							// Now when cloning a block, we change its slug to a unique one, using the standard functionality of WordPress.
+							// Copy new post slug to meta.
+							$new_post   = get_post( $new_post_id );
 							$meta_value = $new_post->post_name;
 						}
 
@@ -700,7 +700,7 @@ class LazyBlocks_Tools {
 				}
 			}
 
-			// change the status to draft after all manipulations with the slug.
+			// Change the status to draft after all manipulations with the slug.
 			wp_update_post(
 				array(
 					'post_type'   => $post->post_type,
