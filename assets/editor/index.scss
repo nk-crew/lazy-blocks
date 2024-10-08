@@ -370,15 +370,40 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(2px);
 		width: 100%;
 		height: 100%;
 		opacity: 0;
 		transition: 0.15s opacity;
+
+		> .components-button {
+			background-color: #fff;
+			color: #000;
+		}
 	}
 
 	&:hover .lzb-gutenberg-gallery-button,
 	&:hover .lzb-gutenberg-image-button {
 		opacity: 1;
+	}
+
+	.lzb-gutenberg-gallery-button-edit:hover,
+	.lzb-gutenberg-gallery-button-edit:focus {
+		color: #2279ea;
+	}
+
+	.lzb-gutenberg-gallery-button-remove {
+		&:hover,
+		&:focus {
+			color: #ea2c22;
+		}
+
+		svg {
+			width: 1em;
+			height: 1em;
+			fill: none;
+		}
 	}
 
 	.lzb-gutenberg-image-item,
@@ -387,7 +412,6 @@
 		display: block;
 		background-color: #e6e6e6;
 		border-radius: 3px;
-		transition: 0.15s opacity;
 
 		&::after {
 			display: block;
@@ -431,11 +455,6 @@
 	.lzb-gutenberg-image-item {
 		width: 30%;
 		margin: 0 auto;
-	}
-
-	&:hover .lzb-gutenberg-gallery-item,
-	&:hover .lzb-gutenberg-image-item {
-		opacity: 0.6;
 	}
 }
 
