@@ -620,6 +620,33 @@ class LazyBlocks_Tools {
 		$new_post_author = $current_user->ID;
 
 		if ( isset( $post ) && $post ) {
+			$post_name = $post->post_name;
+
+			// Now when cloning a block, the copy postfix is ​​added to its slug.
+			if ( $post_name ) {
+				$ending_slug  = '-copy';
+				$current_name = $post_name;
+				$iteration    = 0;
+				while ( $iteration < 5 ) {
+					$get_posts = new WP_Query();
+					$posts     = $get_posts->query(
+						array(
+							'name'           => $current_name,
+							'post_type'      => $post->post_type,
+							'posts_per_page' => 1,
+						)
+					);
+
+					if ( empty( $posts ) ) {
+						$post_name = $current_name;
+						break;
+					}
+
+					$current_name = $current_name . $ending_slug;
+					$iteration++;
+				}
+			}
+
 			// New post data array.
 			$args = array(
 				'comment_status' => $post->comment_status,
@@ -627,7 +654,7 @@ class LazyBlocks_Tools {
 				'post_author'    => $new_post_author,
 				'post_content'   => $post->post_content,
 				'post_excerpt'   => $post->post_excerpt,
-				'post_name'      => $post->post_name,
+				'post_name'      => $post_name,
 				'post_parent'    => $post->post_parent,
 				'post_password'  => $post->post_password,
 				'post_status'    => 'draft',
@@ -685,6 +712,11 @@ class LazyBlocks_Tools {
 
 					foreach ( $meta_values as $meta_value ) {
 						$meta_value = maybe_unserialize( $meta_value );
+
+						if ( 'lazyblocks_slug' === $meta_key ) {
+							$meta_value = $post_name;
+						}
+
 						add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
 					}
 				}
