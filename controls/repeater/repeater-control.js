@@ -20,7 +20,7 @@ import { CSS } from '@dnd-kit/utilities';
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import { Button, ToggleControl } from '@wordpress/components';
+import { Button, ButtonGroup, Tooltip } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
 
 /**
@@ -329,10 +329,11 @@ function RepeaterControl(props) {
 					</div>
 				) : null}
 			</DndContext>
-			<div className="lzb-gutenberg-repeater-options">
+			<ButtonGroup className="lzb-gutenberg-repeater-options">
 				<Button
 					variant="secondary"
-					size="small"
+					size="compact"
+					className="lzb-gutenberg-repeater-options-add"
 					disabled={
 						controlData.rows_max && count >= controlData.rows_max
 					}
@@ -351,17 +352,37 @@ function RepeaterControl(props) {
 				{controlData.rows_collapsible === 'true' &&
 				items.length &&
 				items.length > 1 ? (
-					<ToggleControl
-						label={__('Toggle all', 'lazy-blocks')}
-						checked={activeItem === -2}
-						onChange={() => {
-							setActiveItem(activeItem === -2 ? -1 : -2);
-						}}
-					/>
+					<Tooltip text={__('Toggle all rows', 'lazy-blocks')}>
+						<Button
+							variant={
+								activeItem === -2 ? 'primary' : 'secondary'
+							}
+							size="compact"
+							className="lzb-gutenberg-repeater-options-expand"
+							onClick={() => {
+								setActiveItem(activeItem === -2 ? -1 : -2);
+							}}
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<path d="m7 15 5 5 5-5" />
+								<path d="m7 9 5-5 5 5" />
+							</svg>
+						</Button>
+					</Tooltip>
 				) : (
 					''
 				)}
-			</div>
+			</ButtonGroup>
 		</div>
 	);
 }

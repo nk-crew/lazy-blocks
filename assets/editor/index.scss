@@ -626,7 +626,6 @@
 		cursor: pointer;
 		background: none;
 		border: none;
-		border-radius: 50%;
 		opacity: 0;
 
 		> svg {
@@ -641,7 +640,11 @@
 	}
 
 	&:hover .lzb-gutenberg-repeater-btn-duplicate,
-	&:hover .lzb-gutenberg-repeater-btn-remove {
+	.lzb-gutenberg-repeater-btn-duplicate:hover,
+	.lzb-gutenberg-repeater-btn-duplicate:focus,
+	&:hover .lzb-gutenberg-repeater-btn-remove,
+	.lzb-gutenberg-repeater-btn-remove:hover,
+	.lzb-gutenberg-repeater-btn-remove:focus {
 		opacity: 1;
 	}
 
@@ -709,16 +712,40 @@
 }
 
 .lzb-gutenberg-repeater-items {
-	margin-bottom: 15px;
+	margin-bottom: 3px;
 }
 
 .lzb-gutenberg-repeater-options {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	text-align: center;
 
-	.components-toggle-control .components-form-toggle {
-		margin-right: 0;
+	.components-button {
+		&:not(.is-primary):not(:hover,:focus) {
+			--wp-components-color-accent: #949494;
+
+			color: #292929;
+		}
+
+		justify-content: center;
+		text-transform: uppercase;
+		font-size: 12px;
+		font-weight: 500;
+	}
+
+	.lzb-gutenberg-repeater-options-add {
+		flex: 1;
+	}
+	.lzb-gutenberg-repeater-options-expand {
+		padding-left: 6px;
+		padding-right: 6px;
+
+		svg {
+			fill: none;
+			width: 1.5em;
+			height: 1.5em;
+		}
 	}
 }
 
