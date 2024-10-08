@@ -620,7 +620,14 @@ class LazyBlocks_Tools {
 		$new_post_author = $current_user->ID;
 
 		if ( isset( $post ) && $post ) {
-			$post_name = $post->post_name;
+			$post_name    = $post->post_name;
+			$post_title   = $post->post_title;
+			$copy_postfix = esc_html__( '(Copy)', 'lazy-blocks' );
+
+			// Added (Copy) postfix to duplicated block title if needed.
+			if ( ! empty( $post_title ) && ! str_contains( $post_title, $copy_postfix ) ) {
+				$post_title = $post_title . ' ' . $copy_postfix;
+			}
 
 			// New post data array.
 			$args = array(
@@ -634,7 +641,7 @@ class LazyBlocks_Tools {
 				'post_password'  => $post->post_password,
 				// We must set the status to publish for the slug generation function (wp_unique_post_slug) to work correctly.
 				'post_status'    => 'publish',
-				'post_title'     => $post->post_title,
+				'post_title'     => $post_title,
 				'post_type'      => $post->post_type,
 				'to_ping'        => $post->to_ping,
 				'menu_order'     => $post->menu_order,
