@@ -67,10 +67,10 @@ class LazyBlocks_Blocks {
 		// https://github.com/nk-crew/lazy-blocks/issues/247 .
 		add_filter( 'allowed_block_types_all', array( $this, 'allowed_block_types_all' ), 100, 2 );
 
-		// custom post roles.
+		// Custom post roles.
 		add_action( 'admin_init', array( $this, 'add_role_caps' ) );
 
-		// additional elements in blocks list table.
+		// Additional elements in blocks list table.
 		add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
 		add_filter( 'bulk_actions-edit-lazyblocks', array( $this, 'bulk_actions_edit' ) );
@@ -78,8 +78,11 @@ class LazyBlocks_Blocks {
 		add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'manage_posts_columns' ) );
 		add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 
-		// sanitize block configs.
+		// Sanitize block configs.
 		add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ), 100 );
+
+		// Disable different post statuses.
+		add_action( 'save_post', array( $this, 'change_not_valid_post_status_to_draft' ), 20, 2 );
 
 		// add gutenberg blocks assets.
 		if ( function_exists( 'register_block_type' ) ) {
@@ -90,6 +93,32 @@ class LazyBlocks_Blocks {
 			// custom blocks using standard `init` hook.
 			add_action( 'init', array( $this, 'register_block' ), 20 );
 			add_action( 'init', array( $this, 'register_block_render' ), 20 );
+		}
+	}
+
+	/**
+	 * Disable different post statuses.
+	 * In our project we leave only 2 active statuses: publish and draft.
+	 * If the user tries to set other statuses,
+	 * They will be reset to the draft automatically.
+	 *
+	 * @param int     $post_id - Post ID.
+	 * @param WP_Post $post - Post Object with all post parameters.
+	 * @return void
+	 */
+	public function change_not_valid_post_status_to_draft( $post_id, $post ) {
+		// Bail out if this is an autosave.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if (
+			'lazyblocks' === $post->post_type &&
+			'publish' !== $post->post_status &&
+			'draft' !== $post->post_status
+		) {
+			$post->post_status = 'draft';
+			wp_update_post( $post );
 		}
 	}
 
