@@ -82,7 +82,7 @@ class LazyBlocks_Blocks {
 		add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ), 100 );
 
 		// Disable different post statuses.
-		add_action( 'save_post', array( $this, 'change_not_valid_post_status_to_draft' ), 20, 2 );
+		add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
 
 		// add gutenberg blocks assets.
 		if ( function_exists( 'register_block_type' ) ) {
@@ -97,29 +97,28 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
-	 * Disable different post statuses.
-	 * In our project we leave only 2 active statuses: publish and draft.
-	 * If the user tries to set other statuses,
-	 * They will be reset to the draft automatically.
+	 * Normalize post status to draft or publish for 'lazyblocks' post type.
+	 * This function ensures that only 'publish' and 'draft' statuses are allowed
+	 * for 'lazyblocks' post type, resetting any other status to 'draft'.
 	 *
 	 * @param int     $post_id - Post ID.
 	 * @param WP_Post $post - Post Object with all post parameters.
 	 * @return void
 	 */
-	public function change_not_valid_post_status_to_draft( $post_id, $post ) {
-		// Bail out if this is an autosave.
+	public function normalize_lazyblocks_post_status( $post_id, $post ) {
+		// Skip if this is an autosave.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
 
 		if (
 			'lazyblocks' === $post->post_type &&
-			'publish' !== $post->post_status &&
-			'draft' !== $post->post_status
+			! in_array( $post->post_status, array( 'publish', 'draft' ), true )
 		) {
-			// Unhook this function so it doesn't loop infinitely.
-			remove_action( 'save_post', array( $this, 'change_not_valid_post_status_to_draft' ) );
+			// Temporarily remove this function to prevent infinite loops.
+			remove_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ) );
 
+			// Update the post status to 'draft'.
 			wp_update_post(
 				array(
 					'ID'          => $post_id,
@@ -127,8 +126,8 @@ class LazyBlocks_Blocks {
 				)
 			);
 
-			// Re-hook this function.
-			add_action( 'save_post', array( $this, 'change_not_valid_post_status_to_draft' ), 20, 2 );
+			// Re-add this function to continue monitoring post status changes.
+			add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
 		}
 	}
 
