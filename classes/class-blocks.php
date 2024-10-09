@@ -126,6 +126,9 @@ class LazyBlocks_Blocks {
 					'post_status' => 'draft',
 				)
 			);
+
+			// Re-hook this function.
+			add_action( 'save_post', array( $this, 'change_not_valid_post_status_to_draft' ), 20, 2 );
 		}
 	}
 
