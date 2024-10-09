@@ -117,8 +117,15 @@ class LazyBlocks_Blocks {
 			'publish' !== $post->post_status &&
 			'draft' !== $post->post_status
 		) {
-			$post->post_status = 'draft';
-			wp_update_post( $post );
+			// Unhook this function so it doesn't loop infinitely.
+			remove_action( 'save_post', array( $this, 'change_not_valid_post_status_to_draft' ) );
+
+			wp_update_post(
+				array(
+					'ID'          => $post_id,
+					'post_status' => 'draft',
+				)
+			);
 		}
 	}
 
