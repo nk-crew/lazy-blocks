@@ -84,6 +84,10 @@ class LazyBlocks_Blocks {
 		// Disable different post statuses.
 		add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
 
+		// Ajax to deactivate block.
+		add_action( 'wp_ajax_lazyblocks_activation_block', array( $this, 'ajax_activation_block' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_ajax_activation_block_script' ) );
+
 		// add gutenberg blocks assets.
 		if ( function_exists( 'register_block_type' ) ) {
 			// add custom block categories.
@@ -94,6 +98,77 @@ class LazyBlocks_Blocks {
 			add_action( 'init', array( $this, 'register_block' ), 20 );
 			add_action( 'init', array( $this, 'register_block_render' ), 20 );
 		}
+	}
+
+	/**
+	 * Enqueue a script for deactivate block.
+	 *
+	 * @param string $hook - Hook suffix for the current admin page.
+	 */
+	function enqueue_ajax_activation_block_script( $hook ) {
+		if ( 'edit.php' !== $hook ) {
+			return;
+		}
+		wp_enqueue_script( 'jquery' );
+		LazyBlocks_Assets::enqueue_script( 'lazyblocks_activation_block', 'build/admin-blocks-activation' );
+		LazyBlocks_Assets::enqueue_style( 'lazyblocks_activation_block', 'build/admin-blocks-activation' );
+	}
+
+	/**
+	 * Ajax function for activating and deactivating a block.
+	 *
+	 * @return void
+	 */
+	public function ajax_activation_block() {
+		check_ajax_referer( 'lazyblocks_activation_block_nonce', 'nonce' );
+		if ( ! isset( $_POST['postId'] ) && ! isset( $_POST['activate'] ) ) {
+			wp_die();
+		}
+
+		$post        = get_post( sanitize_text_field( wp_unslash( $_POST['postId'] ) ) );
+		$post_status = false;
+		$activated   = false;
+
+		if ( empty( $post ) && ! isset( $post->post_status ) && ! is_object( $post ) ) {
+			wp_die();
+		}
+
+		if ( 'true' === $_POST['activate'] || ( $_POST['activate'] && 'false' !== $_POST['activate'] ) ) {
+			$post_status = 'publish';
+			$activated   = true;
+		}
+
+		if ( 'false' === $_POST['activate'] || ( ! $_POST['activate'] && 'true' !== $_POST['activate'] ) ) {
+			$post_status = 'draft';
+		}
+
+		if ( $post_status ) {
+			$post_updated = wp_update_post(
+				array(
+					'post_type'   => $post->post_type,
+					'ID'          => $post->ID,
+					'post_status' => $post_status,
+				)
+			);
+		}
+
+		if ( ! isset( $post_updated ) ) {
+			wp_die();
+		}
+
+		if ( isset( $post_updated ) && ( is_wp_error( $post_updated ) || 0 === $post_updated ) ) {
+			wp_die();
+		}
+
+		$result = array(
+			'activated'    => $activated,
+			'post_updated' => $post_updated,
+			'status'       => $post_status,
+		);
+
+		echo wp_json_encode( $result );
+
+		wp_die();
 	}
 
 	/**
@@ -561,6 +636,7 @@ class LazyBlocks_Blocks {
 	public function manage_posts_columns( $columns = array() ) {
 		$columns = array(
 			'cb'                          => $columns['cb'],
+			'lazyblocks_post_activate'    => esc_html__( 'Activate', 'lazy-blocks' ),
 			'lazyblocks_post_icon'        => esc_html__( 'Icon', 'lazy-blocks' ),
 			'title'                       => $columns['title'],
 			'lazyblocks_post_category'    => esc_html__( 'Category', 'lazy-blocks' ),
@@ -577,6 +653,26 @@ class LazyBlocks_Blocks {
 	 */
 	public function manage_posts_custom_column( $column_name = false ) {
 		global $post;
+
+		// Displaying buttons for block activation and deactivation.
+		if ( 'lazyblocks_post_activate' === $column_name ) {
+			$nonce    = wp_create_nonce( 'lazyblocks_activation_block_nonce' );
+			$classes  = 'lazyblocks-block-activation-switch';
+			$activate = 'false';
+
+			if ( 'publish' === $post->post_status ) {
+				$classes .= ' lazyblocks-active-block';
+			}
+
+			if ( 'draft' === $post->post_status ) {
+				$classes .= ' lazyblocks-non-active-block';
+				$activate = 'true';
+			}
+
+			$link = admin_url( 'admin-ajax.php?action=lazyblocks_activation_block' );
+
+			echo '<a class="' . esc_attr( $classes ) . '" data-nonce="' . esc_attr( $nonce ) . '" data-post_id="' . esc_attr( $post->ID ) . '" data-activate="' . esc_attr( $activate ) . '" href="' . esc_url( $link ) . '">&nbsp;</a>';
+		}
 
 		if ( 'lazyblocks_post_icon' === $column_name ) {
 			$icon      = $this->prepare_block_icon( $this->get_meta_value_by_id( 'lazyblocks_icon' ) );
