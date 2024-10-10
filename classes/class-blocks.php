@@ -132,6 +132,16 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Check if the attribute is a handlebars options attribute.
+	 *
+	 * @param mixed $attribute The attribute to check.
+	 * @return bool True if the attribute is a handlebars options attribute, false otherwise.
+	 */
+	public function is_handlebars_options_attribute( $attribute ) {
+		return is_array( $attribute ) && isset( $attribute['data']['index'] ) && isset( $attribute['context'] );
+	}
+
+	/**
 	 * Handlebars php.
 	 */
 	public function prepare_handlebars() {
@@ -141,7 +151,6 @@ class LazyBlocks_Blocks {
 
 		$this->handlebars = new Handlebars\Handlebars();
 
-		// phpcs:ignore
 		// truncate
 		// {{truncate 'string' 2 'true'}}.
 		$this->handlebars->registerHelper(
@@ -266,7 +275,6 @@ class LazyBlocks_Blocks {
 			}
 		);
 
-		// phpcs:ignore
 		// do_shortcode.
 		// {{{do_shortcode 'my_shortcode' this}}}.
 		$this->handlebars->registerHelper(
@@ -318,7 +326,6 @@ class LazyBlocks_Blocks {
 			}
 		);
 
-		// phpcs:ignore
 		// date_i18n.
 		// {{date_i18n 'F j, Y H:i' '2018-09-16 15:35'}}.
 		$this->handlebars->registerHelper(
@@ -328,16 +335,45 @@ class LazyBlocks_Blocks {
 			}
 		);
 
-		// phpcs:ignore
 		// var_dump.
 		// {{var_dump 'test'}}.
 		$this->handlebars->registerHelper(
 			'var_dump',
 			function( $val ) {
 				ob_start();
-				// phpcs:ignore
 				var_dump( $val );
 				return ob_get_clean();
+			}
+		);
+
+		// wp_get_attachment_image.
+		// {{wp_get_attachment_image 123 'thumbnail'}}.
+		$this->handlebars->registerHelper(
+			'wp_get_attachment_image',
+			function( $attachment_id, $size = 'thumbnail', $icon = false, $attr = '' ) {
+				// Prevent options from being passed.
+				// Add default values if options are not set.
+				if ( ! isset( $size ) || $this->is_handlebars_options_attribute( $size ) ) {
+					$size = 'thumbnail';
+				}
+				if ( ! isset( $icon ) || $this->is_handlebars_options_attribute( $icon ) ) {
+					$icon = false;
+				}
+				if ( ! isset( $attr ) || $this->is_handlebars_options_attribute( $attr ) ) {
+					$attr = '';
+				}
+
+				if ( is_array( $attachment_id ) && isset( $attachment_id['id'] ) ) {
+					if ( ! empty( $attachment_id['id'] ) ) {
+						return wp_get_attachment_image( $attachment_id['id'], $size, $icon, $attr );
+					} elseif ( isset( $attachment_id['url'] ) ) {
+						return '<img src="' . esc_url( $attachment_id['url'] ) . '" alt="' . esc_attr( $attr ) . '">';
+					}
+				} elseif ( is_numeric( $attachment_id ) || is_string( $attachment_id ) && ! empty( $attachment_id ) ) {
+					return wp_get_attachment_image( $attachment_id, $size, $icon, $attr );
+				}
+
+				return '';
 			}
 		);
 
