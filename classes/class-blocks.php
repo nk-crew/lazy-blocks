@@ -239,7 +239,7 @@ class LazyBlocks_Blocks {
 
 		if (
 			'lazyblocks' === $post->post_type &&
-			! in_array( $post->post_status, array( 'publish', 'draft' ), true )
+			! in_array( $post->post_status, array( 'publish', 'draft', 'auto-draft', 'trash' ), true )
 		) {
 			// Temporarily remove this function to prevent infinite loops.
 			remove_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ) );
