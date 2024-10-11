@@ -1,11 +1,19 @@
+$toggle_width: 28px;
+$toggle_circle_size: 13px;
+$toggle_margin: 2px;
+
+.column-lazyblocks_post_activate {
+	width: 35px;
+}
+
 .lazyblocks-block-activation-switch {
 	position: relative;
 	display: block;
-	background-color: #ccc;
-	border-radius: 34px;
+	background-color: #d9d9d9;
+	border-radius: 17px;
 	height: 17px;
-	margin-top: 5px;
-	width: 30px;
+	margin-top: 12.5px;
+	width: $toggle_width;
 }
 
 .lazyblocks-block-activation-switch::before {
@@ -13,24 +21,24 @@
 	border-radius: 50%;
 	content: "";
 	display: inline-block;
-	height: 13px;
-	margin: 2px;
-	transition: all 0.4s;
-	width: 13px;
+	height: $toggle_circle_size;
+	margin: $toggle_margin;
+	transition: transform 0.2s;
+	width: $toggle_circle_size;
 }
 
 .lazyblocks-active-block {
-	background-color: #2196f3;
+	background-color: #007cba;
 }
 
 .lazyblocks-active-block.lazyblocks-block-activation-switch::before {
-	transform: translateX(100%);
+	transform: translateX($toggle_width - $toggle_circle_size - $toggle_margin * 2);
 }
 
 .lazyblocks-active-block.lazyblocks-block-activation-switch:hover::before {
-	transform: translateX(60%);
+	transform: translateX($toggle_width - $toggle_circle_size - $toggle_margin * 2 - 1px);
 }
 
 .lazyblocks-block-activation-switch:hover::before {
-	transform: translateX(40%);
+	transform: translateX(1px);
 }

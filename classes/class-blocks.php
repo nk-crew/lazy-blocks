@@ -713,7 +713,7 @@ class LazyBlocks_Blocks {
 	public function manage_posts_columns( $columns = array() ) {
 		$columns = array(
 			'cb'                          => $columns['cb'],
-			'lazyblocks_post_activate'    => esc_html__( 'Activate', 'lazy-blocks' ),
+			'lazyblocks_post_activate'    => '',
 			'lazyblocks_post_icon'        => esc_html__( 'Icon', 'lazy-blocks' ),
 			'title'                       => $columns['title'],
 			'lazyblocks_post_category'    => esc_html__( 'Category', 'lazy-blocks' ),
