@@ -79,7 +79,6 @@ class LazyBlocks_Blocks {
 		// Actions.
 		add_filter( 'bulk_actions-edit-lazyblocks', array( $this, 'bulk_actions_edit' ) );
 		add_filter( 'handle_bulk_actions-edit-lazyblocks', array( $this, 'handle_bulk_actions_edit' ), 10, 3 );
-		add_action( 'admin_init', array( $this, 'maybe_activate_block' ) );
 
 		// Sanitize block configs.
 		add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ), 100 );
@@ -604,40 +603,15 @@ class LazyBlocks_Blocks {
 			lazyblocks()->tools()->export_json( $post_ids, 'blocks' );
 		}
 
-		if ( 'activate' === $action || 'deactivate' === $action ) {
-			foreach ( $post_ids as $post_id ) {
-				wp_update_post(
-					array(
-						'ID'          => $post_id,
-						'post_status' => 'activate' === $action ? 'publish' : 'draft',
-					)
-				);
-			}
+		if ( 'activate' === $action ) {
+			lazyblocks()->tools()->activate( $post_ids );
+		}
+
+		if ( 'deactivate' === $action ) {
+			lazyblocks()->tools()->deactivate( $post_ids );
 		}
 
 		return $redirect;
-	}
-
-	/**
-	 * Activate block.
-	 */
-	public function maybe_activate_block() {
-		$nonce = isset( $_GET['lazyblocks_activate_block_nonce'] ) ? $_GET['lazyblocks_activate_block_nonce'] : false;
-		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-activate-block-nonce' ) ) {
-			return;
-		}
-
-		$post_id = filter_input( INPUT_GET, 'lazyblocks_activate_block', FILTER_SANITIZE_NUMBER_INT );
-		$status  = isset( $_GET['lazyblocks_activate_block_status'] ) ? sanitize_text_field( wp_unslash( $_GET['lazyblocks_activate_block_status'] ) ) : false;
-
-		if ( $post_id && current_user_can( 'edit_lazyblock', $post_id ) ) {
-			wp_update_post(
-				array(
-					'ID'          => $post_id,
-					'post_status' => 'true' === $status ? 'publish' : 'draft',
-				)
-			);
-		}
 	}
 
 	/**
@@ -670,22 +644,16 @@ class LazyBlocks_Blocks {
 
 		// Displaying buttons for block activation and deactivation.
 		if ( 'lazyblocks_post_activate' === $column_name ) {
-			$classes  = 'lazyblocks-block-activation-switch';
-			$activate = 'false';
+			$classes = 'lazyblocks-block-activation-switch';
 
 			if ( 'publish' === $post->post_status ) {
 				$classes .= ' lazyblocks-active-block';
 			}
 
-			if ( 'draft' === $post->post_status ) {
-				$classes .= ' lazyblocks-non-active-block';
-				$activate = 'true';
-			}
-
 			$link = add_query_arg(
 				array(
 					'lazyblocks_activate_block'        => $post->ID,
-					'lazyblocks_activate_block_status' => $activate,
+					'lazyblocks_activate_block_action' => 'publish' === $post->post_status ? 'deactivate' : 'activate',
 					'lazyblocks_activate_block_nonce'  => wp_create_nonce( 'lzb-activate-block-nonce' ),
 				)
 			);

@@ -26,6 +26,9 @@ class LazyBlocks_Tools {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
+		// activate/deactivate block on get request.
+		add_action( 'admin_init', array( $this, 'maybe_activate_block' ) );
+
 		// export json on get request.
 		add_action( 'admin_init', array( $this, 'maybe_export_json' ) );
 
@@ -268,6 +271,86 @@ class LazyBlocks_Tools {
 
 		LazyBlocks_Assets::enqueue_style( 'lazyblocks-tools', 'build/admin-tools' );
 		wp_style_add_data( 'lazyblocks-tools', 'rtl', 'replace' );
+	}
+
+	/**
+	 * Activate blocks.
+	 *
+	 * @param array  $post_ids post ids.
+	 * @param string $type action type.
+	 */
+	public function activate( $post_ids, $type = 'activate' ) {
+		$count = count( $post_ids );
+
+		if ( 0 === $count ) {
+			return;
+		}
+
+		foreach ( $post_ids as $post_id ) {
+			wp_update_post(
+				array(
+					'ID'          => $post_id,
+					'post_status' => 'activate' === $type ? 'publish' : 'draft',
+				)
+			);
+		}
+
+		// Redirect.
+		wp_safe_redirect( admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_activation_type=' . $type . '&lazyblocks_activate_complete=' . $count . ( 1 === $count ? '&lazyblocks_block_id=' . $post_ids[0] : '' ) ) );
+		exit;
+	}
+
+	/**
+	 * Deactivate blocks.
+	 *
+	 * @param array $post_ids post ids.
+	 */
+	public function deactivate( $post_ids ) {
+		$this->activate( $post_ids, 'deactivate' );
+	}
+
+	/**
+	 * Activate block.
+	 */
+	public function maybe_activate_block() {
+		$blocks_activated  = filter_input( INPUT_GET, 'lazyblocks_activate_complete', FILTER_SANITIZE_NUMBER_INT );
+		$activation_type   = isset( $_GET['lazyblocks_activation_type'] ) ? sanitize_text_field( wp_unslash( $_GET['lazyblocks_activation_type'] ) ) : false;
+		$block_id_complete = filter_input( INPUT_GET, 'lazyblocks_block_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Add notice for success activate.
+		if ( $blocks_activated ) {
+			$message = '';
+
+			if ( $block_id_complete ) {
+				$block_title = get_the_title( $block_id_complete );
+
+				// translators: %s - block title.
+				$message = 'activate' === $activation_type ? sprintf( esc_html__( 'Block "%s" activated successfully.', 'lazy-blocks' ), $block_title ) : sprintf( esc_html__( 'Block "%s" deactivated successfully.', 'lazy-blocks' ), $block_title );
+			} else {
+				// translators: %s - number of blocks.
+				$message = 'activate' === $activation_type ? sprintf( esc_html( _n( 'Activated %s block', 'Activated %s blocks', $blocks_activated, 'lazy-blocks' ) ), $blocks_activated ) : sprintf( esc_html( _n( 'Deactivated %s block', 'Deactivated %s blocks', $blocks_activated, 'lazy-blocks' ) ), $blocks_activated );
+			}
+
+			if ( $message ) {
+				$this->add_notice( $message, 'success' );
+			}
+		}
+
+		$nonce = isset( $_GET['lazyblocks_activate_block_nonce'] ) ? $_GET['lazyblocks_activate_block_nonce'] : false;
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-activate-block-nonce' ) ) {
+			return;
+		}
+
+		$post_id = filter_input( INPUT_GET, 'lazyblocks_activate_block', FILTER_SANITIZE_NUMBER_INT );
+		$action  = isset( $_GET['lazyblocks_activate_block_action'] ) ? sanitize_text_field( wp_unslash( $_GET['lazyblocks_activate_block_action'] ) ) : false;
+
+		if ( $post_id && $action && current_user_can( 'edit_lazyblock', $post_id ) ) {
+			if ( 'activate' === $action ) {
+				$this->activate( array( $post_id ) );
+			} elseif ( 'deactivate' === $action ) {
+				$this->deactivate( array( $post_id ) );
+			}
+		}
 	}
 
 	/**
