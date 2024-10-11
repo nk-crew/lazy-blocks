@@ -14,6 +14,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { useState } from '@wordpress/element';
 import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies.
@@ -23,6 +24,100 @@ import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import RepeaterControl from './repeater-control';
 
+function RepeaterControlWrapper(props) {
+	const val = props.getValue() || [];
+
+	// It is used to save changes in undo/redo history.
+	// TODO: probably we should use this in all controls.
+	const { __unstableMarkLastChangeAsPersistent = false } =
+		useDispatch('core/block-editor') || {};
+
+	return (
+		<BaseControl {...useBlockControlProps(props)}>
+			<RepeaterControl
+				controlData={props.data}
+				count={val.length}
+				getInnerControls={(index) => {
+					const innerControls = props.getControls(props.uniqueId);
+					const innerResult = {};
+
+					Object.keys(innerControls).forEach((i) => {
+						const innerData = innerControls[i];
+
+						innerResult[i] = {
+							data: innerData,
+							val: props.getValue(innerData, index),
+						};
+					});
+
+					return innerResult;
+				}}
+				renderRow={(index) => (
+					<>
+						{props.renderControls(
+							props.placement,
+							props.uniqueId,
+							index
+						)}
+					</>
+				)}
+				removeRow={(i) => {
+					if (i > -1) {
+						val.splice(i, 1);
+						props.onChange(val);
+
+						if (__unstableMarkLastChangeAsPersistent) {
+							__unstableMarkLastChangeAsPersistent();
+						}
+					}
+				}}
+				addRow={() => {
+					const innerControls = props.getControls(props.uniqueId);
+					const newRow = {};
+
+					// Add defaults to the new row.
+					Object.keys(innerControls).forEach((i) => {
+						const innerControl = innerControls[i];
+
+						// Add default values of controls.
+						newRow[innerControl.name] =
+							innerControl.default || innerControl.checked || '';
+					});
+
+					val.push(newRow);
+					props.onChange(val);
+
+					if (__unstableMarkLastChangeAsPersistent) {
+						__unstableMarkLastChangeAsPersistent();
+					}
+				}}
+				duplicateRow={(i) => {
+					val.push(cloneDeep(val[i]));
+
+					const newVal = arrayMoveImmutable(
+						val,
+						val.length - 1,
+						i + 1
+					);
+					props.onChange(newVal);
+
+					if (__unstableMarkLastChangeAsPersistent) {
+						__unstableMarkLastChangeAsPersistent();
+					}
+				}}
+				resortRow={(oldIndex, newIndex) => {
+					const newVal = arrayMoveImmutable(val, oldIndex, newIndex);
+					props.onChange(newVal);
+
+					if (__unstableMarkLastChangeAsPersistent) {
+						__unstableMarkLastChangeAsPersistent();
+					}
+				}}
+			/>
+		</BaseControl>
+	);
+}
+
 /**
  * Control render in editor.
  */
@@ -30,82 +125,7 @@ addFilter(
 	'lzb.editor.control.repeater.render',
 	'lzb.editor',
 	(render, props) => {
-		const val = props.getValue() || [];
-
-		return (
-			<BaseControl {...useBlockControlProps(props)}>
-				<RepeaterControl
-					controlData={props.data}
-					count={val.length}
-					getInnerControls={(index) => {
-						const innerControls = props.getControls(props.uniqueId);
-						const innerResult = {};
-
-						Object.keys(innerControls).forEach((i) => {
-							const innerData = innerControls[i];
-
-							innerResult[i] = {
-								data: innerData,
-								val: props.getValue(innerData, index),
-							};
-						});
-
-						return innerResult;
-					}}
-					renderRow={(index) => (
-						<>
-							{props.renderControls(
-								props.placement,
-								props.uniqueId,
-								index
-							)}
-						</>
-					)}
-					removeRow={(i) => {
-						if (i > -1) {
-							val.splice(i, 1);
-							props.onChange(val);
-						}
-					}}
-					addRow={() => {
-						const innerControls = props.getControls(props.uniqueId);
-						const newRow = {};
-
-						// Add defaults to the new row.
-						Object.keys(innerControls).forEach((i) => {
-							const innerControl = innerControls[i];
-
-							// Add default values of controls.
-							newRow[innerControl.name] =
-								innerControl.default ||
-								innerControl.checked ||
-								'';
-						});
-
-						val.push(newRow);
-						props.onChange(val);
-					}}
-					duplicateRow={(i) => {
-						val.push(cloneDeep(val[i]));
-
-						const newVal = arrayMoveImmutable(
-							val,
-							val.length - 1,
-							i + 1
-						);
-						props.onChange(newVal);
-					}}
-					resortRow={(oldIndex, newIndex) => {
-						const newVal = arrayMoveImmutable(
-							val,
-							oldIndex,
-							newIndex
-						);
-						props.onChange(newVal);
-					}}
-				/>
-			</BaseControl>
-		);
+		return <RepeaterControlWrapper {...props} />;
 	}
 );
 
