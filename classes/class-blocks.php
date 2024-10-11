@@ -156,7 +156,7 @@ class LazyBlocks_Blocks {
 	 *
 	 * @param string $hook - Hook suffix for the current admin page.
 	 */
-	function enqueue_ajax_activation_block_script( $hook ) {
+	public function enqueue_ajax_activation_block_script( $hook ) {
 		if ( 'edit.php' !== $hook ) {
 			return;
 		}
