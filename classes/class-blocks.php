@@ -655,24 +655,50 @@ class LazyBlocks_Blocks {
 
 		$actions['export'] = esc_html__( 'Export', 'lazy-blocks' );
 
+		$actions['activate'] = esc_html__( 'Activate', 'lazy-blocks' );
+
+		$actions['deactivate'] = esc_html__( 'Deactivate', 'lazy-blocks' );
+
 		return $actions;
 	}
 
 	/**
-	 * Prepare to bulk export blocks.
+	 * Prepare to bulk export, activate or deactivate blocks.
 	 *
-	 * @param string $redirect redirect url after export.
+	 * @param string $redirect redirect url after export or activate/deactivate blocks.
 	 * @param string $action action name.
-	 * @param array  $post_ids post ids to export.
+	 * @param array  $post_ids post ids for export, activate or deactivate blocks.
 	 *
 	 * @return string
 	 */
 	public function handle_bulk_actions_edit( $redirect, $action, $post_ids ) {
-		if ( 'export' !== $action ) {
-			return $redirect;
+		if ( 'export' === $action ) {
+			lazyblocks()->tools()->export_json( $post_ids, 'blocks' );
 		}
 
-		lazyblocks()->tools()->export_json( $post_ids, 'blocks' );
+		if ( 'activate' === $action ) {
+			foreach ( $post_ids as $post_id ) {
+				wp_update_post(
+					array(
+						'post_type'   => 'lazyblocks',
+						'ID'          => $post_id,
+						'post_status' => 'publish',
+					)
+				);
+			}
+		}
+
+		if ( 'deactivate' === $action ) {
+			foreach ( $post_ids as $post_id ) {
+				wp_update_post(
+					array(
+						'post_type'   => 'lazyblocks',
+						'ID'          => $post_id,
+						'post_status' => 'draft',
+					)
+				);
+			}
+		}
 
 		return $redirect;
 	}
