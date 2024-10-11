@@ -88,6 +88,10 @@ class LazyBlocks_Blocks {
 		add_action( 'wp_ajax_lazyblocks_activation_block', array( $this, 'ajax_activation_block' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_ajax_activation_block_script' ) );
 
+		// Disabled the display of statuses in the list of blocks and replaced the Draft title in the submenu to Inactive.
+		add_action( 'display_post_states', array( $this, 'disable_post_states' ), 20, 2 );
+		add_filter( 'views_edit-lazyblocks', array( $this, 'change_draft_title_submenu_to_inactive' ) );
+
 		// add gutenberg blocks assets.
 		if ( function_exists( 'register_block_type' ) ) {
 			// add custom block categories.
@@ -98,6 +102,53 @@ class LazyBlocks_Blocks {
 			add_action( 'init', array( $this, 'register_block' ), 20 );
 			add_action( 'init', array( $this, 'register_block_render' ), 20 );
 		}
+	}
+
+	/**
+	 * Disabled display of post statuses in the list of all blocks.
+	 *
+	 * @param array   $post_states - Block States.
+	 * @param WP_Post $post - Post Object with all post parameters.
+	 * @return array
+	 */
+	public function disable_post_states( $post_states, $post ) {
+		if ( 'lazyblocks' === $post->post_type ) {
+			$post_states = array();
+		}
+
+		return $post_states;
+	}
+
+	/**
+	 * Changed the title inside the submenu to inactive.
+	 *
+	 * @param array $views - List of html links to views.
+	 * @return array
+	 */
+	public function change_draft_title_submenu_to_inactive( $views ) {
+		if ( isset( $views['draft'] ) ) {
+			preg_match( '/href=["\']?([^"\'>]+)["\']?/', $views['draft'], $href_matches );
+
+			preg_match( '/\((\d+)\)<\/span>/', $views['draft'], $count_matches );
+			$posts_count = '';
+
+			preg_match( '/class=["\']?([^"\'>]+)["\']?/', $views['draft'], $class_matches );
+
+			if ( isset( $href_matches[1] ) ) {
+				$posts_link = $href_matches[1];
+			}
+
+			if ( isset( $count_matches[1] ) ) {
+				$posts_count = ' <span class="count">(' . $count_matches[1] . ')</span>';
+			}
+
+			if ( isset( $class_matches[1] ) ) {
+				$class = $class_matches[1];
+			}
+
+			$views['draft'] = '<a href="' . esc_url( $posts_link ) . '" class="' . esc_attr( $class ) . '" aria-current="page">' . esc_html__( 'Inactive', 'lazy-blocks' ) . $posts_count . '</a>';
+		}
+		return $views;
 	}
 
 	/**
