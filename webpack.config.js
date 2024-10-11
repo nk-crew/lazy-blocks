@@ -42,11 +42,6 @@ const newConfig = {
 				'assets/admin/tools',
 				'index.js'
 			),
-			'admin-blocks-activation': resolve(
-				process.cwd(),
-				'assets/admin/blocks/activation',
-				'index.js'
-			),
 			editor: resolve(process.cwd(), 'assets/editor', 'index.js'),
 			'editor-translation': resolve(
 				process.cwd(),
