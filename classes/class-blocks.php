@@ -64,16 +64,22 @@ class LazyBlocks_Blocks {
 		// Additional elements in blocks list table.
 		add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
-		add_filter( 'bulk_actions-edit-lazyblocks', array( $this, 'bulk_actions_edit' ) );
-		add_filter( 'handle_bulk_actions-edit-lazyblocks', array( $this, 'handle_bulk_actions_edit' ), 10, 3 );
 		add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'manage_posts_columns' ) );
 		add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
+
+		// Actions.
+		add_filter( 'bulk_actions-edit-lazyblocks', array( $this, 'bulk_actions_edit' ) );
+		add_filter( 'handle_bulk_actions-edit-lazyblocks', array( $this, 'handle_bulk_actions_edit' ), 10, 3 );
 
 		// Sanitize block configs.
 		add_filter( 'lzb/get_blocks', array( $this, 'sanitize_block_configs' ), 100 );
 
 		// Disable different post statuses.
 		add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
+
+		// Disabled the display of statuses in the list of blocks and replaced the Draft title in the submenu to Inactive.
+		add_action( 'display_post_states', array( $this, 'disable_post_states' ), 20, 2 );
+		add_filter( 'views_edit-lazyblocks', array( $this, 'change_activation_views_labels' ) );
 
 		// add gutenberg blocks assets.
 		if ( function_exists( 'register_block_type' ) ) {
@@ -85,6 +91,49 @@ class LazyBlocks_Blocks {
 			add_action( 'init', array( $this, 'register_block' ), 20 );
 			add_action( 'init', array( $this, 'register_block_render' ), 20 );
 		}
+	}
+
+	/**
+	 * Disabled display of post statuses in the list of all blocks.
+	 *
+	 * @param array   $post_states - Block States.
+	 * @param WP_Post $post - Post Object with all post parameters.
+	 * @return array
+	 */
+	public function disable_post_states( $post_states, $post ) {
+		if ( 'lazyblocks' === $post->post_type ) {
+			$post_states = array();
+		}
+
+		return $post_states;
+	}
+
+	/**
+	 * Change the labels of the views in the blocks list.
+	 *
+	 * @param array $views - list of html links to views.
+	 * @return array
+	 */
+	public function change_activation_views_labels( $views ) {
+		if ( isset( $views['draft'] ) ) {
+			// Replace the entire draft view with "Inactive" while keeping the count intact.
+			$views['draft'] = preg_replace(
+				'/^(<a [^>]*>).*?(<span class="count">.*?<\/span>)/',
+				'$1' . __( 'Inactive', 'lazy-blocks' ) . ' $2',
+				$views['draft']
+			);
+		}
+
+		if ( isset( $views['publish'] ) ) {
+			// Replace the entire publish view with "Active" while keeping the count intact.
+			$views['publish'] = preg_replace(
+				'/^(<a [^>]*>).*?(<span class="count">.*?<\/span>)/',
+				'$1' . __( 'Active', 'lazy-blocks' ) . ' $2',
+				$views['publish']
+			);
+		}
+
+		return $views;
 	}
 
 	/**
@@ -104,7 +153,7 @@ class LazyBlocks_Blocks {
 
 		if (
 			'lazyblocks' === $post->post_type &&
-			! in_array( $post->post_status, array( 'publish', 'draft' ), true )
+			! in_array( $post->post_status, array( 'publish', 'draft', 'auto-draft', 'trash' ), true )
 		) {
 			// Temporarily remove this function to prevent infinite loops.
 			remove_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ) );
@@ -306,24 +355,34 @@ class LazyBlocks_Blocks {
 
 		$actions['export'] = esc_html__( 'Export', 'lazy-blocks' );
 
+		$actions['activate'] = esc_html__( 'Activate', 'lazy-blocks' );
+
+		$actions['deactivate'] = esc_html__( 'Deactivate', 'lazy-blocks' );
+
 		return $actions;
 	}
 
 	/**
-	 * Prepare to bulk export blocks.
+	 * Prepare to bulk export, activate or deactivate blocks.
 	 *
-	 * @param string $redirect redirect url after export.
+	 * @param string $redirect redirect url after export or activate/deactivate blocks.
 	 * @param string $action action name.
-	 * @param array  $post_ids post ids to export.
+	 * @param array  $post_ids post ids for export, activate or deactivate blocks.
 	 *
 	 * @return string
 	 */
 	public function handle_bulk_actions_edit( $redirect, $action, $post_ids ) {
-		if ( 'export' !== $action ) {
-			return $redirect;
+		if ( 'export' === $action ) {
+			lazyblocks()->tools()->export_json( $post_ids, 'blocks' );
 		}
 
-		lazyblocks()->tools()->export_json( $post_ids, 'blocks' );
+		if ( 'activate' === $action ) {
+			lazyblocks()->tools()->activate( $post_ids );
+		}
+
+		if ( 'deactivate' === $action ) {
+			lazyblocks()->tools()->deactivate( $post_ids );
+		}
 
 		return $redirect;
 	}
@@ -338,6 +397,7 @@ class LazyBlocks_Blocks {
 	public function manage_posts_columns( $columns = array() ) {
 		$columns = array(
 			'cb'                          => $columns['cb'],
+			'lazyblocks_post_activate'    => '',
 			'lazyblocks_post_icon'        => esc_html__( 'Icon', 'lazy-blocks' ),
 			'title'                       => $columns['title'],
 			'lazyblocks_post_category'    => esc_html__( 'Category', 'lazy-blocks' ),
@@ -354,6 +414,25 @@ class LazyBlocks_Blocks {
 	 */
 	public function manage_posts_custom_column( $column_name = false ) {
 		global $post;
+
+		// Displaying buttons for block activation and deactivation.
+		if ( 'lazyblocks_post_activate' === $column_name ) {
+			$classes = 'lazyblocks-block-activation-switch';
+
+			if ( 'publish' === $post->post_status ) {
+				$classes .= ' lazyblocks-active-block';
+			}
+
+			$link = add_query_arg(
+				array(
+					'lazyblocks_activate_block'        => $post->ID,
+					'lazyblocks_activate_block_action' => 'publish' === $post->post_status ? 'deactivate' : 'activate',
+					'lazyblocks_activate_block_nonce'  => wp_create_nonce( 'lzb-activate-block-nonce' ),
+				)
+			);
+
+			echo '<a class="' . esc_attr( $classes ) . '" href="' . esc_url( $link ) . '">&nbsp;</a>';
+		}
 
 		if ( 'lazyblocks_post_icon' === $column_name ) {
 			$icon      = $this->prepare_block_icon( $this->get_meta_value_by_id( 'lazyblocks_icon' ) );
