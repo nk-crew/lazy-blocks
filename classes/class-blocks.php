@@ -88,7 +88,7 @@ class LazyBlocks_Blocks {
 
 		// Disabled the display of statuses in the list of blocks and replaced the Draft title in the submenu to Inactive.
 		add_action( 'display_post_states', array( $this, 'disable_post_states' ), 20, 2 );
-		add_filter( 'views_edit-lazyblocks', array( $this, 'change_draft_title_submenu_to_inactive' ) );
+		add_filter( 'views_edit-lazyblocks', array( $this, 'change_activation_views_labels' ) );
 
 		// add gutenberg blocks assets.
 		if ( function_exists( 'register_block_type' ) ) {
@@ -118,34 +118,30 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
-	 * Changed the title inside the submenu to inactive.
+	 * Change the labels of the views in the blocks list.
 	 *
-	 * @param array $views - List of html links to views.
+	 * @param array $views - list of html links to views.
 	 * @return array
 	 */
-	public function change_draft_title_submenu_to_inactive( $views ) {
+	public function change_activation_views_labels( $views ) {
 		if ( isset( $views['draft'] ) ) {
-			preg_match( '/href=["\']?([^"\'>]+)["\']?/', $views['draft'], $href_matches );
-
-			preg_match( '/\((\d+)\)<\/span>/', $views['draft'], $count_matches );
-			$posts_count = '';
-
-			preg_match( '/class=["\']?([^"\'>]+)["\']?/', $views['draft'], $class_matches );
-
-			if ( isset( $href_matches[1] ) ) {
-				$posts_link = $href_matches[1];
-			}
-
-			if ( isset( $count_matches[1] ) ) {
-				$posts_count = ' <span class="count">(' . $count_matches[1] . ')</span>';
-			}
-
-			if ( isset( $class_matches[1] ) ) {
-				$class = $class_matches[1];
-			}
-
-			$views['draft'] = '<a href="' . esc_url( $posts_link ) . '" class="' . esc_attr( $class ) . '" aria-current="page">' . esc_html__( 'Inactive', 'lazy-blocks' ) . $posts_count . '</a>';
+			// Replace the entire draft view with "Inactive" while keeping the count intact.
+			$views['draft'] = preg_replace(
+				'/^(<a [^>]*>).*?(<span class="count">.*?<\/span>)/',
+				'$1' . __( 'Inactive', 'lazy-blocks' ) . ' $2',
+				$views['draft']
+			);
 		}
+
+		if ( isset( $views['publish'] ) ) {
+			// Replace the entire publish view with "Active" while keeping the count intact.
+			$views['publish'] = preg_replace(
+				'/^(<a [^>]*>).*?(<span class="count">.*?<\/span>)/',
+				'$1' . __( 'Active', 'lazy-blocks' ) . ' $2',
+				$views['publish']
+			);
+		}
+
 		return $views;
 	}
 
