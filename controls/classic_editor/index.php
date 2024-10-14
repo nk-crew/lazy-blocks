@@ -64,10 +64,8 @@ class LazyBlocks_Control_ClassicEditor extends LazyBlocks_Control {
 	 */
 	// phpcs:ignore
 	public function filter_control_value( $value, $control_data, $block_data, $context ) {
-		if ( 'classic_editor' === $control_data['type'] ) {
-			global $wp_embed;
-			$value = $wp_embed->autoembed( $value );
-		}
+		global $wp_embed;
+		$value = $wp_embed->autoembed( $value );
 
 		return $value;
 	}
