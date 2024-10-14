@@ -66,12 +66,6 @@ class LazyBlocks_Controls {
 			$value = apply_filters( 'lzb/control_value/control_type=' . $control_data['type'], $value, $control_data, $block_data, $context );
 			$value = apply_filters( 'lzb/control_value/control_name=' . $control_data['name'], $value, $control_data, $block_data, $context );
 			$value = apply_filters( 'lzb/control_value/block_slug=' . $block_data['slug'], $value, $control_data, $block_data, $context );
-
-			// added embed support for classic editor control.
-			if ( 'classic_editor' === $control_data['type'] ) {
-				global $wp_embed;
-				$value = $wp_embed->autoembed( $value );
-			}
 		}
 
 		return $value;
