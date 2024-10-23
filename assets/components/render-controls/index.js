@@ -129,12 +129,18 @@ export default class RenderControls extends Component {
 	 * Render controls
 	 *
 	 * @param {string}         placement  - controls placement [inspector, content]
+	 * @param {string}         group      - control group [default, styles, advanced]
 	 * @param {string|boolean} childOf    - parent control name.
 	 * @param {number|boolean} childIndex - child index in parent.
 	 *
 	 * @return {Array} react blocks with controls.
 	 */
-	renderControls(placement, childOf = '', childIndex = false) {
+	renderControls(
+		placement,
+		group = 'default',
+		childOf = '',
+		childIndex = false
+	) {
 		let result = [];
 		const controls = this.getControls(childOf);
 
@@ -146,7 +152,8 @@ export default class RenderControls extends Component {
 				control,
 				placement,
 				k,
-				childIndex
+				childIndex,
+				group
 			);
 
 			if (renderedControl) {
@@ -178,10 +185,17 @@ export default class RenderControls extends Component {
 	 * @param {string}         placement   - placement
 	 * @param {string}         uniqueId    - unique control ID
 	 * @param {number|boolean} childIndex  - child index in parent.
+	 * @param {string}         group       - group control
 	 *
 	 * @return {object|boolean} react control.
 	 */
-	renderControl(controlData, placement, uniqueId, childIndex = false) {
+	renderControl(
+		controlData,
+		placement,
+		uniqueId,
+		childIndex = false,
+		group = 'default'
+	) {
 		const {
 			lazyBlockData,
 			isLazyBlockSelected,
@@ -197,6 +211,8 @@ export default class RenderControls extends Component {
 			(controlData.placement === 'both' ||
 				controlData.placement === placement);
 		let { label } = controlData;
+		const groupCheck =
+			placement !== 'content' && controlData.group === group;
 
 		const controlTypeData = getControlTypeData(controlData.type);
 
@@ -240,7 +256,14 @@ export default class RenderControls extends Component {
 		}
 
 		// prepare control output
-		if (controlData.child_of || placementCheck) {
+		if (
+			controlData.child_of ||
+			(groupCheck && placementCheck) ||
+			(placementCheck &&
+				placement === 'content' &&
+				(controlData.placement === 'content' ||
+					controlData.placement === 'both'))
+		) {
 			// prepare data for filter.
 			const controlRenderData = {
 				data: {
@@ -342,6 +365,6 @@ export default class RenderControls extends Component {
 	}
 
 	render() {
-		return this.renderControls(this.props.placement);
+		return this.renderControls(this.props.placement, this.props.group);
 	}
 }
