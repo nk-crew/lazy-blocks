@@ -315,7 +315,7 @@ export default function BlockEdit(props) {
 				<h6>{lazyBlockData.title}</h6>
 			</div>
 			{Object.keys(controlsHasGroup).map((group) => {
-				if (!group) {
+				if (!controlsHasGroup[group]) {
 					return null;
 				}
 
