@@ -66,7 +66,7 @@ class LazyBlocks_Control {
 		'default_settings'              => true,
 		'help_settings'                 => true,
 		'placement_settings'            => array( 'content', 'inspector' /* , 'content-fallback', 'inspector-fallback' */ ),
-		'group_settings'                => 'default',
+		'group_settings'                => true,
 		'width_settings'                => true,
 		'required_settings'             => true,
 		'hide_if_not_selected_settings' => true,
