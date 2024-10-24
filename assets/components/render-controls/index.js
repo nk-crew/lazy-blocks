@@ -169,6 +169,7 @@ export default class RenderControls extends Component {
 		// filter render result.
 		result = applyFilters('lzb.editor.controls.render', result, {
 			placement,
+			group,
 			childOf,
 			childIndex,
 			getControls: this.getControls,
