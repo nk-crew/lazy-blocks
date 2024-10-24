@@ -237,6 +237,12 @@ export default function BlockEdit(props) {
 	);
 
 	const attsForRender = {};
+	const controlsHasGroup = {
+		// Default group is always available to show error notices.
+		default: true,
+		styles: false,
+		advanced: false,
+	};
 
 	// prepare data for preview.
 	Object.keys(lazyBlockData.controls).forEach((k) => {
@@ -247,6 +253,19 @@ export default function BlockEdit(props) {
 				lazyBlockData,
 				lazyBlockData.controls[k]
 			);
+		}
+		if (lazyBlockData.controls[k].placement !== 'content') {
+			switch (lazyBlockData.controls[k].group) {
+				case 'default':
+					controlsHasGroup.default = true;
+					break;
+				case 'styles':
+					controlsHasGroup.styles = true;
+					break;
+				case 'advanced':
+					controlsHasGroup.advanced = true;
+					break;
+			}
 		}
 	});
 
@@ -295,39 +314,50 @@ export default function BlockEdit(props) {
 
 				<h6>{lazyBlockData.title}</h6>
 			</div>
-			<InspectorControls>
-				<div
-					className="lzb-inspector-controls"
-					data-lazyblocks-block-name={props.name}
-				>
-					{allowErrorNotice && invalidControlsCount > 0 && (
-						<div className="lzb-invalid-notice">
-							{sprintf(
-								// translators: %d: number of child controls.
-								_n(
-									'Validation failed. %d control require attention.',
-									'Validation failed. %d controls require attention.',
-									invalidControlsCount,
-									'lazy-blocks'
-								),
-								invalidControlsCount
-							)}
+			{Object.keys(controlsHasGroup).map((group) => {
+				if (!controlsHasGroup[group]) {
+					return null;
+				}
+
+				return (
+					<InspectorControls key={`inspector-${group}`} group={group}>
+						<div
+							className={`lzb-inspector-controls lzb-inspector-controls-${group}`}
+							data-lazyblocks-block-name={props.name}
+						>
+							{'default' === group &&
+								allowErrorNotice &&
+								invalidControlsCount > 0 && (
+									<div className="lzb-invalid-notice">
+										{sprintf(
+											// translators: %d: number of child controls.
+											_n(
+												'Validation failed. %d control require attention.',
+												'Validation failed. %d controls require attention.',
+												invalidControlsCount,
+												'lazy-blocks'
+											),
+											invalidControlsCount
+										)}
+									</div>
+								)}
+							<RenderControls
+								placement="inspector"
+								group={group}
+								isLazyBlockSelected={isLazyBlockSelected}
+								allowErrorNotice={allowErrorNotice}
+								meta={meta}
+								setMeta={(...args) => {
+									if (postType) {
+										setMeta(...args);
+									}
+								}}
+								{...props}
+							/>
 						</div>
-					)}
-					<RenderControls
-						placement="inspector"
-						isLazyBlockSelected={isLazyBlockSelected}
-						allowErrorNotice={allowErrorNotice}
-						meta={meta}
-						setMeta={(...args) => {
-							if (postType) {
-								setMeta(...args);
-							}
-						}}
-						{...props}
-					/>
-				</div>
-			</InspectorControls>
+					</InspectorControls>
+				);
+			})}
 			{lazyBlockData.edit_url ? (
 				<BlockControls group="other">
 					<ToolbarButton

@@ -129,12 +129,18 @@ export default class RenderControls extends Component {
 	 * Render controls
 	 *
 	 * @param {string}         placement  - controls placement [inspector, content]
+	 * @param {string}         group      - control group [default, styles, advanced]
 	 * @param {string|boolean} childOf    - parent control name.
 	 * @param {number|boolean} childIndex - child index in parent.
 	 *
 	 * @return {Array} react blocks with controls.
 	 */
-	renderControls(placement, childOf = '', childIndex = false) {
+	renderControls(
+		placement,
+		group = 'default',
+		childOf = '',
+		childIndex = false
+	) {
 		let result = [];
 		const controls = this.getControls(childOf);
 
@@ -146,7 +152,8 @@ export default class RenderControls extends Component {
 				control,
 				placement,
 				k,
-				childIndex
+				childIndex,
+				group
 			);
 
 			if (renderedControl) {
@@ -162,6 +169,7 @@ export default class RenderControls extends Component {
 		// filter render result.
 		result = applyFilters('lzb.editor.controls.render', result, {
 			placement,
+			group,
 			childOf,
 			childIndex,
 			getControls: this.getControls,
@@ -178,10 +186,17 @@ export default class RenderControls extends Component {
 	 * @param {string}         placement   - placement
 	 * @param {string}         uniqueId    - unique control ID
 	 * @param {number|boolean} childIndex  - child index in parent.
+	 * @param {string}         group       - group control
 	 *
 	 * @return {object|boolean} react control.
 	 */
-	renderControl(controlData, placement, uniqueId, childIndex = false) {
+	renderControl(
+		controlData,
+		placement,
+		uniqueId,
+		childIndex = false,
+		group = 'default'
+	) {
 		const {
 			lazyBlockData,
 			isLazyBlockSelected,
@@ -196,9 +211,14 @@ export default class RenderControls extends Component {
 			controlData.placement !== 'nowhere' &&
 			(controlData.placement === 'both' ||
 				controlData.placement === placement);
-		let { label } = controlData;
 
+		let { label } = controlData;
 		const controlTypeData = getControlTypeData(controlData.type);
+
+		// Group check.
+		if (placement !== 'content') {
+			placementCheck = placementCheck && controlData.group === group;
+		}
 
 		// restrictions.
 		if (controlTypeData && controlTypeData.restrictions) {
@@ -342,6 +362,6 @@ export default class RenderControls extends Component {
 	}
 
 	render() {
-		return this.renderControls(this.props.placement);
+		return this.renderControls(this.props.placement, this.props.group);
 	}
 }
