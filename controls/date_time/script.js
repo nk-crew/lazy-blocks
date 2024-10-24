@@ -75,6 +75,9 @@ function DateTimePicker(props) {
 		resolvedFormat = settings.formats.time || 'g:i a';
 	}
 
+	// Reset.
+	const resetButtonLabel = __('Reset', 'lazy-blocks');
+
 	const formattedDate = value
 		? dateI18n(resolvedFormat, value, currentTimezone)
 		: buttonLabel;
@@ -159,6 +162,16 @@ function DateTimePicker(props) {
 							) : (
 								''
 							)}
+							<Button
+								size="small"
+								key={resetButtonLabel}
+								label={resetButtonLabel}
+								onClick={() => {
+									onChange?.(null);
+								}}
+							>
+								{resetButtonLabel}
+							</Button>
 						</div>
 					)}
 				/>
