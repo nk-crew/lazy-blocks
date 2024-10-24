@@ -210,11 +210,14 @@ export default class RenderControls extends Component {
 			controlData.placement !== 'nowhere' &&
 			(controlData.placement === 'both' ||
 				controlData.placement === placement);
-		let { label } = controlData;
-		const groupCheck =
-			placement !== 'content' && controlData.group === group;
 
+		let { label } = controlData;
 		const controlTypeData = getControlTypeData(controlData.type);
+
+		// Group check.
+		if (placement !== 'content') {
+			placementCheck = placementCheck && controlData.group === group;
+		}
 
 		// restrictions.
 		if (controlTypeData && controlTypeData.restrictions) {
@@ -256,14 +259,7 @@ export default class RenderControls extends Component {
 		}
 
 		// prepare control output
-		if (
-			controlData.child_of ||
-			(groupCheck && placementCheck) ||
-			(placementCheck &&
-				placement === 'content' &&
-				(controlData.placement === 'content' ||
-					controlData.placement === 'both'))
-		) {
+		if (controlData.child_of || placementCheck) {
 			// prepare data for filter.
 			const controlRenderData = {
 				data: {
