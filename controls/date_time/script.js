@@ -166,6 +166,7 @@ function DateTimePicker(props) {
 								size="small"
 								key={resetButtonLabel}
 								label={resetButtonLabel}
+								className={'is-tertiary'}
 								onClick={() => {
 									onChange?.(null);
 								}}
