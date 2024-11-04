@@ -5,7 +5,7 @@
 import { cloneDeep } from 'lodash';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
-import { PanelBody, Notice } from '@wordpress/components';
+import { PanelBody, ExternalLink, Notice } from '@wordpress/components';
 import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
@@ -331,14 +331,17 @@ export default class RenderControls extends Component {
 						controlNotice.push(
 							<Notice
 								key={`notice-meta-${controlData.name}`}
-								status="error"
+								status="warning"
 								isDismissible={false}
 								className="lzb-constructor-notice"
 							>
 								{__(
-									"This post type doesn't support custom fields",
+									'Custom fields are not enabled for this post type. Enable "custom-fields" support to use this control.',
 									'lazy-blocks'
-								)}
+								)}{' '}
+								<ExternalLink href="https://developer.wordpress.org/reference/functions/add_post_type_support/">
+									{__('Learn how', 'lazy-blocks')}
+								</ExternalLink>
 							</Notice>
 						);
 					}
