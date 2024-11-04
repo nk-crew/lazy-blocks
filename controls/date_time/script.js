@@ -90,7 +90,7 @@ function DateTimePicker(props) {
 					}}
 					renderToggle={({ isOpen, onToggle }) => (
 						<Button
-							isLink
+							variant="tertiary"
 							aria-expanded={isOpen}
 							onClick={onToggle}
 							className="lzb-date-time-picker-toggle"
@@ -156,6 +156,20 @@ function DateTimePicker(props) {
 									onChange={onChange}
 									onMonthPreviewed={() => {}}
 								/>
+							) : (
+								''
+							)}
+							{value ? (
+								<div className="lzb-date-time-picker-reset">
+									<Button
+										variant="tertiary"
+										onClick={() => {
+											onChange(null);
+										}}
+									>
+										{__('Reset', 'lazy-blocks')}
+									</Button>
+								</div>
 							) : (
 								''
 							)}
