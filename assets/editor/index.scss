@@ -208,13 +208,20 @@
 }
 
 .lzb-date-time-picker-toggle.components-button {
-	padding: 7px 0;
+	padding: 7px;
+	margin-left: -7px;
 	text-decoration: none;
 
 	svg {
 		width: 20px;
 		margin-right: 5px;
 	}
+}
+
+.lzb-date-time-picker-reset {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 0.5rem;
 }
 
 // Color Picker control

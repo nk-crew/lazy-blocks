@@ -75,9 +75,6 @@ function DateTimePicker(props) {
 		resolvedFormat = settings.formats.time || 'g:i a';
 	}
 
-	// Reset.
-	const resetButtonLabel = __('Reset', 'lazy-blocks');
-
 	const formattedDate = value
 		? dateI18n(resolvedFormat, value, currentTimezone)
 		: buttonLabel;
@@ -93,7 +90,7 @@ function DateTimePicker(props) {
 					}}
 					renderToggle={({ isOpen, onToggle }) => (
 						<Button
-							isLink
+							variant="tertiary"
 							aria-expanded={isOpen}
 							onClick={onToggle}
 							className="lzb-date-time-picker-toggle"
@@ -162,17 +159,20 @@ function DateTimePicker(props) {
 							) : (
 								''
 							)}
-							<Button
-								size="small"
-								key={resetButtonLabel}
-								label={resetButtonLabel}
-								className={'is-tertiary'}
-								onClick={() => {
-									onChange?.(null);
-								}}
-							>
-								{resetButtonLabel}
-							</Button>
+							{value ? (
+								<div className="lzb-date-time-picker-reset">
+									<Button
+										variant="tertiary"
+										onClick={() => {
+											onChange(null);
+										}}
+									>
+										{__('Reset', 'lazy-blocks')}
+									</Button>
+								</div>
+							) : (
+								''
+							)}
 						</div>
 					)}
 				/>
