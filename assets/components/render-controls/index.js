@@ -5,7 +5,9 @@
 import { cloneDeep } from 'lodash';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
-import { PanelBody, Notice } from '@wordpress/components';
+import { PanelBody, ExternalLink, Notice } from '@wordpress/components';
+import { select } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -316,14 +318,41 @@ export default class RenderControls extends Component {
 
 			if (controlResult) {
 				const val = controlRenderData.getValue();
-				let controlNotice = '';
+				const controlNotice = [];
+
+				// Display an error for meta controls when the post type doesn't support custom fields and the control is configured to save_in_meta fields.
+				if (controlData.save_in_meta === 'true') {
+					const postType = select('core/editor').getCurrentPostType();
+					const postTypeObject = select('core').getPostType(postType);
+
+					const postTypeSupportMeta =
+						postTypeObject?.supports?.['custom-fields'] || false;
+					if (!postTypeSupportMeta) {
+						controlNotice.push(
+							<Notice
+								key={`notice-meta-${controlData.name}`}
+								status="warning"
+								isDismissible={false}
+								className="lzb-constructor-notice"
+							>
+								{__(
+									'Custom fields are not enabled for this post type. Enable "custom-fields" support to use this control.',
+									'lazy-blocks'
+								)}{' '}
+								<ExternalLink href="https://developer.wordpress.org/reference/functions/add_post_type_support/">
+									{__('Learn how', 'lazy-blocks')}
+								</ExternalLink>
+							</Notice>
+						);
+					}
+				}
 
 				// show error for required fields
 				const requiredError = checkControlValidity(val, controlData);
 				if (allowErrorNotice && requiredError) {
-					controlNotice = (
+					controlNotice.push(
 						<Notice
-							key={`notice-${controlData.name}`}
+							key={`notice-required-${controlData.name}`}
 							status="error"
 							isDismissible={false}
 							className="lzb-constructor-notice"
