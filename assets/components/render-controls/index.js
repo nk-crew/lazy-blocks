@@ -330,7 +330,7 @@ export default class RenderControls extends Component {
 					if (!postTypeSupportMeta) {
 						controlNotice.push(
 							<Notice
-								key={`notice-${controlData.name}`}
+								key={`notice-meta-${controlData.name}`}
 								status="error"
 								isDismissible={false}
 								className="lzb-constructor-notice"
@@ -349,7 +349,7 @@ export default class RenderControls extends Component {
 				if (allowErrorNotice && requiredError) {
 					controlNotice.push(
 						<Notice
-							key={`notice-${controlData.name}`}
+							key={`notice-required-${controlData.name}`}
 							status="error"
 							isDismissible={false}
 							className="lzb-constructor-notice"
