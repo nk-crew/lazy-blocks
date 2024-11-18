@@ -56,6 +56,7 @@ function RepeaterControlWrapper(props) {
 					<>
 						{props.renderControls(
 							props.placement,
+							props.group,
 							props.uniqueId,
 							index
 						)}
