@@ -80,6 +80,13 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 		private $controls;
 
 		/**
+		 * Handlebars class object.
+		 *
+		 * @var LazyBlocks_Handlebars
+		 */
+		private $handlebars;
+
+		/**
 		 * Blocks class object.
 		 *
 		 * @var LazyBlocks_Blocks
@@ -130,11 +137,12 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			$this->load_text_domain();
 			$this->include_dependencies();
 
-			$this->icons     = new LazyBlocks_Icons();
-			$this->controls  = new LazyBlocks_Controls();
-			$this->blocks    = new LazyBlocks_Blocks();
-			$this->templates = new LazyBlocks_Templates();
-			$this->tools     = new LazyBlocks_Tools();
+			$this->icons      = new LazyBlocks_Icons();
+			$this->controls   = new LazyBlocks_Controls();
+			$this->handlebars = new LazyBlocks_Handlebars();
+			$this->blocks     = new LazyBlocks_Blocks();
+			$this->templates  = new LazyBlocks_Templates();
+			$this->tools      = new LazyBlocks_Tools();
 
 			add_action( 'init', array( $this, 'init_hook' ), 5 );
 		}
@@ -228,6 +236,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			require_once $this->plugin_path() . '/classes/class-admin.php';
 			require_once $this->plugin_path() . '/classes/class-icons.php';
 			require_once $this->plugin_path() . '/classes/class-controls.php';
+			require_once $this->plugin_path() . '/classes/class-handlebars.php';
 			require_once $this->plugin_path() . '/classes/class-blocks.php';
 			require_once $this->plugin_path() . '/classes/class-templates.php';
 			require_once $this->plugin_path() . '/classes/class-tools.php';
@@ -252,6 +261,13 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 		 */
 		public function controls() {
 			return $this->controls;
+		}
+
+		/**
+		 * Get lazyblocks handlebars object.
+		 */
+		public function handlebars() {
+			return $this->handlebars;
 		}
 
 		/**

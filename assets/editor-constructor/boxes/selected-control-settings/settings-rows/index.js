@@ -21,6 +21,7 @@ import WidthRow from './width';
 import HideIfNotSelectedRow from './hide-if-not-selected';
 import TranslateRow from './translate';
 import SaveInMetaRow from './save-in-meta';
+import GroupRow from './group';
 
 export default function settingsRows(props) {
 	const { data, id } = props;
@@ -37,6 +38,7 @@ export default function settingsRows(props) {
 			default: DefaultRow,
 			help: HelpRow,
 			placement: PlacementRow,
+			group: GroupRow,
 			width: WidthRow,
 			required: RequiredRow,
 			hide_if_not_selected: HideIfNotSelectedRow,
@@ -71,6 +73,12 @@ export default function settingsRows(props) {
 				allow =
 					!data.placement ||
 					data.placement === 'content' ||
+					data.placement === 'both';
+				break;
+			case 'group':
+				allow =
+					!data.placement ||
+					data.placement === 'inspector' ||
 					data.placement === 'both';
 				break;
 			// no default

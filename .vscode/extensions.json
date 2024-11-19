@@ -4,7 +4,6 @@
     "streetsidesoftware.code-spell-checker",
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
-    "stylelint.vscode-stylelint",
-    "bmewburn.vscode-intelephense-client"
+    "stylelint.vscode-stylelint"
   ]
 }

@@ -26,6 +26,12 @@
          "and": [
             ""
          ],
+         "Inactive": [
+            ""
+         ],
+         "Active": [
+            ""
+         ],
          "Blocks": [
             ""
          ],
@@ -42,6 +48,12 @@
             ""
          ],
          "Export": [
+            ""
+         ],
+         "Activate": [
+            ""
+         ],
+         "Deactivate": [
             ""
          ],
          "Icon": [
@@ -125,6 +137,20 @@
          "Export / Import": [
             ""
          ],
+         "Block \"%s\" activated successfully.": [
+            ""
+         ],
+         "Block \"%s\" deactivated successfully.": [
+            ""
+         ],
+         "Activated %s block": [
+            "",
+            "Activated %s blocks"
+         ],
+         "Deactivated %s block": [
+            "",
+            "Deactivated %s blocks"
+         ],
          "No file selected": [
             ""
          ],
@@ -149,6 +175,9 @@
             ""
          ],
          "Added new block '%s'.": [
+            ""
+         ],
+         "(Copy)": [
             ""
          ],
          "Checkbox": [
@@ -307,9 +336,6 @@
          "And much more…": [
             ""
          ],
-         "This field is required": [
-            ""
-         ],
          "Styles": [
             ""
          ],
@@ -452,6 +478,9 @@
             ""
          ],
          "Appears when inserting a new block": [
+            ""
+         ],
+         "Group": [
             ""
          ],
          "Help text": [
@@ -637,6 +666,19 @@
          "Block used for adding blocks inside it in cases when template locked from adding blocks.": [
             ""
          ],
+         "Some blocks on this page require attention before you can save.": [
+            ""
+         ],
+         "Validation failed. %d control require attention.": [
+            "",
+            "Validation failed. %d controls require attention."
+         ],
+         "Edit Block": [
+            ""
+         ],
+         "This control is required.": [
+            ""
+         ],
          "Alongside Text": [
             ""
          ],
@@ -724,6 +766,9 @@
          "Edit Gallery": [
             ""
          ],
+         "Clear the gallery": [
+            ""
+         ],
          "Medium": [
             ""
          ],
@@ -772,7 +817,7 @@
          "+ Add Row": [
             ""
          ],
-         "Toggle all": [
+         "Toggle all rows": [
             ""
          ],
          "Show Child Controls": [
@@ -780,6 +825,10 @@
          ],
          "Hide Child Controls": [
             ""
+         ],
+         "Show %d Child Control": [
+            "",
+            "Show %d Child Controls"
          ],
          "Row Label": [
             ""
@@ -800,9 +849,6 @@
             ""
          ],
          "Collapsed by Default": [
-            ""
-         ],
-         "Multiline": [
             ""
          ],
          "Choices": [
