@@ -105,7 +105,7 @@ class LazyBlocks_Blocks {
 		if ( 'lazyblocks' === $post->post_type ) {
 			$post_states = array();
 
-			if ( 'publish' !== $post->post_status ) {
+			if ( 'draft' === $post->post_status ) {
 				$post_states['lazyblocks-inactive'] = __( 'Inactive', 'lazy-blocks' );
 			}
 		}
