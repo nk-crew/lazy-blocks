@@ -45,26 +45,27 @@ addFilter(
 							label={choice.label}
 							checked={val.includes(choice.value)}
 							onChange={(checked) => {
-								let newVal = [...val];
+								const index = val.indexOf(choice.value);
 
-								if (checked) {
-									if (!newVal.includes(choice.value)) {
-										newVal.push(choice.value);
-									}
-								} else if (newVal.includes(choice.value)) {
-									newVal = newVal.filter(
-										(v) => v !== choice.value
-									);
+								// Only create new array when needed
+								const newVal =
+									checked && index === -1
+										? [...val, choice.value]
+										: [...val];
+
+								if (!checked && index !== -1) {
+									newVal.splice(index, 1);
 								}
 
-								// Keep the order of choices
+								// Create index map once for more efficient sorting
+								const indexMap = new Map(
+									choices.map((c, i) => [c.value, i])
+								);
+
 								newVal.sort((a, b) => {
-									return (
-										choices.findIndex(
-											(c) => c.value === a
-										) -
-										choices.findIndex((c) => c.value === b)
-									);
+									const indexA = indexMap.get(a) ?? 0;
+									const indexB = indexMap.get(b) ?? 0;
+									return indexA - indexB;
 								});
 
 								props.onChange(newVal);
