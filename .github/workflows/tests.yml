@@ -59,13 +59,13 @@ jobs:
         include:
           # Test with the previous WP version.
           - php: '7.4'
-            wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
+            wordpress: 'previous major version'
           - php: '8.2'
-            wordpress: ${{ needs.compute-previous-wordpress-version.outputs.previous-wordpress-version }}
+            wordpress: 'previous major version'
 
     env:
       WP_ENV_PHP_VERSION: ${{ matrix.php }}
-      WP_ENV_CORE: ${{ matrix.wordpress == '' && 'WordPress/WordPress' || format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
+      WP_ENV_CORE: ${{ matrix.wordpress == '' && 'WordPress/WordPress' || format( 'https://wordpress.org/wordpress-{0}.zip', needs.compute-previous-wordpress-version.outputs.previous-wordpress-version ) }}
 
     steps:
       - uses: actions/checkout@v3

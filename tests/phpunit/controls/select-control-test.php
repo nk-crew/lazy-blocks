@@ -6,6 +6,9 @@ class Select_Control_Test extends WP_UnitTestCase {
 		lazyblocks()->add_block( array_merge(
 			array(
 				'slug' => $block_slug,
+				'supports' => array(
+					'align' => false,
+				),
 			),
 			$attrs
 		) );
