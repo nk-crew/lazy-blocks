@@ -18,7 +18,7 @@
 		"env:start": "wp-env start",
 		"env:stop": "wp-env stop",
 		"env:destroy": "wp-env destroy",
-		"test": "npm-run-all lint test:unit",
+		"test": "npm-run-all lint test:unit:php test:e2e",
 		"test:e2e": "playwright test --config tests/e2e/playwright.config.js",
 		"test:e2e:ui": "playwright test --config tests/e2e/playwright.config.js --ui",
 		"test:e2e:install-playwright": "npx playwright install",
