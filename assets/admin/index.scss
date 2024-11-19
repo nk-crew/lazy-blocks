@@ -30,10 +30,6 @@
 			width: 200px;
 		}
 
-		tbody .check-column input {
-			margin-top: 9px !important;
-		}
-
 		@media screen and (max-width: 782px) {
 			/* Hide column on mobile device */
 			th.column-lazyblocks_post_icon {
@@ -59,52 +55,16 @@
 		}
 	}
 
-	/**
-	* Toggle switch.
-	*/
-	$toggle_width: 28px;
-	$toggle_circle_size: 13px;
-	$toggle_margin: 2px;
-
-	.column-lazyblocks_post_activate {
-		width: 35px;
+	.lazyblocks-activate-block {
+		color: #139a35;
+	}
+	.lazyblocks-deactivate-block {
+		color: #c17d39;
 	}
 
-	.lazyblocks-block-activation-switch {
-		position: relative;
-		display: block;
-		background-color: #d9d9d9;
-		border-radius: 17px;
-		height: 17px;
-		margin-top: 12.5px;
-		width: $toggle_width;
-	}
-
-	.lazyblocks-block-activation-switch::before {
-		background-color: #fff;
-		border-radius: 50%;
-		content: "";
-		display: inline-block;
-		height: $toggle_circle_size;
-		margin: $toggle_margin;
-		transition: transform 0.2s;
-		width: $toggle_circle_size;
-	}
-
-	.lazyblocks-active-block {
-		background-color: #007cba;
-	}
-
-	.lazyblocks-active-block.lazyblocks-block-activation-switch::before {
-		transform: translateX($toggle_width - $toggle_circle_size - $toggle_margin * 2);
-	}
-
-	.lazyblocks-active-block.lazyblocks-block-activation-switch:hover::before {
-		transform: translateX($toggle_width - $toggle_circle_size - $toggle_margin * 2 - 1px);
-	}
-
-	.lazyblocks-block-activation-switch:hover::before {
-		transform: translateX(1px);
+	.lazyblocks-row-active th.check-column {
+		border-left: 1px solid #2ea2cc;
+		box-shadow: -1px 0 0 #2ea2cc;
 	}
 }
 
