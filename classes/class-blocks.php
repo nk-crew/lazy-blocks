@@ -369,8 +369,7 @@ class LazyBlocks_Blocks {
 					'<a href="%1$s" aria-label="%2$s" class="%3$s">%4$s</a>',
 					add_query_arg(
 						array(
-							'lazyblocks_activate_block' => $post->ID,
-							'lazyblocks_activate_block_action' => 'publish' === $post->post_status ? 'deactivate' : 'activate',
+							( 'publish' === $post->post_status ? 'lazyblocks_deactivate_block' : 'lazyblocks_activate_block' ) => $post->ID,
 							'lazyblocks_activate_block_nonce' => wp_create_nonce( 'lzb-activate-block-nonce' ),
 						)
 					),

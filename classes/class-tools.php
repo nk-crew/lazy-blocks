@@ -343,8 +343,8 @@ class LazyBlocks_Tools {
 			return;
 		}
 
-		$post_id = filter_input( INPUT_GET, 'lazyblocks_activate_block', FILTER_SANITIZE_NUMBER_INT );
-		$action  = isset( $_GET['lazyblocks_activate_block_action'] ) ? sanitize_text_field( wp_unslash( $_GET['lazyblocks_activate_block_action'] ) ) : false;
+		$action  = isset( $_GET['lazyblocks_activate_block'] ) ? 'activate' : ( isset( $_GET['lazyblocks_deactivate_block'] ) ? 'deactivate' : false );
+		$post_id = filter_input( INPUT_GET, 'activate' === $action ? 'lazyblocks_activate_block' : 'lazyblocks_deactivate_block', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( $post_id && $action && current_user_can( 'edit_lazyblock', $post_id ) ) {
 			if ( 'activate' === $action ) {
