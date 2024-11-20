@@ -33,6 +33,18 @@ test.describe('editor block with Repeater control', () => {
 
 		await page.getByLabel('“Test Repeater Block” (Edit)').click();
 
+		await page.waitForTimeout(500);
+
+		const closeModal = await page
+			.locator('.components-modal__header')
+			.getByRole('button', { name: 'Close' });
+
+		await page.waitForTimeout(500);
+
+		if (await closeModal.isVisible()) {
+			await closeModal.click();
+		}
+
 		await editor.canvas
 			.getByLabel('Inspector Controls')
 			.getByRole('button')
