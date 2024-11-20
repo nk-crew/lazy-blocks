@@ -33,8 +33,6 @@ test.describe('editor block with Repeater control', () => {
 
 		await page.getByLabel('“Test Repeater Block” (Edit)').click();
 
-		await page.getByLabel('Close', { exact: true }).click();
-
 		await editor.canvas
 			.getByLabel('Inspector Controls')
 			.getByRole('button')
