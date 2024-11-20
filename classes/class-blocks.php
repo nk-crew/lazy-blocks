@@ -598,12 +598,32 @@ class LazyBlocks_Blocks {
 	 * Keep only alpha and numbers.
 	 * Make it lowercase.
 	 *
+	 * Support also slugs with namespaces like:
+	 * lazyblock/my-block
+	 *
 	 * @param string $slug - slug name.
 	 *
 	 * @return string
 	 */
 	public function sanitize_slug( $slug ) {
-		return strtolower( preg_replace( '/[^a-zA-Z0-9\-]+/', '', $slug ) );
+		// Split by namespace separator.
+		$parts = explode( '/', $slug );
+
+		// Sanitize each part.
+		$sanitized_parts = array_map(
+			function( $part ) {
+				return strtolower( preg_replace( '/[^a-zA-Z0-9\-]+/', '', $part ) );
+			},
+			$parts
+		);
+
+		// If we have 2 parts, join them with '/'.
+		if ( count( $parts ) === 2 ) {
+			return implode( '/', $sanitized_parts );
+		}
+
+		// Otherwise return just the sanitized string.
+		return $sanitized_parts[0];
 	}
 
 	/**

@@ -20,7 +20,9 @@ import IconPicker from '../../../components/icon-picker';
 import Select from '../../../components/select';
 
 function checkValidSlug(slug) {
-	return /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test(`lazyblock/${slug}`);
+	return /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test(
+		slug.includes('/') ? slug : `lazyblock/${slug}`
+	);
 }
 
 export default function GeneralSettings({ data, updateData }) {
