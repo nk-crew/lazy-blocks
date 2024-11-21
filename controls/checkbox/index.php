@@ -28,6 +28,9 @@ class LazyBlocks_Control_Checkbox extends LazyBlocks_Control {
 		$this->attributes   = array(
 			'checked'        => 'false',
 			'alongside_text' => '',
+			'choices'        => array(),
+			'multiple'       => 'false',
+			'output_format'  => '',
 		);
 
 		// Filters.
@@ -64,17 +67,96 @@ class LazyBlocks_Control_Checkbox extends LazyBlocks_Control {
 		if (
 			! $control ||
 			! isset( $control['type'] ) ||
-			$this->name !== $control['type'] ||
-			! isset( $control['checked'] )
+			$this->name !== $control['type']
 		) {
 			return $attribute_data;
 		}
 
-		if ( ! isset( $attribute_data['default'] ) || ! is_bool( $attribute_data['default'] ) ) {
+		// Set multiple value.
+		if ( isset( $control['multiple'] ) && 'true' === $control['multiple'] ) {
+			$attribute_data['type']    = 'array';
+			$attribute_data['items']   = array( 'type' => 'string' );
+			$attribute_data['default'] = $attribute_data['default'] ? explode( ',', $attribute_data['default'] ) : array();
+
+			// Set default checked value for single checkbox.
+		} elseif ( isset( $control['checked'] ) && ( ! isset( $attribute_data['default'] ) || ! is_bool( $attribute_data['default'] ) ) ) {
 			$attribute_data['default'] = 'true' === $control['checked'];
 		}
 
 		return $attribute_data;
+	}
+
+	/**
+	 * Get choice data by control value.
+	 *
+	 * @param string $value - attribute value.
+	 * @param array  $control - control data.
+	 *
+	 * @return array
+	 */
+	public function get_choice_data_by_value( $value, $control ) {
+		$choice_data = array(
+			'value' => $value,
+			'label' => $value,
+		);
+
+		if ( isset( $control['choices'] ) && is_array( $control['choices'] ) ) {
+			foreach ( $control['choices'] as $choice ) {
+				if ( $value === $choice['value'] ) {
+					$choice_data = $choice;
+				}
+			}
+		}
+
+		return $choice_data;
+	}
+
+	/**
+	 * Get new attribute value.
+	 *
+	 * @param string $value - attribute value.
+	 * @param array  $control - control data.
+	 *
+	 * @return array
+	 */
+	public function get_new_attribute_value( $value, $control ) {
+		if ( isset( $control['multiple'] ) && 'true' === $control['multiple'] && is_array( $value ) ) {
+			foreach ( $value as $k => $item ) {
+				$choice_data = $this->get_choice_data_by_value( $value[ $k ], $control );
+
+				if ( 'label' === $control['output_format'] ) {
+					$value[ $k ] = $choice_data['label'];
+				} elseif ( 'array' === $control['output_format'] ) {
+					$value[ $k ] = $choice_data;
+				}
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Change control output to array.
+	 *
+	 * @param mixed  $value - control value.
+	 * @param array  $control_data - control data.
+	 * @param array  $block_data - block data.
+	 * @param string $context - block render context.
+	 *
+	 * @return string|array
+	 */
+	// phpcs:ignore
+	public function filter_control_value( $value, $control_data, $block_data, $context ) {
+		if (
+			! isset( $control_data['multiple'] ) ||
+			'true' !== $control_data['multiple'] ||
+			! isset( $control_data['output_format'] ) ||
+			! $control_data['output_format']
+		) {
+			return $value;
+		}
+
+		return $this->get_new_attribute_value( $value, $control_data );
 	}
 }
 

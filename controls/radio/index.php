@@ -25,7 +25,6 @@ class LazyBlocks_Control_Radio extends LazyBlocks_Control {
 		$this->attributes = array(
 			'choices'       => array(),
 			'allow_null'    => 'false',
-			'multiple'      => 'false',
 			'output_format' => '',
 		);
 
