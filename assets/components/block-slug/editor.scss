@@ -4,13 +4,22 @@
 	display: flex;
 	align-items: flex-start;
 
-	> .lazyblocks-component-block-slug-prefix {
-		padding: 7px 8px;
+	.lazyblocks-component-block-slug-prefix {
+		padding: 6px 8px;
+		height: 32px;
+		border: 1px solid #949494;
 		line-height: normal;
-		color: #fff;
-		background-color: $gray-900;
-		border-top-left-radius: 3px;
-		border-bottom-left-radius: 3px;
+		color: $gray-800;
+		background-color: $gray-100;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		transition: 0.2s background-color;
+
+		&:hover:not(:disabled,[aria-disabled="true"]),
+		&.components-button[aria-expanded="true"] {
+			background-color: $gray-300;
+			color: $gray-800;
+		}
 	}
 
 	> .components-base-control {
@@ -27,5 +36,24 @@
 		.components-base-control__field {
 			margin-bottom: 0;
 		}
+	}
+}
+
+.lazyblocks-component-block-slug-prefix-dropdown-content {
+	.components-popover__content {
+		width: 260px;
+		padding: 16px;
+	}
+
+	.components-tab-panel__tabs {
+		margin-top: -16px;
+		margin-right: -16px;
+		margin-bottom: 16px;
+		margin-left: -16px;
+	}
+
+	a.lazyblocks-component-pro-notice-btn {
+		margin-bottom: 0;
+		margin-top: 12px;
 	}
 }
