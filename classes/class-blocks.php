@@ -62,7 +62,9 @@ class LazyBlocks_Blocks {
 		add_action( 'admin_init', array( $this, 'add_role_caps' ) );
 
 		// Additional elements in blocks list table.
+		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 10, 2 );
 		add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
+		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 		add_filter( 'post_row_actions', array( $this, 'post_row_actions' ), 10, 2 );
 		add_filter( 'manage_lazyblocks_posts_columns', array( $this, 'manage_posts_columns' ) );
 		add_filter( 'manage_lazyblocks_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
@@ -78,7 +80,6 @@ class LazyBlocks_Blocks {
 		add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
 
 		// Disabled the display of statuses in the list of blocks and replaced the Draft title in the submenu to Inactive.
-		add_action( 'display_post_states', array( $this, 'disable_post_states' ), 20, 2 );
 		add_filter( 'views_edit-lazyblocks', array( $this, 'change_activation_views_labels' ) );
 
 		// add gutenberg blocks assets.
@@ -94,15 +95,19 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
-	 * Disabled display of post statuses in the list of all blocks.
+	 * Display inactive state and disable other post statuses in the list of all blocks.
 	 *
 	 * @param array   $post_states - Block States.
 	 * @param WP_Post $post - Post Object with all post parameters.
 	 * @return array
 	 */
-	public function disable_post_states( $post_states, $post ) {
+	public function display_post_states( $post_states, $post ) {
 		if ( 'lazyblocks' === $post->post_type ) {
 			$post_states = array();
+
+			if ( 'draft' === $post->post_status ) {
+				$post_states['lazyblocks-inactive'] = __( 'Inactive', 'lazy-blocks' );
+			}
 		}
 
 		return $post_states;
@@ -286,6 +291,26 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Add active/inactive class to row
+	 *
+	 * @param array $classes Array of post classes.
+	 * @param array $class Additional classes added to the post.
+	 * @param int   $post_id The post ID.
+	 * @return array
+	 */
+	public function post_class( $classes, $class, $post_id ) {
+		if ( ! is_admin() ) {
+			return $classes;
+		}
+
+		if ( get_post_type( $post_id ) === 'lazyblocks' ) {
+			$classes[] = get_post_status( $post_id ) === 'publish' ? 'lazyblocks-row-active' : 'lazyblocks-row-inactive';
+		}
+
+		return $classes;
+	}
+
+	/**
 	 * Add featured image in lazyblocks list
 	 *
 	 * @param array  $actions actions for posts.
@@ -335,6 +360,22 @@ class LazyBlocks_Blocks {
 						get_the_title( $post->ID )
 					),
 					esc_html__( 'Export', 'lazy-blocks' )
+				),
+				'activate' => sprintf(
+					'<a href="%1$s" aria-label="%2$s" class="%3$s">%4$s</a>',
+					add_query_arg(
+						array(
+							( 'publish' === $post->post_status ? 'lazyblocks_deactivate_block' : 'lazyblocks_activate_block' ) => $post->ID,
+							'lazyblocks_activate_block_nonce' => wp_create_nonce( 'lzb-activate-block-nonce' ),
+						)
+					),
+					sprintf(
+						// translators: %1$ - post title.
+						'publish' === $post->post_status ? esc_html__( 'Deactivate “%1$s”', 'lazy-blocks' ) : esc_html__( 'Activate “%1$s”', 'lazy-blocks' ),
+						get_the_title( $post->ID )
+					),
+					'publish' === $post->post_status ? 'lazyblocks-deactivate-block' : 'lazyblocks-activate-block',
+					'publish' === $post->post_status ? esc_html__( 'Deactivate', 'lazy-blocks' ) : esc_html__( 'Activate', 'lazy-blocks' )
 				),
 			),
 			array_slice( $actions, 1 )
@@ -397,7 +438,6 @@ class LazyBlocks_Blocks {
 	public function manage_posts_columns( $columns = array() ) {
 		$columns = array(
 			'cb'                          => $columns['cb'],
-			'lazyblocks_post_activate'    => '',
 			'lazyblocks_post_icon'        => esc_html__( 'Icon', 'lazy-blocks' ),
 			'title'                       => $columns['title'],
 			'lazyblocks_post_slug'        => esc_html__( 'Slug', 'lazy-blocks' ),
@@ -415,25 +455,6 @@ class LazyBlocks_Blocks {
 	 */
 	public function manage_posts_custom_column( $column_name = false ) {
 		global $post;
-
-		// Displaying buttons for block activation and deactivation.
-		if ( 'lazyblocks_post_activate' === $column_name ) {
-			$classes = 'lazyblocks-block-activation-switch';
-
-			if ( 'publish' === $post->post_status ) {
-				$classes .= ' lazyblocks-active-block';
-			}
-
-			$link = add_query_arg(
-				array(
-					'lazyblocks_activate_block'        => $post->ID,
-					'lazyblocks_activate_block_action' => 'publish' === $post->post_status ? 'deactivate' : 'activate',
-					'lazyblocks_activate_block_nonce'  => wp_create_nonce( 'lzb-activate-block-nonce' ),
-				)
-			);
-
-			echo '<a class="' . esc_attr( $classes ) . '" href="' . esc_url( $link ) . '">&nbsp;</a>';
-		}
 
 		if ( 'lazyblocks_post_icon' === $column_name ) {
 			$icon      = $this->prepare_block_icon( $this->get_meta_value_by_id( 'lazyblocks_icon' ) );

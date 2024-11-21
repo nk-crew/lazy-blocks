@@ -1,1 +1,127 @@
-.post-type-lazyblocks .lzb-admin-block-icon{align-items:center;background:#e8e8e8;border-radius:8px;color:#4f5052;display:flex;font-size:16px;height:42px;justify-content:center;width:42px}.post-type-lazyblocks .lzb-admin-block-icon .dashicons{font-size:1em;height:1em;width:auto}.post-type-lazyblocks .lzb-admin-block-slug{font-size:12px}.post-type-lazyblocks .wp-list-table th.column-lazyblocks_post_icon{text-align:center;width:42px}.post-type-lazyblocks .wp-list-table th.column-lazyblocks_post_category{width:80px}.post-type-lazyblocks .wp-list-table tbody .check-column input{margin-top:9px!important}@media screen and (max-width:782px){.post-type-lazyblocks .wp-list-table th.column-lazyblocks_post_icon{display:none}.post-type-lazyblocks .wp-list-table tr:not(.inline-edit-row,.no-items) td.column-lazyblocks_post_icon{float:left;min-width:42px;width:42px!important}.post-type-lazyblocks .wp-list-table tr:not(.inline-edit-row,.no-items) td.column-lazyblocks_post_icon:before{content:none}.post-type-lazyblocks .wp-list-table tr:not(.inline-edit-row,.no-items) td.column-title{clear:right;overflow:hidden}}.post-type-lazyblocks .column-lazyblocks_post_activate{width:35px}.post-type-lazyblocks .lazyblocks-block-activation-switch{background-color:#d9d9d9;border-radius:17px;display:block;height:17px;margin-top:12.5px;position:relative;width:28px}.post-type-lazyblocks .lazyblocks-block-activation-switch:before{background-color:#fff;border-radius:50%;content:"";display:inline-block;height:13px;margin:2px;transition:transform .2s;width:13px}.post-type-lazyblocks .lazyblocks-active-block{background-color:#007cba}.post-type-lazyblocks .lazyblocks-active-block.lazyblocks-block-activation-switch:before{transform:translateX(11px)}.post-type-lazyblocks .lazyblocks-active-block.lazyblocks-block-activation-switch:hover:before{transform:translateX(10px)}.post-type-lazyblocks .lazyblocks-block-activation-switch:hover:before{transform:translateX(1px)}.lzb-admin-toolbar{background-color:#fff;border-bottom:1px solid #d7dbde}@media screen and (max-width:600px){.lzb-admin-toolbar{display:none}}#wpcontent .lzb-admin-toolbar{margin-left:-20px;padding-left:20px}.lzb-admin-toolbar h2{display:inline-block;font-size:14px;line-height:2.5714;margin:0 10px 0 0;padding:5px 0}.lzb-admin-toolbar h2 img{margin-right:5px;margin-top:-5px;opacity:.75;vertical-align:middle}.lzb-admin-toolbar .lzb-admin-toolbar-tab{color:inherit;display:inline-block;font-size:14px;line-height:2.5714;margin:0 2px;padding:5px 10px;text-decoration:none}.lzb-admin-toolbar .lzb-admin-toolbar-tab.is-active{border-bottom:3px solid #007cba;padding-bottom:2px}.lzb-admin-toolbar .lzb-admin-toolbar-tab:focus,.lzb-admin-toolbar .lzb-admin-toolbar-tab:hover{color:#007cba}.lzb-admin-toolbar .lzb-admin-toolbar-tab .dashicons{line-height:2}#adminmenu a[href*="lazyblocks.com/pro/"],.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"],.wp-list-table.plugins a[href*="lazyblocks.com/pro/"]{color:#e24a62;font-weight:700}#adminmenu a[href*="lazyblocks.com/pro/"] .dashicons,.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"] .dashicons,.wp-list-table.plugins a[href*="lazyblocks.com/pro/"] .dashicons{transition:none}#adminmenu a[href*="lazyblocks.com/pro/"]:focus,#adminmenu a[href*="lazyblocks.com/pro/"]:hover,.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"]:focus,.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"]:hover,.wp-list-table.plugins a[href*="lazyblocks.com/pro/"]:focus,.wp-list-table.plugins a[href*="lazyblocks.com/pro/"]:hover{color:#e11937}
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./assets/admin/index.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Admin pages.
+ */
+.post-type-lazyblocks .lzb-admin-block-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  font-size: 16px;
+  color: #4f5052;
+  background: #e8e8e8;
+  border-radius: 8px;
+}
+.post-type-lazyblocks .lzb-admin-block-icon .dashicons {
+  width: auto;
+  height: 1em;
+  font-size: 1em;
+}
+.post-type-lazyblocks .lzb-admin-block-slug {
+  font-size: 12px;
+}
+.post-type-lazyblocks .wp-list-table th.column-lazyblocks_post_icon {
+  width: 42px;
+  text-align: center;
+}
+.post-type-lazyblocks .wp-list-table th.column-lazyblocks_post_category {
+  width: 80px;
+}
+@media screen and (max-width: 782px) {
+  .post-type-lazyblocks .wp-list-table {
+    /* Hide column on mobile device */
+  }
+  .post-type-lazyblocks .wp-list-table th.column-lazyblocks_post_icon {
+    display: none;
+  }
+  .post-type-lazyblocks .wp-list-table tr:not(.inline-edit-row, .no-items) td.column-lazyblocks_post_icon {
+    float: left;
+    width: 42px !important;
+    min-width: 42px;
+  }
+  .post-type-lazyblocks .wp-list-table tr:not(.inline-edit-row, .no-items) td.column-lazyblocks_post_icon::before {
+    content: none;
+  }
+  .post-type-lazyblocks .wp-list-table tr:not(.inline-edit-row, .no-items) td.column-title {
+    overflow: hidden;
+    clear: right;
+  }
+}
+.post-type-lazyblocks .lazyblocks-activate-block {
+  color: #139a35;
+}
+.post-type-lazyblocks .lazyblocks-deactivate-block {
+  color: #c17d39;
+}
+.post-type-lazyblocks .lazyblocks-row-active th.check-column {
+  border-left: 1px solid #007cba;
+  box-shadow: -1px 0 0 #007cba;
+}
+
+.lzb-admin-toolbar {
+  background-color: #fff;
+  border-bottom: 1px solid #d7dbde;
+}
+@media screen and (max-width: 600px) {
+  .lzb-admin-toolbar {
+    display: none;
+  }
+}
+#wpcontent .lzb-admin-toolbar {
+  padding-left: 20px;
+  margin-left: -20px;
+}
+.lzb-admin-toolbar h2 {
+  display: inline-block;
+  padding: 5px 0;
+  margin: 0 10px 0 0;
+  font-size: 14px;
+  line-height: 2.5714;
+}
+.lzb-admin-toolbar h2 img {
+  margin-top: -5px;
+  margin-right: 5px;
+  vertical-align: middle;
+  opacity: 0.75;
+}
+.lzb-admin-toolbar .lzb-admin-toolbar-tab {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 2px;
+  font-size: 14px;
+  line-height: 2.5714;
+  color: inherit;
+  text-decoration: none;
+}
+.lzb-admin-toolbar .lzb-admin-toolbar-tab.is-active {
+  padding-bottom: 2px;
+  border-bottom: #007cba solid 3px;
+}
+.lzb-admin-toolbar .lzb-admin-toolbar-tab:hover, .lzb-admin-toolbar .lzb-admin-toolbar-tab:focus {
+  color: #007cba;
+}
+.lzb-admin-toolbar .lzb-admin-toolbar-tab .dashicons {
+  line-height: 2;
+}
+
+#adminmenu a[href*="lazyblocks.com/pro/"],
+.wp-list-table.plugins a[href*="lazyblocks.com/pro/"],
+.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"] {
+  font-weight: 700;
+  color: #e24a62;
+}
+#adminmenu a[href*="lazyblocks.com/pro/"] .dashicons,
+.wp-list-table.plugins a[href*="lazyblocks.com/pro/"] .dashicons,
+.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"] .dashicons {
+  transition: none;
+}
+#adminmenu a[href*="lazyblocks.com/pro/"]:hover, #adminmenu a[href*="lazyblocks.com/pro/"]:focus,
+.wp-list-table.plugins a[href*="lazyblocks.com/pro/"]:hover,
+.wp-list-table.plugins a[href*="lazyblocks.com/pro/"]:focus,
+.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"]:hover,
+.lzb-admin-toolbar a[href*="lazyblocks.com/pro/"]:focus {
+  color: #e11937;
+}
