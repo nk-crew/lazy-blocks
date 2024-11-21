@@ -68,7 +68,7 @@ jobs:
       WP_ENV_CORE: ${{ matrix.wordpress == '' && 'WordPress/WordPress' || format( 'https://wordpress.org/wordpress-{0}.zip', needs.compute-previous-wordpress-version.outputs.previous-wordpress-version ) }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js and install dependencies
         uses: ./.github/setup-node
@@ -162,7 +162,7 @@ jobs:
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js and install dependencies
         uses: ./.github/setup-node
@@ -181,7 +181,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -197,7 +197,7 @@ jobs:
         run: echo "date=$(/bin/date -u --date='last Mon' "+%F")" >> $GITHUB_OUTPUT
 
       - name: Cache PHPCS scan cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
             path: .cache/phpcs.json
             key: ${{ runner.os }}-date-${{ steps.get-date.outputs.date }}-phpcs-cache-${{ hashFiles('**/composer.json', 'phpcs.xml.dist') }}

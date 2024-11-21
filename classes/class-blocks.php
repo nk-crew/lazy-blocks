@@ -1226,10 +1226,6 @@ class LazyBlocks_Blocks {
 			'type'    => 'string',
 			'default' => '',
 		);
-		$attributes['align']            = array(
-			'type'    => 'string',
-			'default' => '',
-		);
 		$attributes['anchor']           = array(
 			'type'    => 'string',
 			'default' => '',
