@@ -10,7 +10,7 @@ runs:
     using: 'composite'
     steps:
         - name: Use desired version of Node.js
-          uses: actions/setup-node@v3
+          uses: actions/setup-node@v4
           with:
               node-version-file: '.nvmrc'
               node-version: ${{ inputs.node-version }}
@@ -24,7 +24,7 @@ runs:
 
         - name: Cache node_modules
           id: cache-node_modules
-          uses: actions/cache@v3
+          uses: actions/cache@v4
           with:
               path: '**/node_modules'
               key: node_modules-${{ runner.os }}-${{ steps.node-version.outputs.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
