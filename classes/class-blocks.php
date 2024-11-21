@@ -476,9 +476,15 @@ class LazyBlocks_Blocks {
 			$slug = $this->get_meta_value_by_id( 'lazyblocks_slug' );
 
 			if ( $slug ) {
-				$namespace = strpos( $slug, '/' ) ? explode( '/', $slug )[0] : 'lazyblock';
+				$namespace  = 'lazyblock';
+				$slug_value = $slug;
 
-				echo '<code class="lzb-admin-block-slug">' . esc_html( $namespace ) . '/' . esc_html( $slug ) . '</code>';
+				if ( strpos( $slug_value, '/' ) ) {
+					$namespace  = explode( '/', $slug_value )[0];
+					$slug_value = explode( '/', $slug_value )[1];
+				}
+
+				echo '<code class="lzb-admin-block-slug">' . esc_html( $namespace ) . '/' . esc_html( $slug_value ) . '</code>';
 			} else {
 				echo '&#8212;';
 			}
