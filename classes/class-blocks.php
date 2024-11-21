@@ -303,12 +303,15 @@ class LazyBlocks_Blocks {
 			return $classes;
 		}
 
-		if ( get_post_type( $post_id ) === 'lazyblocks' ) {
-			if ( get_post_status( $post_id ) === 'publish' ) {
-				$classes[] = 'lazyblocks-row-active';
-			} else {
-				$classes[] = 'lazyblocks-row-inactive';
-			}
+		$active_post_class = get_post_type( $post_id ) === 'lazyblocks' ?
+							(
+								get_post_status( $post_id ) === 'publish' ?
+								'lazyblocks-row-active' :
+								'lazyblocks-row-inactive'
+							) : '';
+
+		if ( ! empty( $active_post_class ) ) {
+			$classes[] = $active_post_class;
 		}
 
 		return $classes;
