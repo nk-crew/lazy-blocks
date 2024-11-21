@@ -27,6 +27,13 @@ class Select_Control_Test extends WP_UnitTestCase {
 		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
 
+	// Remove test block after each test.
+	public function tear_down() {
+		$this->remove_test_block();
+
+		parent::tear_down();
+	}
+
 	public function test_single_value() {
 		$this->add_test_block( array(
 			'controls' => array(
@@ -67,8 +74,6 @@ class Select_Control_Test extends WP_UnitTestCase {
 			'</div>',
 			do_blocks( '<!-- wp:lazyblock/test {"select":"val"} /-->' )
 		);
-
-		$this->remove_test_block();
 	}
 
 	public function test_multiple_value() {
@@ -125,7 +130,5 @@ class Select_Control_Test extends WP_UnitTestCase {
 			'</div>',
 			do_blocks( '<!-- wp:lazyblock/test {"select":["two"]} /-->' )
 		);
-
-		$this->remove_test_block();
 	}
 }

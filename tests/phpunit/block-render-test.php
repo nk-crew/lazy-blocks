@@ -27,6 +27,13 @@ class Block_Render_Test extends WP_UnitTestCase {
 		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
 
+	// Remove test block after each test.
+	public function tear_down() {
+		$this->remove_test_block();
+
+		parent::tear_down();
+	}
+
 	public function test_simple_block_render() {
 		$this->add_test_block( array(
 			'code' => array(
@@ -38,8 +45,6 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'<div class="wp-block-lazyblock-test"><p>Test</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test /-->' )
 		);
-
-		$this->remove_test_block();
 	}
 
 	public function test_empty_block_render() {
@@ -54,8 +59,6 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'',
 			do_blocks( '<!-- wp:lazyblock/test /-->' )
 		);
-
-		$this->remove_test_block();
 	}
 
 	public function test_block_render_attributes() {
@@ -73,8 +76,6 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'<div class="test-class wp-block-lazyblock-test" id="test-id"><p>Test</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test {"anchor":"test-id","className":"test-class"} /-->' )
 		);
-
-		$this->remove_test_block();
 	}
 
 	public function test_block_render_controls() {
@@ -94,8 +95,6 @@ class Block_Render_Test extends WP_UnitTestCase {
 			'<div class="wp-block-lazyblock-test"><p>text control val</p></div>',
 			do_blocks( '<!-- wp:lazyblock/test {"text-control":"text control val"} /-->' )
 		);
-
-		$this->remove_test_block();
 	}
 
 	public function test_block_render_inner_blocks_component() {
@@ -193,8 +192,6 @@ class Block_Render_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$this->remove_test_block();
-
 		remove_filter( 'lzb/block_render/allow_inner_blocks_wrapper', '__return_false' );
 	}
 
@@ -223,7 +220,5 @@ class Block_Render_Test extends WP_UnitTestCase {
 				'<!-- /wp:lazyblock/test -->'
 			)
 		);
-
-		$this->remove_test_block();
 	}
 }
