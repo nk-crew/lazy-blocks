@@ -20,6 +20,10 @@
 		}
 	}
 
+	.lzb-admin-block-slug {
+		font-size: 12px;
+	}
+
 	.wp-list-table {
 		th.column-lazyblocks_post_icon {
 			width: 42px;
@@ -27,7 +31,7 @@
 		}
 
 		th.column-lazyblocks_post_category {
-			width: 200px;
+			width: 80px;
 		}
 
 		tbody .check-column input {

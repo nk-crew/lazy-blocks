@@ -400,6 +400,7 @@ class LazyBlocks_Blocks {
 			'lazyblocks_post_activate'    => '',
 			'lazyblocks_post_icon'        => esc_html__( 'Icon', 'lazy-blocks' ),
 			'title'                       => $columns['title'],
+			'lazyblocks_post_slug'        => esc_html__( 'Slug', 'lazy-blocks' ),
 			'lazyblocks_post_category'    => esc_html__( 'Category', 'lazy-blocks' ),
 			'lazyblocks_post_description' => esc_html__( 'Description', 'lazy-blocks' ),
 		);
@@ -448,6 +449,18 @@ class LazyBlocks_Blocks {
 			}
 
 			echo '</a>';
+		}
+
+		if ( 'lazyblocks_post_slug' === $column_name ) {
+			$slug = $this->get_meta_value_by_id( 'lazyblocks_slug' );
+
+			if ( $slug ) {
+				$namespace = strpos( $slug, '/' ) ? explode( '/', $slug )[0] : 'lazyblock';
+
+				echo '<code class="lzb-admin-block-slug">' . esc_html( $namespace ) . '/' . esc_html( $slug ) . '</code>';
+			} else {
+				echo '&#8212;';
+			}
 		}
 
 		if ( 'lazyblocks_post_category' === $column_name ) {
