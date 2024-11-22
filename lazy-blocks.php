@@ -134,7 +134,6 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			$this->plugin_url      = plugin_dir_url( __FILE__ );
 			$this->plugin_basename = plugin_basename( __FILE__ );
 
-			$this->load_text_domain();
 			$this->include_dependencies();
 
 			$this->icons      = new LazyBlocks_Icons();
@@ -145,6 +144,8 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			$this->tools      = new LazyBlocks_Tools();
 
 			add_action( 'init', array( $this, 'init_hook' ), 5 );
+
+			add_action( 'plugins_loaded', array( $this, 'load_text_domain' ) );
 		}
 
 		/**
