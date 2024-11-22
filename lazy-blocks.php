@@ -130,9 +130,18 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 		 * Init.
 		 */
 		public function init() {
+			add_action( 'init', array( $this, 'init_hook' ), 5 );
+		}
+
+		/**
+		 * Init hook should be used to register user blocks and add customizations.
+		 */
+		public function init_hook() {
 			$this->plugin_path     = plugin_dir_path( __FILE__ );
 			$this->plugin_url      = plugin_dir_url( __FILE__ );
 			$this->plugin_basename = plugin_basename( __FILE__ );
+
+			$this->load_text_domain();
 
 			$this->include_dependencies();
 
@@ -143,15 +152,6 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			$this->templates  = new LazyBlocks_Templates();
 			$this->tools      = new LazyBlocks_Tools();
 
-			add_action( 'init', array( $this, 'init_hook' ), 5 );
-
-			add_action( 'plugins_loaded', array( $this, 'load_text_domain' ) );
-		}
-
-		/**
-		 * Init hook should be used to register user blocks and add customizations.
-		 */
-		public function init_hook() {
 			do_action( 'lzb/init' );
 		}
 
