@@ -40,7 +40,7 @@ export default function BlockSlug(props) {
 						</Button>
 					)}
 					renderContent={() => (
-						<div className="lazyblocks-component-block-slug-prefix-dropdown lazyblocks-component-pro-notice">
+						<div className="lazyblocks-component-pro-notice">
 							Custom block slugs and collections are only
 							available in the Pro plugin.
 							<a
