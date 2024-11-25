@@ -5,7 +5,14 @@
 	align-items: flex-start;
 
 	.lazyblocks-component-block-slug-prefix {
+		position: relative;
+		display: inline-block;
+		max-width: 100%;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 		padding: 6px 8px;
+		padding-right: 10px;
 		height: 32px;
 		border: 1px solid #949494;
 		line-height: normal;
@@ -19,6 +26,12 @@
 		&.components-button[aria-expanded="true"] {
 			background-color: $gray-300;
 			color: $gray-800;
+		}
+
+		// Slash after namespace.
+		> span {
+			position: absolute;
+			right: 5px;
 		}
 	}
 
@@ -39,6 +52,9 @@
 	}
 }
 
+.lazyblocks-component-block-slug-prefix-dropdown {
+	max-width: 60%;
+}
 .lazyblocks-component-block-slug-prefix-dropdown-content {
 	.components-popover__content {
 		width: 260px;

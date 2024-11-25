@@ -35,7 +35,8 @@ export default function BlockSlug(props) {
 							aria-expanded={isOpen}
 							onClick={onToggle}
 						>
-							lazyblock/
+							<span>lazyblock</span>
+							<span>/</span>
 						</Button>
 					)}
 					renderContent={() => (
