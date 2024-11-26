@@ -17,7 +17,7 @@ class LazyBlocks_Controls {
 	 * LazyBlocks_Controls constructor.
 	 */
 	public function __construct() {
-		$this->include_controls();
+		add_action( 'init', array( $this, 'include_controls' ) );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class LazyBlocks_Controls {
 	/**
 	 * Include controls.
 	 */
-	private function include_controls() {
+	public function include_controls() {
 		// Sort.
 		$sort = array(
 			'_base',
