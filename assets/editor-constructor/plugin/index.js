@@ -5,6 +5,7 @@ import { createBlock } from '@wordpress/blocks';
 import { registerPlugin } from '@wordpress/plugins';
 import { useEffect, useRef } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { doAction } from '@wordpress/hooks';
 import apiFetch from '@wordpress/api-fetch';
 
 export default function UpdateEditor() {
@@ -161,6 +162,14 @@ export default function UpdateEditor() {
 				console.log(response);
 			});
 		}
+
+		doAction('lzb.constructor.post-change', {
+			isSavingPost,
+			isAutosavingPost,
+			shouldUpdate,
+			blockData,
+			postId,
+		});
 	}, [isSavingPost, isAutosavingPost, postId, blockData]);
 
 	return null;

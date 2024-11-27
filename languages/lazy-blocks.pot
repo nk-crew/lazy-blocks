@@ -9,16 +9,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-23T13:04:14+00:00\n"
+"POT-Creation-Date: 2024-11-25T12:24:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
 #: lazy-blocks.php
 #: classes/class-admin.php:252
-#: classes/class-blocks.php:182
-#: classes/class-blocks.php:1101
+#: classes/class-blocks.php:187
+#: classes/class-blocks.php:1161
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -51,65 +51,83 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: classes/class-blocks.php:122
+#: classes/class-blocks.php:109
+#: classes/class-blocks.php:127
 msgid "Inactive"
 msgstr ""
 
-#: classes/class-blocks.php:131
+#: classes/class-blocks.php:136
 msgid "Active"
 msgstr ""
 
-#: classes/class-blocks.php:183
-#: classes/class-blocks.php:184
+#: classes/class-blocks.php:188
+#: classes/class-blocks.php:189
 msgid "Blocks"
 msgstr ""
 
-#: classes/class-blocks.php:185
+#: classes/class-blocks.php:190
 #: assets/components/document-tabs/index.js:62
 #: assets/components/document-tabs/index.js:64
 msgid "Block"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:320
+#: classes/class-blocks.php:345
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:323
+#: classes/class-blocks.php:348
 #: assets/editor-constructor/boxes/controls/control.js:246
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:334
+#: classes/class-blocks.php:359
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:337
-#: classes/class-blocks.php:356
+#: classes/class-blocks.php:362
+#: classes/class-blocks.php:397
 msgid "Export"
 msgstr ""
 
-#: classes/class-blocks.php:358
-msgid "Activate"
+#. translators: %1$ - post title.
+#: classes/class-blocks.php:374
+msgid "Deactivate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:360
+#. translators: %1$ - post title.
+#: classes/class-blocks.php:374
+msgid "Activate “%1$s”"
+msgstr ""
+
+#: classes/class-blocks.php:378
+#: classes/class-blocks.php:401
 msgid "Deactivate"
 msgstr ""
 
-#: classes/class-blocks.php:401
-#: assets/editor-constructor/boxes/general/index.js:95
+#: classes/class-blocks.php:378
+#: classes/class-blocks.php:399
+msgid "Activate"
+msgstr ""
+
+#: classes/class-blocks.php:441
+#: assets/editor-constructor/boxes/general/index.js:105
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:403
-#: assets/editor-constructor/boxes/general/index.js:103
+#: classes/class-blocks.php:443
+#: assets/editor-constructor/boxes/general/index.js:79
+msgid "Slug"
+msgstr ""
+
+#: classes/class-blocks.php:444
+#: assets/editor-constructor/boxes/general/index.js:118
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:404
-#: assets/editor-constructor/boxes/general/index.js:170
+#: classes/class-blocks.php:445
+#: assets/editor-constructor/boxes/general/index.js:191
 msgid "Description"
 msgstr ""
 
@@ -427,6 +445,11 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
+#: assets/components/block-slug/index.js:51
+#: assets/components/pro-notice/index.js:33
+msgid "Upgrade Now"
+msgstr ""
+
 #: assets/components/copied/index.js:14
 msgid "Copied!"
 msgstr ""
@@ -472,32 +495,40 @@ msgstr ""
 msgid "Lazy Blocks Pro"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:33
-msgid "Upgrade Now"
+#: assets/components/pro-notice/index.js:37
+msgid "Custom Slugs and Collections"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:37
+#: assets/components/pro-notice/index.js:40
 msgid "Controls Conditional Logic"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:39
+#: assets/components/pro-notice/index.js:42
 msgid "Panels and Dividers"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:41
+#: assets/components/pro-notice/index.js:44
 msgid "Posts, Taxonomy, User Controls"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:46
+#: assets/components/pro-notice/index.js:49
 msgid "Blocks Preloading"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:47
+#: assets/components/pro-notice/index.js:50
 msgid "SEO Enhancements"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:54
+#: assets/components/pro-notice/index.js:57
 msgid "And much more…"
+msgstr ""
+
+#: assets/components/render-controls/index.js:338
+msgid "Custom fields are not enabled for this post type. Enable \"custom-fields\" support to use this control."
+msgstr ""
+
+#: assets/components/render-controls/index.js:343
+msgid "Learn how"
 msgstr ""
 
 #: assets/editor-constructor/block/edit.js:69
@@ -660,27 +691,23 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:74
-msgid "Slug"
-msgstr ""
-
-#: assets/editor-constructor/boxes/general/index.js:84
+#: assets/editor-constructor/boxes/general/index.js:89
 msgid "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:108
+#: assets/editor-constructor/boxes/general/index.js:123
 msgid "Select category"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:122
+#: assets/editor-constructor/boxes/general/index.js:140
 msgid "Keywords"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:123
+#: assets/editor-constructor/boxes/general/index.js:141
 msgid "Make it easier to discover a block with keyword aliases"
 msgstr ""
 
-#: assets/editor-constructor/boxes/general/index.js:132
+#: assets/editor-constructor/boxes/general/index.js:150
 msgid "Type keyword and push Enter"
 msgstr ""
 
@@ -716,12 +743,12 @@ msgstr ""
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/required.js:18
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/save-in-meta.js:38
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/translate.js:18
-#: controls/checkbox/script.js:83
+#: controls/checkbox/script.js:177
 #: controls/color/script.js:91
 #: controls/color/script.js:108
 #: controls/image/script.js:125
 #: controls/radio/script.js:84
-#: controls/repeater/script.js:322
+#: controls/repeater/script.js:323
 #: controls/select/script.js:108
 #: controls/select/script.js:129
 #: controls/toggle/script.js:57
@@ -730,6 +757,7 @@ msgstr ""
 
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:44
 #: assets/editor-constructor/boxes/styles/index.js:35
+#: controls/checkbox/script.js:211
 #: controls/radio/script.js:110
 #: controls/select/component-choices.js:155
 #: controls/select/script.js:155
@@ -895,6 +923,7 @@ msgid "Insert custom HTML attributes with custom content."
 msgstr ""
 
 #: assets/editor-constructor/boxes/supports/index.js:29
+#: controls/checkbox/script.js:169
 #: controls/select/script.js:121
 msgid "Multiple"
 msgstr ""
@@ -968,13 +997,13 @@ msgid "Some blocks on this page require attention before you can save."
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: assets/editor/blocks/main/edit.js:325
+#: assets/editor/blocks/main/edit.js:334
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
 msgstr[0] ""
 msgstr[1] ""
 
-#: assets/editor/blocks/main/edit.js:404
+#: assets/editor/blocks/main/edit.js:380
 msgid "Edit Block"
 msgstr ""
 
@@ -982,19 +1011,50 @@ msgstr ""
 msgid "This control is required."
 msgstr ""
 
-#: controls/checkbox/script.js:65
+#: controls/checkbox/script.js:129
 #: controls/color/script.js:69
 #: controls/toggle/script.js:40
 msgid "Alongside Text"
 msgstr ""
 
-#: controls/checkbox/script.js:66
-msgid "Displays text alongside the checkbox"
+#: controls/checkbox/script.js:146
+msgid "Checked by default"
 msgstr ""
 
-#: controls/checkbox/script.js:79
-#: controls/toggle/script.js:53
-msgid "Checked"
+#: controls/checkbox/script.js:150
+msgid "Unchecked by default"
+msgstr ""
+
+#: controls/checkbox/script.js:170
+#: controls/select/script.js:122
+msgid "Allows you to select multiple values"
+msgstr ""
+
+#: controls/checkbox/script.js:198
+#: controls/color/script.js:121
+#: controls/radio/script.js:97
+#: controls/select/script.js:142
+msgid "Output Format"
+msgstr ""
+
+#: controls/checkbox/script.js:199
+#: controls/color/script.js:122
+#: controls/radio/script.js:98
+#: controls/select/script.js:143
+msgid "Allows you to change attribute output format"
+msgstr ""
+
+#: controls/checkbox/script.js:207
+#: controls/radio/script.js:106
+#: controls/select/component-choices.js:159
+#: controls/select/script.js:151
+msgid "Value"
+msgstr ""
+
+#: controls/checkbox/script.js:215
+#: controls/radio/script.js:114
+#: controls/select/script.js:159
+msgid "Both (Array)"
 msgstr ""
 
 #: controls/classic_editor/tmce.js:63
@@ -1029,18 +1089,6 @@ msgstr ""
 msgid "Display color palette with predefined colors"
 msgstr ""
 
-#: controls/color/script.js:121
-#: controls/radio/script.js:97
-#: controls/select/script.js:142
-msgid "Output Format"
-msgstr ""
-
-#: controls/color/script.js:122
-#: controls/radio/script.js:98
-#: controls/select/script.js:143
-msgid "Allows you to change attribute output format"
-msgstr ""
-
 #: controls/color/script.js:130
 msgid "Color"
 msgstr ""
@@ -1061,11 +1109,15 @@ msgstr ""
 msgid "Select Time"
 msgstr ""
 
-#: controls/date_time/script.js:260
+#: controls/date_time/script.js:170
+msgid "Reset"
+msgstr ""
+
+#: controls/date_time/script.js:274
 msgid "Date"
 msgstr ""
 
-#: controls/date_time/script.js:282
+#: controls/date_time/script.js:296
 msgid "Time"
 msgstr ""
 
@@ -1174,24 +1226,13 @@ msgstr ""
 msgid "Allows you to reset selected option value to null"
 msgstr ""
 
-#: controls/radio/script.js:106
-#: controls/select/component-choices.js:159
-#: controls/select/script.js:151
-msgid "Value"
-msgstr ""
-
-#: controls/radio/script.js:114
-#: controls/select/script.js:159
-msgid "Both (Array)"
-msgstr ""
-
 #: controls/repeater/repeater-control.js:199
-#: controls/repeater/script.js:276
+#: controls/repeater/script.js:277
 msgid "Row {{#}}"
 msgstr ""
 
 #: controls/repeater/repeater-control.js:350
-#: controls/repeater/script.js:288
+#: controls/repeater/script.js:289
 msgid "+ Add Row"
 msgstr ""
 
@@ -1199,46 +1240,46 @@ msgstr ""
 msgid "Toggle all rows"
 msgstr ""
 
-#: controls/repeater/script.js:191
+#: controls/repeater/script.js:192
 msgid "Show Child Controls"
 msgstr ""
 
-#: controls/repeater/script.js:193
+#: controls/repeater/script.js:194
 msgid "Hide Child Controls"
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: controls/repeater/script.js:197
+#: controls/repeater/script.js:198
 msgid "Show %d Child Control"
 msgid_plural "Show %d Child Controls"
 msgstr[0] ""
 msgstr[1] ""
 
-#: controls/repeater/script.js:275
+#: controls/repeater/script.js:276
 msgid "Row Label"
 msgstr ""
 
-#: controls/repeater/script.js:277
+#: controls/repeater/script.js:278
 msgid "Example: \"My row number {{#}} with inner control {{control_name}}\""
 msgstr ""
 
-#: controls/repeater/script.js:287
+#: controls/repeater/script.js:288
 msgid "Add Button Label"
 msgstr ""
 
-#: controls/repeater/script.js:298
+#: controls/repeater/script.js:299
 msgid "Minimum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:308
+#: controls/repeater/script.js:309
 msgid "Maximum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:318
+#: controls/repeater/script.js:319
 msgid "Collapsible Rows"
 msgstr ""
 
-#: controls/repeater/script.js:332
+#: controls/repeater/script.js:333
 msgid "Collapsed by Default"
 msgstr ""
 
@@ -1254,12 +1295,12 @@ msgstr ""
 msgid "-- Select --"
 msgstr ""
 
-#: controls/select/script.js:122
-msgid "Allows you to select multiple values"
-msgstr ""
-
 #: controls/toggle/script.js:41
 msgid "Displays text alongside the toggle"
+msgstr ""
+
+#: controls/toggle/script.js:53
+msgid "Checked"
 msgstr ""
 
 #: controls/undefined/script.js:25

@@ -301,6 +301,18 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 		}
 
 		/**
+		 * Add lazyblocks block collection.
+		 *
+		 * This method is does nothing in Free plugin,
+		 * the actual implementation is in Pro plugin.
+		 *
+		 * @param array $data - collection data.
+		 */
+		public function add_collection( $data ) {
+			do_action( 'lzb/add_collection', $data );
+		}
+
+		/**
 		 * Add lazyblocks template.
 		 *
 		 * @param array $data - template data.
