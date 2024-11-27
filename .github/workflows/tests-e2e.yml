@@ -17,14 +17,9 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright - ${{ matrix.part }}
+    name: Playwright
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        part: [1, 2, 3, 4]
-        totalParts: [4]
 
     steps:
       - uses: actions/checkout@v4
@@ -45,4 +40,4 @@ jobs:
 
       - name: Run the tests
         run: |
-          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e -- --shard=${{ matrix.part }}/${{ matrix.totalParts }}
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e
