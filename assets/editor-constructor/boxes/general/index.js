@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useRef, useState, useEffect } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import {
 	PanelBody,
 	BaseControl,
@@ -30,12 +30,8 @@ export default function GeneralSettings({ data, updateData }) {
 
 	const { slug, icon, category, description, keywords } = data;
 
-	const canCheckSlug = useRef(!!slug);
-
 	useEffect(() => {
-		// We shouldn't check slug when first time created block, as user is not yet added the block name.
-		if (!canCheckSlug.current) {
-			canCheckSlug.current = true;
+		if (!slug) {
 			return;
 		}
 
