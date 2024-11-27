@@ -440,6 +440,7 @@ class LazyBlocks_Blocks {
 			'cb'                          => $columns['cb'],
 			'lazyblocks_post_icon'        => esc_html__( 'Icon', 'lazy-blocks' ),
 			'title'                       => $columns['title'],
+			'lazyblocks_post_slug'        => esc_html__( 'Slug', 'lazy-blocks' ),
 			'lazyblocks_post_category'    => esc_html__( 'Category', 'lazy-blocks' ),
 			'lazyblocks_post_description' => esc_html__( 'Description', 'lazy-blocks' ),
 		);
@@ -469,6 +470,24 @@ class LazyBlocks_Blocks {
 			}
 
 			echo '</a>';
+		}
+
+		if ( 'lazyblocks_post_slug' === $column_name ) {
+			$slug = $this->get_meta_value_by_id( 'lazyblocks_slug' );
+
+			if ( $slug ) {
+				$namespace  = 'lazyblock';
+				$slug_value = $slug;
+
+				if ( strpos( $slug_value, '/' ) ) {
+					$namespace  = explode( '/', $slug_value )[0];
+					$slug_value = explode( '/', $slug_value )[1];
+				}
+
+				echo '<code class="lzb-admin-block-slug">' . esc_html( $namespace ) . '/' . esc_html( $slug_value ) . '</code>';
+			} else {
+				echo '&#8212;';
+			}
 		}
 
 		if ( 'lazyblocks_post_category' === $column_name ) {
@@ -619,12 +638,32 @@ class LazyBlocks_Blocks {
 	 * Keep only alpha and numbers.
 	 * Make it lowercase.
 	 *
+	 * Support also slugs with namespaces like:
+	 * lazyblock/my-block
+	 *
 	 * @param string $slug - slug name.
 	 *
 	 * @return string
 	 */
 	public function sanitize_slug( $slug ) {
-		return strtolower( preg_replace( '/[^a-zA-Z0-9\-]+/', '', $slug ) );
+		// Split by namespace separator.
+		$parts = explode( '/', $slug );
+
+		// Sanitize each part.
+		$sanitized_parts = array_map(
+			function( $part ) {
+				return strtolower( preg_replace( '/[^a-zA-Z0-9\-]+/', '', $part ) );
+			},
+			$parts
+		);
+
+		// If we have 2 parts, join them with '/'.
+		if ( count( $parts ) === 2 ) {
+			return implode( '/', $sanitized_parts );
+		}
+
+		// Otherwise return just the sanitized string.
+		return $sanitized_parts[0];
 	}
 
 	/**

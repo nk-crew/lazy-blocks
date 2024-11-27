@@ -34,6 +34,9 @@ export default function ProNotice() {
 					</a>
 					<ul className="ul-square">
 						<li>
+							{__('Custom Slugs and Collections', 'lazy-blocks')}
+						</li>
+						<li>
 							{__('Controls Conditional Logic', 'lazy-blocks')}
 						</li>
 						<li>{__('Panels and Dividers', 'lazy-blocks')}</li>

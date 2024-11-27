@@ -50,13 +50,22 @@
          "Export": [
             ""
          ],
-         "Activate": [
+         "Deactivate “%1$s”": [
+            ""
+         ],
+         "Activate “%1$s”": [
             ""
          ],
          "Deactivate": [
             ""
          ],
+         "Activate": [
+            ""
+         ],
          "Icon": [
+            ""
+         ],
+         "Slug": [
             ""
          ],
          "Category": [
@@ -285,6 +294,9 @@
          "Import": [
             ""
          ],
+         "Upgrade Now": [
+            ""
+         ],
          "Copied!": [
             ""
          ],
@@ -315,7 +327,7 @@
          "Lazy Blocks Pro": [
             ""
          ],
-         "Upgrade Now": [
+         "Custom Slugs and Collections": [
             ""
          ],
          "Controls Conditional Logic": [
@@ -334,6 +346,12 @@
             ""
          ],
          "And much more…": [
+            ""
+         ],
+         "Custom fields are not enabled for this post type. Enable \"custom-fields\" support to use this control.": [
+            ""
+         ],
+         "Learn how": [
             ""
          ],
          "Styles": [
@@ -451,9 +469,6 @@
             ""
          ],
          "Hidden": [
-            ""
-         ],
-         "Slug": [
             ""
          ],
          "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block": [
@@ -682,10 +697,25 @@
          "Alongside Text": [
             ""
          ],
-         "Displays text alongside the checkbox": [
+         "Checked by default": [
             ""
          ],
-         "Checked": [
+         "Unchecked by default": [
+            ""
+         ],
+         "Allows you to select multiple values": [
+            ""
+         ],
+         "Output Format": [
+            ""
+         ],
+         "Allows you to change attribute output format": [
+            ""
+         ],
+         "Value": [
+            ""
+         ],
+         "Both (Array)": [
             ""
          ],
          "Open Editor": [
@@ -712,12 +742,6 @@
          "Display color palette with predefined colors": [
             ""
          ],
-         "Output Format": [
-            ""
-         ],
-         "Allows you to change attribute output format": [
-            ""
-         ],
          "Color": [
             ""
          ],
@@ -731,6 +755,9 @@
             ""
          ],
          "Select Time": [
+            ""
+         ],
+         "Reset": [
             ""
          ],
          "Date": [
@@ -805,12 +832,6 @@
          "Allows you to reset selected option value to null": [
             ""
          ],
-         "Value": [
-            ""
-         ],
-         "Both (Array)": [
-            ""
-         ],
          "Row {{#}}": [
             ""
          ],
@@ -860,10 +881,10 @@
          "-- Select --": [
             ""
          ],
-         "Allows you to select multiple values": [
+         "Displays text alongside the toggle": [
             ""
          ],
-         "Displays text alongside the toggle": [
+         "Checked": [
             ""
          ],
          "Looks like this control does not exists.": [
