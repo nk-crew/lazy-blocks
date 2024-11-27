@@ -15,8 +15,6 @@ import {
 
 import { __ } from '@wordpress/i18n';
 
-const { lazyblocksConstructorData } = window;
-
 export default function BlockSlug(props) {
 	return (
 		<BaseControl id={props.label} label={props.label || ''}>
@@ -35,22 +33,26 @@ export default function BlockSlug(props) {
 							aria-expanded={isOpen}
 							onClick={onToggle}
 						>
-							<span>lazyblock</span>
+							lazyblock
 							<span>/</span>
 						</Button>
 					)}
 					renderContent={() => (
 						<div className="lazyblocks-component-pro-notice">
-							Custom block slugs and collections are only
-							available in the Pro plugin.
-							<a
-								className="lazyblocks-component-pro-notice-btn"
-								target="_blank"
-								rel="noreferrer"
-								href={lazyblocksConstructorData.pro_url}
-							>
-								{__('Upgrade Now', 'lazy-blocks')}
-							</a>
+							Custom block collections and slug namespaces are
+							only available in the Pro plugin.
+							{window?.lazyblocksConstructorData?.pro_url && (
+								<a
+									className="lazyblocks-component-pro-notice-btn"
+									target="_blank"
+									rel="noreferrer"
+									href={
+										window.lazyblocksConstructorData.pro_url
+									}
+								>
+									{__('Upgrade Now', 'lazy-blocks')}
+								</a>
+							)}
 						</div>
 					)}
 				/>
