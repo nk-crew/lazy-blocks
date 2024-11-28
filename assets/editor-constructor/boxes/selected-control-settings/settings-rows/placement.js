@@ -49,13 +49,12 @@ export default function PlacementRow(props) {
 				<ButtonGroup>
 					<Button
 						id="lazyblocks-settings-row-placement"
-						isPrimary={isContent}
+						variant={isContent ? 'primary' : 'secondary'}
 						isPressed={isContent}
 						disabled={
 							!isContent &&
 							placementRestrictions.indexOf('content') === -1
 						}
-						size="small"
 						onClick={() => {
 							let newPlacement = 'content';
 
@@ -75,13 +74,12 @@ export default function PlacementRow(props) {
 						{__('Content', 'lazy-blocks')}
 					</Button>
 					<Button
-						isPrimary={isInspector}
+						variant={isInspector ? 'primary' : 'secondary'}
 						isPressed={isInspector}
 						disabled={
 							!isInspector &&
 							placementRestrictions.indexOf('inspector') === -1
 						}
-						size="small"
 						onClick={() => {
 							let newPlacement = 'inspector';
 
