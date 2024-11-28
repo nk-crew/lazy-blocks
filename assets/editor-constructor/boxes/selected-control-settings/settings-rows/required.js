@@ -12,6 +12,7 @@ export default function RequiredRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-row-required"
 				label={__('Required', 'lazy-blocks')}
+				__nextHasNoMarginBottom
 			>
 				<ToggleControl
 					id="lazyblocks-settings-row-required"
@@ -20,6 +21,7 @@ export default function RequiredRow(props) {
 					onChange={(value) =>
 						updateData({ required: value ? 'true' : 'false' })
 					}
+					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		</PanelBody>

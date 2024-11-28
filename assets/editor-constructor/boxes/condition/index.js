@@ -50,6 +50,7 @@ export default function ConditionSettings(props) {
 		<BaseControl
 			id="lazyblocks-boxes-condition-posts"
 			label={__('Show in posts', 'lazy-blocks')}
+			__nextHasNoMarginBottom
 		>
 			<Select
 				id="lazyblocks-boxes-condition-posts"

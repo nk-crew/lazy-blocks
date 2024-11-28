@@ -101,6 +101,8 @@ export default function CustomCodeSettings(props) {
 				value={data.code_output_method || 'html'}
 				onChange={(value) => updateData({ code_output_method: value })}
 				isAdaptiveWidth
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			>
 				<ToggleGroupControlOption
 					value="html"
@@ -128,7 +130,7 @@ export default function CustomCodeSettings(props) {
 		data.code_output_method !== 'template' ? (
 			<>
 				<PanelBody>
-					<BaseControl>
+					<BaseControl __nextHasNoMarginBottom>
 						{tabs.length > 1 ? (
 							<TabPanel
 								className="lazyblocks-control-tabs"
@@ -153,7 +155,7 @@ export default function CustomCodeSettings(props) {
 							}}
 						/>
 					</BaseControl>
-					<BaseControl>
+					<BaseControl __nextHasNoMarginBottom>
 						{!showInfo ? (
 							<Button
 								isLink
@@ -209,7 +211,7 @@ export default function CustomCodeSettings(props) {
 				</PanelBody>
 
 				<PanelBody>
-					<BaseControl>
+					<BaseControl __nextHasNoMarginBottom>
 						<ToggleControl
 							label={__(
 								'Single output code for Frontend and Editor',
@@ -219,6 +221,7 @@ export default function CustomCodeSettings(props) {
 							onChange={(value) =>
 								updateData({ code_single_output: value })
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>
@@ -287,6 +290,7 @@ export default function CustomCodeSettings(props) {
 			<BaseControl
 				id="lazyblocks-settings-output-in-editor"
 				label={__('Code Output in Editor', 'lazy-blocks')}
+				__nextHasNoMarginBottom
 			>
 				<SelectControl
 					id="lazyblocks-settings-output-in-editor"
@@ -318,6 +322,8 @@ export default function CustomCodeSettings(props) {
 					onChange={(value) =>
 						updateData({ code_show_preview: value })
 					}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		</PanelBody>,

@@ -281,6 +281,8 @@ addFilter(
 						)}
 						value={data.rows_label}
 						onChange={(value) => updateData({ rows_label: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -291,6 +293,8 @@ addFilter(
 						onChange={(value) =>
 							updateData({ rows_add_button_label: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -301,6 +305,8 @@ addFilter(
 						min={0}
 						value={data.rows_min}
 						onChange={(value) => updateData({ rows_min: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -311,6 +317,8 @@ addFilter(
 						min={0}
 						value={data.rows_max}
 						onChange={(value) => updateData({ rows_max: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -327,6 +335,7 @@ addFilter(
 									rows_collapsible: value ? 'true' : 'false',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 						{data.rows_collapsible === 'true' ? (
 							<ToggleControl
@@ -342,6 +351,7 @@ addFilter(
 											: 'false',
 									})
 								}
+								__nextHasNoMarginBottom
 							/>
 						) : (
 							''

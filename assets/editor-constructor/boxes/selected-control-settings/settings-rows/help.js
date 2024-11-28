@@ -14,6 +14,7 @@ export default function HelpRow(props) {
 				help={__('Instructions under control', 'lazy-blocks')}
 				value={data.help}
 				onChange={(value) => updateData({ help: value })}
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

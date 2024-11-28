@@ -71,7 +71,12 @@ function ImageControl(props) {
 	}
 
 	return (
-		<BaseControl id={label} label={label} help={help}>
+		<BaseControl
+			id={label}
+			label={label}
+			help={help}
+			__nextHasNoMarginBottom
+		>
 			<div className="lzb-gutenberg-image-wrap">
 				{!value || !Object.keys(value).length ? (
 					<MediaPlaceholder

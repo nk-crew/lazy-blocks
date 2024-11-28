@@ -23,6 +23,7 @@ addFilter('lzb.editor.control.radio.render', 'lzb.editor', (render, props) => (
 			selected={props.getValue()}
 			options={props.data.choices}
 			onChange={props.onChange}
+			__nextHasNoMarginBottom
 		/>
 	</BaseControl>
 ));
@@ -88,6 +89,7 @@ addFilter(
 									allow_null: value ? 'true' : 'false',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>
@@ -119,6 +121,7 @@ addFilter(
 							onChange={(value) =>
 								updateData({ output_format: value })
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>

@@ -75,6 +75,8 @@ addFilter(
 						onChange={(value) =>
 							updateData({ alongside_text: value })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -93,6 +95,7 @@ addFilter(
 							onChange={(value) =>
 								updateData({ alpha: value ? 'true' : 'false' })
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 					<BaseControl
@@ -112,6 +115,7 @@ addFilter(
 									palette: value ? 'true' : 'false',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>
@@ -142,6 +146,7 @@ addFilter(
 							onChange={(value) =>
 								updateData({ output_format: value })
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>

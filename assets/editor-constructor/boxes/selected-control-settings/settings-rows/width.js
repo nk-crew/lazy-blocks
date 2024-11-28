@@ -27,6 +27,7 @@ export default function WidthRow(props) {
 				label={__('Width', 'lazy-blocks')}
 				value={data.width}
 				onChange={(value) => updateData({ width: value })}
+				__nextHasNoMarginBottom
 			>
 				<div />
 				<ButtonGroup>

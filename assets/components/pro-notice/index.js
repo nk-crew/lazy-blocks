@@ -22,6 +22,7 @@ export default function ProNotice() {
 				id="lazyblocks-pro-notice"
 				label={__('Lazy Blocks Pro', 'lazy-blocks')}
 				className="lazyblocks-component-pro-notice"
+				__nextHasNoMarginBottom
 			>
 				<div>
 					<a
@@ -34,7 +35,10 @@ export default function ProNotice() {
 					</a>
 					<ul className="ul-square">
 						<li>
-							{__('Custom Slugs and Collections', 'lazy-blocks')}
+							{__(
+								'Custom block collections and slug namespaces',
+								'lazy-blocks'
+							)}
 						</li>
 						<li>
 							{__('Controls Conditional Logic', 'lazy-blocks')}

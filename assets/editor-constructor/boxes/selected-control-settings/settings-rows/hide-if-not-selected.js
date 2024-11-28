@@ -12,6 +12,7 @@ export default function HideIfNotSelectedRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-row-hide-if-no-selected"
 				label={__('Hide if block is not selected', 'lazy-blocks')}
+				__nextHasNoMarginBottom
 			>
 				<ToggleControl
 					id="lazyblocks-settings-row-hide-if-no-selected"
@@ -22,6 +23,7 @@ export default function HideIfNotSelectedRow(props) {
 							hide_if_not_selected: value ? 'true' : 'false',
 						})
 					}
+					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		</PanelBody>

@@ -13,7 +13,7 @@
 		white-space: nowrap;
 		padding: 6px 8px;
 		padding-right: 10px;
-		height: 32px;
+		height: 40px;
 		border: 1px solid #949494;
 		line-height: normal;
 		color: $gray-800;
@@ -39,7 +39,9 @@
 		flex: 1;
 		margin-bottom: 0 !important;
 
-		input {
+		input.components-text-control__input {
+			padding-left: 5px;
+			padding-right: 5px;
 			margin-left: 0;
 			border-left: none;
 			border-top-left-radius: 0;

@@ -88,6 +88,8 @@ function IconPickerDropdown(props) {
 							onChange={(searchVal) => setSearch(searchVal)}
 							placeholder={__('Type to Search…', 'lazy-blocks')}
 							autoComplete="off"
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
 					</Fragment>
 				),
@@ -297,7 +299,12 @@ function IconPickerDropdown(props) {
 	);
 
 	return label ? (
-		<BaseControl id={label} label={label} className={className}>
+		<BaseControl
+			id={label}
+			label={label}
+			className={className}
+			__nextHasNoMarginBottom
+		>
 			{dropdown}
 		</BaseControl>
 	) : (
