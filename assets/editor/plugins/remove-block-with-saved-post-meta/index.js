@@ -3,12 +3,7 @@ import './index.scss';
 import { differenceWith, isEqual } from 'lodash';
 import { subscribe, select, dispatch } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
-import {
-	Button,
-	ButtonGroup,
-	ToggleControl,
-	Notice,
-} from '@wordpress/components';
+import { Button, ToggleControl, Notice } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
@@ -212,24 +207,19 @@ export default function RemoveBlockWithSavedMeta() {
 								{errorNotice}
 							</Notice>
 						</>
-					) : (
-						''
-					)}
-					<p>
-						<div>
-							{__(
-								'This block created metadata that is still saved in your post.',
-								'lazy-blocks'
-							)}
-						</div>
-						<div>
-							{__(
-								'Would you like to remove any of these meta fields?',
-								'lazy-blocks'
-							)}
-						</div>
+					) : null}
+					<p style={{ marginTop: 0 }}>
+						{__(
+							'This block created metadata that is still saved in your post.',
+							'lazy-blocks'
+						)}
+						<br />
+						{__(
+							'Would you like to remove any of these meta fields?',
+							'lazy-blocks'
+						)}
 					</p>
-					<p>{__('Select Post Meta to remove:', 'lazy-blocks')}</p>
+					<p>{__('Select post meta to remove:', 'lazy-blocks')}</p>
 					{savedMetaNames.map((meta, index) => (
 						<ToggleControl
 							key={index}
@@ -245,14 +235,18 @@ export default function RemoveBlockWithSavedMeta() {
 							}}
 						/>
 					))}
-					<ButtonGroup className="lzb-gutenberg-remove-post-meta-modal-buttons">
-						<Button variant="primary" onClick={handleConfirmDelete}>
+					<div className="lzb-gutenberg-remove-post-meta-modal-buttons">
+						<Button
+							variant="primary"
+							onClick={handleConfirmDelete}
+							disabled={!savedMetaNames.some((m) => m.checked)}
+						>
 							{__('Remove selected Meta', 'lazy-blocks')}
 						</Button>
-						<Button variant="secondary" onClick={handleCancel}>
+						<Button variant="link" onClick={handleCancel}>
 							{__('Cancel', 'lazy-blocks')}
 						</Button>
-					</ButtonGroup>
+					</div>
 				</Modal>
 			)}
 		</>
