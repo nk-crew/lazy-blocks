@@ -19,6 +19,19 @@
 		background-color: #f1f1f1;
 		border: 1px solid #ccd0d4;
 		border-radius: 4px;
+
+		.components-toggle-control__label {
+			padding-top: 3px;
+			margin-left: 0 !important;
+
+			> span {
+				margin-top: -3px;
+			}
+		}
+
+		.components-toggle-control > .components-base-control__field > .components-flex {
+			align-items: start;
+		}
 	}
 
 	.lzb-export-textarea {
