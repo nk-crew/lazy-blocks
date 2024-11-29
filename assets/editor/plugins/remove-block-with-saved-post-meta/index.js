@@ -8,6 +8,7 @@ import { Button, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import Modal from '../../../components/modal';
+import useAllBlocks from '../../../hooks/use-all-blocks';
 
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {
@@ -21,14 +22,13 @@ if (!options || !options.blocks || !options.blocks.length) {
 export default function RemoveBlockWithSavedMeta() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [savedMetaNames, setMetaNames] = useState([]);
+	const getBlockList = useAllBlocks();
 
-	const { postType, getBlockList } = useSelect((select) => {
+	const { postType } = useSelect((select) => {
 		const { getCurrentPostType } = select('core/editor') || {};
-		const { getBlocks } = select('core/block-editor') || [];
 
 		return {
 			postType: getCurrentPostType && getCurrentPostType(),
-			getBlockList: getBlocks,
 		};
 	}, []);
 
@@ -37,107 +37,116 @@ export default function RemoveBlockWithSavedMeta() {
 	useEffect(() => {
 		let blockList = getBlockList();
 
-		/**
-		 * TODO: We need update this code once Gutenberg adds delete button functionality.
-		 * The feature is currently under discussion at https://github.com/WordPress/gutenberg/issues/58390
-		 * We currently detect deleted blocks after they are removed, which triggers the modal window.
-		 */
 		const unsubscribe = subscribe(() => {
-			const newBlockList = getBlockList();
-			const removedBlocks = differenceWith(
-				blockList,
-				newBlockList,
-				isEqual
-			);
+			let newBlockList = getBlockList();
 
-			// Make sure that blocks were removed and not added.
-			if (
-				removedBlocks.length > 0 &&
-				(newBlockList.length < blockList.length ||
-					(newBlockList.length === blockList.length &&
-						blockList.length === 1))
-			) {
-				// We gather a list of all metadata entries where the save flag is enabled.
-				const findBlocksWithSaveInMeta = (blocks) => {
-					return blocks.filter((block) => {
-						return Object.values(block.controls).some(
-							(control) => control.save_in_meta === 'true'
-						);
-					});
-				};
+			/**
+			 * This confirms there are no blocks on the page,
+			 * As the editor automatically keeps one empty paragraph block after deleting all other blocks.
+			 */
+			const isEmptyPage =
+				newBlockList.length === 1 &&
+				newBlockList[0]?.attributes?.content?.text === '';
 
-				const blocksWithSaveInMeta = findBlocksWithSaveInMeta(
-					options.blocks
-				);
-				const savedSlugs = blocksWithSaveInMeta.map(
-					(block) => block.slug
+			if (isEmptyPage) {
+				newBlockList = [];
+			}
+
+			// Ensure we only trigger on actual block removals
+			if (newBlockList.length < blockList.length) {
+				const removedBlocks = differenceWith(
+					blockList,
+					newBlockList,
+					isEqual
 				);
 
-				// Filtering deleted blocks, extracting only saved meta from them.
-				const filteredBlocks = removedBlocks
-					.filter((block) => savedSlugs.includes(block.name))
-					.map((block) => {
-						const savedBlock = blocksWithSaveInMeta.find(
-							(saved) => saved.slug === block.name
-						);
+				if (removedBlocks.length > 0) {
+					// We gather a list of all metadata entries where the save flag is enabled.
+					const findBlocksWithSaveInMeta = (blocks) => {
+						return blocks.filter((block) => {
+							return Object.values(block.controls).some(
+								(control) => control.save_in_meta === 'true'
+							);
+						});
+					};
 
-						const controlsWithSaveInMeta = Object.values(
-							savedBlock.controls
-						).filter((control) => control.save_in_meta === 'true');
+					const blocksWithSaveInMeta = findBlocksWithSaveInMeta(
+						options.blocks
+					);
+					const savedSlugs = blocksWithSaveInMeta.map(
+						(block) => block.slug
+					);
 
-						return {
-							...block,
-							controlsWithSaveInMeta,
-						};
-					});
+					// Filtering deleted blocks, extracting only saved meta from them.
+					const filteredBlocks = removedBlocks
+						.filter((block) => savedSlugs.includes(block.name))
+						.map((block) => {
+							const savedBlock = blocksWithSaveInMeta.find(
+								(saved) => saved.slug === block.name
+							);
 
-				if (filteredBlocks.length) {
-					// Create a Set to track unique meta identifiers
-					const uniqueMetaNames = new Set();
+							const controlsWithSaveInMeta = Object.values(
+								savedBlock.controls
+							).filter(
+								(control) => control.save_in_meta === 'true'
+							);
 
-					// Fill array to display toggle meta in modal window list.
-					const metaNames = filteredBlocks
-						.flatMap((block) =>
-							block.controlsWithSaveInMeta.map((control) => {
-								const metaName =
-									control.save_in_meta_name || control.name;
-								return {
-									metaName: control.name,
-									saveInMetaName: control.save_in_meta_name,
-									label: control.label,
-									default: control.default,
-									uniqueKey: metaName, // Use a unique identifier for each control
-									checked: false,
-								};
-							})
-						)
-						.filter((control) => {
-							// Use the Set to filter out duplicates
-							if (uniqueMetaNames.has(control.uniqueKey)) {
-								return false;
-							}
-							uniqueMetaNames.add(control.uniqueKey);
-							return true;
+							return {
+								...block,
+								controlsWithSaveInMeta,
+							};
 						});
 
-					// Set the defined flag if the saved metadata exists and contains values.
-					const isAnyMetaDefined = metaNames.some((control) => {
-						const metaName =
-							control.saveInMetaName || control.metaName;
+					if (filteredBlocks.length) {
+						// Create a Set to track unique meta identifiers
+						const uniqueMetaNames = new Set();
 
-						const metaValue = meta[metaName];
+						// Fill array to display toggle meta in modal window list.
+						const metaNames = filteredBlocks
+							.flatMap((block) =>
+								block.controlsWithSaveInMeta.map((control) => {
+									const metaName =
+										control.save_in_meta_name ||
+										control.name;
+									return {
+										metaName: control.name,
+										saveInMetaName:
+											control.save_in_meta_name,
+										label: control.label,
+										default: control.default,
+										uniqueKey: metaName, // Use a unique identifier for each control
+										checked: false,
+									};
+								})
+							)
+							.filter((control) => {
+								// Use the Set to filter out duplicates
+								if (uniqueMetaNames.has(control.uniqueKey)) {
+									return false;
+								}
+								uniqueMetaNames.add(control.uniqueKey);
+								return true;
+							});
 
-						return (
-							metaValue !== control.default &&
-							metaValue !== undefined &&
-							metaValue !== null &&
-							metaValue !== ''
-						);
-					});
+						// Set the defined flag if the saved metadata exists and contains values.
+						const isAnyMetaDefined = metaNames.some((control) => {
+							const metaName =
+								control.saveInMetaName || control.metaName;
 
-					if (isAnyMetaDefined) {
-						setIsModalOpen(true);
-						setMetaNames(metaNames);
+							const metaValue = meta[metaName];
+
+							return (
+								metaValue !== control.default &&
+								metaValue !== undefined &&
+								metaValue !== null &&
+								metaValue !== ''
+							);
+						});
+
+						if (isAnyMetaDefined) {
+							setIsModalOpen(true);
+							setMetaNames(metaNames);
+						}
 					}
 				}
 			}
