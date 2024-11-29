@@ -54,8 +54,7 @@ function RemoveBlockWithSavedMeta() {
 	const handleConfirmDelete = useCallback(() => {
 		const metaToDelete = savedMetaNames.reduce((acc, savedMeta) => {
 			if (savedMeta.checked) {
-				const metaName = savedMeta.saveInMetaName || savedMeta.metaName;
-				acc[metaName] = null;
+				acc[savedMeta.metaName] = null;
 			}
 
 			return acc;
@@ -102,36 +101,33 @@ function RemoveBlockWithSavedMeta() {
 					return Object.values(savedBlock.controls)
 						.filter((control) => control.save_in_meta === 'true')
 						.map((control) => ({
-							metaName: control.name,
-							saveInMetaName: control.save_in_meta_name,
+							metaName: control.save_in_meta_name || control.name,
 							label: control.label,
 							default: control.default,
-							uniqueKey:
-								control.save_in_meta_name || control.name,
 							checked: false,
 						}))
 						.filter((control) => {
-							if (uniqueMetaNames.has(control.uniqueKey)) {
+							if (uniqueMetaNames.has(control.metaName)) {
 								return false;
 							}
-							uniqueMetaNames.add(control.uniqueKey);
+
+							uniqueMetaNames.add(control.metaName);
+
 							return true;
 						});
+				})
+				.filter((m) => {
+					const metaValue = meta[m.metaName];
+
+					return (
+						metaValue !== m.default &&
+						metaValue !== undefined &&
+						metaValue !== null &&
+						metaValue !== ''
+					);
 				});
 
-			const isAnyMetaDefined = metaNames.some((control) => {
-				const metaValue =
-					meta[control.saveInMetaName || control.metaName];
-
-				return (
-					metaValue !== control.default &&
-					metaValue !== undefined &&
-					metaValue !== null &&
-					metaValue !== ''
-				);
-			});
-
-			if (isAnyMetaDefined) {
+			if (metaNames?.length) {
 				setMetaNames(metaNames);
 				setIsModalOpen(true);
 			}
@@ -164,7 +160,7 @@ function RemoveBlockWithSavedMeta() {
 			<p>{__('Select post meta to remove:', 'lazy-blocks')}</p>
 			{savedMetaNames.map((currentMeta, index) => (
 				<ToggleControl
-					key={currentMeta.uniqueKey}
+					key={currentMeta.metaName}
 					label={currentMeta.label}
 					checked={currentMeta.checked}
 					onChange={(value) => handleMetaToggle(index, value)}
