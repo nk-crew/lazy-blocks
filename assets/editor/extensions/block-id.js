@@ -8,50 +8,17 @@ import shorthash from 'shorthash';
  */
 import { addFilter } from '@wordpress/hooks';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
 import { getBlockType } from '@wordpress/blocks';
 import { createHigherOrderComponent, useThrottle } from '@wordpress/compose';
+
+import useAllBlocks from '../../hooks/use-all-blocks';
 
 function useBlockID(props) {
 	const { setAttributes, attributes, clientId, name } = props;
 	const blockSettings = getBlockType(name);
 	const didMountRef = useRef(false);
 
-	const { getBlocks } = useSelect((select) => {
-		return select('core/block-editor');
-	});
-
-	/**
-	 * Get recursive all blocks of the current page
-	 *
-	 * @param {boolean} blocks - block list
-	 *
-	 * @return {Array} block list
-	 */
-	const getAllBlocks = useCallback(
-		(blocks = false) => {
-			let result = [];
-
-			if (!blocks) {
-				blocks = getBlocks();
-			}
-
-			if (!blocks) {
-				return result;
-			}
-
-			blocks.forEach((data) => {
-				result.push(data);
-
-				if (data.innerBlocks && data.innerBlocks.length) {
-					result = [...result, ...getAllBlocks(data.innerBlocks)];
-				}
-			});
-
-			return result;
-		},
-		[getBlocks]
-	);
+	const allBlocks = useAllBlocks();
 
 	const onUpdate = useCallback(
 		(checkDuplicates) => {
@@ -62,7 +29,6 @@ function useBlockID(props) {
 
 				// prevent unique ID duplication after block duplicated.
 				if (checkDuplicates) {
-					const allBlocks = getAllBlocks();
 					allBlocks.forEach((data) => {
 						if (
 							data.clientId &&
@@ -112,7 +78,7 @@ function useBlockID(props) {
 				}
 			}
 		},
-		[attributes, clientId, getAllBlocks, name, setAttributes]
+		[attributes, clientId, allBlocks, name, setAttributes]
 	);
 
 	const onUpdateThrottle = useThrottle(onUpdate, 60);
