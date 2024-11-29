@@ -105,45 +105,6 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 				'permission_callback' => array( $this, 'block_constructor_preview_permission' ),
 			)
 		);
-
-		register_rest_route(
-			$namespace,
-			'/delete-post-meta/',
-			array(
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => array( $this, 'delete_post_meta_using_in_block' ),
-				'permission_callback' => array( $this, 'delete_post_meta_using_in_block_permission' ),
-			)
-		);
-	}
-
-	/**
-	 * Checks if a given request has access to delete saved meta.
-	 *
-	 * @since 2.8.0
-	 * @access public
-	 *
-	 * @param WP_REST_Request $request Request.
-	 *
-	 * @return WP_REST_Response|true
-	 */
-	public function delete_post_meta_using_in_block_permission( $request ) {
-		global $post;
-
-		$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
-
-		if ( 0 < $post_id ) {
-			// phpcs:ignore
-			$post = get_post( $post_id );
-
-			if ( ! $post || ! current_user_can( 'edit_post', $post->ID ) ) {
-				return $this->error( 'lazy_block_cannot_read', esc_html__( 'Sorry, you are not allowed to read Gutenberg blocks of this post.', 'lazy-blocks' ), true );
-			}
-		} elseif ( ! current_user_can( 'edit_posts' ) ) {
-			return $this->error( 'lazy_block_cannot_read', esc_html__( 'Sorry, you are not allowed to read Gutenberg blocks as this user.', 'lazy-blocks' ), true );
-		}
-
-		return true;
 	}
 
 	/**
@@ -233,27 +194,6 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 */
 	public function block_constructor_preview_permission( $request ) {
 		return $this->get_block_data_permission( $request );
-	}
-
-	/**
-	 * Delete post meta using in block.
-	 *
-	 * @since 2.8.0
-	 * @access public
-	 *
-	 * @param WP_REST_Request $request Full details about the request.
-	 *
-	 * @return WP_REST_Response
-	 */
-	public function delete_post_meta_using_in_block( $request ) {
-		$post_id  = $request->get_param( 'post_id' ) ? intval( $request->get_param( 'post_id' ) ) : 0;
-		$meta_key = $request->get_param( 'meta_key' );
-
-		if ( delete_metadata( 'post', $post_id, $meta_key, '', true ) ) {
-			return true;
-		} else {
-			return $this->error( 'lazy_block_cannot_delete_meta', esc_html__( 'Failed to delete meta', 'lazy-blocks' ) );
-		}
 	}
 
 	/**
