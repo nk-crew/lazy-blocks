@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-28T19:08:00+00:00\n"
+"POT-Creation-Date: 2024-11-29T19:53:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
@@ -1007,6 +1007,31 @@ msgstr[1] ""
 msgid "Edit Block"
 msgstr ""
 
+#: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:145
+msgid "Remove post meta used by this block?"
+msgstr ""
+
+#: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:150
+msgid "This block created metadata that is still saved in your post."
+msgstr ""
+
+#: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:155
+msgid "Would you like to remove any of these meta fields?"
+msgstr ""
+
+#: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:160
+msgid "Select post meta to remove:"
+msgstr ""
+
+#: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:176
+msgid "Remove selected Meta"
+msgstr ""
+
+#: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:179
+#: controls/classic_editor/tmce.js:84
+msgid "Cancel"
+msgstr ""
+
 #: assets/utils/check-control-validity/index.js:36
 msgid "This control is required."
 msgstr ""
@@ -1059,10 +1084,6 @@ msgstr ""
 
 #: controls/classic_editor/tmce.js:63
 msgid "Open Editor"
-msgstr ""
-
-#: controls/classic_editor/tmce.js:84
-msgid "Cancel"
 msgstr ""
 
 #: controls/classic_editor/tmce.js:97

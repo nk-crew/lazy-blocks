@@ -691,6 +691,24 @@
          "Edit Block": [
             ""
          ],
+         "Remove post meta used by this block?": [
+            ""
+         ],
+         "This block created metadata that is still saved in your post.": [
+            ""
+         ],
+         "Would you like to remove any of these meta fields?": [
+            ""
+         ],
+         "Select post meta to remove:": [
+            ""
+         ],
+         "Remove selected Meta": [
+            ""
+         ],
+         "Cancel": [
+            ""
+         ],
          "This control is required.": [
             ""
          ],
@@ -719,9 +737,6 @@
             ""
          ],
          "Open Editor": [
-            ""
-         ],
-         "Cancel": [
             ""
          ],
          "Save": [
