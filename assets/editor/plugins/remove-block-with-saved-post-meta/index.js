@@ -150,20 +150,21 @@ export default function RemoveBlockWithSavedMeta() {
 	}, [meta, getBlockList]);
 
 	const handleConfirmDelete = () => {
-		const updatedMeta = {
-			...meta,
-		};
+		const metaToDelete = {};
+
 		// Delete meta fields based on toggles
 		for (const savedMeta of savedMetaNames) {
 			if (savedMeta.checked) {
 				const metaName = savedMeta.saveInMetaName || savedMeta.metaName;
 
-				updatedMeta[metaName] = null;
+				metaToDelete[metaName] = null;
 			}
 		}
 
 		// Update the post meta
-		setMeta(updatedMeta);
+		if (Object.keys(metaToDelete).length) {
+			setMeta(metaToDelete);
+		}
 
 		setIsModalOpen(false);
 	};
