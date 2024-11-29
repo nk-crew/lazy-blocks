@@ -7,8 +7,12 @@ import { useSelect } from '@wordpress/data';
  * @return {Function} Function to get all blocks.
  */
 function useAllBlocks() {
-	const { getBlocks } = useSelect((select) => {
-		return select('core/block-editor');
+	const { allBlocks } = useSelect((select) => {
+		const { getBlocks } = select('core/block-editor');
+
+		return {
+			allBlocks: getBlocks(),
+		};
 	});
 
 	const getAllBlocks = useCallback(
@@ -16,7 +20,7 @@ function useAllBlocks() {
 			let result = [];
 
 			if (!blocks) {
-				blocks = getBlocks();
+				blocks = allBlocks;
 			}
 
 			if (!blocks) {
@@ -33,10 +37,10 @@ function useAllBlocks() {
 
 			return result;
 		},
-		[getBlocks]
+		[allBlocks]
 	);
 
-	return getAllBlocks;
+	return getAllBlocks();
 }
 
 export default useAllBlocks;

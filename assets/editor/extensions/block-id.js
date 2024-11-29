@@ -18,7 +18,7 @@ function useBlockID(props) {
 	const blockSettings = getBlockType(name);
 	const didMountRef = useRef(false);
 
-	const getAllBlocks = useAllBlocks();
+	const allBlocks = useAllBlocks();
 
 	const onUpdate = useCallback(
 		(checkDuplicates) => {
@@ -29,7 +29,6 @@ function useBlockID(props) {
 
 				// prevent unique ID duplication after block duplicated.
 				if (checkDuplicates) {
-					const allBlocks = getAllBlocks();
 					allBlocks.forEach((data) => {
 						if (
 							data.clientId &&
@@ -79,7 +78,7 @@ function useBlockID(props) {
 				}
 			}
 		},
-		[attributes, clientId, getAllBlocks, name, setAttributes]
+		[attributes, clientId, allBlocks, name, setAttributes]
 	);
 
 	const onUpdateThrottle = useThrottle(onUpdate, 60);
