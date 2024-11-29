@@ -150,7 +150,7 @@ export default function RemoveBlockWithSavedMeta() {
 	}, [meta, getBlockList]);
 
 	const handleConfirmDelete = () => {
-		let updatedMeta = {
+		const updatedMeta = {
 			...meta,
 		};
 		// Delete meta fields based on toggles
@@ -158,10 +158,7 @@ export default function RemoveBlockWithSavedMeta() {
 			if (savedMeta.checked) {
 				const metaName = savedMeta.saveInMetaName || savedMeta.metaName;
 
-				updatedMeta = {
-					...updatedMeta,
-					[metaName]: null,
-				};
+				updatedMeta[metaName] = null;
 			}
 		}
 
