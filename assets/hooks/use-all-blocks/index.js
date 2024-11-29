@@ -1,4 +1,4 @@
-import { useCallback } from '@wordpress/element';
+import { useCallback, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -13,34 +13,27 @@ function useAllBlocks() {
 		return {
 			allBlocks: getBlocks(),
 		};
-	});
+	}, []);
 
-	const getAllBlocks = useCallback(
-		(blocks = false) => {
-			let result = [];
+	const flattenBlocks = useCallback((blocks) => {
+		if (!blocks?.length) {
+			return [];
+		}
 
-			if (!blocks) {
-				blocks = allBlocks;
+		const result = [];
+
+		blocks.forEach((data) => {
+			result.push(data);
+
+			if (data.innerBlocks?.length) {
+				result.push(...flattenBlocks(data.innerBlocks));
 			}
+		});
 
-			if (!blocks) {
-				return result;
-			}
+		return result;
+	}, []);
 
-			blocks.forEach((data) => {
-				result.push(data);
-
-				if (data.innerBlocks && data.innerBlocks.length) {
-					result = [...result, ...getAllBlocks(data.innerBlocks)];
-				}
-			});
-
-			return result;
-		},
-		[allBlocks]
-	);
-
-	return getAllBlocks();
+	return useMemo(() => flattenBlocks(allBlocks), [allBlocks, flattenBlocks]);
 }
 
 export default useAllBlocks;
