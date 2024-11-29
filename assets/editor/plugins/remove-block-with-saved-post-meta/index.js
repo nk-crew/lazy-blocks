@@ -1,11 +1,11 @@
 import './index.scss';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { differenceWith, isEqual } from 'lodash';
-import { subscribe, select, dispatch } from '@wordpress/data';
+import { subscribe, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
-import { Button, ToggleControl, Notice } from '@wordpress/components';
-import { __, sprintf } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
+import { useEntityProp } from '@wordpress/core-data';
+import { Button, ToggleControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 import Modal from '../../../components/modal';
 
@@ -21,10 +21,20 @@ if (!options || !options.blocks || !options.blocks.length) {
 export default function RemoveBlockWithSavedMeta() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [savedMetaNames, setMetaNames] = useState([]);
-	const [errorNotice, setError] = useState(false);
+
+	const { postType, getBlockList } = useSelect((select) => {
+		const { getCurrentPostType } = select('core/editor') || {};
+		const { getBlocks } = select('core/block-editor') || [];
+
+		return {
+			postType: getCurrentPostType && getCurrentPostType(),
+			getBlockList: getBlocks,
+		};
+	}, []);
+
+	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
 
 	useEffect(() => {
-		const getBlockList = () => select('core/block-editor').getBlocks();
 		let blockList = getBlockList();
 
 		/**
@@ -43,7 +53,9 @@ export default function RemoveBlockWithSavedMeta() {
 			// Make sure that blocks were removed and not added.
 			if (
 				removedBlocks.length > 0 &&
-				newBlockList.length < blockList.length
+				(newBlockList.length < blockList.length ||
+					(newBlockList.length === blockList.length &&
+						blockList.length === 1))
 			) {
 				// We gather a list of all metadata entries where the save flag is enabled.
 				const findBlocksWithSaveInMeta = (blocks) => {
@@ -93,8 +105,9 @@ export default function RemoveBlockWithSavedMeta() {
 									metaName: control.name,
 									saveInMetaName: control.save_in_meta_name,
 									label: control.label,
-									checked: false,
+									default: control.default,
 									uniqueKey: metaName, // Use a unique identifier for each control
+									checked: false,
 								};
 							})
 						)
@@ -111,12 +124,11 @@ export default function RemoveBlockWithSavedMeta() {
 					const isAnyMetaDefined = metaNames.some((control) => {
 						const metaName =
 							control.saveInMetaName || control.metaName;
-						const metaValue =
-							select('core/editor').getEditedPostAttribute(
-								'meta'
-							)[metaName];
+
+						const metaValue = meta[metaName];
 
 						return (
+							metaValue !== control.default &&
 							metaValue !== undefined &&
 							metaValue !== null &&
 							metaValue !== ''
@@ -135,55 +147,28 @@ export default function RemoveBlockWithSavedMeta() {
 		return () => {
 			unsubscribe();
 		};
-	}, []);
+	}, [meta, getBlockList]);
 
-	const deletePostMeta = async (postId, metaKey) => {
-		try {
-			await apiFetch({
-				path: 'lazy-blocks/v1/delete-post-meta',
-				method: 'POST',
-				data: {
-					post_id: postId,
-					meta_key: metaKey,
-				},
-			});
-		} catch (error) {
-			const errorMessage = sprintf(
-				// Translators: %s - error text.
-				__('Error deleting meta: %s', 'lazy-blocks'),
-				error.message
-			);
-
-			await setError(errorMessage);
-		}
-	};
-
-	const handleConfirmDelete = async () => {
-		const postId = select('core/editor').getCurrentPostId();
-
+	const handleConfirmDelete = () => {
+		let updatedMeta = {
+			...meta,
+		};
 		// Delete meta fields based on toggles
-		for (const meta of await savedMetaNames) {
-			if (await meta.checked) {
-				const metaName = meta.saveInMetaName || meta.metaName;
+		for (const savedMeta of savedMetaNames) {
+			if (savedMeta.checked) {
+				const metaName = savedMeta.saveInMetaName || savedMeta.metaName;
 
-				const currentMeta =
-					await select('core/editor').getCurrentPostAttribute('meta');
-
-				const updatedMeta = {
-					...currentMeta,
+				updatedMeta = {
+					...updatedMeta,
 					[metaName]: null,
 				};
-
-				// Update the post meta
-				await dispatch('core/editor').editPost({ meta: updatedMeta });
-
-				await deletePostMeta(postId, metaName);
 			}
 		}
 
-		if (!errorNotice) {
-			setIsModalOpen(false);
-		}
+		// Update the post meta
+		setMeta(updatedMeta);
+
+		setIsModalOpen(false);
 	};
 
 	const handleCancel = () => {
@@ -201,13 +186,6 @@ export default function RemoveBlockWithSavedMeta() {
 					onRequestClose={handleCancel}
 					size="medium"
 				>
-					{errorNotice ? (
-						<>
-							<Notice status="error" isDismissible={false}>
-								{errorNotice}
-							</Notice>
-						</>
-					) : null}
 					<p style={{ marginTop: 0 }}>
 						{__(
 							'This block created metadata that is still saved in your post.',
@@ -220,15 +198,15 @@ export default function RemoveBlockWithSavedMeta() {
 						)}
 					</p>
 					<p>{__('Select post meta to remove:', 'lazy-blocks')}</p>
-					{savedMetaNames.map((meta, index) => (
+					{savedMetaNames.map((currentMeta, index) => (
 						<ToggleControl
 							key={index}
-							label={meta.label}
-							checked={meta.checked}
+							label={currentMeta.label}
+							checked={currentMeta.checked}
 							onChange={(value) => {
 								const updatedMetaNames = [...savedMetaNames];
 								updatedMetaNames[index] = {
-									...meta,
+									...currentMeta,
 									checked: value,
 								};
 								setMetaNames(updatedMetaNames);
