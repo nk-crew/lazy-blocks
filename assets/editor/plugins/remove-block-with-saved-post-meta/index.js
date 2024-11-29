@@ -173,58 +173,55 @@ export default function RemoveBlockWithSavedMeta() {
 		setIsModalOpen(false);
 	};
 
+	if (!isModalOpen || !savedMetaNames.length) {
+		return null;
+	}
+
 	return (
-		<>
-			{isModalOpen && savedMetaNames.length && (
-				<Modal
-					title={__(
-						'Remove post meta used by this block?',
-						'lazy-blocks'
-					)}
-					onRequestClose={handleCancel}
-					size="medium"
+		<Modal
+			title={__('Remove post meta used by this block?', 'lazy-blocks')}
+			onRequestClose={handleCancel}
+			size="medium"
+		>
+			<p style={{ marginTop: 0 }}>
+				{__(
+					'This block created metadata that is still saved in your post.',
+					'lazy-blocks'
+				)}
+				<br />
+				{__(
+					'Would you like to remove any of these meta fields?',
+					'lazy-blocks'
+				)}
+			</p>
+			<p>{__('Select post meta to remove:', 'lazy-blocks')}</p>
+			{savedMetaNames.map((currentMeta, index) => (
+				<ToggleControl
+					key={index}
+					label={currentMeta.label}
+					checked={currentMeta.checked}
+					onChange={(value) => {
+						const updatedMetaNames = [...savedMetaNames];
+						updatedMetaNames[index] = {
+							...currentMeta,
+							checked: value,
+						};
+						setMetaNames(updatedMetaNames);
+					}}
+				/>
+			))}
+			<div className="lzb-gutenberg-remove-post-meta-modal-buttons">
+				<Button
+					variant="primary"
+					onClick={handleConfirmDelete}
+					disabled={!savedMetaNames.some((m) => m.checked)}
 				>
-					<p style={{ marginTop: 0 }}>
-						{__(
-							'This block created metadata that is still saved in your post.',
-							'lazy-blocks'
-						)}
-						<br />
-						{__(
-							'Would you like to remove any of these meta fields?',
-							'lazy-blocks'
-						)}
-					</p>
-					<p>{__('Select post meta to remove:', 'lazy-blocks')}</p>
-					{savedMetaNames.map((currentMeta, index) => (
-						<ToggleControl
-							key={index}
-							label={currentMeta.label}
-							checked={currentMeta.checked}
-							onChange={(value) => {
-								const updatedMetaNames = [...savedMetaNames];
-								updatedMetaNames[index] = {
-									...currentMeta,
-									checked: value,
-								};
-								setMetaNames(updatedMetaNames);
-							}}
-						/>
-					))}
-					<div className="lzb-gutenberg-remove-post-meta-modal-buttons">
-						<Button
-							variant="primary"
-							onClick={handleConfirmDelete}
-							disabled={!savedMetaNames.some((m) => m.checked)}
-						>
-							{__('Remove selected Meta', 'lazy-blocks')}
-						</Button>
-						<Button variant="link" onClick={handleCancel}>
-							{__('Cancel', 'lazy-blocks')}
-						</Button>
-					</div>
-				</Modal>
-			)}
-		</>
+					{__('Remove selected Meta', 'lazy-blocks')}
+				</Button>
+				<Button variant="link" onClick={handleCancel}>
+					{__('Cancel', 'lazy-blocks')}
+				</Button>
+			</div>
+		</Modal>
 	);
 }
