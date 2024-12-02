@@ -35,9 +35,16 @@ test.describe('constructor create block', () => {
 			status: 'publish',
 		});
 
-		await page
-			.locator('.lazyblocks-component-block-slug input')
-			.fill('test');
+		const slugInput = await page.$$(
+			'.lazyblocks-component-block-slug input'
+		);
+
+		for (const input of slugInput) {
+			if (await input.isVisible()) {
+				await input.fill('test');
+				break; // Stop after finding and filling the first visible input
+			}
+		}
 
 		// Enable single code output.
 		await editor.canvas
