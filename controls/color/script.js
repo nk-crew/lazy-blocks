@@ -146,7 +146,6 @@ addFilter(
 							onChange={(value) =>
 								updateData({ output_format: value })
 							}
-							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>

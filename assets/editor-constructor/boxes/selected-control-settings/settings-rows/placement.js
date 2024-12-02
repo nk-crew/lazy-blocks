@@ -49,7 +49,7 @@ export default function PlacementRow(props) {
 				<ButtonGroup>
 					<Button
 						id="lazyblocks-settings-row-placement"
-						variant={isContent ? 'primary' : 'secondary'}
+						variant={isContent ? 'primary' : ''}
 						isPressed={isContent}
 						disabled={
 							!isContent &&
@@ -74,7 +74,7 @@ export default function PlacementRow(props) {
 						{__('Content', 'lazy-blocks')}
 					</Button>
 					<Button
-						variant={isInspector ? 'primary' : 'secondary'}
+						variant={isInspector ? 'primary' : ''}
 						isPressed={isInspector}
 						disabled={
 							!isInspector &&
