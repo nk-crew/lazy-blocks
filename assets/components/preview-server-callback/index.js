@@ -152,12 +152,13 @@ export default function PreviewServerCallback(props) {
 
 	// When the component unmounts, set isMountedRef to false. This will
 	// let the async fetch callbacks know when to stop.
-	useEffect(
-		() => () => {
+	useEffect(() => {
+		isMountedRef.current = true;
+
+		return () => {
 			isMountedRef.current = false;
-		},
-		[]
-	);
+		};
+	}, []);
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => {
