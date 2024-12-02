@@ -143,15 +143,15 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			$this->templates  = new LazyBlocks_Templates();
 			$this->tools      = new LazyBlocks_Tools();
 
-			add_action( 'init', array( $this, 'load_text_domain' ), 5 );
-
-			add_action( 'init', array( $this, 'init_hook' ), 6 );
+			add_action( 'init', array( $this, 'init_hook' ), 5 );
 		}
 
 		/**
 		 * Init hook should be used to register user blocks and add customizations.
 		 */
 		public function init_hook() {
+			$this->load_text_domain();
+
 			do_action( 'lzb/init' );
 		}
 
