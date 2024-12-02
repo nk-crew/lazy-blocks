@@ -17,7 +17,7 @@ class LazyBlocks_Controls {
 	 * LazyBlocks_Controls constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'include_controls' ) );
+		add_action( 'lzb/init', array( $this, 'include_controls' ), 5 );
 	}
 
 	/**
