@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-29T19:53:30+00:00\n"
+"POT-Creation-Date: 2024-12-03T17:43:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: lazy-blocks.php
 #: classes/class-admin.php:252
 #: classes/class-blocks.php:187
-#: classes/class-blocks.php:1161
+#: classes/class-blocks.php:1162
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -71,62 +71,66 @@ msgstr ""
 msgid "Block"
 msgstr ""
 
+#: classes/class-blocks.php:191
+msgid "Add Block"
+msgstr ""
+
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:345
+#: classes/class-blocks.php:346
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:348
+#: classes/class-blocks.php:349
 #: assets/editor-constructor/boxes/controls/control.js:246
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:359
+#: classes/class-blocks.php:360
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:362
-#: classes/class-blocks.php:397
+#: classes/class-blocks.php:363
+#: classes/class-blocks.php:398
 msgid "Export"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:374
+#: classes/class-blocks.php:375
 msgid "Deactivate “%1$s”"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:374
+#: classes/class-blocks.php:375
 msgid "Activate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:378
-#: classes/class-blocks.php:401
+#: classes/class-blocks.php:379
+#: classes/class-blocks.php:402
 msgid "Deactivate"
 msgstr ""
 
-#: classes/class-blocks.php:378
-#: classes/class-blocks.php:399
+#: classes/class-blocks.php:379
+#: classes/class-blocks.php:400
 msgid "Activate"
 msgstr ""
 
-#: classes/class-blocks.php:441
+#: classes/class-blocks.php:442
 #: assets/editor-constructor/boxes/general/index.js:101
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:443
+#: classes/class-blocks.php:444
 #: assets/editor-constructor/boxes/general/index.js:75
 msgid "Slug"
 msgstr ""
 
-#: classes/class-blocks.php:444
+#: classes/class-blocks.php:445
 #: assets/editor-constructor/boxes/general/index.js:114
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:445
+#: classes/class-blocks.php:446
 #: assets/editor-constructor/boxes/general/index.js:189
 msgid "Description"
 msgstr ""
@@ -482,7 +486,7 @@ msgid "Error: Could not generate the preview."
 msgstr ""
 
 #. Translators: %s - error text.
-#: assets/components/preview-server-callback/index.js:223
+#: assets/components/preview-server-callback/index.js:224
 msgid "Error loading block preview: %s"
 msgstr ""
 
@@ -551,7 +555,7 @@ msgstr ""
 msgid "Blocks Constructor"
 msgstr ""
 
-#: assets/editor-constructor/boxes/code-preview/index.js:161
+#: assets/editor-constructor/boxes/code-preview/index.js:163
 msgid "Preview"
 msgstr ""
 
@@ -643,15 +647,15 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: assets/editor-constructor/boxes/condition/index.js:52
+#: assets/editor-constructor/boxes/condition/index.js:67
 msgid "Show in posts"
 msgstr ""
 
-#: assets/editor-constructor/boxes/condition/index.js:58
+#: assets/editor-constructor/boxes/condition/index.js:73
 msgid "In all posts by default"
 msgstr ""
 
-#: assets/editor-constructor/boxes/condition/index.js:89
+#: assets/editor-constructor/boxes/condition/index.js:104
 msgid "Loading…"
 msgstr ""
 
@@ -747,7 +751,7 @@ msgstr ""
 #: controls/color/script.js:93
 #: controls/color/script.js:111
 #: controls/image/script.js:125
-#: controls/radio/script.js:85
+#: controls/radio/script.js:84
 #: controls/repeater/script.js:331
 #: controls/select/script.js:110
 #: controls/select/script.js:132
@@ -758,7 +762,7 @@ msgstr ""
 #: assets/editor-constructor/boxes/selected-control-settings/settings-rows/label.js:44
 #: assets/editor-constructor/boxes/styles/index.js:35
 #: controls/checkbox/script.js:217
-#: controls/radio/script.js:112
+#: controls/radio/script.js:111
 #: controls/select/component-choices.js:157
 #: controls/select/script.js:159
 msgid "Label"
@@ -997,13 +1001,13 @@ msgid "Some blocks on this page require attention before you can save."
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: assets/editor/blocks/main/edit.js:334
+#: assets/editor/blocks/main/edit.js:335
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
 msgstr[0] ""
 msgstr[1] ""
 
-#: assets/editor/blocks/main/edit.js:380
+#: assets/editor/blocks/main/edit.js:381
 msgid "Edit Block"
 msgstr ""
 
@@ -1057,27 +1061,27 @@ msgstr ""
 
 #: controls/checkbox/script.js:204
 #: controls/color/script.js:125
-#: controls/radio/script.js:99
+#: controls/radio/script.js:98
 #: controls/select/script.js:146
 msgid "Output Format"
 msgstr ""
 
 #: controls/checkbox/script.js:205
 #: controls/color/script.js:126
-#: controls/radio/script.js:100
+#: controls/radio/script.js:99
 #: controls/select/script.js:147
 msgid "Allows you to change attribute output format"
 msgstr ""
 
 #: controls/checkbox/script.js:213
-#: controls/radio/script.js:108
+#: controls/radio/script.js:107
 #: controls/select/component-choices.js:161
 #: controls/select/script.js:155
 msgid "Value"
 msgstr ""
 
 #: controls/checkbox/script.js:221
-#: controls/radio/script.js:116
+#: controls/radio/script.js:115
 #: controls/select/script.js:163
 msgid "Both (Array)"
 msgstr ""
@@ -1237,12 +1241,12 @@ msgstr ""
 msgid "Step Size"
 msgstr ""
 
-#: controls/radio/script.js:77
+#: controls/radio/script.js:76
 #: controls/select/script.js:102
 msgid "Allow Null"
 msgstr ""
 
-#: controls/radio/script.js:78
+#: controls/radio/script.js:77
 #: controls/select/script.js:103
 msgid "Allows you to reset selected option value to null"
 msgstr ""
