@@ -98,10 +98,7 @@ test.describe('editor block with Base control', () => {
 		await page.getByLabel('Label').fill('Test Checkbox Control');
 		await page.getByLabel('Type').click();
 		await page.getByRole('button', { name: 'Checkbox' }).click();
-		await page
-			.locator('#lazyblocks-control-checkbox-checked')
-			.nth(1)
-			.check();
+		await page.locator('#lazyblocks-control-checkbox-checked').check();
 
 		await editor.canvas.getByLabel('PHP').click();
 

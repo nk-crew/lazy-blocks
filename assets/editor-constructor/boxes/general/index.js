@@ -112,6 +112,7 @@ export default function GeneralSettings({ data, updateData }) {
 			<BaseControl
 				id="lazyblocks-boxes-general-category"
 				label={__('Category', 'lazy-blocks')}
+				__nextHasNoMarginBottom
 			>
 				<Select
 					id="lazyblocks-boxes-general-category"
@@ -138,6 +139,7 @@ export default function GeneralSettings({ data, updateData }) {
 					'Make it easier to discover a block with keyword aliases',
 					'lazy-blocks'
 				)}
+				__nextHasNoMarginBottom
 			>
 				<Select
 					id="lazyblocks-boxes-general-keywords"
@@ -187,6 +189,7 @@ export default function GeneralSettings({ data, updateData }) {
 				label={__('Description', 'lazy-blocks')}
 				value={description}
 				onChange={(value) => updateData({ description: value })}
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>,
 		settingsData

@@ -20,6 +20,7 @@ html {
 	}
 
 	// hide right sidebar tabs, as we select constructor block by default.
+	.components-panel__header.editor-sidebar__panel-tabs,
 	.components-panel__header.edit-post-sidebar-header,
 	.components-panel__header.edit-post-sidebar__panel-tabs {
 		display: none;
@@ -33,6 +34,15 @@ html {
 	.block-editor-block-card,
 	.interface-interface-skeleton__footer {
 		display: none;
+	}
+
+	.has-footer .interface-interface-skeleton__body {
+		padding-bottom: 0;
+	}
+
+	.post-type-lazyblocks .is-root-container.alignfull {
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	.editor-styles-wrapper {

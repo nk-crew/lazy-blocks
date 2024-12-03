@@ -138,6 +138,8 @@ export default function CodePreview(props) {
 		const $frameObserver = iframeObserver.current;
 		const $frame = iframeRef.current;
 
+		isMountedRef.current = true;
+
 		return () => {
 			$frameObserver.disconnect();
 			$frame.removeEventListener('load', setIframeHeight);

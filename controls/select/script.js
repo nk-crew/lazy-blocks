@@ -46,6 +46,8 @@ addFilter('lzb.editor.control.select.render', 'lzb.editor', (render, props) => {
 				onChange={(val) => {
 					props.onChange(val);
 				}}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</BaseControl>
 	);
@@ -112,6 +114,7 @@ addFilter(
 									allow_null: value ? 'true' : 'false',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>
@@ -133,6 +136,7 @@ addFilter(
 									multiple: value ? 'true' : 'false',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>

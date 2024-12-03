@@ -107,6 +107,7 @@ export default function TypeRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-row-type"
 				label={__('Type', 'lazy-blocks')}
+				__nextHasNoMarginBottom
 			>
 				{/* eslint-disable-next-line react/button-has-type */}
 				<button
@@ -151,6 +152,8 @@ export default function TypeRow(props) {
 								className="lzb-constructor-type-search"
 								// eslint-disable-next-line jsx-a11y/no-autofocus
 								autoFocus
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
 							/>
 							{Object.keys(allCategories).map((cat) => {
 								if (!availableCategories[cat]) {

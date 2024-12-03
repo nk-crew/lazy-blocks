@@ -43,7 +43,7 @@ export default function SupportsGhostKitSettings(props) {
 	return (
 		<>
 			{!window.GHOSTKIT ? (
-				<BaseControl>
+				<BaseControl __nextHasNoMarginBottom>
 					<Notice
 						isDismissible={false}
 						className="lzb-constructor-notice"
@@ -55,7 +55,7 @@ export default function SupportsGhostKitSettings(props) {
 							)}
 						</p>
 						<Button
-							isPrimary
+							variant="primary"
 							size="small"
 							href="https://wordpress.org/plugins/ghostkit/"
 							target="_blank"
@@ -75,7 +75,7 @@ export default function SupportsGhostKitSettings(props) {
 				supportsGktCustomCSS ||
 				supportsGktAttributes) &&
 			!supportsClassname ? (
-				<BaseControl>
+				<BaseControl __nextHasNoMarginBottom>
 					<Notice
 						status="error"
 						isDismissible={false}
@@ -103,6 +103,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_ghostkit_effects: value,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Position', 'lazy-blocks')}
@@ -117,6 +118,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_classname: value || supportsClassname,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Spacings', 'lazy-blocks')}
@@ -128,6 +130,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_classname: value || supportsClassname,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Frame', 'lazy-blocks')}
@@ -139,6 +142,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_classname: value || supportsClassname,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Transform', 'lazy-blocks')}
@@ -150,6 +154,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_classname: value || supportsClassname,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Custom CSS', 'lazy-blocks')}
@@ -164,6 +169,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_classname: value || supportsClassname,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Display', 'lazy-blocks')}
@@ -178,6 +184,7 @@ export default function SupportsGhostKitSettings(props) {
 						supports_classname: value || supportsClassname,
 					})
 				}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Attributes', 'lazy-blocks')}
@@ -189,6 +196,7 @@ export default function SupportsGhostKitSettings(props) {
 				onChange={(value) =>
 					updateData({ supports_ghostkit_attributes: value })
 				}
+				__nextHasNoMarginBottom
 			/>
 		</>
 	);

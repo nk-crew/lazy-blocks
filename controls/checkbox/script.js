@@ -70,6 +70,7 @@ addFilter(
 
 								props.onChange(newVal);
 							}}
+							__nextHasNoMarginBottom
 						/>
 					))}
 				</BaseControl>
@@ -82,6 +83,7 @@ addFilter(
 					label={props.data.alongside_text}
 					checked={!!val}
 					onChange={props.onChange}
+					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		);
@@ -136,6 +138,8 @@ addFilter(
 											alongside_text: value,
 										})
 									}
+									__next40pxDefaultSize
+									__nextHasNoMarginBottom
 								/>
 							</div>
 							<div>
@@ -158,6 +162,7 @@ addFilter(
 											checked: value ? 'true' : 'false',
 										})
 									}
+									__nextHasNoMarginBottom
 								/>
 							</div>
 						</div>
@@ -181,6 +186,7 @@ addFilter(
 									multiple: value ? 'true' : 'false',
 								})
 							}
+							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>

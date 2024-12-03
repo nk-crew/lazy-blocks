@@ -14,7 +14,7 @@ import { useSelect } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { PanelRow, SelectControl } from '@wordpress/components';
 import { useDebounce } from '@wordpress/compose';
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 
 /**
  * Internal dependencies
@@ -182,6 +182,8 @@ function UpdateEditor() {
 						onChange={(value) => {
 							updateMeta('_lzb_template_post_types', value);
 						}}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</div>
 			</PanelRow>
@@ -194,6 +196,8 @@ function UpdateEditor() {
 						onChange={(value) => {
 							updateMeta('_lzb_template_lock', value);
 						}}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</div>
 			</PanelRow>

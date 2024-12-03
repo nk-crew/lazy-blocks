@@ -134,7 +134,6 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			$this->plugin_url      = plugin_dir_url( __FILE__ );
 			$this->plugin_basename = plugin_basename( __FILE__ );
 
-			$this->load_text_domain();
 			$this->include_dependencies();
 
 			$this->icons      = new LazyBlocks_Icons();
@@ -151,6 +150,8 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 		 * Init hook should be used to register user blocks and add customizations.
 		 */
 		public function init_hook() {
+			$this->load_text_domain();
+
 			do_action( 'lzb/init' );
 		}
 

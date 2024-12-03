@@ -33,6 +33,7 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsMultiple}
 				onChange={(value) => updateData({ supports_multiple: value })}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Class Name', 'lazy-blocks')}
@@ -42,6 +43,7 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsClassname}
 				onChange={(value) => updateData({ supports_classname: value })}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Anchor', 'lazy-blocks')}
@@ -51,12 +53,14 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsAnchor}
 				onChange={(value) => updateData({ supports_anchor: value })}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Inserter', 'lazy-blocks')}
 				help={__('Show block in blocks inserter.', 'lazy-blocks')}
 				checked={supportsInserter}
 				onChange={(value) => updateData({ supports_inserter: value })}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Reusable', 'lazy-blocks')}
@@ -66,6 +70,7 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsReusable}
 				onChange={(value) => updateData({ supports_reusable: value })}
+				__nextHasNoMarginBottom
 			/>
 			<ToggleControl
 				label={__('Lock', 'lazy-blocks')}
@@ -75,10 +80,12 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsLock}
 				onChange={(value) => updateData({ supports_lock: value })}
+				__nextHasNoMarginBottom
 			/>
 			<BaseControl
 				id="lazyblocks-supports-align"
 				label={__('Align', 'lazy-blocks')}
+				__nextHasNoMarginBottom
 			>
 				<Select
 					id="lazyblocks-supports-align"

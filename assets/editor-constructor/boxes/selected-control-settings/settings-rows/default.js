@@ -26,6 +26,8 @@ export default function DefaultRow(props) {
 				help={__('Appears when inserting a new block', 'lazy-blocks')}
 				value={data.default}
 				onChange={(value) => updateData({ default: value })}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

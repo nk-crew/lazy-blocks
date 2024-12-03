@@ -354,9 +354,7 @@ function RepeaterControl(props) {
 				items.length > 1 ? (
 					<Tooltip text={__('Toggle all rows', 'lazy-blocks')}>
 						<Button
-							variant={
-								activeItem === -2 ? 'primary' : 'secondary'
-							}
+							variant={activeItem === -2 ? 'primary' : ''}
 							size="compact"
 							className="lzb-gutenberg-repeater-options-expand"
 							onClick={() => {

@@ -25,6 +25,8 @@ addFilter('lzb.editor.control.range.render', 'lzb.editor', (render, props) => (
 			onChange={(val) => {
 				props.onChange(parseFloat(val));
 			}}
+			__next40pxDefaultSize
+			__nextHasNoMarginBottom
 		/>
 	</BaseControl>
 ));
@@ -47,6 +49,8 @@ addFilter(
 						step={data.step}
 						value={data.min}
 						onChange={(value) => updateData({ min: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -56,6 +60,8 @@ addFilter(
 						step={data.step}
 						value={data.max}
 						onChange={(value) => updateData({ max: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -64,6 +70,8 @@ addFilter(
 						type="number"
 						value={data.step}
 						onChange={(value) => updateData({ step: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</>

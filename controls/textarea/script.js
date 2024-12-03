@@ -30,6 +30,7 @@ addFilter(
 					value={props.getValue()}
 					placeholder={props.data.placeholder}
 					onChange={props.onChange}
+					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		);
@@ -52,6 +53,8 @@ addFilter(
 						label={__('Placeholder', 'lazy-blocks')}
 						value={data.placeholder}
 						onChange={(value) => updateData({ placeholder: value })}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -72,6 +75,8 @@ addFilter(
 						onChange={(value) =>
 							updateData({ characters_limit: `${value}` })
 						}
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</>

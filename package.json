@@ -48,7 +48,7 @@
 		"ace-builds": "^1.22.0",
 		"array-move": "^4.0.0",
 		"classnames": "^2.3.2",
-		"gutenberg-react-select-styles": "0.0.2",
+		"gutenberg-react-select-styles": "^0.0.3",
 		"html-react-parser": "^4.0.0",
 		"json5": "^2.2.3",
 		"react-ace": "^10.1.0",

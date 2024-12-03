@@ -127,6 +127,8 @@ function AdditionalAttributes(props) {
 				})}
 				value={data.preview_size || 'medium'}
 				onChange={(value) => updateData({ preview_size: value })}
+				__next40pxDefaultSize
+				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);
