@@ -188,6 +188,7 @@ class LazyBlocks_Blocks {
 					'name'          => __( 'Blocks', 'lazy-blocks' ),
 					'all_items'     => __( 'Blocks', 'lazy-blocks' ),
 					'singular_name' => __( 'Block', 'lazy-blocks' ),
+					'add_new_item'  => __( 'Add Block', 'lazy-blocks' ),
 				),
 				'public'            => false,
 				'has_archive'       => false,
