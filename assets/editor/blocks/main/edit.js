@@ -215,6 +215,7 @@ export default function BlockEdit(props) {
 
 	useEffect(() => {
 		isFirstLoad.current = false;
+		isMounted.current = true;
 
 		// Attempt to lock the post once the component is mounted.
 		maybeLockPostSaving();
