@@ -210,9 +210,9 @@ function ControlsRepeaterItem(props) {
 			{/* eslint-disable-next-line react/button-has-type */}
 			<button
 				className={classnames(
-					'lzb-constructor-controls-item-repeater-toggle',
+					'lzb-block-builder-controls-item-repeater-toggle',
 					collapsedChilds
-						? 'lzb-constructor-controls-item-repeater-toggle-collapsed'
+						? 'lzb-block-builder-controls-item-repeater-toggle-collapsed'
 						: ''
 				)}
 				onClick={(e) => {
@@ -236,7 +236,7 @@ function ControlsRepeaterItem(props) {
 				</svg>
 			</button>
 			{collapsedChilds ? (
-				<div className="lzb-constructor-controls-item-childs">
+				<div className="lzb-block-builder-controls-item-childs">
 					{printControls(id)}
 				</div>
 			) : (
@@ -247,7 +247,7 @@ function ControlsRepeaterItem(props) {
 }
 
 /**
- * Control lists item render in constructor.
+ * Control lists item render in block builder.
  */
 addFilter(
 	'lzb.constructor.controls.repeater.item',
@@ -261,7 +261,7 @@ addFilter(
 );
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.repeater.settings',

@@ -24,10 +24,10 @@ class LazyBlocks_Admin {
 		add_filter( 'plugin_action_links_' . lazyblocks()->plugin_basename(), array( $this, 'add_go_pro_link_plugins_page' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_scripts' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'block_builder_enqueue_scripts' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_script_translations' ), 9 );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'constructor_enqueue_styles' ) );
-		add_action( 'enqueue_block_assets', array( $this, 'constructor_enqueue_styles' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'block_builder_enqueue_styles' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'block_builder_enqueue_styles' ) );
 
 		add_action( 'in_admin_header', array( $this, 'in_admin_header' ) );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ) );
@@ -123,17 +123,17 @@ class LazyBlocks_Admin {
 	}
 
 	/**
-	 * Enqueue constructor scripts.
+	 * Enqueue block builder scripts.
 	 */
-	public function constructor_enqueue_scripts() {
+	public function block_builder_enqueue_scripts() {
 		if ( 'lazyblocks' === get_post_type() ) {
 			// We also need to enqueue editor script because it contains some essential components and it is not enqueued automatically when there are no blocks available.
 			LazyBlocks_Assets::enqueue_script( 'lazyblocks-editor' );
 
-			LazyBlocks_Assets::enqueue_script( 'lazyblocks-constructor', 'build/editor-constructor' );
+			LazyBlocks_Assets::enqueue_script( 'lazyblocks-block-builder', 'build/block-builder' );
 			wp_localize_script(
-				'lazyblocks-constructor',
-				'lazyblocksConstructorData',
+				'lazyblocks-block-builder',
+				'lazyblocksBlockBuilderData',
 				array(
 					'post_id'             => get_the_ID(),
 					'allowed_mime_types'  => get_allowed_mime_types(),
@@ -142,7 +142,7 @@ class LazyBlocks_Admin {
 					'icons'               => lazyblocks()->icons()->get_all(),
 					'plugin_version'      => LAZY_BLOCKS_VERSION,
 					'is_pro'              => lazyblocks()->is_pro(),
-					'pro_url'             => lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'constructor' ) ),
+					'pro_url'             => lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'block-builder' ) ),
 					'wp_content_dir'      => defined( 'WP_CONTENT_DIR' ) ? str_replace( ABSPATH, '', WP_CONTENT_DIR ) : 'wp-content',
 				)
 			);
@@ -162,15 +162,15 @@ class LazyBlocks_Admin {
 	}
 
 	/**
-	 * Enqueue constructor styles.
+	 * Enqueue block builder styles.
 	 */
-	public function constructor_enqueue_styles() {
+	public function block_builder_enqueue_styles() {
 		if ( is_admin() && 'lazyblocks' === get_post_type() ) {
 			// We also need to enqueue editor style because it contains some essential components and it is not enqueued automatically when there are no blocks available.
 			LazyBlocks_Assets::enqueue_style( 'lazyblocks-editor' );
 
-			LazyBlocks_Assets::enqueue_style( 'lazyblocks-constructor', 'build/editor-constructor' );
-			wp_style_add_data( 'lazyblocks-constructor', 'rtl', 'replace' );
+			LazyBlocks_Assets::enqueue_style( 'lazyblocks-block-builder', 'build/block-builder' );
+			wp_style_add_data( 'lazyblocks-block-builder', 'rtl', 'replace' );
 		}
 	}
 

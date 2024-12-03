@@ -48,9 +48,9 @@ const newConfig = {
 				'assets/editor',
 				'translation.js'
 			),
-			'editor-constructor': resolve(
+			'block-builder': resolve(
 				process.cwd(),
-				'assets/editor-constructor',
+				'assets/block-builder',
 				'index.js'
 			),
 
@@ -59,9 +59,9 @@ const newConfig = {
 
 			// SCSS.
 			'admin-style': resolve(process.cwd(), 'assets/admin', 'index.scss'),
-			'editor-constructor-astra-style': resolve(
+			'block-builder-astra-style': resolve(
 				process.cwd(),
-				'assets/editor-constructor/3rd',
+				'assets/block-builder/3rd',
 				'astra.scss'
 			),
 		},

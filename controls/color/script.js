@@ -54,7 +54,7 @@ function validate(validationData, value) {
 addFilter('lzb.editor.control.color.validate', 'lzb.editor', validate);
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.color.settings',

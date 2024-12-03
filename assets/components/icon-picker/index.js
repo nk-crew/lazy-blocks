@@ -33,7 +33,7 @@ import {
 } from '@wordpress/components';
 
 const { icons } =
-	window.lazyblocksConstructorData || window.lazyblocksGutenberg;
+	window.lazyblocksBlockBuilderData || window.lazyblocksGutenberg;
 
 // we need this lazy loading component to prevent a huge lags while first loading SVG icons
 function Icon({ svg, onClick, active }) {

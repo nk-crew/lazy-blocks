@@ -1,0 +1,28 @@
+@import "../../../variables";
+
+.lzb-block-builder .lzb-block-builder-title {
+	// block title.
+	max-width: none;
+	padding: 30px 0;
+	margin: -10px;
+	margin-bottom: 80px;
+	overflow: hidden;
+	background: #fff;
+	box-shadow: rgba(0, 0, 0, 10%) 0 1px 3px 0, rgba(0, 0, 0, 6%) 0 1px 2px 0;
+
+	textarea {
+		width: 100%;
+		font: inherit;
+		font-size: 40px !important;
+		font-weight: 600;
+		text-align: center;
+		border: none;
+		outline: none;
+		box-shadow: none;
+		resize: none;
+
+		&::placeholder {
+			color: #ccc;
+		}
+	}
+}

@@ -1,0 +1,30 @@
+@import "../../../variables";
+
+.lzb-block-builder .lzb-block-builder-code-preview {
+	margin-top: 50px;
+
+	> .components-panel__body {
+		padding: 20px 25px;
+		border-color: #e5e7eb;
+
+		&:first-child {
+			background-color: $color_gray_lighten_2;
+			border-top: none;
+			border-top-left-radius: $radius_box;
+			border-top-right-radius: $radius_box;
+
+			h2 {
+				margin: 0;
+				text-align: left;
+			}
+		}
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+
+	iframe {
+		width: 100%;
+	}
+}

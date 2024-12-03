@@ -1,6 +1,6 @@
 <?php
 /**
- * LazyBlocks force enable gutenberg on constructor page.
+ * LazyBlocks force enable gutenberg on block builder page.
  *
  * @package lazyblocks
  */

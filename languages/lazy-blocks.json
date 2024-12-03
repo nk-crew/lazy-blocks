@@ -8,7 +8,7 @@
          "Lazy Blocks": [
             ""
          ],
-         "Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.": [
+         "Easily create custom blocks and custom meta fields for Gutenberg without hard coding.": [
             ""
          ],
          "Lazy Blocks Team": [
@@ -297,66 +297,6 @@
          "Import": [
             ""
          ],
-         "Upgrade Now": [
-            ""
-         ],
-         "Copied!": [
-            ""
-         ],
-         "Control": [
-            ""
-         ],
-         "Search Icon": [
-            ""
-         ],
-         "Type to Search…": [
-            ""
-         ],
-         "No icons found.": [
-            ""
-         ],
-         "Icon Picker": [
-            ""
-         ],
-         "Error: Could not generate the preview.": [
-            ""
-         ],
-         "Error loading block preview: %s": [
-            ""
-         ],
-         "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\".": [
-            ""
-         ],
-         "Lazy Blocks Pro": [
-            ""
-         ],
-         "Custom block collections and slug namespaces": [
-            ""
-         ],
-         "Controls Conditional Logic": [
-            ""
-         ],
-         "Panels and Dividers": [
-            ""
-         ],
-         "Posts, Taxonomy, User Controls": [
-            ""
-         ],
-         "Blocks Preloading": [
-            ""
-         ],
-         "SEO Enhancements": [
-            ""
-         ],
-         "And much more…": [
-            ""
-         ],
-         "Custom fields are not enabled for this post type. Enable \"custom-fields\" support to use this control.": [
-            ""
-         ],
-         "Learn how": [
-            ""
-         ],
          "Styles": [
             ""
          ],
@@ -369,7 +309,10 @@
          "Condition": [
             ""
          ],
-         "Blocks Constructor": [
+         "Block Builder": [
+            ""
+         ],
+         "Error: Could not generate the preview.": [
             ""
          ],
          "Preview": [
@@ -555,6 +498,9 @@
          "Control Type": [
             ""
          ],
+         "Type to Search…": [
+            ""
+         ],
          "25%": [
             ""
          ],
@@ -676,6 +622,60 @@
             ""
          ],
          "Block Name": [
+            ""
+         ],
+         "Upgrade Now": [
+            ""
+         ],
+         "Copied!": [
+            ""
+         ],
+         "Control": [
+            ""
+         ],
+         "Search Icon": [
+            ""
+         ],
+         "No icons found.": [
+            ""
+         ],
+         "Icon Picker": [
+            ""
+         ],
+         "Error loading block preview: %s": [
+            ""
+         ],
+         "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\".": [
+            ""
+         ],
+         "Lazy Blocks Pro": [
+            ""
+         ],
+         "Custom block collections and slug namespaces": [
+            ""
+         ],
+         "Controls Conditional Logic": [
+            ""
+         ],
+         "Panels and Dividers": [
+            ""
+         ],
+         "Posts, Taxonomy, User Controls": [
+            ""
+         ],
+         "Blocks Preloading": [
+            ""
+         ],
+         "SEO Enhancements": [
+            ""
+         ],
+         "And much more…": [
+            ""
+         ],
+         "Custom fields are not enabled for this post type. Enable \"custom-fields\" support to use this control.": [
+            ""
+         ],
+         "Learn how": [
             ""
          ],
          "Free Content": [

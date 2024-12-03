@@ -1,0 +1,39 @@
+@import "../../../variables";
+
+.lzb-block-builder .lzb-block-builder-custom-code-settings {
+	> .components-panel__body {
+		padding: 20px 25px;
+		border-color: #e5e7eb;
+
+		&:first-child {
+			background-color: $color_gray_lighten_2;
+			border-top: none;
+			border-top-left-radius: $radius_box;
+			border-top-right-radius: $radius_box;
+
+			h2 {
+				margin: 0;
+				text-align: left;
+			}
+		}
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+
+	.components-base-control__field {
+		margin-bottom: 0;
+	}
+
+	p.description {
+		margin-top: 0;
+		margin-bottom: 10px;
+		font-family: inherit;
+		font-size: 1em;
+	}
+
+	.components-tab-panel__tabs {
+		background-color: $color_gray_lighten;
+	}
+}

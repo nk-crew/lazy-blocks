@@ -78,7 +78,7 @@ addFilter('lzb.editor.control.gallery.updateValue', 'lzb.editor', (value) => {
 });
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  *
  * @param {Object} props - component props.
  *

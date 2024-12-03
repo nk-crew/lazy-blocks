@@ -45,13 +45,14 @@ export default function BlockSlug(props) {
 						<div className="lazyblocks-component-pro-notice">
 							Custom block collections and slug namespaces are
 							only available in the Pro plugin.
-							{window?.lazyblocksConstructorData?.pro_url && (
+							{window?.lazyblocksBlockBuilderData?.pro_url && (
 								<a
 									className="lazyblocks-component-pro-notice-btn"
 									target="_blank"
 									rel="noreferrer"
 									href={
-										window.lazyblocksConstructorData.pro_url
+										window.lazyblocksBlockBuilderData
+											.pro_url
 									}
 								>
 									{__('Upgrade Now', 'lazy-blocks')}

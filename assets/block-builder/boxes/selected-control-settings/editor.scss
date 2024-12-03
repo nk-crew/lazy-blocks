@@ -1,0 +1,231 @@
+@import "../../../variables";
+
+.lzb-block-builder-controls-item-settings {
+	.lzb-block-builder-controls-item-settings-row {
+		display: flex;
+		flex-wrap: wrap;
+
+		+ .lzb-block-builder-controls-item-settings-row {
+			margin-top: 15px;
+		}
+
+		.lzb-block-builder-controls-item-settings-row-label {
+			flex: 1;
+
+			span {
+				display: block;
+				padding-right: 15px;
+				font-weight: 600;
+			}
+
+			small {
+				display: block;
+				padding-right: 15px;
+				margin-top: 5px;
+				color: $color_dark_lighten;
+			}
+		}
+
+		.lzb-block-builder-controls-item-settings-row-control {
+			flex: 3;
+		}
+	}
+}
+
+// type settings
+.lzb-block-builder-type-toggle-dropdown {
+	display: block;
+}
+
+.lzb-block-builder-type-toggle {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: 3px 5px;
+	min-height: 40px;
+	cursor: pointer;
+	background-color: #fff;
+	border: 1px solid $color_dark_lighten_2;
+	border-radius: 2px;
+	transition: 0.15s border-color ease-in-out;
+
+	&:hover {
+		border-color: $color_dark_lighten;
+	}
+
+	// icon
+	span svg {
+		display: block;
+		margin-right: 5px;
+	}
+
+	// arrow
+	> svg {
+		margin-left: auto;
+		transition: 0.15s opacity ease-in-out;
+		width: 14px;
+		height: 14px;
+	}
+}
+
+.lzb-block-builder-type-dropdown {
+	margin: -32px;
+	margin-top: -10px;
+
+	> .components-base-control {
+		padding: 15px;
+		padding-bottom: 10px;
+	}
+
+	.components-panel__body > button {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		padding: 10px 15px;
+		text-align: left;
+		cursor: pointer;
+		background: $color_gray_lighten;
+		border: none;
+		border-radius: 3px;
+		transition: 0.15s background-color ease-in-out, 0.15s box-shadow ease-in-out;
+
+		&.is-active {
+			box-shadow: 0 0 0 2px $blue-500;
+		}
+
+		&:hover {
+			background-color: $color_gray;
+		}
+
+		+ button {
+			margin-top: 15px;
+		}
+
+		svg {
+			display: block;
+			margin-right: 10px;
+		}
+	}
+}
+
+.lzb-block-builder-type-search {
+	input[type="text"] {
+		padding: 10px 14px;
+	}
+}
+
+// choices setting
+.lzb-block-builder-controls-item-settings-choices {
+	.lzb-block-builder-controls-item-settings-choices-item {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		margin-right: -5px;
+		margin-bottom: 10px;
+		margin-left: -5px;
+
+		> div {
+			flex: 1;
+			margin-right: 5px;
+			margin-bottom: 0;
+			margin-left: 5px;
+		}
+
+		> .components-base-control {
+			min-width: 150px;
+			padding-left: 18px;
+			margin-bottom: 0;
+
+			input {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			&:first-child input {
+				border-bottom-right-radius: 0;
+			}
+
+			+ .components-base-control input {
+				border-top: none;
+				border-top-right-radius: 0;
+			}
+		}
+
+		.components-base-control__field {
+			margin-bottom: 0;
+		}
+
+		input::placeholder {
+			color: #a0a0a0 !important;
+		}
+	}
+
+	.lzb-block-builder-controls-item-settings-choices-item-dragging {
+		z-index: 2;
+	}
+
+	.lzb-block-builder-controls-item-settings-choices-item-handler {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 5px;
+		display: flex;
+		align-items: center;
+		width: 20px;
+		padding: 0;
+		margin: 0 !important;
+		color: #fff;
+		text-align: center;
+		cursor: grab;
+		background-color: #1e1e1e;
+		border-top-left-radius: 2px;
+		border-bottom-left-radius: 2px;
+		transition: 0.15s background-color ease-in-out;
+
+		&:hover {
+			background-color: #007cba;
+		}
+
+		svg {
+			width: 1.5em;
+			height: 1.5em;
+		}
+	}
+
+	.lzb-block-builder-controls-item-settings-choices-item-remove {
+		position: absolute;
+		top: 50%;
+		right: -5px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		padding: 0;
+		margin-top: -10px;
+		color: #1e1e1e;
+		cursor: pointer;
+		background-color: #fff;
+		border: none;
+		border: 1px solid #757575;
+		border-radius: 50%;
+		opacity: 0;
+		transition: 0.15s opacity ease-in-out, 0.15s color ease-in-out, 0.15s background-color ease-in-out, 0.15s border-color ease-in-out;
+
+		svg {
+			width: 1em;
+			height: 1em;
+		}
+
+		&:hover,
+		&:focus {
+			color: #fff;
+			background-color: $alert-red;
+			border-color: $alert-red;
+		}
+	}
+
+	.lzb-block-builder-controls-item-settings-choices-item:hover .lzb-block-builder-controls-item-settings-choices-item-remove {
+		opacity: 1;
+	}
+}

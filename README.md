@@ -1,4 +1,4 @@
-# Lazy Blocks - Gutenberg blocks visual constructor
+# Lazy Blocks - block builder for WordPress Gutenberg
 
 - Site <https://www.lazyblocks.com/>
 - WordPress Plugin <https://wordpress.org/plugins/lazy-blocks/>

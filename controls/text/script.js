@@ -65,7 +65,7 @@ addFilter('lzb.editor.control.text.validate', 'lzb.editor', validate);
 addFilter('lzb.editor.control.textarea.validate', 'lzb.editor', validate);
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.text.settings',

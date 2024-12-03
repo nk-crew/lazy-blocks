@@ -1,0 +1,222 @@
+@import "../variables";
+
+// `html` is used to override WP styles.
+html {
+	// editor background.
+	.block-editor-editor-skeleton__content,
+	.interface-interface-skeleton__content,
+	.editor-styles-wrapper {
+		background: $color_gray_lighten;
+	}
+
+	// hide post title.
+	.edit-post-visual-editor__post-title-wrapper,
+	.editor-post-title {
+		display: none;
+	}
+
+	.edit-post-visual-editor {
+		padding-top: 0;
+	}
+
+	// hide right sidebar tabs, as we select block-builder block by default.
+	.components-panel__header.editor-sidebar__panel-tabs,
+	.components-panel__header.edit-post-sidebar-header,
+	.components-panel__header.edit-post-sidebar__panel-tabs {
+		display: none;
+	}
+
+	.edit-post-settings-sidebar__panel-block .editor-block-inspector__card {
+		display: none;
+	}
+
+	.block-editor-block-list__breadcrumb,
+	.block-editor-block-card,
+	.interface-interface-skeleton__footer {
+		display: none;
+	}
+
+	.has-footer .interface-interface-skeleton__body {
+		padding-bottom: 0;
+	}
+
+	.post-type-lazyblocks .is-root-container.alignfull {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.editor-styles-wrapper {
+		// fix for default themes.
+		padding: 10px;
+		margin-right: 0;
+		margin-left: 0;
+
+		// change content width.
+		.wp-block {
+			max-width: none !important;
+			margin-top: 0;
+		}
+
+		h2 {
+			margin: 40px 0 20px;
+			font-family: inherit;
+			font-size: 18px;
+			font-weight: 600;
+			color: inherit;
+			color: $color_dark_darken;
+			text-align: center;
+
+			// Fix for some TwentyX themes.
+			&::before {
+				content: none;
+			}
+		}
+	}
+
+	// remove outline from block.
+	.block-editor-block-list__block::before,
+	.block-editor-block-contextual-toolbar,
+	.block-editor-block-list__insertion-point {
+		display: none;
+	}
+
+	// Remove writing container.
+	.block-editor-writing-flow__click-redirect {
+		display: none;
+	}
+
+	// Remove focus outline.
+	.block-editor-block-list__layout [data-type="lzb-block-builder/main"]:not([contenteditable]):focus::after {
+		box-shadow: none;
+	}
+}
+
+.lzb-block-builder-loading {
+	text-align: center;
+
+	.components-spinner {
+		float: none;
+	}
+}
+
+.lzb-block-builder {
+	display: block;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 14px;
+	max-width: 100% !important;
+
+	&,
+	* {
+		box-sizing: border-box;
+	}
+
+	// Inner blocks max width.
+	> * {
+		max-width: 800px;
+		margin-right: auto;
+		margin-bottom: 20px;
+		margin-left: auto;
+	}
+
+	.description svg {
+		display: inline-block;
+		margin-right: 0.2em;
+		margin-left: 0.2em;
+		vertical-align: -0.5em;
+
+		&:first-child {
+			margin-left: -0.2em;
+		}
+	}
+
+	.description,
+	.components-button,
+	.components-notice,
+	.components-base-control {
+		font-size: 1em;
+	}
+
+	// panels.
+	> .components-panel__body {
+		border: none;
+		box-shadow: 0 0 0 1px $color_gray;
+	}
+
+	// columns.
+	.lzb-block-builder-grid {
+		display: flex;
+		flex-wrap: wrap;
+		margin-right: -10px;
+		margin-left: -10px;
+
+		> div {
+			flex: 1;
+			min-width: 150px;
+			padding: 0 10px;
+		}
+	}
+
+	// form controls.
+	.components-base-control input,
+	.components-base-control textarea,
+	.components-base-control select {
+		border-color: $color_dark_darken;
+	}
+
+	.components-base-control select {
+		height: 31px;
+	}
+
+	.components-base-control .components-base-control__help {
+		margin-bottom: 15px;
+	}
+
+	label {
+		font-size: inherit;
+		font-weight: 400;
+	}
+
+	.components-base-control__label {
+		font-size: 11px;
+		font-weight: 500;
+	}
+}
+
+// Notice
+.lzb-block-builder-notice {
+	margin-right: 0;
+	margin-left: 0;
+
+	&:not(:first-child) {
+		margin-top: 20px;
+	}
+
+	&.is-info {
+		color: $blue-50;
+		background-color: rgba($blue-30, 0.1);
+
+		p {
+			color: inherit;
+		}
+	}
+
+	p:last-child {
+		margin-bottom: 0 !important;
+	}
+}
+
+.editor-styles-wrapper .lzb-block-builder-notice-theme-template {
+	margin-top: 0;
+
+	code {
+		display: inline-block;
+		padding: 5px;
+		margin-bottom: 10px;
+		font-size: 0.9em;
+		background-color: rgba($blue-30, 0.1);
+
+		span {
+			border-bottom: 1px dotted;
+		}
+	}
+}

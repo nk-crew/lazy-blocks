@@ -63,7 +63,7 @@ test.describe('editor block with Repeater control', () => {
 			.click();
 
 		await editor.canvas
-			.locator('.lzb-constructor-controls-item-appender')
+			.locator('.lzb-block-builder-controls-item-appender')
 			.first()
 			.click();
 
@@ -85,7 +85,7 @@ test.describe('editor block with Repeater control', () => {
 		return blockID;
 	}
 
-	test('create Repeater block manually in constructor UI', async ({
+	test('create Repeater block manually in block builder UI', async ({
 		page,
 		editor,
 		admin,

@@ -62,7 +62,7 @@ test.describe('editor block with Base control', () => {
 		// Generate Select control
 		await editor.canvas
 			.getByLabel('Inspector Controls')
-			.locator('button.lzb-constructor-controls-item-appender')
+			.locator('button.lzb-block-builder-controls-item-appender')
 			.click();
 
 		await editor.canvas.getByText('(no label)').click();
@@ -90,7 +90,7 @@ test.describe('editor block with Base control', () => {
 		// Generate Checkbox control
 		await editor.canvas
 			.getByLabel('Inspector Controls')
-			.locator('button.lzb-constructor-controls-item-appender')
+			.locator('button.lzb-block-builder-controls-item-appender')
 			.click();
 
 		await editor.canvas.getByText('(no label)').click();
@@ -110,7 +110,7 @@ test.describe('editor block with Base control', () => {
 		return blockID;
 	}
 
-	test('create Base block manually in constructor UI', async ({
+	test('create Base block manually in block builder UI', async ({
 		page,
 		editor,
 		admin,

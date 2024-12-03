@@ -60,7 +60,7 @@ function validate(validationData, value) {
 addFilter('lzb.editor.control.email.validate', 'lzb.editor', validate);
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.email.settings',
