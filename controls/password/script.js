@@ -40,7 +40,7 @@ addFilter(
 );
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.password.settings',

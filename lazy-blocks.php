@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:  Lazy Blocks
- * Description:  Gutenberg blocks visual constructor. Custom meta fields or blocks with output without hard coding.
+ * Description:  Easily create custom blocks and custom meta fields for Gutenberg without hard coding.
  * Version:      3.7.0
  * Author:       Lazy Blocks Team
  * Author URI:   https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline

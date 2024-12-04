@@ -17,7 +17,7 @@ import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 import FileControl from './file-control';
 
 const { allowed_mime_types: wpAllowedMimeTypes } =
-	window.lazyblocksConstructorData || window.lazyblocksGutenberg;
+	window.lazyblocksBlockBuilderData || window.lazyblocksGutenberg;
 
 /**
  * Control render in editor.
@@ -81,7 +81,7 @@ addFilter('lzb.editor.control.file.updateValue', 'lzb.editor', (value) => {
 });
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.file.settings',

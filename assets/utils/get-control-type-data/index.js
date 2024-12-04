@@ -1,5 +1,5 @@
 const { controls = {} } =
-	window.lazyblocksConstructorData || window.lazyblocksGutenberg;
+	window.lazyblocksBlockBuilderData || window.lazyblocksGutenberg;
 
 export default function getControlTypeData(name) {
 	if (name && controls[name]) {

@@ -32,7 +32,7 @@ addFilter('lzb.editor.control.range.render', 'lzb.editor', (render, props) => (
 ));
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.range.settings',

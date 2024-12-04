@@ -37,7 +37,7 @@ Free + PRO plugin:
 * fixed `react-select` removing items by clicking on X button
 * fixed decoding of WPML encoded strings in repeater, gallery, file and image controls in editor
 * fixed displaying Navigation and Patterns in block Condition selector
-* fixed loading block control scripts in constructor when no blocks registered yet
+* fixed loading block control scripts in block builder when no blocks registered yet
 
 = 3.5.1 - Aug 30, 2023 =
 
@@ -114,7 +114,7 @@ FREE plugin:
 * added option for Image control to insert from URL
 * added new Supports settings - Reusable and Lock
 * added possibility to sort tags inside the Select component
-* added width support for controls in the constructor UI
+* added width support for controls in the block builder UI
 * added apiVersion 3 to blocks
 * added `include_within` method to include plugin within theme or plugin. Learn more here <https://www.lazyblocks.com/docs/examples/include-lazy-blocks-within-theme-or-plugin/#how-to-include-plugin-files>
 * added `lzb/control_value` filters. Learn more here <https://www.lazyblocks.com/docs/php-filters/lzb-control_value/>
@@ -131,18 +131,18 @@ FREE plugin:
   * use a single toggle to open the full color palette
   * added option to disable color palette
   * added Alongside text option
-* moved Ghost Kit supports settings to separate panel in editor constructor
+* moved Ghost Kit supports settings to separate panel in block builder
 * moved Edit Block icon to the block toolbar
 * changed `import_block` method to public in Tools class
 * changed bundler to `wp-scripts` - faster builds and development process
 * fixed styles loading inside the editor iframe
 * fixed block render duplicate custom CSS and anchor
 * fixed Classic Editor error in widgets editor
-* fixed block constructor styles in editor with Astra theme
+* fixed block builder styles in editor with Astra theme
 * fixed JS error when `condition` field is not added in the PHP block registration
 * fixed sortable inside editor iframe
 * fixed displaying label and help in controls, where these settings are disabled
-* fixed duplicate Redux store loading inside editor constructor
+* fixed duplicate Redux store loading inside block builder
 * removed CodeEditor component from lazyblocks Redux store (reduced editor.js file size)
 * removed `throttle-debounce` usage, use lodash instead
 * removed HTML elements from block descriptions, as it is deprecated since WordPress v6.2
@@ -197,13 +197,13 @@ FREE plugin:
 
 * added support for Blocks API v2
 * added `lzb/init` hook for developers to register blocks in PHP
-* added autoFocus to constructor control Type popup input search
+* added autoFocus to block builder control Type popup input search
 * added autoFocus to choices component when adding new choice
 * added JS filters - `lzb.components.PreviewServerCallback.allowFetch`, `lzb.constructor.code-settings.output-method`, `lzb.constructor.code-settings.output-code`, `lzb.constructor.code-settings.output-template`, `lzb.constructor.code-settings.preview`, `lzb.constructor.code-settings.additional`
 * added PHP filters - `lzb/block_defaults`, `lzb/block_data`
 * added PHP actions - `lzb/init`
-* fixed constructor control Type popup padding
-* fixed constructor code preview iframe width
+* fixed block builder control Type popup padding
+* fixed block builder code preview iframe width
 * fixed admin PHP warning when user with Editor role
 * fixed blocks conditional displaying in selected post types
 * fixed registering user blocks which don't have all control parameters
@@ -238,7 +238,7 @@ FREE plugin:
 * fixed unlocking post saving when remove locked block
 * fixed URL control styles
 * fixed icon box in admin block list ui when no icon selected
-* fixed constructor rendering when 3rd parties use the `allowed_block_types_all` hook
+* fixed block builder rendering when 3rd parties use the `allowed_block_types_all` hook
 * fixed widgets screen block error
 * fixed Classic Editor control in Widgets Screen
 * fixed Rest permissions check errors
@@ -259,8 +259,8 @@ FREE plugin:
 = 2.5.2 - Dec 6, 2021 =
 
 * added support for color slugs in the Color controls when using new FSE themes
-* added code preview in the constructor (thanks <https://github.com/nk-crew/lazy-blocks/pull/227>)
-* fixed propagating cut event in the constructor (thanks <https://github.com/nk-crew/lazy-blocks/pull/226>)
+* added code preview in the block builder (thanks <https://github.com/nk-crew/lazy-blocks/pull/227>)
+* fixed propagating cut event in the block builder (thanks <https://github.com/nk-crew/lazy-blocks/pull/226>)
 * removed default value generated for repeaters, as it was not working correctly
 
 = 2.5.1 - Nov 5, 2021 =
@@ -272,7 +272,7 @@ FREE plugin:
 
 * improved Templates editor (now you can use Gutenberg editor and insert full-featured blocks)
 * fixed `get_lzb_meta` output of array and object values
-* fixed Constructor screen title click in WP 5.9
+* fixed Block Builder screen title click in WP 5.9
 * fixed long block names word wrap in export page
 * fixed Color Picker control styles in editor
 
@@ -300,7 +300,7 @@ FREE plugin:
 * added a lot of UI improvements
 * added slug check in the block name before register block (fixes possible errors)
 * added placeholder color in image and gallery controls if images no more exist in media library
-* added control names autocompletion to code editor in the blocks constructor
+* added control names autocompletion to code editor in the block builder
 * fixed multiple select control wrong height and styles
 * fixed displaying control post meta using function `get_lzb_meta` when live reload preview
 * fixed Classic Control toolbar sticky
@@ -314,7 +314,7 @@ FREE plugin:
 * added compatibility with WordPress 5.7
 * added possibility to display default meta value (without hard code, using native WordPress 5.5+ API)
 * improved date time picker styles
-* improved constructor controls rendering code
+* improved block builder controls rendering code
 * fixed double classes rendering in editor, when Single Output code enabled
 * minor changes
 
@@ -326,10 +326,10 @@ FREE plugin:
   * always display TimePicker component (to let users manually set day, month and year)
   * display only necessary parts of TimePicker component
   * better format on button label
-* changed constructor Type selector to modal
+* changed block builder Type selector to modal
 * fixed Classic control initialize problem in WordPress 5.6 update
-* fixed constructor disabled Update button
-* fixed constructor controls label margin
+* fixed block builder disabled Update button
+* fixed block builder controls label margin
 * fixed compatibility with Amazon S3 Offload Media plugin (changed image and gallery controls image URL retrieve method)
 * minor changes
 
@@ -341,7 +341,7 @@ FREE plugin:
 * update image and gallery control data in custom block dynamically for output actual image data
 * improved custom block template path filters [https://www.lazyblocks.com/docs/php-filters/lzb-block_render-include_template/](https://www.lazyblocks.com/docs/php-filters/lzb-block_render-include_template/?utm_source=wordpress.org&utm_medium=changelog&utm_campaign=changelog)
 * fixed possibility to use Post data in custom block render preview
-* fixed constructor Align attribute duplications bug
+* fixed block builder Align attribute duplications bug
 
 = 2.1.1 =
 
@@ -359,7 +359,7 @@ FREE plugin:
   * You can output array with Value and Label
 * added RTL support
 * added code to force enable Gutenberg editor on "lazyblocks" post type pages
-* added code for custom blocks constructor pages, that force enables it and inserts
+* added code for custom block builder pages, that force enables it and inserts
 * added support for "Frame" and "Custom CSS" Ghost Kit extensions
 * added "PRO Survey" link in the admin menu to get help from users
 * changed default category to "text"
@@ -384,7 +384,7 @@ FREE plugin:
 
 * added help link to "Save in Meta" control option
 * added higher priority for registering post templates (possible fix for custom post types)
-* fixed custom fields support conflict with constructor interface
+* fixed custom fields support conflict with block builder interface
 
 = 2.0.7 =
 
@@ -397,7 +397,7 @@ FREE plugin:
 * fixed repeater and Classic Control usage when all rows opened
 * fixed repeater control undefined value error
 * fixed custom categories registration conflict with 3rd-party plugins
-* fixed update control array data in Constructor (can't clear)
+* fixed update control array data in Block Builder (can't clear)
 
 = 2.0.5 =
 
@@ -419,7 +419,7 @@ FREE plugin:
 * fixed Date Time Picker control displaying selected value
 * fixed Classic Editor control rendering bug when used in multiple custom blocks
 * fixed Allow Null value save in Select control
-* hide "duplicate" button from Inner Blocks control in constructor
+* hide "duplicate" button from Inner Blocks control in block builder
 
 = 2.0.1 =
 
@@ -444,10 +444,10 @@ FREE plugin:
 * fixed file control Upload button error, when no allowed mime types selected
 * fixed possible PHP warnings when control meta used, but array item doesn't exist
 * fixed URL control paddings
-* fixed constructor admin list mobile devices styles
+* fixed block builder admin list mobile devices styles
 * fixed required notice position
 * removed Multiple option from Radio control
-* constructor
+* block builder
   * improved UI
   * added Duplicate and Delete buttons on controls
   * added icons to Controls
@@ -499,7 +499,7 @@ FREE plugin:
 * changed anchor attribute settings (fixed anchor save in the latest Gutenberg)
 * fixed select control value save (if no Multiple option set)
 * fixed InnerBlocks with option "Hide if block is not selected"
-* fixed boolean meta data of constructor save (convert to string)
+* fixed boolean meta data of block builder save (convert to string)
 
 = 1.6.1 =
 
@@ -512,7 +512,7 @@ FREE plugin:
 
 = 1.6.0 =
 
-* Improved Constructor UI
+* Improved Block Builder UI
   * Custom block setting moved to the right side (Inspector)
   * Control setting opens in Inspector when you select it
 * added alpha channel option to Color Picker control
@@ -525,17 +525,17 @@ FREE plugin:
 
 = 1.5.1 =
 
-* added block slug validation in constructor
+* added block slug validation in block builder
 * added slug creation if don't exist after block title added
 * fixed controls saving in new custom blocks
-* fixed icon picker button styles in constructor
+* fixed icon picker button styles in block builder
 
 = 1.5.0 =
 
-* changed Block Constructor page to Gutenberg
+* changed Block Builder page to Gutenberg
 * added option to hide controls if custom block is not selected
 * added Radio control
-* fixed duplicating of categories selector in custom blocks constructor
+* fixed duplicating of categories selector in custom block builder
 * fixed custom block ID duplication
 * fixed custom block preview loading error
 * fixed custom block names some characters
@@ -568,8 +568,8 @@ FREE plugin:
 
 * added support for custom blocks PHP preview rendering in Editor
 * added toggle button in Repeater control to toggle all rows
-* added custom block slug validation and automatic creation in constructor
-* added descriptions to additional block fields in constructor
+* added custom block slug validation and automatic creation in block builder
+* added descriptions to additional block fields in block builder
 * added new attribute `blockUniqueClass` that will adds automatically on each custom block
 * added title on Image and Gallery attributes object
 * changed Editor rendering to AJAX also for Handlebars templates
@@ -596,7 +596,7 @@ FREE plugin:
 * fixed gallery control editable images
 * fixed dropzone position in image and gallery controls
 * fixed custom category title changing to slug
-* fixed automatic fill of control name in constructor
+* fixed automatic fill of control name in block builder
 * fixed date control error in WP 5.0
 * minor changes
 

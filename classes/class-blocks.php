@@ -219,7 +219,7 @@ class LazyBlocks_Blocks {
 				),
 				'template'          => array(
 					array(
-						'lzb-constructor/main',
+						'lzb-block-builder/main',
 					),
 				),
 				// we can't use it since blocks didn't inserted in some posts.
@@ -229,8 +229,8 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
-	 * Remove custom fields support from lazy blocks constructor page.
-	 * Some plugins adds support for custom fields to all post types, but we don't need it in our constructor.
+	 * Remove custom fields support from block builder.
+	 * Some plugins adds support for custom fields to all post types, but we don't need it in our block builder.
 	 *
 	 * @link https://github.com/nk-crew/lazy-blocks/issues/141
 	 */
@@ -249,7 +249,7 @@ class LazyBlocks_Blocks {
 		if ( empty( $editor_context->post ) || 'lazyblocks' !== $editor_context->post->post_type ) {
 			return $allowed_block_types;
 		}
-		return array( 'lzb-constructor/main' );
+		return array( 'lzb-block-builder/main' );
 	}
 
 	/**
@@ -565,7 +565,7 @@ class LazyBlocks_Blocks {
 	);
 
 	/**
-	 * Return default constructor block data.
+	 * Return default block data.
 	 *
 	 * @return array
 	 */
@@ -1418,7 +1418,7 @@ class LazyBlocks_Blocks {
 	 * @param array  $attributes - The block attributes.
 	 * @param string $content - The block content.
 	 * @param string $context - block context [frontend, editor].
-	 * @param array  $block - Data containing the block's specifications (mostly used for live block preview in the block's constructor).
+	 * @param array  $block - Data containing the block's specifications (mostly used for live block preview in the block builder).
 	 *
 	 * @return string Returns the post content with latest posts added.
 	 */

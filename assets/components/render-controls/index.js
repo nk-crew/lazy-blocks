@@ -333,7 +333,7 @@ export default class RenderControls extends Component {
 								key={`notice-meta-${controlData.name}`}
 								status="warning"
 								isDismissible={false}
-								className="lzb-constructor-notice"
+								className="lzb-block-builder-notice"
 							>
 								{__(
 									'Custom fields are not enabled for this post type. Enable "custom-fields" support to use this control.',
@@ -355,7 +355,7 @@ export default class RenderControls extends Component {
 							key={`notice-required-${controlData.name}`}
 							status="error"
 							isDismissible={false}
-							className="lzb-constructor-notice"
+							className="lzb-block-builder-notice"
 						>
 							{requiredError}
 						</Notice>

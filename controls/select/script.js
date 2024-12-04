@@ -79,7 +79,7 @@ function validate(validationData, value, data) {
 addFilter('lzb.editor.control.select.validate', 'lzb.editor', validate);
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.select.settings',

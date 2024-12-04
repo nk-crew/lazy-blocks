@@ -47,7 +47,7 @@ addFilter(
 );
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.inner_blocks.settings',
@@ -59,7 +59,7 @@ addFilter(
 					<Notice
 						status="error"
 						isDismissible={false}
-						className="lzb-constructor-notice"
+						className="lzb-block-builder-notice"
 					>
 						<p>
 							{__(

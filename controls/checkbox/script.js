@@ -113,7 +113,7 @@ addFilter('lzb.editor.control.checkbox.validate', 'lzb.editor', validate);
 addFilter('lzb.editor.control.toggle.validate', 'lzb.editor', validate);
 
 /**
- * Control settings render in constructor.
+ * Control settings render in block builder.
  */
 addFilter(
 	'lzb.constructor.control.checkbox.settings',
@@ -125,8 +125,8 @@ addFilter(
 			<>
 				{data.multiple !== 'true' && (
 					<PanelBody>
-						<div className="lzb-constructor-controls-item-settings-choices">
-							<div className="lzb-constructor-controls-item-settings-choices-items">
+						<div className="lzb-block-builder-controls-item-settings-choices">
+							<div className="lzb-block-builder-controls-item-settings-choices-items">
 								<TextControl
 									placeholder={__(
 										'Alongside Text',

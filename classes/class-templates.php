@@ -337,7 +337,7 @@ class LazyBlocks_Templates {
 	}
 
 	/**
-	 * Enqueue constructor styles and scripts.
+	 * Enqueue block templates styles and scripts.
 	 */
 	public function templates_editor_enqueue_scripts() {
 		if ( 'lazyblocks_templates' === get_post_type() ) {

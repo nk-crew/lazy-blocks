@@ -321,7 +321,7 @@ function RepeaterControl(props) {
 						>
 							{items.map((value) => (
 								<RepeaterItem
-									key={`lzb-constructor-controls-items-sortable-${value.id}`}
+									key={`lzb-block-builder-controls-items-sortable-${value.id}`}
 									{...value}
 								/>
 							))}

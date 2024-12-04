@@ -51,9 +51,9 @@ const SortableItem = function (props) {
 	return (
 		<div
 			className={classnames(
-				'lzb-constructor-controls-item-settings-choices-item',
+				'lzb-block-builder-controls-item-settings-choices-item',
 				isDragging
-					? 'lzb-constructor-controls-item-settings-choices-item-dragging'
+					? 'lzb-block-builder-controls-item-settings-choices-item-dragging'
 					: ''
 			)}
 			ref={setNodeRef}
@@ -76,7 +76,7 @@ const SortableItem = function (props) {
 				);
 			})}
 			<div
-				className="lzb-constructor-controls-item-settings-choices-item-handler"
+				className="lzb-block-builder-controls-item-settings-choices-item-handler"
 				{...attributes}
 				{...listeners}
 			>
@@ -115,7 +115,7 @@ const SortableItem = function (props) {
 			</div>
 			{/* eslint-disable-next-line react/button-has-type */}
 			<button
-				className="lzb-constructor-controls-item-settings-choices-item-remove"
+				className="lzb-block-builder-controls-item-settings-choices-item-remove"
 				onClick={() => props.removeChoice()}
 			>
 				<svg
@@ -239,9 +239,9 @@ export default function ComponentChoices(props) {
 
 	return (
 		<BaseControl id={id} label={label} help={help} __nextHasNoMarginBottom>
-			<div className="lzb-constructor-controls-item-settings-choices">
+			<div className="lzb-block-builder-controls-item-settings-choices">
 				{items.length ? (
-					<div className="lzb-constructor-controls-item-settings-choices-items">
+					<div className="lzb-block-builder-controls-item-settings-choices-items">
 						<DndContext
 							sensors={sensors}
 							collisionDetection={closestCenter}
@@ -260,7 +260,7 @@ export default function ComponentChoices(props) {
 								{items.map((item, i) => {
 									return (
 										<SortableItem
-											key={`lzb-constructor-controls-item-settings-choices-item-${item.id}`}
+											key={`lzb-block-builder-controls-item-settings-choices-item-${item.id}`}
 											{...item}
 											focusInput={
 												i + 1 === value.length
