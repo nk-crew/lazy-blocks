@@ -82,7 +82,11 @@ npm run format:css  # Fix CSS code
 We use WordPress's official testing environment powered by Docker and wp-env.
 
 1. [Install Docker](https://www.docker.com/) on your machine
-2. Run tests:
+2. Start the server:
+   ```bash
+   npm run env:start
+   ```
+3. Run tests:
    ```bash
    # End-to-end tests (Playwright)
    npm run test:e2e
