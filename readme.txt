@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.5
 * Requires PHP: 7.2
-* Stable tag: 3.7.0
+* Stable tag: 3.8.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,37 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.8.0 - Dec 4, 2024 =
+
+* added WordPress 6.7 compatibility
+* added better error messages to block Inspector and to the editor toolbar when block has invalid required controls
+* added prompt to remove metadata from post after removing block which contains the control with Save in Meta option enabled
+* added possibility to clear the Gallery control
+* added duplicate row button to Repeater control
+* added `wp_get_attachment_image` Handlebars helper
+* added possibility to activate/deactivate blocks
+* added support for embed links to the Classic Editor control
+* added Groups for Inspector - Default, Styles and Advanced
+* added reset button to Time control
+* added Multiple option support for Checkbox control
+* improved Repeater control UI
+* improved block duplication process - add copy suffix and disabled block by default
+* improved control with Save in Meta displaying in the editor of post, which does not support custom fields
+* fixed invalid block builder render when there are no blocks registered
+* fixed offsetHeight JS error in block builder preview
+* fixed hardcoded `wp-content` string in the block builder UI: changed to wp content dir core constant
+* fixed displaying default block icon in blocks list admin UI
+* fixed saving of Repeater row addition and removal in undo/redo manager
+* fixed align class rendering in block when align attribute is disabled
+* prevent changing block post statuses - support only draft and publish
+* rename Constructor to Block Builder
+* removed advanced validation from the URL control to prevent required check fails on relative links or links to applications
+* removed the ability to use URL control within Content, since the Gutenberg no longer renders it correctly here
+* **Pro:**
+* added possibility to change block slug Namespace and register Collection
+* fixed block editor styles for Code control extension
+* migrate Pro plugin from Paddle to LemonSqueezy
 
 = 3.7.0 - May 23, 2024 =
 
