@@ -22,7 +22,6 @@ class LazyBlocks_Control_URL extends LazyBlocks_Control {
 		$this->type         = 'string';
 		$this->label        = __( 'URL', 'lazy-blocks' );
 		$this->restrictions = array(
-			'placement_settings' => array( 'content-fallback', 'inspector' ),
 			'translate_settings' => true,
 		);
 
