@@ -17,10 +17,6 @@ export default function WPMLRow(props) {
 				<ToggleControl
 					id="lazyblocks-settings-row-wpml"
 					label={__('Yes', 'lazy-blocks')}
-					help={__(
-						'Experimental feature, may not work as expected.',
-						'lazy-blocks'
-					)}
 					checked={data.translate === 'true'}
 					onChange={(value) =>
 						updateData({ translate: value ? 'true' : 'false' })
