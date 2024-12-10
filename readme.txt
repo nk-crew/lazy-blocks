@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.7
 * Requires PHP: 7.2
-* Stable tag: 3.8.0
+* Stable tag: 3.8.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -136,7 +136,14 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
-= 3.8.0 - Dec 4, 2024 =
+= 3.8.1 - Dec 10, 2024 =
+
+* remove experimental notice under WPML setting
+* minor changes in readme
+* **Pro**:
+* fixed block crash when conditional logic added to the control which is no longer exists
+
+= 3.8.0 - Dec 7, 2024 =
 
 * added WordPress 6.7 compatibility
 * added better error messages to block Inspector and to the editor toolbar when block has invalid required controls

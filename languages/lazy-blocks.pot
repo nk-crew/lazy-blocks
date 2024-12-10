@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.8.0\n"
+"Project-Id-Version: Lazy Blocks 3.8.1\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-06T20:57:23+00:00\n"
+"POT-Creation-Date: 2024-12-10T12:32:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
@@ -726,10 +726,6 @@ msgstr ""
 
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:14
 msgid "WPML Translation"
-msgstr ""
-
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:20
-msgid "Experimental feature, may not work as expected."
 msgstr ""
 
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:109
