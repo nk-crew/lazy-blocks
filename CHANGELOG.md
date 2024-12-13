@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+= 3.8.2 - Dec 13, 2024 =
+
+* **Pro**
+* fixed automatic plugins update. In case you can't automatically update plugin, install it manually https://www.lazyblocks.com/docs/account-and-license/download-lazy-blocks-pro-plugin/
+
 = 3.8.1 - Dec 10, 2024 =
 
 * remove experimental notice under WPML setting

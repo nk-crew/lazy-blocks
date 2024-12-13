@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.7
 * Requires PHP: 7.2
-* Stable tag: 3.8.1
+* Stable tag: 3.8.2
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,11 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Posts Templates
 
 ## Changelog
+
+= 3.8.2 - Dec 13, 2024 =
+
+* **Pro**
+* fixed automatic plugins update. In case you can't automatically update plugin, install it manually https://www.lazyblocks.com/docs/account-and-license/download-lazy-blocks-pro-plugin/
 
 = 3.8.1 - Dec 10, 2024 =
 
