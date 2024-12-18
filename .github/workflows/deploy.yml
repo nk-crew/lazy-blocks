@@ -24,6 +24,11 @@ jobs:
       - name: Run Production Task
         run: npm run build:prod
 
+      - name: Install SVN
+        run: |
+          sudo apt-get update
+          sudo apt-get install subversion
+
       - name: WordPress Plugin Deploy
         uses: nk-o/action-wordpress-plugin-deploy@master
         env:
