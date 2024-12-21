@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.8.2\n"
+"Project-Id-Version: Lazy Blocks 3.8.3\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-13T06:30:22+00:00\n"
+"POT-Creation-Date: 2024-12-21T16:11:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: lazy-blocks.php
 #: classes/class-admin.php:252
 #: classes/class-blocks.php:187
-#: classes/class-blocks.php:1162
+#: classes/class-blocks.php:1176
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -76,61 +76,61 @@ msgid "Add Block"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:346
+#: classes/class-blocks.php:360
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:349
+#: classes/class-blocks.php:363
 #: assets/block-builder/boxes/controls/control.js:246
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:360
+#: classes/class-blocks.php:374
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:363
-#: classes/class-blocks.php:398
+#: classes/class-blocks.php:377
+#: classes/class-blocks.php:412
 msgid "Export"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:375
+#: classes/class-blocks.php:389
 msgid "Deactivate “%1$s”"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:375
+#: classes/class-blocks.php:389
 msgid "Activate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:379
-#: classes/class-blocks.php:402
+#: classes/class-blocks.php:393
+#: classes/class-blocks.php:416
 msgid "Deactivate"
 msgstr ""
 
-#: classes/class-blocks.php:379
-#: classes/class-blocks.php:400
+#: classes/class-blocks.php:393
+#: classes/class-blocks.php:414
 msgid "Activate"
 msgstr ""
 
-#: classes/class-blocks.php:442
+#: classes/class-blocks.php:456
 #: assets/block-builder/boxes/general/index.js:101
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:444
+#: classes/class-blocks.php:458
 #: assets/block-builder/boxes/general/index.js:75
 msgid "Slug"
 msgstr ""
 
-#: classes/class-blocks.php:445
+#: classes/class-blocks.php:459
 #: assets/block-builder/boxes/general/index.js:114
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:446
+#: classes/class-blocks.php:460
 #: assets/block-builder/boxes/general/index.js:189
 msgid "Description"
 msgstr ""

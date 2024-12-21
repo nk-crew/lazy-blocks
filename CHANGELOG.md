@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 3.8.3 - Dec 21, 2024 =
+
+* fixed XSS issue in admin blocks list page
+
 = 3.8.2 - Dec 13, 2024 =
 
 * **Pro**
