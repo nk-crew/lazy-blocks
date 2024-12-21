@@ -312,6 +312,20 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Returns the admin URL for the current post type edit page.
+	 *
+	 * @param   array $params Extra URL params.
+	 * @return  string
+	 */
+	public function get_admin_url( $params = array() ) {
+		if ( ! isset( $params['paged'] ) && isset( $_GET['paged'] ) ) {
+			$params['paged'] = intval( $_GET['paged'] );
+		}
+
+		return add_query_arg( $params, admin_url( 'edit.php?post_type=lazyblocks' ) );
+	}
+
+	/**
 	 * Add featured image in lazyblocks list
 	 *
 	 * @param array  $actions actions for posts.
@@ -335,44 +349,44 @@ class LazyBlocks_Blocks {
 			array(
 				'duplicate' => sprintf(
 					'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-					add_query_arg(
+					$this->get_admin_url(
 						array(
-							'lazyblocks_duplicate_block' => $post->ID,
+							'lazyblocks_duplicate_block' => intval( $post->ID ),
 							'lazyblocks_duplicate_block_nonce' => wp_create_nonce( 'lzb-duplicate-block-nonce' ),
 						)
 					),
 					sprintf(
 						// translators: %1$ - post title.
-						esc_html__( 'Duplicate “%1$s”', 'lazy-blocks' ),
+						esc_attr__( 'Duplicate “%1$s”', 'lazy-blocks' ),
 						get_the_title( $post->ID )
 					),
 					esc_html__( 'Duplicate', 'lazy-blocks' )
 				),
 				'export' => sprintf(
 					'<a href="%1$s" aria-label="%2$s">%3$s</a>',
-					add_query_arg(
+					$this->get_admin_url(
 						array(
-							'lazyblocks_export_block' => $post->ID,
+							'lazyblocks_export_block' => intval( $post->ID ),
 						)
 					),
 					sprintf(
 						// translators: %1$ - post title.
-						esc_html__( 'Export “%1$s”', 'lazy-blocks' ),
+						esc_attr__( 'Export “%1$s”', 'lazy-blocks' ),
 						get_the_title( $post->ID )
 					),
 					esc_html__( 'Export', 'lazy-blocks' )
 				),
 				'activate' => sprintf(
 					'<a href="%1$s" aria-label="%2$s" class="%3$s">%4$s</a>',
-					add_query_arg(
+					$this->get_admin_url(
 						array(
-							( 'publish' === $post->post_status ? 'lazyblocks_deactivate_block' : 'lazyblocks_activate_block' ) => $post->ID,
+							( 'publish' === $post->post_status ? 'lazyblocks_deactivate_block' : 'lazyblocks_activate_block' ) => intval( $post->ID ),
 							'lazyblocks_activate_block_nonce' => wp_create_nonce( 'lzb-activate-block-nonce' ),
 						)
 					),
 					sprintf(
 						// translators: %1$ - post title.
-						'publish' === $post->post_status ? esc_html__( 'Deactivate “%1$s”', 'lazy-blocks' ) : esc_html__( 'Activate “%1$s”', 'lazy-blocks' ),
+						'publish' === $post->post_status ? esc_attr__( 'Deactivate “%1$s”', 'lazy-blocks' ) : esc_attr__( 'Activate “%1$s”', 'lazy-blocks' ),
 						get_the_title( $post->ID )
 					),
 					'publish' === $post->post_status ? 'lazyblocks-deactivate-block' : 'lazyblocks-activate-block',
