@@ -348,6 +348,22 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 			'slug' => $block_data['slug'],
 		);
 
+		/**
+		 * The WP_Block_Supports class requires a block_to_render check because of its dependency chain.
+		 * When get_block_wrapper_attributes runs, it calls apply_block_supports.
+		 * This method then needs self::$block_to_render['blockName'], which causes an error if block_to_render is null.
+		 *
+		 * The issue only appears on the block editor page.
+		 * When calling the REST method, the block hasn't been registered in the system yet, which causes errors.
+		 * We fix this by assigning a block to the block_to_render property,
+		 * Which allows the block attributes to display correctly in the block designer preview.
+		 */
+		if ( class_exists( 'WP_Block_Supports' ) ) {
+			$block_data['blockName'] = $block_data['blockName'] ?? $block_data['slug'];
+
+			WP_Block_Supports::$block_to_render = $block_data;
+		}
+
 		try {
 			$block_result = lazyblocks()->blocks()->render_callback( $attributes, null, $context, $block_data );
 		} catch ( Throwable $e ) {

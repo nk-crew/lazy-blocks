@@ -1587,10 +1587,7 @@ class LazyBlocks_Blocks {
 				$array_atts['id'] = esc_attr( $attributes['anchor'] );
 			}
 
-			// The WP_Block_Supports class requires a block_to_render check because of its dependency chain.
-			// When get_block_wrapper_attributes runs, it calls apply_block_supports.
-			// This method then needs self::$block_to_render['blockName'], which causes an error if block_to_render is null.
-			$html_atts = WP_Block_Supports::$block_to_render ? get_block_wrapper_attributes( $array_atts ) : '';
+			$html_atts = get_block_wrapper_attributes( $array_atts );
 
 			$result = '<div ' . $html_atts . '>' . $result . '</div>';
 		}
