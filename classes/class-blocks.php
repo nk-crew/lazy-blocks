@@ -569,11 +569,14 @@ class LazyBlocks_Blocks {
 		'lazyblocks_supports_align'                  => array( 'wide', 'full' ),
 
 		// Ghost Kit Extensions.
+		'lazyblocks_supports_ghostkit_effects'       => 'false',
+		'lazyblocks_supports_ghostkit_position'      => 'false',
 		'lazyblocks_supports_ghostkit_spacings'      => 'false',
-		'lazyblocks_supports_ghostkit_display'       => 'false',
-		'lazyblocks_supports_ghostkit_scroll_reveal' => 'false',
 		'lazyblocks_supports_ghostkit_frame'         => 'false',
+		'lazyblocks_supports_ghostkit_transform'     => 'false',
 		'lazyblocks_supports_ghostkit_custom_css'    => 'false',
+		'lazyblocks_supports_ghostkit_display'       => 'false',
+		'lazyblocks_supports_ghostkit_attributes'    => 'false',
 
 		'lazyblocks_condition_post_types'            => '',
 	);
