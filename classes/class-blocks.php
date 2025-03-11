@@ -1427,6 +1427,18 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Check if block content exists.
+	 * We have to check for '0' string because it is a valid output.
+	 *
+	 * @param string $output - output string.
+	 *
+	 * @return bool
+	 */
+	public function is_block_content_exists( $output ) {
+		return null !== $output && '' !== $output && false !== $output;
+	}
+
+	/**
 	 * Render block custom frontend HTML.
 	 *
 	 * @param array  $attributes - The block attributes.
@@ -1483,7 +1495,7 @@ class LazyBlocks_Blocks {
 		}
 
 		// Custom output.
-		if ( ! $result && isset( $block['code'] ) ) {
+		if ( ! $this->is_block_content_exists( $result ) && isset( $block['code'] ) ) {
 			$code = $block['code'];
 
 			// Theme template file.
@@ -1560,7 +1572,7 @@ class LazyBlocks_Blocks {
 		}
 
 		// add wrapper.
-		$allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $result && 'frontend' === $context, $attributes, $context );
+		$allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $this->is_block_content_exists( $result ) && 'frontend' === $context, $attributes, $context );
 		// phpcs:ignore
 		$allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $allow_wrapper, $attributes );
 		// phpcs:ignore
