@@ -335,12 +335,22 @@
 
 	.block-editor-link-control__search-results {
 		padding-bottom: 0;
+		margin-top: 0;
 		margin-right: -16px;
 		margin-left: -16px;
 	}
 
 	.block-editor-link-control__search-item.is-current {
 		padding: 5px 0;
+	}
+
+	.lzb-inspector-controls & {
+		.block-editor-url-input {
+			min-width: 200px;
+		}
+		.components-menu-item__item {
+			min-width: 130px;
+		}
 	}
 }
 
