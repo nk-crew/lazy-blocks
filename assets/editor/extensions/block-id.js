@@ -13,75 +13,96 @@ import { createHigherOrderComponent, useThrottle } from '@wordpress/compose';
 
 import useAllBlocks from '../../hooks/use-all-blocks';
 
+// Track recently generated IDs across all block instances
+const recentlyGeneratedIds = new Set();
+
 function useBlockID(props) {
 	const { setAttributes, attributes, clientId, name } = props;
 	const blockSettings = getBlockType(name);
 	const didMountRef = useRef(false);
+	const previousBlockIdRef = useRef(attributes.blockId);
 
 	const allBlocks = useAllBlocks();
 
+	const generateUniqueId = useCallback((baseId, usedIds) => {
+		// Generate a unique ID that's not in usedIds or recentlyGeneratedIds
+		let newId = '';
+		let tryCount = 10;
+
+		while (tryCount > 0) {
+			newId = shorthash.unique(baseId + tryCount);
+
+			if (!usedIds[newId] && !recentlyGeneratedIds.has(newId)) {
+				break;
+			}
+
+			tryCount -= 1;
+		}
+
+		// Add to recently generated IDs to prevent duplicates in batch operations
+		// @link https://github.com/nk-crew/lazy-blocks/issues/32#issuecomment-2681280713
+		recentlyGeneratedIds.add(newId);
+
+		// Clean up old IDs after a short delay to prevent memory leaks
+		setTimeout(() => {
+			recentlyGeneratedIds.delete(newId);
+		}, 1000);
+
+		return newId;
+	}, []);
+
 	const onUpdate = useCallback(
 		(checkDuplicates) => {
-			let { blockId } = attributes;
+			const { blockId } = attributes;
+			const isDuplicated =
+				blockId && blockId !== previousBlockIdRef.current;
 
-			if (!blockId || checkDuplicates) {
+			// Always check for duplicates when the block might be duplicated
+			if (!blockId || checkDuplicates || isDuplicated) {
 				const usedIds = {};
 
-				// prevent unique ID duplication after block duplicated.
-				if (checkDuplicates) {
-					allBlocks.forEach((data) => {
-						if (
-							data.clientId &&
-							data.attributes &&
-							data.attributes.blockId
-						) {
-							usedIds[data.attributes.blockId] = data.clientId;
-
-							if (
-								data.clientId !== clientId &&
-								data.attributes.blockId === blockId
-							) {
-								blockId = '';
-							}
-						}
-					});
-				}
-
-				// prepare new block id.
-				if (clientId && !blockId && typeof blockId !== 'undefined') {
-					let ID = blockId || '';
-
-					// check if ID already exist.
-					let tryCount = 10;
-					while (
-						!ID ||
-						(typeof usedIds[ID] !== 'undefined' &&
-							usedIds[ID] !== clientId &&
-							tryCount > 0)
+				// Collect all used IDs from existing blocks
+				allBlocks.forEach((data) => {
+					if (
+						data.clientId &&
+						data.attributes &&
+						data.attributes.blockId
 					) {
-						ID = shorthash.unique(clientId);
-						tryCount -= 1;
+						usedIds[data.attributes.blockId] = data.clientId;
 					}
+				});
 
-					if (ID && typeof usedIds[ID] === 'undefined') {
-						usedIds[ID] = clientId;
-					}
+				// Check if current ID is duplicate or needs to be generated
+				const needsNewId =
+					!blockId ||
+					(blockId &&
+						usedIds[blockId] &&
+						usedIds[blockId] !== clientId) ||
+					isDuplicated;
 
-					if (ID !== blockId) {
+				if (clientId && needsNewId) {
+					// Generate a new unique ID based on clientId plus some randomness
+					const ID = generateUniqueId(clientId, usedIds);
+
+					if (ID && ID !== blockId) {
 						const newClass = `${name.replace('/', '-')}-${ID}`;
 
 						setAttributes({
 							blockId: ID,
 							blockUniqueClass: newClass,
 						});
+
+						// Update the reference to the current blockId
+						previousBlockIdRef.current = ID;
 					}
 				}
 			}
 		},
-		[attributes, clientId, allBlocks, name, setAttributes]
+		[attributes, clientId, allBlocks, name, setAttributes, generateUniqueId]
 	);
 
-	const onUpdateThrottle = useThrottle(onUpdate, 60);
+	// Reduce throttle time to ensure quicker updates
+	const onUpdateThrottle = useThrottle(onUpdate, 30);
 
 	useEffect(() => {
 		if (!blockSettings.lazyblock) {
@@ -91,13 +112,16 @@ function useBlockID(props) {
 		// Did update.
 		if (didMountRef.current) {
 			onUpdateThrottle();
-
-			// Did mount.
 		} else {
+			// Did mount.
 			didMountRef.current = true;
 
+			// Always check for duplicates on mount
 			onUpdate(true);
 		}
+
+		// Update the previous blockId reference
+		previousBlockIdRef.current = attributes.blockId;
 	}, [blockSettings, attributes, onUpdate, onUpdateThrottle]);
 }
 
