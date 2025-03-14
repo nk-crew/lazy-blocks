@@ -10,15 +10,18 @@ import { addFilter } from '@wordpress/hooks';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import { getBlockType } from '@wordpress/blocks';
 import { createHigherOrderComponent, useThrottle } from '@wordpress/compose';
+import { useDispatch } from '@wordpress/data';
 
 import useAllBlocks from '../../hooks/use-all-blocks';
 
 function useBlockID(props) {
-	const { setAttributes, attributes, clientId, name } = props;
+	const { attributes, clientId, name } = props;
 	const blockSettings = getBlockType(name);
 	const didMountRef = useRef(false);
 
 	const allBlocks = useAllBlocks();
+
+	const { updateBlockAttributes } = useDispatch('core/block-editor');
 
 	const onUpdate = useCallback(
 		(checkDuplicates) => {
@@ -70,7 +73,14 @@ function useBlockID(props) {
 					if (ID !== blockId) {
 						const newClass = `${name.replace('/', '-')}-${ID}`;
 
-						setAttributes({
+						/**
+						 * IMPORTANT!
+						 * We can't use `setAttributes` here because it is not working correctly
+						 * when we duplicate multiple blocks at once. `updateBlockAttributes` resolves this issue.
+						 *
+						 * @see https://github.com/nk-crew/lazy-blocks/issues/32#issuecomment-2681280713
+						 */
+						updateBlockAttributes(clientId, {
 							blockId: ID,
 							blockUniqueClass: newClass,
 						});
@@ -78,7 +88,7 @@ function useBlockID(props) {
 				}
 			}
 		},
-		[attributes, clientId, allBlocks, name, setAttributes]
+		[attributes, clientId, allBlocks, name, updateBlockAttributes]
 	);
 
 	const onUpdateThrottle = useThrottle(onUpdate, 60);
