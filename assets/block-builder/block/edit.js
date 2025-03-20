@@ -15,7 +15,7 @@ import DocumentTabs from '../../components/document-tabs';
 import Box from '../../components/box';
 import TitleSettings from '../boxes/title';
 import GeneralSettings from '../boxes/general';
-import StylesSettings from '../boxes/styles';
+import StyleVariationsSettings from '../boxes/style-variations';
 import SupportsSettings from '../boxes/supports';
 import SupportsGhostKitSettings from '../boxes/supports-ghost-kit';
 import ConditionSettings from '../boxes/condition';
@@ -66,10 +66,13 @@ export default function BlockBuilder() {
 								/>
 								<ProNotice />
 								<PanelBody
-									title={__('Styles', 'lazy-blocks')}
+									title={__(
+										'Style Variations',
+										'lazy-blocks'
+									)}
 									initialOpen={false}
 								>
-									<StylesSettings
+									<StyleVariationsSettings
 										data={blockData}
 										updateData={updateBlockData}
 									/>

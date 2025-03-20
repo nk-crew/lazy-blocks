@@ -8,18 +8,18 @@ import { __ } from '@wordpress/i18n';
  */
 import ComponentChoices from '../../../../controls/select/component-choices';
 
-export default function StylesSettings(props) {
+export default function StyleVariationsSettings(props) {
 	const { data, updateData } = props;
 	const { styles } = data;
 
 	return (
 		<ComponentChoices
 			label={null}
-			labelAddChoice={__('+ Add Style', 'lazy-blocks')}
+			labelAddChoice={__('+ Add Style Variation', 'lazy-blocks')}
 			help={
 				!!styles.length &&
 				__(
-					'Add the style name, which will be used as class name on your block. For example, if you add the style with name `outline`, when user select this style, on the block will be added class name `is-style-outline`',
+					'Add the style variation name, which will be used as a class name on your block. For example, if you add a style variation with the name `outline`, when a user selects this style, the class name `is-style-outline` will be added to the block.',
 					'lazy-blocks'
 				)
 			}
