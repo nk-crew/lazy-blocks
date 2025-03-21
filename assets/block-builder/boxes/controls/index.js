@@ -30,8 +30,6 @@ import Control from './control';
 import DeselectActiveControlOnClickOutside from './deselect-active-on-click-outside';
 import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 
-const blockBuilderData = window.lazyblocksBlockBuilderData;
-
 let initialActiveTab = '';
 
 export default function ControlsSettings(props) {
@@ -60,7 +58,6 @@ export default function ControlsSettings(props) {
 	function addControl(attributes, resortId) {
 		dispatchAddControl(
 			{
-				...blockBuilderData.controls.text.attributes,
 				...attributes,
 			},
 			resortId

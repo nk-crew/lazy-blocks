@@ -1,0 +1,351 @@
+export const HeroIcon = () => (
+	<svg
+		width="160"
+		height="120"
+		viewBox="0 0 160 120"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<rect
+			width="160"
+			height="120"
+			rx="3"
+			fill="currentColor"
+			fillOpacity="0.03"
+		/>
+		<rect
+			width="140"
+			height="100"
+			transform="translate(10 10)"
+			fill="white"
+		/>
+		<rect
+			x="55"
+			y="32.5"
+			width="50"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.5"
+		/>
+		<rect
+			x="40"
+			y="50.5"
+			width="16"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.2"
+		/>
+		<rect
+			x="60"
+			y="50.5"
+			width="28"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.2"
+		/>
+		<rect
+			x="92"
+			y="50.5"
+			width="28"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.2"
+		/>
+		<rect
+			x="29"
+			y="62.5"
+			width="45"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.2"
+		/>
+		<rect
+			x="78"
+			y="62.5"
+			width="30"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.2"
+		/>
+		<rect
+			x="112"
+			y="62.5"
+			width="19"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.2"
+		/>
+		<rect
+			x="65"
+			y="80.5"
+			width="30"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+		/>
+		<rect
+			y="10"
+			width="160"
+			height="1"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			y="109"
+			width="160"
+			height="1"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="150"
+			width="120"
+			height="0.999996"
+			transform="rotate(90 150 0)"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="11"
+			width="120"
+			height="0.999996"
+			transform="rotate(90 11 0)"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+	</svg>
+);
+
+export const TestimonialsIcon = () => (
+	<svg
+		width="160"
+		height="120"
+		viewBox="0 0 160 120"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<rect width="160" height="120" fill="currentColor" fillOpacity="0.05" />
+		<mask id="path-1-inside-1_3565_296" fill="white">
+			<path d="M20 0H140V40H20V0Z" />
+		</mask>
+		<path d="M20 0H140V40H20V0Z" fill="white" />
+		<path
+			d="M139 0V40H141V0H139ZM21 40V0H19V40H21Z"
+			fill="currentColor"
+			fillOpacity="0.1"
+			mask="url(#path-1-inside-1_3565_296)"
+		/>
+		<rect
+			x="35"
+			y="10.5"
+			width="19"
+			height="19"
+			rx="9.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="64"
+			y="10.5"
+			width="25"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="64"
+			y="22.5"
+			width="60"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<mask id="path-6-inside-2_3565_296" fill="white">
+			<path d="M20 80H140V120H20V80Z" />
+		</mask>
+		<path d="M20 80H140V120H20V80Z" fill="white" />
+		<path
+			d="M139 80V120H141V80H139ZM21 120V80H19V120H21Z"
+			fill="currentColor"
+			fillOpacity="0.1"
+			mask="url(#path-6-inside-2_3565_296)"
+		/>
+		<rect
+			x="35"
+			y="90.5"
+			width="19"
+			height="19"
+			rx="9.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="64"
+			y="90.5"
+			width="25"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="64"
+			y="102.5"
+			width="60"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect x="10" y="38.5" width="140" height="43" rx="4" fill="white" />
+		<rect
+			x="10.5"
+			y="39"
+			width="139"
+			height="42"
+			rx="3.5"
+			stroke="currentColor"
+			strokeOpacity="0.1"
+		/>
+		<rect
+			x="25"
+			y="50.5"
+			width="19"
+			height="19"
+			rx="9.5"
+			fill="currentColor"
+		/>
+		<rect
+			x="54"
+			y="50.5"
+			width="35"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.6"
+		/>
+		<rect
+			x="54"
+			y="62.5"
+			width="75"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+	</svg>
+);
+
+export const AlertIcon = () => (
+	<svg
+		width="160"
+		height="120"
+		viewBox="0 0 160 120"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<rect width="160" height="120" fill="currentColor" fillOpacity="0.05" />
+		<mask
+			id="path-1-outside-1_3563_256"
+			maskUnits="userSpaceOnUse"
+			x="19"
+			y="78"
+			width="122"
+			height="42"
+			fill="currentColor"
+		>
+			<rect fill="white" x="19" y="78" width="122" height="42" />
+			<path d="M20 78H140V120H20V78Z" />
+		</mask>
+		<path d="M20 78H140V120H20V78Z" fill="white" />
+		<path
+			d="M139 78V120H141V78H139ZM21 120V78H19V120H21Z"
+			fill="currentColor"
+			fillOpacity="0.05"
+			mask="url(#path-1-outside-1_3563_256)"
+		/>
+		<rect
+			x="32"
+			y="90"
+			width="36"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="73"
+			y="90"
+			width="55"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="32"
+			y="105"
+			width="60"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect
+			x="97"
+			y="105"
+			width="31"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.1"
+		/>
+		<rect x="10" y="40" width="140" height="40" rx="4" fill="white" />
+		<rect
+			x="10.5"
+			y="40.5"
+			width="139"
+			height="39"
+			rx="3.5"
+			stroke="currentColor"
+			strokeOpacity="0.1"
+		/>
+		<g clipPath="url(#clip0_3563_256)">
+			<circle cx="30" cy="60" r="8" fill="currentColor" />
+			<path
+				d="M30 56.5V60M30 63.49V63.5"
+				stroke="white"
+				strokeWidth="2"
+				strokeLinecap="round"
+			/>
+		</g>
+		<rect
+			x="48"
+			y="56.5"
+			width="50"
+			height="7"
+			rx="3.5"
+			fill="currentColor"
+			fillOpacity="0.7"
+		/>
+		<defs>
+			<clipPath id="clip0_3563_256">
+				<rect
+					width="16"
+					height="16"
+					fill="white"
+					transform="translate(22 52)"
+				/>
+			</clipPath>
+		</defs>
+	</svg>
+);

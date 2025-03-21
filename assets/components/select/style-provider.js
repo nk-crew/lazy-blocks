@@ -9,7 +9,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import * as uuid from 'uuid';
 
-import { useRef } from '@wordpress/element';
+import { useRef, useState, useEffect } from '@wordpress/element';
 
 const uuidCache = new Set();
 // Use a weak map so that when the container is detached it's automatically
@@ -46,17 +46,21 @@ function StyleProvider(props) {
 	return <CacheProvider value={cache}>{children}</CacheProvider>;
 }
 
-export default function StyleProviderWrapper(props) {
-	const { children } = props;
+export default function StyleProviderWrapper({ children }) {
+	const linkRef = useRef();
+	const [ownerDocument, setOwnerDocument] = useState(document);
 
-	const ref = useRef();
+	// Run once after initial render when DOM is ready
+	useEffect(() => {
+		if (linkRef?.current) {
+			setOwnerDocument(linkRef?.current?.ownerDocument);
+		}
+	}, [linkRef]);
 
 	return (
 		<>
-			<link ref={ref} />
-			<StyleProvider document={ref?.current?.ownerDocument || document}>
-				{children}
-			</StyleProvider>
+			<link ref={linkRef} />
+			<StyleProvider document={ownerDocument}>{children}</StyleProvider>
 		</>
 	);
 }

@@ -10,6 +10,8 @@ import { omit, merge } from 'lodash';
  */
 import getUID from '../../../utils/get-uid';
 
+const blockBuilderData = window.lazyblocksBlockBuilderData;
+
 function resort(data, id, newId, insertBefore = true) {
 	const newControls = {};
 
@@ -89,6 +91,10 @@ function reducer(state = { data: false }, action = {}) {
 		case 'ADD_CONTROL':
 			if (action.data && state.data) {
 				const { controls = {} } = state.data;
+				const controlData = {
+					...blockBuilderData.controls.text.attributes,
+					...action.data,
+				};
 
 				let newId = getUID();
 				while (typeof controls[`control_${newId}`] !== 'undefined') {
@@ -98,7 +104,7 @@ function reducer(state = { data: false }, action = {}) {
 
 				const newData = merge({}, state.data, {
 					controls: {
-						[newId]: action.data,
+						[newId]: controlData,
 					},
 				});
 
