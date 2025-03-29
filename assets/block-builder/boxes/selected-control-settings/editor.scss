@@ -33,7 +33,7 @@
 }
 
 // type settings
-.lzb-block-builder-type-toggle-dropdown {
+.lzb-block-builder-type__dropdown {
 	display: block;
 }
 
@@ -48,6 +48,11 @@
 	border: 1px solid $color_dark_lighten_2;
 	border-radius: 2px;
 	transition: 0.15s border-color ease-in-out;
+
+	&.lzb-block-builder-type-toggle-open {
+		box-shadow: 0 0 0 var(--wp-admin-border-width-focus) var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+		outline: 3px solid #0000;
+	}
 
 	&:hover {
 		border-color: $color_dark_lighten;
@@ -69,46 +74,54 @@
 }
 
 .lzb-block-builder-type-dropdown {
-	margin: -32px;
-	margin-top: -10px;
+	width: 260px;
 
 	> .components-base-control {
-		padding: 15px;
 		padding-bottom: 10px;
 	}
 
-	.components-panel__body > button {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		padding: 10px 15px;
-		text-align: left;
-		cursor: pointer;
-		background: $color_gray_lighten;
-		border: none;
-		border-radius: 3px;
-		transition: 0.15s background-color ease-in-out, 0.15s box-shadow ease-in-out;
+	> .components-panel__body {
+		padding: 10px;
 
-		&.is-active {
-			box-shadow: 0 0 0 2px $blue-500;
+		> .components-panel__body-title {
+			margin: 0 -18px;
+			margin-top: -11px;
 		}
 
-		&:hover {
-			background-color: $color_gray;
-		}
+		> button {
+			display: flex;
+			align-items: center;
+			padding: 10px 15px;
+			text-align: left;
+			cursor: pointer;
+			background: transparent;
+			margin: 0 -18px;
+			width: calc(100% + 36px);
+			border: none;
+			border-radius: 0;
 
-		+ button {
-			margin-top: 15px;
-		}
+			&.is-active,
+			&:hover {
+				background-color: #f0f0f0;
+			}
 
-		svg {
-			display: block;
-			margin-right: 10px;
+			+ button {
+				margin-top: 1px;
+			}
+
+			svg {
+				display: block;
+				margin-right: 10px;
+			}
 		}
 	}
 }
 
 .lzb-block-builder-type-search {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+
 	input[type="text"] {
 		padding: 10px 14px;
 	}
