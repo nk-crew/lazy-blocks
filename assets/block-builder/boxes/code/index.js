@@ -622,7 +622,7 @@ export default function CustomCodeSettings(props) {
 							onChange={(value) =>
 								updateData({
 									[isStyleTab
-										? `style_${tab}`
+										? `style_${tab.replace('-style', '')}`
 										: `code_${tab}_html`]: value,
 								})
 							}
@@ -631,7 +631,7 @@ export default function CustomCodeSettings(props) {
 									? proStylesComment
 									: data[
 											isStyleTab
-												? `style_${tab}`
+												? `style_${tab.replace('-style', '')}`
 												: `code_${tab}_html`
 										]
 							}
