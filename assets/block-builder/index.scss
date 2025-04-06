@@ -6,7 +6,7 @@ html {
 	.block-editor-editor-skeleton__content,
 	.interface-interface-skeleton__content,
 	.editor-styles-wrapper {
-		background: $color_gray_lighten;
+		background: #fff;
 	}
 
 	// hide post title.
@@ -46,7 +46,12 @@ html {
 	}
 
 	.editor-styles-wrapper {
-		// fix for default themes.
+		/* Reset some theme styles */
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+		letter-spacing: normal;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1.4;
 		padding: 10px;
 		margin-right: 0;
 		margin-left: 0;
@@ -101,9 +106,8 @@ html {
 
 .lzb-block-builder {
 	display: block;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	font-size: 14px;
 	max-width: 100% !important;
+	margin-top: 0 !important;
 
 	&,
 	* {
@@ -114,7 +118,7 @@ html {
 	> * {
 		max-width: 800px;
 		margin-right: auto;
-		margin-bottom: 20px;
+		margin-bottom: 30px;
 		margin-left: auto;
 	}
 
@@ -202,21 +206,5 @@ html {
 
 	p:last-child {
 		margin-bottom: 0 !important;
-	}
-}
-
-.editor-styles-wrapper .lzb-block-builder-notice-theme-template {
-	margin-top: 0;
-
-	code {
-		display: inline-block;
-		padding: 5px;
-		margin-bottom: 10px;
-		font-size: 0.9em;
-		background-color: rgba($blue-30, 0.1);
-
-		span {
-			border-bottom: 1px dotted;
-		}
 	}
 }

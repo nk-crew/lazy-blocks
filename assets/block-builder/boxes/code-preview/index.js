@@ -5,7 +5,7 @@ import './editor.scss';
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
-import { PanelBody } from '@wordpress/components';
+import { TabPanel } from '@wordpress/components';
 import { useThrottle } from '@wordpress/compose';
 import apiFetch from '@wordpress/api-fetch';
 
@@ -159,17 +159,48 @@ export default function CodePreview(props) {
 
 	return (
 		<div className="lzb-block-builder-code-preview">
-			<PanelBody>
-				<h2>{__('Preview', 'lazy-blocks')}</h2>
-			</PanelBody>
-			<PanelBody>
+			<TabPanel
+				className="lazyblocks-control-tabs"
+				activeClass="is-active-invisible"
+				tabs={[
+					{
+						name: 'both',
+						title: (
+							<>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								>
+									<path
+										d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+										fill="none"
+									/>
+									<circle cx="12" cy="12" r="3" fill="none" />
+								</svg>
+								{__('Preview', 'lazy-blocks')}
+							</>
+						),
+						className: 'lazyblocks-control-tabs-tab',
+					},
+				]}
+			>
+				{() => null}
+			</TabPanel>
+			<div className="lzb-block-builder-code-preview-frame">
 				<iframe
 					srcDoc={setIframeContents()}
 					ref={calculateIframeHeight}
 					frameBorder="0"
 					title="code-preview"
 				/>
-			</PanelBody>
+			</div>
 		</div>
 	);
 }

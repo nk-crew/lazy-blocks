@@ -1,8 +1,9 @@
 @import "../../../../variables";
 
-.lazyblocks-component-code-editor {
+.lazyblocks-component-code-editor,
+.ace_autocomplete {
 	border: 1px solid $color_gray;
-	border-radius: $radius_large;
+	border-radius: 8px;
 
 	// fix editor height jumping after init
 	.ace_text-input,
@@ -10,33 +11,64 @@
 	.ace_gutter-active-line {
 		min-height: 17px;
 	}
+	.ace_gutter-cell {
+		padding-left: 10px;
+	}
+	.ace_gutter,
+	.ace_gutter-layer,
+	.ace_gutter-cell {
+		min-width: 39px !important;
+	}
 
 	&.ace_editor {
-		width: 100%;
-		line-height: 1.45;
+		font-family: monospace !important;
+		line-height: 1.6;
 		border: 1px solid rgba(0, 0, 0, 7%);
-	}
+		background-color: #fbfbfb;
 
-	.ace_tooltip {
-		padding: 6px 10px;
-		background: none;
-		background-color: #fff;
-		border: 1px solid $color_gray_lighten;
-		border-radius: $radius;
-		box-shadow: $shadow;
-	}
+		.ace_tooltip {
+			padding: 6px 10px;
+			background: none;
+			background-color: #fff;
+			border: 1px solid $color_gray_lighten;
+			border-radius: $radius;
+			box-shadow: $shadow;
+		}
 
-	&.ace-tm {
+		// Active line.
+		.ace_marker-layer .ace_active-line {
+			border: none;
+			background: #f2f2f2;
+		}
+
 		.ace_gutter {
-			background: $color_gray_lighten_2;
+			background: #f4f4f4;
 
 			.ace_gutter-active-line {
-				background-color: $color_gray;
+				background-color: #e7e7e7;
 			}
 		}
 
+		// Hide print margin line.
 		.ace_print-margin {
 			display: none;
 		}
+	}
+}
+
+.lazyblocks-component-code-editor {
+	&.ace_editor {
+		width: 100%;
+	}
+}
+
+// For some reason autocompletion popover does not position correctly.
+// This is a workaround to fix it.
+.ace_autocomplete {
+	margin-top: 65px;
+
+	&[style*="bottom"] {
+		margin-top: 0;
+		margin-bottom: -60px;
 	}
 }

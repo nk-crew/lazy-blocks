@@ -7,6 +7,7 @@ import { merge } from 'lodash';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
+import { Button } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
@@ -19,7 +20,6 @@ import { CSS } from '@dnd-kit/utilities';
 /**
  * Internal dependencies.
  */
-import Copied from '../../../components/copied';
 import getControlTypeData from '../../../utils/get-control-type-data';
 
 const { navigator } = window;
@@ -68,7 +68,7 @@ export default function Control(props) {
 
 			copiedTimeout = setTimeout(() => {
 				setCopied(false);
-			}, 350);
+			}, 2500);
 		});
 	}
 
@@ -188,7 +188,7 @@ export default function Control(props) {
 			</div>
 			<div className="lzb-block-builder-controls-item-label">
 				{controlTypeData.restrictions.label_settings ? (
-					<span className="lzb-block-builder-controls-item-label-text">
+					<>
 						{label || placeholder || (
 							<span className="lzb-block-builder-controls-item-label-no">
 								{__('(no label)', 'lazy-blocks')}
@@ -199,128 +199,160 @@ export default function Control(props) {
 						) : (
 							''
 						)}
-					</span>
+					</>
 				) : (
-					<span className="lzb-block-builder-controls-item-label-text">
-						&nbsp;
-					</span>
+					<>&nbsp;</>
 				)}
-				<span className="lzb-block-builder-controls-item-label-buttons">
-					{!isUseOnce ? (
-						// eslint-disable-next-line react/button-has-type
-						<button
-							onClick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
+			</div>
+			<div className="lzb-block-builder-controls-item-buttons">
+				{!isUseOnce && (
+					<Button
+						label={__('Duplicate', 'lazy-blocks')}
+						showTooltip
+						onClick={() => {
+							const newData = merge({}, data);
 
-								const newData = merge({}, data);
+							newData.label += ` ${__('(copy)', 'lazy-blocks')}`;
+							newData.name += '-copy';
 
-								newData.label += ` ${__(
-									'(copy)',
-									'lazy-blocks'
-								)}`;
-								newData.name += '-copy';
-
-								addControl(newData, id);
-							}}
-						>
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M11 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V13C19.25 13.6904 18.6904 14.25 18 14.25H11C10.3096 14.25 9.75 13.6904 9.75 13V6C9.75 5.30964 10.3096 4.75 11 4.75Z"
-									stroke="currentColor"
-									strokeWidth="1.5"
-								/>
-								<path
-									fillRule="evenodd"
-									clipRule="evenodd"
-									d="M7 10.5H6C5.72386 10.5 5.5 10.7239 5.5 11V18C5.5 18.2761 5.72386 18.5 6 18.5H13C13.2761 18.5 13.5 18.2761 13.5 18V17H15V18C15 19.1046 14.1046 20 13 20H6C4.89543 20 4 19.1046 4 18V11C4 9.89543 4.89543 9 6 9H7V10.5Z"
-									fill="currentColor"
-								/>
-							</svg>
-							{__('Duplicate', 'lazy-blocks')}
-						</button>
-					) : (
-						''
-					)}
-					{/* eslint-disable-next-line react/button-has-type */}
-					<button
-						className="lzb-block-builder-controls-item-label-buttons-remove"
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-
-							if (
-								// eslint-disable-next-line no-alert
-								window.confirm(
-									__(
-										'Do you really want to remove control?',
-										'lazy-blocks'
-									)
-								)
-							) {
-								removeControl();
-							}
+							addControl(newData, id);
 						}}
 					>
 						<svg
+							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
 							viewBox="0 0 24 24"
 							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
 						>
-							<path
-								d="M6.33734 7.1706C6.23299 6.4793 6.76826 5.85717 7.4674 5.85717H16.5326C17.2317 5.85717 17.767 6.4793 17.6627 7.17061L15.9807 18.3134C15.8963 18.8724 15.416 19.2857 14.8507 19.2857H9.14934C8.58403 19.2857 8.10365 18.8724 8.01928 18.3134L6.33734 7.1706Z"
-								stroke="currentColor"
-								strokeWidth="1.71429"
-							/>
 							<rect
-								x="4"
-								y="5"
-								width="16"
-								height="2"
-								fill="currentColor"
+								width="14"
+								height="14"
+								x="8"
+								y="8"
+								rx="2"
+								ry="2"
+								fill="none"
 							/>
 							<path
-								d="M14.2857 5C14.2857 5 13.2624 5 12 5C10.7376 5 9.71428 5 9.71428 5C9.71428 3.73763 10.7376 2.71429 12 2.71429C13.2624 2.71429 14.2857 3.73763 14.2857 5Z"
-								fill="currentColor"
+								d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+								fill="none"
 							/>
 						</svg>
-						{__('Remove', 'lazy-blocks')}
-					</button>
-				</span>
-			</div>
-			{!data.child_of && controlName ? (
-				// eslint-disable-next-line react/button-has-type
-				<button
-					className="lzb-block-builder-controls-item-name"
-					onClick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						copyName(controlName);
+					</Button>
+				)}
+				<Button
+					label={__('Remove', 'lazy-blocks')}
+					showTooltip
+					onClick={() => {
+						if (
+							// eslint-disable-next-line no-alert
+							window.confirm(
+								__(
+									'Do you really want to remove control?',
+									'lazy-blocks'
+								)
+							)
+						) {
+							removeControl();
+						}
 					}}
 				>
-					{controlName}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						className="h-5 w-5"
-						viewBox="0 0 20 20"
-						fill="currentColor"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
 					>
-						<path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
-						<path d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z" />
+						<path d="M3 6h18" fill="none" />
+						<path
+							d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+							fill="none"
+						/>
+						<path
+							d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+							fill="none"
+						/>
 					</svg>
-					{copied ? <Copied /> : ''}
-				</button>
-			) : (
-				''
-			)}
+				</Button>
+				{!data.child_of && controlName && (
+					<Button
+						label={
+							copied
+								? __('Copied!', 'lazy-blocks')
+								: __('Copy Name', 'lazy-blocks')
+						}
+						showTooltip
+						onClick={() => {
+							copyName(controlName);
+						}}
+					>
+						{copied ? (
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<rect
+									width="8"
+									height="4"
+									x="8"
+									y="2"
+									rx="1"
+									ry="1"
+									fill="none"
+								/>
+								<path
+									d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+									fill="none"
+								/>
+								<path d="m9 14 2 2 4-4" fill="none" />
+							</svg>
+						) : (
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<rect
+									width="8"
+									height="4"
+									x="8"
+									y="2"
+									rx="1"
+									ry="1"
+									fill="none"
+								/>
+								<path
+									d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+									fill="none"
+								/>
+							</svg>
+						)}
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 

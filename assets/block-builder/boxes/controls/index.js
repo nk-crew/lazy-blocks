@@ -20,7 +20,7 @@ import { SortableContext } from '@dnd-kit/sortable';
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
-import { Tooltip, TabPanel } from '@wordpress/components';
+import { TabPanel, Button } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
 
 /**
@@ -137,37 +137,33 @@ export default function ControlsSettings(props) {
 						</SortableContext>
 					</div>
 				</DndContext>
-				<Tooltip
-					text={
+				<Button
+					label={
 						childOf
 							? __('Add Child Control', 'lazy-blocks')
 							: __('Add Control', 'lazy-blocks')
 					}
+					showTooltip
+					className="lzb-block-builder-controls-item-appender"
+					onClick={() => {
+						addControl({
+							placement: placement || 'content',
+							child_of: childOf,
+						});
+					}}
+					__next40pxDefaultSize
 				>
-					{/* eslint-disable-next-line react/button-has-type */}
-					<button
-						className="lzb-block-builder-controls-item-appender"
-						onClick={() => {
-							addControl({
-								placement: placement || 'content',
-								child_of: childOf,
-							});
-						}}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						width="24"
+						height="24"
+						aria-hidden="true"
+						focusable="false"
 					>
-						<svg
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M13 7H11V11H7V13H11V17H13V13H17V11H13V7ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"
-								fill="currentColor"
-							/>
-						</svg>
-					</button>
-				</Tooltip>
+						<path d="M11 12.5V17.5H12.5V12.5H17.5V11H12.5V6H11V11H6V12.5H11Z"></path>
+					</svg>
+				</Button>
 			</>
 		);
 	}

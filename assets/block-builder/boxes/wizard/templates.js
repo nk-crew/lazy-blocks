@@ -8,18 +8,31 @@ import { __ } from '@wordpress/i18n';
  */
 import { HeroIcon, TestimonialsIcon, AlertIcon } from './icons';
 
-export const templates = [
-	{
-		name: 'basic',
+export const templates = {
+	basic: {
 		title: __('Basic', 'lazy-blocks'),
 		icon: null,
 		blockIcon: '',
 		category: 'text',
 		keywords: '',
 		description: '',
+		controls: [
+			{
+				type: 'text',
+				name: 'text-control',
+				label: 'Text Control',
+				placement: 'inspector',
+			},
+		],
+		template: `<div class="basic-block">
+	{{text-control}}
+</div>`,
+		style: `.basic-block {
+	background-color: #f9f9f9;
+	padding: 20px;
+}`,
 	},
-	{
-		name: 'hero',
+	hero: {
 		title: __('Hero', 'lazy-blocks'),
 		icon: <HeroIcon />,
 		blockIcon:
@@ -28,139 +41,59 @@ export const templates = [
 		keywords: 'hero,banner,header,cta',
 		description:
 			'Hero section with customizable title, subtitle, and call-to-action button.',
-	},
-	{
-		name: 'testimonials',
-		title: __('Testimonials', 'lazy-blocks'),
-		icon: <TestimonialsIcon />,
-		blockIcon:
-			'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path></svg>',
-		category: 'design',
-		keywords: 'testimonials,reviews,feedback',
-		description:
-			'Display customer testimonials in a clean, organized grid layout.',
-	},
-	{
-		name: 'alert',
-		title: __('Alert', 'lazy-blocks'),
-		icon: <AlertIcon />,
-		blockIcon:
-			'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg>',
-		category: 'design',
-		keywords: 'alert,notice,message,notification',
-		description:
-			'Attention-grabbing alert box, perfect for important announcements and notifications.',
-		styles: [
+		controls: [
 			{
-				name: 'info',
-				label: 'Info',
+				type: 'text',
+				name: 'hero-title',
+				default: 'Welcome to our website',
+				label: 'Hero Title',
+				help: 'Main heading for the hero section',
+				translate: 'true',
+				placement: 'inspector',
 			},
 			{
-				name: 'success',
-				label: 'Success',
+				type: 'textarea',
+				name: 'hero-subtitle',
+				default: 'Discover our amazing products and services',
+				label: 'Subtitle',
+				help: 'Secondary text below the main heading',
+				translate: 'true',
+				placeholder: 'Enter subtitle text here...',
+				placement: 'inspector',
 			},
 			{
-				name: 'warning',
-				label: 'Warning',
+				type: 'text',
+				name: 'button-text',
+				default: 'Learn More',
+				label: 'Button Text',
+				translate: 'true',
+				placement: 'inspector',
 			},
 			{
-				name: 'error',
-				label: 'Error',
+				type: 'url',
+				name: 'button-url',
+				default: '#',
+				label: 'Button URL',
+				placement: 'inspector',
+			},
+			{
+				type: 'color',
+				name: 'background-color',
+				default: '#eef0f5',
+				alongside_text: 'Background Color',
+				alpha: 'true',
+				placement: 'inspector',
+				group: 'styles',
 			},
 		],
-	},
-];
-
-/**
- * Template for the Basic block.
- */
-export const basicTemplateControls = [
-	{
-		type: 'text',
-		name: 'text-control',
-		label: 'Text Control',
-		placement: 'inspector',
-	},
-];
-export const basicTemplate = `<div class="basic-block">
-	{{text-control}}
-</div>
-
-{{!
-	These inline styles created for example only.
-	We recommend you purchase the Pro plugin and use Styles editor instead
-	for best practices and for better performance.
-}}
-<style>
-.basic-block {
-	background-color: #f9f9f9;
-	padding: 20px;
-}
-</style>`;
-
-/**
- * Template for the Hero block.
- */
-export const heroTemplateControls = [
-	{
-		type: 'text',
-		name: 'hero-title',
-		default: 'Welcome to our website',
-		label: 'Hero Title',
-		help: 'Main heading for the hero section',
-		translate: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'textarea',
-		name: 'hero-subtitle',
-		default: 'Discover our amazing products and services',
-		label: 'Subtitle',
-		help: 'Secondary text below the main heading',
-		translate: 'true',
-		placeholder: 'Enter subtitle text here...',
-		placement: 'inspector',
-	},
-	{
-		type: 'text',
-		name: 'button-text',
-		default: 'Learn More',
-		label: 'Button Text',
-		translate: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'url',
-		name: 'button-url',
-		default: '#',
-		label: 'Button URL',
-		placement: 'inspector',
-	},
-	{
-		type: 'color',
-		name: 'background-color',
-		default: '#eef0f5',
-		alongside_text: 'Background Color',
-		alpha: 'true',
-		placement: 'inspector',
-		group: 'styles',
-	},
-];
-export const heroTemplate = `<div class="hero-block" style="background-color: {{background-color}}">
+		template: `<div class="hero-block" style="background-color: {{background-color}}">
 	<div class="hero-content">
 		<h2 class="hero-title">{{hero-title}}</h2>
 		<div class="hero-subtitle">{{hero-subtitle}}</div>
 		<a href="{{button-url}}" class="hero-button">{{button-text}}</a>
 	</div>
-</div>
-
-{{!
-	These inline styles created for example only.
-	We recommend you purchase the Pro plugin and use Styles editor instead
-	for best practices and for better performance.
-}}
-<style>
-.hero-block {
+</div>`,
+		style: `.hero-block {
 	padding: 60px 20px;
 	text-align: center;
 }
@@ -189,74 +122,77 @@ export const heroTemplate = `<div class="hero-block" style="background-color: {{
 }
 .hero-button:hover {
 	background-color: #154eb4;
-}
-</style>`;
-
-/**
- * Template for the Testimonials block.
- */
-export const testimonialsTemplateControls = [
-	{
-		type: 'text',
-		name: 'testimonials-title',
-		default: 'What Our Clients Say',
-		label: 'Section Title',
-		translate: 'true',
-		placement: 'inspector',
+}`,
 	},
-	{
-		type: 'repeater',
-		name: 'testimonials',
-		label: 'Testimonials',
-		group: 'default',
-		rows_min: '1',
-		rows_label: 'Testimonial',
-		rows_add_button_label: 'Add Testimonial',
-		rows_collapsible: 'true',
-		rows_collapsed: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'text',
-		name: 'name',
-		default: 'John Doe',
-		label: 'Name',
-		help: 'Name of the person giving testimonial',
-		child_of: 'testimonials',
-		translate: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'text',
-		name: 'position',
-		default: 'CEO, Company Name',
-		label: 'Position',
-		child_of: 'testimonials',
-		translate: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'textarea',
-		name: 'quote',
-		default:
-			'This is an amazing product that has completely transformed how we work. Highly recommended!',
-		label: 'Testimonial Text',
-		child_of: 'testimonials',
-		translate: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'image',
-		name: 'avatar',
-		label: 'Avatar',
-		child_of: 'testimonials',
-		preview_size: 'thumbnail',
-		placement: 'inspector',
-	},
-];
-
-// Define the testimonials template HTML
-export const testimonialsTemplate = `<div class="testimonials-block">
+	testimonials: {
+		title: __('Testimonials', 'lazy-blocks'),
+		icon: <TestimonialsIcon />,
+		blockIcon:
+			'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path></svg>',
+		category: 'design',
+		keywords: 'testimonials,reviews,feedback',
+		description:
+			'Display customer testimonials in a clean, organized grid layout.',
+		controls: [
+			{
+				type: 'text',
+				name: 'testimonials-title',
+				default: 'What Our Clients Say',
+				label: 'Section Title',
+				translate: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'repeater',
+				name: 'testimonials',
+				label: 'Testimonials',
+				group: 'default',
+				rows_min: '1',
+				rows_label: 'Testimonial',
+				rows_add_button_label: 'Add Testimonial',
+				rows_collapsible: 'true',
+				rows_collapsed: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'text',
+				name: 'name',
+				default: 'John Doe',
+				label: 'Name',
+				help: 'Name of the person giving testimonial',
+				child_of: 'testimonials',
+				translate: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'text',
+				name: 'position',
+				default: 'CEO, Company Name',
+				label: 'Position',
+				child_of: 'testimonials',
+				translate: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'textarea',
+				name: 'quote',
+				default:
+					'This is an amazing product that has completely transformed how we work. Highly recommended!',
+				label: 'Testimonial Text',
+				child_of: 'testimonials',
+				translate: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'image',
+				name: 'avatar',
+				label: 'Avatar',
+				child_of: 'testimonials',
+				preview_size: 'thumbnail',
+				placement: 'inspector',
+			},
+		],
+		template: `<div class="testimonials-block">
 	<h2 class="testimonials-title">{{testimonials-title}}</h2>
 
 	<div class="testimonials-container">
@@ -280,15 +216,8 @@ export const testimonialsTemplate = `<div class="testimonials-block">
 		</div>
 		{{/each}}
 	</div>
-</div>
-
-{{!
-	These inline styles created for example only.
-	We recommend you purchase the Pro plugin and use Styles editor instead
-	for best practices and for better performance.
-}}
-<style>
-.testimonials-title {
+</div>`,
+		style: `.testimonials-title {
 	text-align: center;
 	font-size: 32px;
 	margin-bottom: 40px;
@@ -336,44 +265,65 @@ export const testimonialsTemplate = `<div class="testimonials-block">
 .testimonial-position {
 	font-size: 0.9rem;
 	color: #777;
-}
-</style>`;
-
-/**
- * Template for the Alert block.
- */
-export const alertTemplateControls = [
-	{
-		type: 'text',
-		name: 'alert-title',
-		default: 'Important Notice',
-		label: 'Alert Title',
-		help: 'Title of the alert (optional)',
-		translate: 'true',
-		placement: 'inspector',
+}`,
 	},
-	{
-		type: 'rich_text',
-		name: 'alert-content',
-		default:
-			'This is an important message that you should pay attention to.',
-		label: 'Alert Content',
-		translate: 'true',
-		placement: 'inspector',
-	},
-	{
-		type: 'toggle',
-		name: 'dismissible',
-		default: 'false',
-		label: 'Dismissible',
-		checked: 'false',
-		alongside_text: 'Make alert dismissible',
-		placement: 'inspector',
-	},
-];
-
-// Define the alert template HTML
-export const alertTemplate = `<div class="alert-block {{#if dismissible}}alert-dismissible{{/if}}">
+	alert: {
+		title: __('Alert', 'lazy-blocks'),
+		icon: <AlertIcon />,
+		blockIcon:
+			'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg>',
+		category: 'design',
+		keywords: 'alert,notice,message,notification',
+		description:
+			'Attention-grabbing alert box, perfect for important announcements and notifications.',
+		styles: [
+			{
+				name: 'info',
+				label: 'Info',
+			},
+			{
+				name: 'success',
+				label: 'Success',
+			},
+			{
+				name: 'warning',
+				label: 'Warning',
+			},
+			{
+				name: 'error',
+				label: 'Error',
+			},
+		],
+		controls: [
+			{
+				type: 'text',
+				name: 'alert-title',
+				default: 'Important Notice',
+				label: 'Alert Title',
+				help: 'Title of the alert (optional)',
+				translate: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'rich_text',
+				name: 'alert-content',
+				default:
+					'This is an important message that you should pay attention to.',
+				label: 'Alert Content',
+				translate: 'true',
+				placement: 'inspector',
+			},
+			{
+				type: 'toggle',
+				name: 'dismissible',
+				default: 'false',
+				label: 'Dismissible',
+				checked: 'false',
+				alongside_text: 'Make alert dismissible',
+				placement: 'inspector',
+			},
+		],
+		template: `<div class="alert-block {{#if dismissible}}alert-dismissible{{/if}}">
 	<div class="alert-content">
 		{{#if alert-title}}<h4 class="alert-title">{{alert-title}}</h4>{{/if}}
 		<div class="alert-message">{{{alert-content}}}</div>
@@ -383,15 +333,8 @@ export const alertTemplate = `<div class="alert-block {{#if dismissible}}alert-d
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
 		</button>
 	{{/if}}
-</div>
-
-{{!
-	These inline styles created for example only.
-	We recommend you purchase the Pro plugin and use Styles editor instead
-	for best practices and for better performance.
-}}
-<style>
-.alert-block {
+</div>`,
+		style: `.alert-block {
 	display: flex;
 	padding: 16px;
 	border-radius: 4px;
@@ -448,5 +391,6 @@ export const alertTemplate = `<div class="alert-block {{#if dismissible}}alert-d
 	background-color: #fdedec;
 	border-left: 4px solid #e74c3c;
 	color: #922b21;
-}
-</style>`;
+}`,
+	},
+};

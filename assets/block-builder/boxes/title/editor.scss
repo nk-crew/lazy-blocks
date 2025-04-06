@@ -2,20 +2,19 @@
 
 .lzb-block-builder .lzb-block-builder-title {
 	// block title.
-	max-width: none;
-	padding: 30px 0;
-	margin: -10px;
-	margin-bottom: 80px;
+	max-width: 800px;
+	padding: 20px 0;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: auto;
 	overflow: hidden;
-	background: #fff;
-	box-shadow: rgba(0, 0, 0, 10%) 0 1px 3px 0, rgba(0, 0, 0, 6%) 0 1px 2px 0;
 
 	textarea {
+		display: block;
 		width: 100%;
 		font: inherit;
-		font-size: 40px !important;
-		font-weight: 600;
-		text-align: center;
+		font-size: 18px !important;
+		font-weight: 500;
 		border: none;
 		outline: none;
 		box-shadow: none;

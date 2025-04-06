@@ -27,7 +27,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { arrayMoveImmutable } from 'array-move';
 
 export default function Select(props) {
-	const { value, onChange } = props;
+	const { value, onChange, styles = {} } = props;
 
 	let ThisSelect = ReactSelect;
 
@@ -37,7 +37,7 @@ export default function Select(props) {
 		ThisSelect = CreatableSelect;
 	}
 
-	const selectProps = { ...props };
+	const selectProps = { ...props, styles: { ...selectStyles, ...styles } };
 
 	// Set activation distance to prevent conflict with remove button.
 	const activationConstraint = { distance: 4 };
@@ -129,7 +129,6 @@ export default function Select(props) {
 						<ThisSelect
 							menuPlacement="auto"
 							className="lazyblocks-component-select"
-							styles={selectStyles}
 							{...selectProps}
 						/>
 					</StyleProvider>
@@ -143,7 +142,6 @@ export default function Select(props) {
 			<ThisSelect
 				menuPlacement="auto"
 				className="lazyblocks-component-select"
-				styles={selectStyles}
 				{...selectProps}
 			/>
 		</StyleProvider>

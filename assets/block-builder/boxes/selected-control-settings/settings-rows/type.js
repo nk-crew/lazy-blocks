@@ -137,7 +137,6 @@ export default function TypeRow(props) {
 								'lzb-block-builder-type-toggle',
 								isOpen && 'lzb-block-builder-type-toggle-open'
 							)}
-							isBlock
 						>
 							{/* eslint-disable-next-line react/no-danger */}
 							<span

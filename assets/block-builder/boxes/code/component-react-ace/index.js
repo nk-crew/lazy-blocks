@@ -7,15 +7,19 @@ import './editor.scss';
  * External dependencies.
  */
 import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/theme-github_light_default';
 import 'ace-builds/src-noconflict/mode-css';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-html';
+import 'ace-builds/src-noconflict/mode-handlebars';
 import 'ace-builds/src-noconflict/mode-php';
 import 'ace-builds/src-noconflict/snippets/css';
 import 'ace-builds/src-noconflict/snippets/javascript';
 import 'ace-builds/src-noconflict/snippets/text';
 import 'ace-builds/src-noconflict/snippets/html';
+import 'ace-builds/src-noconflict/snippets/handlebars';
 import 'ace-builds/src-noconflict/snippets/php';
+import 'ace-builds/src-noconflict/ext-emmet';
 
 import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
 
@@ -23,91 +27,90 @@ import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
  * WordPress dependencies.
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, memo } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 import FixCssFrame from '../fix-css-frame';
 
-// Add autocompleter with control names.
-addCompleter({
-	getCompletions(editor, session, pos, prefix, callback) {
-		if (editor.id === 'lzb-editor-php') {
-			const { getBlockData } = select('lazy-blocks/block-data');
+/**
+ * Helper function to create completers for different editor types.
+ *
+ * @param {string}   editorId         - The ID of the editor.
+ * @param {string}   triggerChar      - The character that triggers autocompletion.
+ * @param {Function} formatSuggestion - Function to format the suggestion.
+ */
+const createControlsCompleter = (editorId, triggerChar, formatSuggestion) => {
+	addCompleter({
+		getCompletions(editor, session, pos, prefix, callback) {
+			try {
+				if (editor.id === editorId) {
+					const { getBlockData } = select('lazy-blocks/block-data');
+					const blockData = getBlockData();
 
-			const blockData = getBlockData();
+					if (blockData?.controls) {
+						const result = [];
 
-			if (blockData.controls) {
-				const result = [];
+						Object.keys(blockData.controls).forEach((k) => {
+							const control = blockData.controls[k];
 
-				Object.keys(blockData.controls).forEach((k) => {
-					const control = blockData.controls[k];
-
-					if (control.name && !control.child_of) {
-						result.push({
-							caption: `$attributes['${control.name}']`,
-							value: `$attributes['${control.name}']`,
-							meta: sprintf(
-								// translators: %1$s - control name.
-								__('Control "%1$s"', 'lazy-blocks'),
-								control.label
-							),
+							if (control.name && !control.child_of) {
+								result.push({
+									caption: formatSuggestion(control.name),
+									value: formatSuggestion(control.name),
+									meta: sprintf(
+										// translators: %1$s - control name.
+										__('Control "%1$s"', 'lazy-blocks'),
+										control.label
+									),
+								});
+							}
 						});
+
+						if (result.length) {
+							callback(null, result);
+						} else {
+							callback(null, []);
+						}
+					} else {
+						callback(null, []);
 					}
-				});
-
-				if (result.length) {
-					callback(null, result);
 				}
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error('Error in autocomplete:', error);
+				callback(null, []);
 			}
-		}
-	},
-	identifierRegexps: [/\$/],
-});
+		},
+		identifierRegexps: [new RegExp(triggerChar)],
+	});
+};
 
-addCompleter({
-	getCompletions(editor, session, pos, prefix, callback) {
-		if (editor.id === 'lzb-editor-html') {
-			const { getBlockData } = select('lazy-blocks/block-data');
+// Add PHP autocompleter with control names.
+createControlsCompleter(
+	'lzb-editor-php',
+	'\\$',
+	(name) => `$attributes['${name}']`
+);
 
-			const blockData = getBlockData();
+// Add HTML autocompleter with control names.
+createControlsCompleter('lzb-editor-html', '\\{', (name) => `{{${name}}}`);
 
-			if (blockData.controls) {
-				const result = [];
-
-				Object.keys(blockData.controls).forEach((k) => {
-					const control = blockData.controls[k];
-
-					if (control.name && !control.child_of) {
-						result.push({
-							caption: `{{${control.name}}}`,
-							value: `{{${control.name}}}`,
-							meta: sprintf(
-								// translators: %1$s - control name.
-								__('Control "%1$s"', 'lazy-blocks'),
-								control.label
-							),
-						});
-					}
-				});
-
-				if (result.length) {
-					callback(null, result);
-				}
-			}
-		}
-	},
-	identifierRegexps: [/\{/],
-});
-
-export default function CodeEditor(props) {
+/**
+ * Code editor component that wraps AceEditor with additional functionality.
+ *
+ * @param {Object} props component props.
+ */
+function CodeEditor(props) {
 	const $editorWrapper = useRef();
-
-	function handleCut(event) {
-		event.stopPropagation();
-	}
 
 	useEffect(() => {
 		const $frame = $editorWrapper.current;
+
+		// Prevent propagating cut event to Gutenberg.
+		// @see https://github.com/nk-crew/lazy-blocks/pull/226
+		function handleCut(event) {
+			event.stopPropagation();
+		}
 
 		$frame.addEventListener('cut', handleCut);
 
@@ -117,9 +120,14 @@ export default function CodeEditor(props) {
 	}, []);
 
 	return (
-		<div ref={$editorWrapper}>
+		<div
+			ref={$editorWrapper}
+			className="lazyblocks-component-code-editor-wrapper"
+			role="application"
+			aria-label={__('Code Editor', 'lazy-blocks')}
+		>
 			<AceEditor
-				theme="textmate"
+				theme="github_light_default"
 				onLoad={(editor) => {
 					editor.renderer.setScrollMargin(16, 16, 16, 16);
 					editor.renderer.setPadding(16);
@@ -130,6 +138,7 @@ export default function CodeEditor(props) {
 				width="100%"
 				className="lazyblocks-component-code-editor"
 				{...props}
+				maxLines={Infinity}
 				editorProps={{
 					$blockScrolling: Infinity,
 					...(props.editorProps || {}),
@@ -138,6 +147,7 @@ export default function CodeEditor(props) {
 					enableBasicAutocompletion: true,
 					enableLiveAutocompletion: true,
 					enableSnippets: true,
+					enableEmmet: true,
 					showLineNumbers: true,
 					highlightActiveLine: true,
 					tabSize: 2,
@@ -149,3 +159,5 @@ export default function CodeEditor(props) {
 		</div>
 	);
 }
+
+export default memo(CodeEditor);

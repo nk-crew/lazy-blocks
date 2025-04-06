@@ -1,27 +1,6 @@
 @import "../../../variables";
 
 .lzb-block-builder .lzb-block-builder-custom-code-settings {
-	> .components-panel__body {
-		padding: 20px 25px;
-		border-color: #e5e7eb;
-
-		&:first-child {
-			background-color: $color_gray_lighten_2;
-			border-top: none;
-			border-top-left-radius: $radius_box;
-			border-top-right-radius: $radius_box;
-
-			h2 {
-				margin: 0;
-				text-align: left;
-			}
-		}
-
-		&:last-child {
-			border-bottom: none;
-		}
-	}
-
 	.components-base-control__field {
 		margin-bottom: 0;
 	}
@@ -31,9 +10,64 @@
 		margin-bottom: 10px;
 		font-family: inherit;
 		font-size: 1em;
-	}
 
-	.components-tab-panel__tabs {
-		background-color: $color_gray_lighten;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.lzb-block-builder-custom-code-dropdown-content > div {
+	width: 276px;
+}
+.lzb-block-builder-output-code-toolbar,
+.lzb-block-builder-theme-template-toolbar {
+	display: flex;
+	align-items: center;
+	margin-bottom: 4px;
+
+	.lazyblocks-component-select + * {
+		margin-left: auto;
+	}
+	.components-button {
+		padding: 0 7px;
+	}
+}
+.lzb-block-builder-output-code-style .lazyblocks-component-select {
+	display: none;
+}
+
+.lzb-block-builder-output-code-wrapper,
+.lzb-block-builder-theme-template-wrapper {
+	padding: 4px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background-color: #fff;
+	margin-bottom: 8px;
+
+	.components-custom-select-control {
+		display: inline-flex;
+		margin-bottom: 5px;
+
+		.components-input-control__container,
+		.components-input-control__container > button {
+			background-color: transparent;
+		}
+		div.components-input-control__backdrop {
+			border: none;
+		}
+		.components-input-control__container > button {
+			height: 21px;
+			padding-left: 12px;
+			font-weight: 500;
+
+			+ div {
+				min-width: 170px;
+			}
+
+			.components-custom-select-control__item {
+				padding: 3px 10px;
+			}
+		}
 	}
 }

@@ -13,7 +13,6 @@ import { useEntityProp } from '@wordpress/core-data';
  */
 import ProNotice from '../../components/pro-notice';
 import DocumentTabs from '../../components/document-tabs';
-import Box from '../../components/box';
 import StyleProviderWrapper from '../../components/select/style-provider';
 import TitleSettings from '../boxes/title';
 import GeneralSettings from '../boxes/general';
@@ -155,12 +154,10 @@ export default function BlockBuilder() {
 					/>
 					{/* Code/Template Preview */}
 					<PreviewErrorBoundary>
-						<Box no-paddings>
-							<CodePreview
-								data={blockData}
-								codeContext={codeContext}
-							/>
-						</Box>
+						<CodePreview
+							data={blockData}
+							codeContext={codeContext}
+						/>
 					</PreviewErrorBoundary>
 				</div>
 			</StyleProviderWrapper>

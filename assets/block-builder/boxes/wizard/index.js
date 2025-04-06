@@ -23,28 +23,20 @@ import { __ } from '@wordpress/i18n';
  */
 import IconPicker from '../../../components/icon-picker';
 import { CategorySettingsControl, KeywordsSettingsControl } from '../general';
-import {
-	templates,
-	basicTemplateControls,
-	basicTemplate,
-	heroTemplateControls,
-	heroTemplate,
-	testimonialsTemplateControls,
-	testimonialsTemplate,
-	alertTemplateControls,
-	alertTemplate,
-} from './templates';
+import { templates } from './templates';
+
+const { is_pro: isPro } = window.lazyblocksBlockBuilderData;
 
 export default function Wizard({ onClose }) {
 	const [step, setStep] = useState(1);
-	const [template, setTemplate] = useState(templates[0].name);
-	const [icon, setIcon] = useState(templates[0].blockIcon);
-	const [title, setTitle] = useState(templates[0].title);
-	const [slug, setSlug] = useState(`${templates[0].name}-block`);
+	const [template, setTemplate] = useState('basic');
+	const [icon, setIcon] = useState(templates.basic.blockIcon);
+	const [title, setTitle] = useState(templates.basic.title);
+	const [slug, setSlug] = useState('basic-block');
 	const [category, setCategory] = useState('text');
 	const [styles, setStyles] = useState([]);
-	const [keywords, setKeywords] = useState(templates[0].keywords);
-	const [description, setDescription] = useState(templates[0].description);
+	const [keywords, setKeywords] = useState(templates.basic.keywords);
+	const [description, setDescription] = useState(templates.basic.description);
 	const { updateBlockData, addControl } = useDispatch(
 		'lazy-blocks/block-data'
 	);
@@ -140,6 +132,7 @@ export default function Wizard({ onClose }) {
 	function skipSetup() {
 		updateBlockData({
 			code_single_output: true,
+			style_single_output: true,
 			code_output_method: 'php',
 		});
 
@@ -157,33 +150,26 @@ export default function Wizard({ onClose }) {
 			description,
 			styles,
 			code_single_output: true,
+			style_single_output: true,
 		};
 
-		if (template === 'basic') {
-			newData.code_frontend_html = basicTemplate;
+		if (isPro) {
+			newData.code_frontend_html = templates[template].template;
+			newData.style_frontend = templates[template].style;
+		} else {
+			newData.code_frontend_html = `${templates[template].template}
 
-			// Basic template doesn't have repeaters, so we can add controls sequentially.
-			for (const control of basicTemplateControls) {
-				await addControl(control);
-			}
-		} else if (template === 'hero') {
-			newData.code_frontend_html = heroTemplate;
-
-			// Hero template doesn't have repeaters, so we can add controls sequentially.
-			for (const control of heroTemplateControls) {
-				await addControl(control);
-			}
-		} else if (template === 'testimonials') {
-			newData.code_frontend_html = testimonialsTemplate;
-			await processControls(testimonialsTemplateControls);
-		} else if (template === 'alert') {
-			newData.code_frontend_html = alertTemplate;
-
-			// Alert template doesn't have repeaters, so we can add controls sequentially
-			for (const control of alertTemplateControls) {
-				await addControl(control);
-			}
+{{!
+	These inline styles created for example only.
+	We recommend you purchase the Pro plugin and use Style editor instead
+	for best practices and for better performance.
+}}
+<style>
+${templates[template].style}
+</style>`;
 		}
+
+		await processControls(templates[template].controls);
 
 		updateBlockData(newData);
 		onClose();
@@ -220,30 +206,30 @@ export default function Wizard({ onClose }) {
 
 			{step === 1 && (
 				<div className="lzb-block-builder-wizard-step-templates">
-					{templates.map((item) => (
+					{Object.keys(templates).map((k) => (
 						<Button
-							key={item.name}
+							key={k}
 							onClick={(e) => {
 								e.preventDefault();
 
-								setTemplate(item.name);
+								setTemplate(k);
 
-								setIcon(item.blockIcon);
-								setCategory(item.category);
-								setTitle(`${item.title} Block`);
-								setKeywords(item.keywords);
-								setDescription(item.description);
-								generateSlug(`${item.title} Block`);
-								setStyles(item.styles || []);
+								setIcon(templates[k].blockIcon);
+								setCategory(templates[k].category);
+								setTitle(`${templates[k].title} Block`);
+								setKeywords(templates[k].keywords);
+								setDescription(templates[k].description);
+								generateSlug(`${templates[k].title} Block`);
+								setStyles(templates[k].styles || []);
 							}}
 							className={classnames(
 								'lzb-block-builder-wizard-template',
-								template === item.name &&
+								template === k &&
 									'lzb-block-builder-wizard-template-active'
 							)}
 						>
-							{item.icon}
-							<span>{item.title}</span>
+							{templates[k].icon}
+							<span>{templates[k].title}</span>
 						</Button>
 					))}
 				</div>

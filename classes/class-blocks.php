@@ -552,10 +552,12 @@ class LazyBlocks_Blocks {
 
 		'lazyblocks_code_editor_html'                => '',
 		'lazyblocks_code_editor_callback'            => '',
-		'lazyblocks_code_editor_css'                 => '',
 		'lazyblocks_code_frontend_html'              => '',
 		'lazyblocks_code_frontend_callback'          => '',
-		'lazyblocks_code_frontend_css'               => '',
+
+		'lazyblocks_style_single_output'             => 'false',
+		'lazyblocks_style_editor'                    => '',
+		'lazyblocks_style_frontend'                  => '',
 
 		'lazyblocks_styles'                          => array(),
 
@@ -717,9 +719,9 @@ class LazyBlocks_Blocks {
 				if (
 					'lazyblocks_icon' === $meta ||
 					'lazyblocks_code_editor_html' === $meta ||
-					'lazyblocks_code_editor_css' === $meta ||
 					'lazyblocks_code_frontend_html' === $meta ||
-					'lazyblocks_code_frontend_css' === $meta
+					'lazyblocks_style_editor' === $meta ||
+					'lazyblocks_style_frontend' === $meta
 				) {
 					$new_meta_value = wp_slash( $data[ $meta ] );
 				} else {
@@ -977,12 +979,15 @@ class LazyBlocks_Blocks {
 					'output_method'     => $get_meta_value( 'lazyblocks_code_output_method' ),
 					'editor_html'       => $get_meta_value( 'lazyblocks_code_editor_html' ),
 					'editor_callback'   => '',
-					'editor_css'        => $get_meta_value( 'lazyblocks_code_editor_css' ),
 					'frontend_html'     => $get_meta_value( 'lazyblocks_code_frontend_html' ),
 					'frontend_callback' => '',
-					'frontend_css'      => $get_meta_value( 'lazyblocks_code_frontend_css' ),
 					'show_preview'      => $get_meta_value( 'lazyblocks_code_show_preview' ),
 					'single_output'     => $get_meta_value( 'lazyblocks_code_single_output' ),
+				),
+				'style'          => array(
+					'editor'        => $get_meta_value( 'lazyblocks_style_editor' ),
+					'frontend'      => $get_meta_value( 'lazyblocks_style_frontend' ),
+					'single_output' => $get_meta_value( 'lazyblocks_style_single_output' ),
 				),
 				'styles'         => $styles,
 				'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),
