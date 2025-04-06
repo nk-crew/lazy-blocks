@@ -26,15 +26,12 @@
 	align-items: center;
 	margin-bottom: 4px;
 
-	.lazyblocks-component-select + * {
+	> div:first-of-type + * {
 		margin-left: auto;
 	}
 	.components-button {
 		padding: 0 7px;
 	}
-}
-.lzb-block-builder-output-code-style .lazyblocks-component-select {
-	display: none;
 }
 
 .lzb-block-builder-output-code-wrapper,
