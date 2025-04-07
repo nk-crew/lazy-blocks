@@ -1408,9 +1408,11 @@ class LazyBlocks_Blocks {
 				},
 				'example'         => array(),
 				'styles'          => $block['styles'],
-				'editor_script'   => 'lazyblocks-editor',
-				'editor_style'    => 'lazyblocks-editor',
+				'editor_script'   => array( 'lazyblocks-editor' ),
+				'editor_style'    => array( 'lazyblocks-editor' ),
 			);
+
+			$data = apply_filters( 'lzb/register_block_type_data', $data, $block );
 
 			// Register block type.
 			register_block_type( $block['slug'], $data );
