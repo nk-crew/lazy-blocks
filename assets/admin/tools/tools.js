@@ -309,13 +309,13 @@ export default function Templates() {
 								</div>
 							)}
 						</div>
-						<div className="postbox">
-							<h2 className="hndle">
-								<span>
-									{__('Export Templates', 'lazy-blocks')}
-								</span>
-							</h2>
-							{data.templates && data.templates.length ? (
+						{data.templates && data.templates.length ? (
+							<div className="postbox">
+								<h2 className="hndle">
+									<span>
+										{__('Export Templates', 'lazy-blocks')}
+									</span>
+								</h2>
 								<div className="inside">
 									<p>
 										{__(
@@ -325,16 +325,8 @@ export default function Templates() {
 
 									{renderExportContent('templates')}
 								</div>
-							) : (
-								<div className="inside">
-									<p>
-										{__(
-											'There are no templates to export.'
-										)}
-									</p>
-								</div>
-							)}
-						</div>
+							</div>
+						) : null}
 					</div>
 					<div className="postbox-container">
 						<div className="postbox">
@@ -344,7 +336,7 @@ export default function Templates() {
 							<div className="inside">
 								<p>
 									{__(
-										'Select the Lazy Blocks JSON file you would like to import. When you click the import button below, Lazy Blocks will import the blocks or templates.'
+										'Select the Lazy Blocks JSON file you want to import. When you click the import button below, Lazy Blocks will import the blocks.'
 									)}
 								</p>
 
