@@ -1,4 +1,4 @@
-# Copyright (C) 2024 Lazy Blocks Team
+# Copyright (C) 2025 Lazy Blocks Team
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-21T16:11:11+00:00\n"
+"POT-Creation-Date: 2025-04-08T11:10:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: lazy-blocks.php
 #: classes/class-admin.php:252
 #: classes/class-blocks.php:187
-#: classes/class-blocks.php:1176
+#: classes/class-blocks.php:1188
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -81,7 +81,7 @@ msgid "Duplicate “%1$s”"
 msgstr ""
 
 #: classes/class-blocks.php:363
-#: assets/block-builder/boxes/controls/control.js:246
+#: assets/block-builder/boxes/controls/control.js:210
 msgid "Duplicate"
 msgstr ""
 
@@ -116,26 +116,28 @@ msgid "Activate"
 msgstr ""
 
 #: classes/class-blocks.php:456
-#: assets/block-builder/boxes/general/index.js:101
+#: assets/block-builder/boxes/general/index.js:179
 msgid "Icon"
 msgstr ""
 
 #: classes/class-blocks.php:458
-#: assets/block-builder/boxes/general/index.js:75
+#: assets/block-builder/boxes/general/index.js:46
 msgid "Slug"
 msgstr ""
 
 #: classes/class-blocks.php:459
-#: assets/block-builder/boxes/general/index.js:114
+#: assets/block-builder/boxes/general/index.js:94
 msgid "Category"
 msgstr ""
 
 #: classes/class-blocks.php:460
-#: assets/block-builder/boxes/general/index.js:189
+#: assets/block-builder/boxes/general/index.js:213
+#: assets/block-builder/boxes/wizard/index.js:271
 msgid "Description"
 msgstr ""
 
 #: classes/class-controls.php:41
+#: assets/block-builder/boxes/wizard/templates.js:13
 msgid "Basic"
 msgstr ""
 
@@ -203,7 +205,7 @@ msgid "Invalid block."
 msgstr ""
 
 #: classes/class-rest.php:244
-#: classes/class-rest.php:360
+#: classes/class-rest.php:376
 msgid "Render callback is not specified."
 msgstr ""
 
@@ -316,6 +318,7 @@ msgid "Classic Editor (WYSIWYG)"
 msgstr ""
 
 #: controls/code_editor/index.php:23
+#: assets/block-builder/boxes/code/component-react-ace/index.js:127
 msgid "Code Editor"
 msgstr ""
 
@@ -449,19 +452,19 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:69
-msgid "Styles"
+#: assets/block-builder/block/edit.js:94
+msgid "Style Variations"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:78
+#: assets/block-builder/block/edit.js:106
 msgid "Supports"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:87
+#: assets/block-builder/block/edit.js:115
 msgid "Supports Ghost Kit"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:99
+#: assets/block-builder/block/edit.js:127
 msgid "Condition"
 msgstr ""
 
@@ -474,96 +477,104 @@ msgstr ""
 msgid "Error: Could not generate the preview."
 msgstr ""
 
-#: assets/block-builder/boxes/code-preview/index.js:163
+#: assets/block-builder/boxes/code-preview/index.js:187
 msgid "Preview"
 msgstr ""
 
 #. translators: %1$s - control name.
-#: assets/block-builder/boxes/code/component-react-ace/index.js:51
-#: assets/block-builder/boxes/code/component-react-ace/index.js:86
+#: assets/block-builder/boxes/code/component-react-ace/index.js:62
 msgid "Control \"%1$s\""
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:80
-msgid "Frontend"
-msgstr ""
-
-#: assets/block-builder/boxes/code/index.js:88
-#: controls/classic_editor/tmce.js:67
-msgid "Editor"
-msgstr ""
-
-#: assets/block-builder/boxes/code/index.js:100
-msgid "Output Method"
-msgstr ""
-
-#: assets/block-builder/boxes/code/index.js:110
+#: assets/block-builder/boxes/code/index.js:298
 msgid "HTML + Handlebars"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:115
+#: assets/block-builder/boxes/code/index.js:302
 msgid "PHP"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:120
+#: assets/block-builder/boxes/code/index.js:306
 msgid "Theme Template"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:166
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:33
-msgid "How to use?"
+#: assets/block-builder/boxes/code/index.js:317
+msgid "CSS"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:175
-msgid "Simple text field example see here:"
+#: assets/block-builder/boxes/code/index.js:318
+msgid "JS"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:189
-msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
+#: assets/block-builder/boxes/code/index.js:323
+msgid "Select output method"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:195
-msgid "Note 2: supported custom PHP callback to output block"
+#: assets/block-builder/boxes/code/index.js:415
+msgid "Unified Block Code"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:216
-msgid "Single output code for Frontend and Editor"
+#: assets/block-builder/boxes/code/index.js:423
+#: assets/block-builder/boxes/code/index.js:444
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:19
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:19
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:19
+#: controls/checkbox/script.js:182
+#: controls/color/script.js:93
+#: controls/color/script.js:111
+#: controls/image/script.js:125
+#: controls/radio/script.js:84
+#: controls/repeater/script.js:331
+#: controls/select/script.js:110
+#: controls/select/script.js:132
+#: controls/toggle/script.js:60
+msgid "Yes"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:246
-msgid "To output block code, Lazy Blocks will look for template file in your theme directory:"
+#: assets/block-builder/boxes/code/index.js:436
+msgid "With Editor Style"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:271
-msgid "Read more:"
-msgstr ""
-
-#: assets/block-builder/boxes/code/index.js:277
-msgid "How to use theme template"
-msgstr ""
-
-#: assets/block-builder/boxes/code/index.js:292
+#: assets/block-builder/boxes/code/index.js:460
 msgid "Code Output in Editor"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:299
-msgid "Display Always"
+#: assets/block-builder/boxes/code/index.js:467
+msgid "Always Visible"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:303
-msgid "Display within `selected` block only"
+#: assets/block-builder/boxes/code/index.js:474
+msgid "Visible only when Selected"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:310
-msgid "Display within `unselected` block only"
+#: assets/block-builder/boxes/code/index.js:481
+msgid "Visible only when Not Selected"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:317
-msgid "Never Display"
+#: assets/block-builder/boxes/code/index.js:488
+#: assets/block-builder/boxes/controls/index.js:251
+msgid "Hidden"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:343
-msgid "Code"
+#: assets/block-builder/boxes/code/index.js:546
+msgid "Lazy Blocks will search for a template file in your theme directory. Read more:"
+msgstr ""
+
+#: assets/block-builder/boxes/code/index.js:555
+msgid "How to use theme template"
+msgstr ""
+
+#: assets/block-builder/boxes/code/index.js:566
+msgid "Simple text field example see here:"
+msgstr ""
+
+#: assets/block-builder/boxes/code/index.js:580
+msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
+msgstr ""
+
+#: assets/block-builder/boxes/code/index.js:586
+msgid "Note 2: supported custom PHP callback to output block"
 msgstr ""
 
 #: assets/block-builder/boxes/condition/index.js:67
@@ -582,55 +593,60 @@ msgstr ""
 msgid "(no label)"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:218
+#: assets/block-builder/boxes/controls/control.js:215
 msgid "(copy)"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:261
-msgid "Do you really want to remove control?"
-msgstr ""
-
-#: assets/block-builder/boxes/controls/control.js:295
+#: assets/block-builder/boxes/controls/control.js:249
 msgid "Remove"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:146
+#: assets/block-builder/boxes/controls/control.js:255
+msgid "Do you really want to remove control?"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/control.js:291
+#: assets/components/copied/index.js:14
+msgid "Copied!"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/control.js:292
+msgid "Copy Name"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/index.js:143
 msgid "Add Child Control"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:147
+#: assets/block-builder/boxes/controls/index.js:144
 msgid "Add Control"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:207
+#: assets/block-builder/boxes/controls/index.js:200
 msgid "Content Controls"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:238
+#: assets/block-builder/boxes/controls/index.js:231
 msgid "Inspector Controls"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:258
-msgid "Hidden"
-msgstr ""
-
-#: assets/block-builder/boxes/general/index.js:85
+#: assets/block-builder/boxes/general/index.js:56
 msgid "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:120
+#: assets/block-builder/boxes/general/index.js:100
 msgid "Select category"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:137
+#: assets/block-builder/boxes/general/index.js:115
 msgid "Keywords"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:138
+#: assets/block-builder/boxes/general/index.js:116
 msgid "Make it easier to discover a block with keyword aliases"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:148
+#: assets/block-builder/boxes/general/index.js:126
 msgid "Type keyword and push Enter"
 msgstr ""
 
@@ -662,24 +678,8 @@ msgstr ""
 msgid "Hide if block is not selected"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:19
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:19
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:19
-#: controls/checkbox/script.js:182
-#: controls/color/script.js:93
-#: controls/color/script.js:111
-#: controls/image/script.js:125
-#: controls/radio/script.js:84
-#: controls/repeater/script.js:331
-#: controls/select/script.js:110
-#: controls/select/script.js:132
-#: controls/toggle/script.js:60
-msgid "Yes"
-msgstr ""
-
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:44
-#: assets/block-builder/boxes/styles/index.js:35
+#: assets/block-builder/boxes/style-variations/index.js:35
 #: controls/checkbox/script.js:217
 #: controls/radio/script.js:111
 #: controls/select/component-choices.js:157
@@ -692,7 +692,7 @@ msgid "This is the name which will appear on the block edit control"
 msgstr ""
 
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/name.js:30
-#: assets/block-builder/boxes/styles/index.js:31
+#: assets/block-builder/boxes/style-variations/index.js:31
 msgid "Name"
 msgstr ""
 
@@ -716,6 +716,10 @@ msgstr ""
 msgid "Save in Meta"
 msgstr ""
 
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:33
+msgid "How to use?"
+msgstr ""
+
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:49
 msgid "Meta custom name (optional)"
 msgstr ""
@@ -728,15 +732,11 @@ msgstr ""
 msgid "WPML Translation"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:109
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:119
 msgid "Type"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:139
-msgid "Control Type"
-msgstr ""
-
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:147
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:168
 #: assets/components/icon-picker/index.js:89
 msgid "Type to Search…"
 msgstr ""
@@ -761,12 +761,12 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: assets/block-builder/boxes/styles/index.js:18
-msgid "+ Add Style"
+#: assets/block-builder/boxes/style-variations/index.js:18
+msgid "+ Add Style Variation"
 msgstr ""
 
-#: assets/block-builder/boxes/styles/index.js:21
-msgid "Add the style name, which will be used as class name on your block. For example, if you add the style with name `outline`, when user select this style, on the block will be added class name `is-style-outline`"
+#: assets/block-builder/boxes/style-variations/index.js:21
+msgid "Add the style variation name, which will be used as a class name on your block. For example, if you add a style variation with the name `outline`, when a user selects this style, the class name `is-style-outline` will be added to the block."
 msgstr ""
 
 #: assets/block-builder/boxes/supports-ghost-kit/index.js:52
@@ -908,13 +908,53 @@ msgstr ""
 msgid "Block Name"
 msgstr ""
 
+#: assets/block-builder/boxes/wizard/index.js:185
+msgid "Choose Template"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:193
+msgid "Set Block Title"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:201
+msgid "Set Additional Options"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:245
+msgid "Title"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:282
+msgid "Previous Step"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:287
+msgid "Skip Setup Wizard"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:301
+msgid "Finish"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/index.js:302
+msgid "Continue"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/templates.js:36
+msgid "Hero"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/templates.js:128
+msgid "Testimonials"
+msgstr ""
+
+#: assets/block-builder/boxes/wizard/templates.js:271
+msgid "Alert"
+msgstr ""
+
 #: assets/components/block-slug/index.js:58
 #: assets/components/pro-notice/index.js:34
 msgid "Upgrade Now"
-msgstr ""
-
-#: assets/components/copied/index.js:14
-msgid "Copied!"
 msgstr ""
 
 #: assets/components/document-tabs/index.js:76
@@ -1084,6 +1124,10 @@ msgstr ""
 
 #: controls/classic_editor/tmce.js:63
 msgid "Open Editor"
+msgstr ""
+
+#: controls/classic_editor/tmce.js:67
+msgid "Editor"
 msgstr ""
 
 #: controls/classic_editor/tmce.js:97

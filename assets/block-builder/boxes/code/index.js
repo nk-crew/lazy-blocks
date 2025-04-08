@@ -154,6 +154,20 @@ const proStylesComment = `/**
  * Learn more at: https://www.lazyblocks.com/pro/
  **/`;
 
+const proScriptComment = `/**
+ * ⭐ JavaScript Editor - Pro Feature ⭐
+ *
+ * Custom JavaScript functionality is available exclusively in the Lazy Blocks Pro.
+ *
+ * Upgrade to Lazy Blocks Pro to:
+ * - Add custom JavaScript to enhance your blocks
+ * - Create interactive elements and animations
+ * - Implement advanced block behaviors
+ * - Access event handling and DOM manipulation features
+ *
+ * Learn more at: https://www.lazyblocks.com/pro/
+ **/`;
+
 /**
  * Adds an appropriate icon to a filename based on its extension.
  *
@@ -231,6 +245,7 @@ export default function CustomCodeSettings(props) {
 	// sprintf( __( 'For block output used filter: %s', 'lazy-blocks' ), '<code>' . $block_slug . '/editor_callback</code>' )
 
 	const isStyleTab = tab.includes('style');
+	const isScriptTab = tab.includes('script');
 	const unifiedCode =
 		data.code_show_preview === 'never' || data.code_single_output;
 
@@ -269,6 +284,13 @@ export default function CustomCodeSettings(props) {
 		});
 	}
 
+	// Scripts.
+	tabs.push({
+		name: 'view-script',
+		title: addIconToFilename('view.js'),
+		className: 'lazyblocks-control-tabs-tab',
+	});
+
 	const settingsFilterData = { props, tab, setTab };
 
 	const outputMethodOpts = [
@@ -289,8 +311,12 @@ export default function CustomCodeSettings(props) {
 	// Output method settings.
 	const settingsOutputMethod = applyFilters(
 		`lzb.constructor.code-settings.output-method`,
-		isStyleTab ? (
-			<div style={{ padding: '0 12px' }}>{__('CSS', 'lazy-blocks')}</div>
+		isStyleTab || isScriptTab ? (
+			<div style={{ padding: '0 12px' }}>
+				{isStyleTab
+					? __('CSS', 'lazy-blocks')
+					: __('JS', 'lazy-blocks')}
+			</div>
 		) : (
 			<Select
 				id="lazyblocks-boxes-code-output-method"
@@ -589,7 +615,9 @@ export default function CustomCodeSettings(props) {
 					<div
 						className={classnames(
 							'lzb-block-builder-output-code-wrapper',
-							isStyleTab && 'lzb-block-builder-output-code-style'
+							isStyleTab && 'lzb-block-builder-output-code-style',
+							isScriptTab &&
+								'lzb-block-builder-output-code-script'
 						)}
 					>
 						<div className="lzb-block-builder-output-code-toolbar">
@@ -603,32 +631,51 @@ export default function CustomCodeSettings(props) {
 								// eslint-disable-next-line no-nested-ternary
 								isStyleTab
 									? 'css'
-									: data.code_output_method === 'html'
-										? 'handlebars'
-										: 'php'
+									: // eslint-disable-next-line no-nested-ternary
+										isScriptTab
+										? 'javascript'
+										: data.code_output_method === 'html'
+											? 'handlebars'
+											: 'php'
 							}
 							onChange={(value) =>
 								updateData({
+									// eslint-disable-next-line no-nested-ternary
 									[isStyleTab
 										? `style_${tab.replace('-style', '')}`
-										: `code_${tab}_html`]: value,
+										: isScriptTab
+											? `script_${tab.replace('-script', '')}`
+											: `code_${tab}_html`]: value,
 								})
 							}
 							value={
+								// eslint-disable-next-line no-nested-ternary
 								isStyleTab && !isPro
 									? proStylesComment
-									: data[
-											isStyleTab
-												? `style_${tab.replace('-style', '')}`
-												: `code_${tab}_html`
-										]
+									: isScriptTab && !isPro
+										? proScriptComment
+										: data[
+												// eslint-disable-next-line no-nested-ternary
+												isStyleTab
+													? `style_${tab.replace('-style', '')}`
+													: isScriptTab
+														? `script_${tab.replace(
+																'-script',
+																''
+															)}`
+														: `code_${tab}_html`
+											]
 							}
 							minLines={13}
 							maxLines={30}
 							editorProps={{
-								id: `lzb-editor-${isStyleTab ? 'css' : data.code_output_method}`,
+								// eslint-disable-next-line no-nested-ternary
+								id: `lzb-editor-${isStyleTab ? 'css' : isScriptTab ? 'js' : data.code_output_method}`,
 							}}
-							readOnly={isStyleTab && !isPro}
+							readOnly={
+								(isStyleTab && !isPro) ||
+								(isScriptTab && !isPro)
+							}
 						/>
 					</div>
 				</BaseControl>
@@ -665,8 +712,12 @@ export default function CustomCodeSettings(props) {
 │       │                            # Automatically enqueued if present
 │       │                            # Available in Pro version only
 │       │
-│       └── editor.css               # Editor-only styles (optional)
-│                                    # Automatically enqueued in editor only
+│       ├── editor.css               # Editor-only styles (optional)
+│       │                            # Automatically enqueued in editor only
+│       │                            # Available in Pro version only
+│       │
+│       └── view.js                  # Frontend-only JavaScript (optional)
+│                                    # Automatically enqueued on the frontend
 │                                    # Available in Pro version only
 │
 │   └── lazyblock-another-block/     # You can create multiple blocks

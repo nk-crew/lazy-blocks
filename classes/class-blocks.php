@@ -558,6 +558,8 @@ class LazyBlocks_Blocks {
 		'lazyblocks_style_block'                     => '',
 		'lazyblocks_style_editor'                    => '',
 
+		'lazyblocks_script_view'                     => '',
+
 		'lazyblocks_styles'                          => array(),
 
 		'lazyblocks_supports_multiple'               => 'true',
@@ -720,7 +722,8 @@ class LazyBlocks_Blocks {
 					'lazyblocks_code_editor_html' === $meta ||
 					'lazyblocks_code_frontend_html' === $meta ||
 					'lazyblocks_style_editor' === $meta ||
-					'lazyblocks_style_block' === $meta
+					'lazyblocks_style_block' === $meta ||
+					'lazyblocks_script_view' === $meta
 				) {
 					$new_meta_value = wp_slash( $data[ $meta ] );
 				} else {
@@ -986,6 +989,9 @@ class LazyBlocks_Blocks {
 				'style'          => array(
 					'block'  => $get_meta_value( 'lazyblocks_style_block' ),
 					'editor' => $get_meta_value( 'lazyblocks_style_editor' ),
+				),
+				'script'         => array(
+					'view' => $get_meta_value( 'lazyblocks_script_view' ),
 				),
 				'styles'         => $styles,
 				'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),

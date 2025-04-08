@@ -297,7 +297,7 @@
          "Import": [
             ""
          ],
-         "Styles": [
+         "Style Variations": [
             ""
          ],
          "Supports": [
@@ -321,15 +321,6 @@
          "Control \"%1$s\"": [
             ""
          ],
-         "Frontend": [
-            ""
-         ],
-         "Editor": [
-            ""
-         ],
-         "Output Method": [
-            ""
-         ],
          "HTML + Handlebars": [
             ""
          ],
@@ -339,7 +330,43 @@
          "Theme Template": [
             ""
          ],
-         "How to use?": [
+         "CSS": [
+            ""
+         ],
+         "JS": [
+            ""
+         ],
+         "Select output method": [
+            ""
+         ],
+         "Unified Block Code": [
+            ""
+         ],
+         "Yes": [
+            ""
+         ],
+         "With Editor Style": [
+            ""
+         ],
+         "Code Output in Editor": [
+            ""
+         ],
+         "Always Visible": [
+            ""
+         ],
+         "Visible only when Selected": [
+            ""
+         ],
+         "Visible only when Not Selected": [
+            ""
+         ],
+         "Hidden": [
+            ""
+         ],
+         "Lazy Blocks will search for a template file in your theme directory. Read more:": [
+            ""
+         ],
+         "How to use theme template": [
             ""
          ],
          "Simple text field example see here:": [
@@ -349,36 +376,6 @@
             ""
          ],
          "Note 2: supported custom PHP callback to output block": [
-            ""
-         ],
-         "Single output code for Frontend and Editor": [
-            ""
-         ],
-         "To output block code, Lazy Blocks will look for template file in your theme directory:": [
-            ""
-         ],
-         "Read more:": [
-            ""
-         ],
-         "How to use theme template": [
-            ""
-         ],
-         "Code Output in Editor": [
-            ""
-         ],
-         "Display Always": [
-            ""
-         ],
-         "Display within `selected` block only": [
-            ""
-         ],
-         "Display within `unselected` block only": [
-            ""
-         ],
-         "Never Display": [
-            ""
-         ],
-         "Code": [
             ""
          ],
          "Show in posts": [
@@ -396,10 +393,16 @@
          "(copy)": [
             ""
          ],
+         "Remove": [
+            ""
+         ],
          "Do you really want to remove control?": [
             ""
          ],
-         "Remove": [
+         "Copied!": [
+            ""
+         ],
+         "Copy Name": [
             ""
          ],
          "Add Child Control": [
@@ -412,9 +415,6 @@
             ""
          ],
          "Inspector Controls": [
-            ""
-         ],
-         "Hidden": [
             ""
          ],
          "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block": [
@@ -453,9 +453,6 @@
          "Hide if block is not selected": [
             ""
          ],
-         "Yes": [
-            ""
-         ],
          "Label": [
             ""
          ],
@@ -480,6 +477,9 @@
          "Save in Meta": [
             ""
          ],
+         "How to use?": [
+            ""
+         ],
          "Meta custom name (optional)": [
             ""
          ],
@@ -490,9 +490,6 @@
             ""
          ],
          "Type": [
-            ""
-         ],
-         "Control Type": [
             ""
          ],
          "Type to Search…": [
@@ -513,10 +510,10 @@
          "Width": [
             ""
          ],
-         "+ Add Style": [
+         "+ Add Style Variation": [
             ""
          ],
-         "Add the style name, which will be used as class name on your block. For example, if you add the style with name `outline`, when user select this style, on the block will be added class name `is-style-outline`": [
+         "Add the style variation name, which will be used as a class name on your block. For example, if you add a style variation with the name `outline`, when a user selects this style, the class name `is-style-outline` will be added to the block.": [
             ""
          ],
          "To see these settings in your block, you have to install Ghost Kit plugin.": [
@@ -621,10 +618,40 @@
          "Block Name": [
             ""
          ],
-         "Upgrade Now": [
+         "Choose Template": [
             ""
          ],
-         "Copied!": [
+         "Set Block Title": [
+            ""
+         ],
+         "Set Additional Options": [
+            ""
+         ],
+         "Title": [
+            ""
+         ],
+         "Previous Step": [
+            ""
+         ],
+         "Skip Setup Wizard": [
+            ""
+         ],
+         "Finish": [
+            ""
+         ],
+         "Continue": [
+            ""
+         ],
+         "Hero": [
+            ""
+         ],
+         "Testimonials": [
+            ""
+         ],
+         "Alert": [
+            ""
+         ],
+         "Upgrade Now": [
             ""
          ],
          "Control": [
@@ -737,6 +764,9 @@
             ""
          ],
          "Open Editor": [
+            ""
+         ],
+         "Editor": [
             ""
          ],
          "Save": [
