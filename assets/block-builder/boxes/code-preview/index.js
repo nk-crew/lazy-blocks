@@ -154,7 +154,12 @@ export default function CodePreview(props) {
 	useEffect(() => {
 		const attributes = getAttributes();
 
-		loadPreviewThrottle(data, attributes, codeContext);
+		let renderContext = 'frontend';
+		if (codeContext.includes('editor')) {
+			renderContext = 'editor';
+		}
+
+		loadPreviewThrottle(data, attributes, renderContext);
 	}, [data, codeContext, getAttributes, loadPreviewThrottle]);
 
 	return (

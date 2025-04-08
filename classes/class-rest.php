@@ -328,6 +328,9 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		$context    = $request->get_param( 'context' );
 		$attributes = $request->get_param( 'attributes' );
 
+		global $lzb_block_builder_preview;
+		$lzb_block_builder_preview = true;
+
 		// Prepare clean block data for marshal method.
 		// Add 'lazyblocks_' prefix to all block attributes.
 		$block_data = array();
