@@ -1619,11 +1619,11 @@ class LazyBlocks_Blocks {
 		}
 
 		// add filter for block output.
-		$result = apply_filters( 'lzb/block_render/output', $result, $attributes, $context );
+		$result = apply_filters( 'lzb/block_render/output', $result, $attributes, $context, $block );
 		// phpcs:ignore
-		$result = apply_filters( $block['slug'] . '/' . $context . '_output', $result, $attributes );
+		$result = apply_filters( $block['slug'] . '/' . $context . '_output', $result, $attributes, $block );
 		// phpcs:ignore
-		$result = apply_filters( $block['slug'] . '/output', $result, $attributes, $context );
+		$result = apply_filters( $block['slug'] . '/output', $result, $attributes, $context, $block );
 
 		return $result;
 	}
