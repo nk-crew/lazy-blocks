@@ -555,9 +555,8 @@ class LazyBlocks_Blocks {
 		'lazyblocks_code_frontend_html'              => '',
 		'lazyblocks_code_frontend_callback'          => '',
 
-		'lazyblocks_style_single_output'             => 'false',
+		'lazyblocks_style_block'                     => '',
 		'lazyblocks_style_editor'                    => '',
-		'lazyblocks_style_frontend'                  => '',
 
 		'lazyblocks_styles'                          => array(),
 
@@ -721,7 +720,7 @@ class LazyBlocks_Blocks {
 					'lazyblocks_code_editor_html' === $meta ||
 					'lazyblocks_code_frontend_html' === $meta ||
 					'lazyblocks_style_editor' === $meta ||
-					'lazyblocks_style_frontend' === $meta
+					'lazyblocks_style_block' === $meta
 				) {
 					$new_meta_value = wp_slash( $data[ $meta ] );
 				} else {
@@ -985,9 +984,8 @@ class LazyBlocks_Blocks {
 					'single_output'     => $get_meta_value( 'lazyblocks_code_single_output' ),
 				),
 				'style'          => array(
-					'editor'        => $get_meta_value( 'lazyblocks_style_editor' ),
-					'frontend'      => $get_meta_value( 'lazyblocks_style_frontend' ),
-					'single_output' => $get_meta_value( 'lazyblocks_style_single_output' ),
+					'block'  => $get_meta_value( 'lazyblocks_style_block' ),
+					'editor' => $get_meta_value( 'lazyblocks_style_editor' ),
 				),
 				'styles'         => $styles,
 				'condition'      => $get_meta_value( 'lazyblocks_condition_post_types' ) ? $get_meta_value( 'lazyblocks_condition_post_types' ) : array(),

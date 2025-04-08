@@ -132,7 +132,6 @@ export default function Wizard({ onClose }) {
 	function skipSetup() {
 		updateBlockData({
 			code_single_output: true,
-			style_single_output: true,
 			code_output_method: 'php',
 		});
 
@@ -150,12 +149,11 @@ export default function Wizard({ onClose }) {
 			description,
 			styles,
 			code_single_output: true,
-			style_single_output: true,
 		};
 
 		if (isPro) {
 			newData.code_frontend_html = templates[template].template;
-			newData.style_frontend = templates[template].style;
+			newData.style_block = templates[template].style;
 		} else {
 			newData.code_frontend_html = `${templates[template].template}
 

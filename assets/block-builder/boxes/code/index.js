@@ -184,6 +184,7 @@ export default function CustomCodeSettings(props) {
 
 	const [showInfo, setShowInfo] = useState(false);
 	const [showAdditional, setShowAdditional] = useState(false);
+	const [withEditorStyle, setWithEditorStyle] = useState(!!data.style_editor);
 	const [tab, setTab] = useState('frontend');
 
 	const { currentTheme } = useSelect(($select) => {
@@ -210,11 +211,11 @@ export default function CustomCodeSettings(props) {
 			setTab('frontend');
 		} else if (
 			tab === 'editor-style' &&
-			(data.code_show_preview === 'never' || data.style_single_output)
+			(data.code_show_preview === 'never' || !withEditorStyle)
 		) {
-			setTab('frontend-style');
+			setTab('block-style');
 		}
-	}, [data, tab]);
+	}, [data, tab, withEditorStyle]);
 
 	// add ajax check for filter
 	//
@@ -232,8 +233,6 @@ export default function CustomCodeSettings(props) {
 	const isStyleTab = tab.includes('style');
 	const unifiedCode =
 		data.code_show_preview === 'never' || data.code_single_output;
-	const unifiedStyle =
-		data.code_show_preview === 'never' || data.style_single_output;
 
 	// Code tabs.
 	const tabs = [
@@ -258,11 +257,11 @@ export default function CustomCodeSettings(props) {
 
 	// Styles.
 	tabs.push({
-		name: 'frontend-style',
-		title: addIconToFilename(unifiedStyle ? 'block.css' : 'frontend.css'),
+		name: 'block-style',
+		title: addIconToFilename('block.css'),
 		className: 'lazyblocks-control-tabs-tab',
 	});
-	if (!unifiedStyle) {
+	if (withEditorStyle) {
 		tabs.push({
 			name: 'editor-style',
 			title: addIconToFilename('editor.css'),
@@ -409,7 +408,7 @@ export default function CustomCodeSettings(props) {
 								<BaseControl
 									id="lazyblocks-settings-style-single-output"
 									label={__(
-										'Unified Block Style',
+										'With Editor Style',
 										'lazy-blocks'
 									)}
 									__nextHasNoMarginBottom
@@ -417,12 +416,13 @@ export default function CustomCodeSettings(props) {
 									<ToggleControl
 										id="lazyblocks-settings-style-single-output"
 										label={__('Yes', 'lazy-blocks')}
-										checked={data.style_single_output}
-										onChange={(value) =>
+										checked={withEditorStyle}
+										onChange={(value) => {
 											updateData({
-												style_single_output: value,
-											})
-										}
+												style_editor: '',
+											});
+											setWithEditorStyle(value);
+										}}
 										__nextHasNoMarginBottom
 									/>
 									<br />
