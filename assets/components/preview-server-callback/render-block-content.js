@@ -17,7 +17,11 @@ import { isEqual } from 'lodash';
 import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { InnerBlocks, useInnerBlocksProps } from '@wordpress/block-editor';
+import {
+	InnerBlocks,
+	useInnerBlocksProps,
+	useBlockProps,
+} from '@wordpress/block-editor';
 
 const CONVERT_ATTRIBUTES = {
 	classname: 'className',
@@ -93,12 +97,17 @@ function prepareAttributes(attrs) {
 		}
 	});
 
-	// Convert attributes to boolean.
 	Object.keys(newAttrs).forEach((name) => {
+		// Convert attributes to boolean.
 		if (newAttrs[name] === 'false') {
 			newAttrs[name] = false;
 		} else if (newAttrs[name] === 'true') {
 			newAttrs[name] = true;
+
+			// Convert class attribute to className.
+		} else if (name === 'class') {
+			newAttrs.className = newAttrs.className || newAttrs.class;
+			delete newAttrs.class;
 		}
 	});
 
@@ -109,7 +118,9 @@ export default function RenderBlockContent({
 	content,
 	props,
 	blockContentWrapper,
+	withBlockProps,
 }) {
+	const [blockAttrs, setBlockAttrs] = useState({});
 	const [innerBlocksOptions, setInnerBlocksOptions] = useState({});
 
 	const { hasChildBlocks } = useSelect(
@@ -125,6 +136,7 @@ export default function RenderBlockContent({
 		[props.clientId]
 	);
 
+	const blockProps = useBlockProps(withBlockProps ? blockAttrs : undefined);
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: innerBlocksOptions.className || 'lazyblock-inner-blocks',
@@ -186,6 +198,42 @@ export default function RenderBlockContent({
 					}
 
 					return <div {...innerBlocksProps} />;
+				}
+
+				// Handle useBlockProps
+				if (domNode.attribs && 'useblockprops' in domNode.attribs) {
+					// Get the existing attributes
+					const attrs = { ...domNode.attribs };
+					delete attrs.useblockprops;
+
+					// Get block props from WordPress with merged attributes
+					// const blockProps = useBlockProps(attrs);
+
+					const newBlockAttrs = {
+						...blockAttrs,
+						...prepareAttributes(attrs),
+					};
+
+					if (!isEqual(newBlockAttrs, blockAttrs)) {
+						setBlockAttrs(newBlockAttrs);
+					}
+
+					const Tag = domNode.name;
+
+					if (withBlockProps) {
+						return (
+							<Tag {...blockProps}>
+								{domToReact(domNode.children, options)}
+							</Tag>
+						);
+					}
+
+					// If we don't use block props, we need to remove the attributes
+					return (
+						<Tag {...blockAttrs}>
+							{domToReact(domNode.children, options)}
+						</Tag>
+					);
 				}
 
 				// Script element is not working by default, so we should add it manually.

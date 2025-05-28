@@ -1585,20 +1585,53 @@ class LazyBlocks_Blocks {
 			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
 		}
 
-		// add wrapper.
-		$allow_wrapper = apply_filters( 'lzb/block_render/allow_wrapper', $this->is_block_content_exists( $result ) && 'frontend' === $context, $attributes, $context );
-		// phpcs:ignore
-		$allow_wrapper = apply_filters( $block['slug'] . '/' . $context . '_allow_wrapper', $allow_wrapper, $attributes );
-		// phpcs:ignore
-		$allow_wrapper = apply_filters( $block['slug'] . '/allow_wrapper', $allow_wrapper, $attributes, $context );
+		$has_block_props = preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result );
 
-		if ( $allow_wrapper ) {
+		// If user didn't add useBlockProps, add our wrapper with useBlockProps attribute to parse it later.
+		if ( ! $has_block_props ) {
+			$result = '<div useBlockProps>' . $result . '</div>';
+		}
+
+		// Parse any useBlockProps (whether added by user or by us) on frontend only.
+		if ( 'frontend' === $context && preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result, $matches ) ) {
+			$tag_name     = isset( $matches[1] ) ? $matches[1] : 'div';
+			$before_attrs = isset( $matches[2] ) ? $matches[2] : '';
+			$after_attrs  = isset( $matches[3] ) ? $matches[3] : '';
+
+			// Combine all attributes.
+			$combined_attrs = $before_attrs . ' ' . $after_attrs;
+
+			// Extract attributes.
 			$array_atts = array(
 				'class' => '',
 			);
 
+			// Extract class attribute if exists.
+			$class_matches = array();
+			if ( preg_match( '/class=["\'](.*?)["\']/', $combined_attrs, $class_matches ) ) {
+				$array_atts['class'] = $class_matches[1];
+			}
+
+			// Extract id attribute if exists.
+			$id_matches = array();
+			if ( preg_match( '/id=["\'](.*?)["\']/', $combined_attrs, $id_matches ) ) {
+				$array_atts['id'] = $id_matches[1];
+			}
+
+			// Extract other attributes like data-* attributes.
+			$attr_matches = array();
+			if ( preg_match_all( '/(\w+(?:-\w+)*)=["\'](.*?)["\']/', $combined_attrs, $attr_matches, PREG_SET_ORDER ) ) {
+				foreach ( $attr_matches as $attr_match ) {
+					// Skip class and id as we've already handled them.
+					if ( 'class' !== $attr_match[1] && 'id' !== $attr_match[1] ) {
+						$array_atts[ $attr_match[1] ] = $attr_match[2];
+					}
+				}
+			}
+
+			// Add block unique class.
 			if ( isset( $attributes['blockUniqueClass'] ) && $attributes['blockUniqueClass'] ) {
-				$array_atts['class'] .= $attributes['blockUniqueClass'];
+				$array_atts['class'] .= ( $array_atts['class'] ? ' ' : '' ) . $attributes['blockUniqueClass'];
 			}
 
 			if ( isset( $attributes['align'] ) && $attributes['align'] ) {
@@ -1613,9 +1646,15 @@ class LazyBlocks_Blocks {
 				$array_atts['id'] = esc_attr( $attributes['anchor'] );
 			}
 
+			// Get block wrapper attributes.
 			$html_atts = get_block_wrapper_attributes( $array_atts );
 
-			$result = '<div ' . $html_atts . '>' . $result . '</div>';
+			// Replace the original tag with useBlockProps with the new one.
+			$result = preg_replace(
+				'/<' . $tag_name . '[^>]*\s+useBlockProps[^>]*>/',
+				'<' . $tag_name . ' ' . $html_atts . '>',
+				$result
+			);
 		}
 
 		// add filter for block output.

@@ -34,6 +34,7 @@ export default function PreviewServerCallback(props) {
 		urlQueryArgs = {},
 		onBeforeChange = () => {},
 		onChange = () => {},
+		withBlockProps = false,
 	} = props;
 
 	const [response, setResponse] = useState(null);
@@ -235,6 +236,7 @@ export default function PreviewServerCallback(props) {
 						content={response}
 						props={props}
 						blockContentWrapper={blockContentWrapper}
+						withBlockProps={withBlockProps}
 					/>
 				) : null}
 				{isLoading ? <Spinner /> : null}
@@ -243,8 +245,9 @@ export default function PreviewServerCallback(props) {
 	}
 
 	return (
-		<div ref={blockContentWrapper} className="lzb-preview-server">
+		<>
 			<PreviewErrorBoundary key={response}>{result}</PreviewErrorBoundary>
-		</div>
+			<link ref={blockContentWrapper} />
+		</>
 	);
 }
