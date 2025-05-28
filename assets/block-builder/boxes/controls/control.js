@@ -76,6 +76,7 @@ export default function Control(props) {
 		label,
 		name,
 		placeholder,
+		alongside_text,
 		save_in_meta,
 		save_in_meta_name,
 		type,
@@ -189,7 +190,7 @@ export default function Control(props) {
 			<div className="lzb-block-builder-controls-item-label">
 				{controlTypeData.restrictions.label_settings ? (
 					<>
-						{label || placeholder || (
+						{label || placeholder || alongside_text || (
 							<span className="lzb-block-builder-controls-item-label-no">
 								{__('(no label)', 'lazy-blocks')}
 							</span>

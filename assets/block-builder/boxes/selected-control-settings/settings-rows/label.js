@@ -33,7 +33,7 @@ export default function LabelRow(props) {
 		});
 	}
 
-	const { label = '' } = data;
+	const { label = '', placeholder, alongside_text: alongsideText } = data;
 
 	const controlTypeData = getControlTypeData(data.type);
 	const allowNameUpdate = controlTypeData.restrictions.name_settings;
@@ -46,6 +46,11 @@ export default function LabelRow(props) {
 					'This is the name which will appear on the block edit control',
 					'lazy-blocks'
 				)}
+				placeholder={
+					placeholder ||
+					alongsideText ||
+					__('(no label)', 'lazy-blocks')
+				}
 				value={label}
 				onChange={(value) => updateData({ label: value })}
 				onBlur={allowNameUpdate ? generateUniqueName : () => {}}
