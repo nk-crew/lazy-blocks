@@ -1559,6 +1559,11 @@ class LazyBlocks_Blocks {
 			}
 		}
 
+		// If block render is empty, we should not render anything.
+		if ( 'frontend' === $context && ! $this->is_block_content_exists( $result ) ) {
+			return null;
+		}
+
 		// Replace the <InnerBlocks /> with the block content.
 		if ( 'frontend' === $context ) {
 			// Add inner-blocks wrapper with class lazyblock-inner-blocks.
@@ -1583,11 +1588,6 @@ class LazyBlocks_Blocks {
 			$content = str_replace( '$', '\$', $content );
 
 			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
-		}
-
-		// If block render is empty, we should not render anything.
-		if ( 'frontend' === $context && ! $this->is_block_content_exists( $result ) ) {
-			return null;
 		}
 
 		$has_block_props = preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result );
