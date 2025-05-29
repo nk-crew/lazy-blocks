@@ -121,7 +121,7 @@ test.describe('editor block with Repeater control', () => {
 		await page.getByLabel('Text control nested in').click();
 		await page.getByLabel('Text control nested in').fill('Test Row 3');
 
-		// Backend render.
+		// Editor render.
 		await expect(
 			editor.canvas.locator('.lzb-preview-server').getByText('Test Row 1')
 		).toBeVisible();
@@ -134,6 +134,7 @@ test.describe('editor block with Repeater control', () => {
 			editor.canvas.locator('.lzb-preview-server').getByText('Test Row 3')
 		).toBeVisible();
 
+		// Publish.
 		await page
 			.getByRole('button', { name: 'Publish', exact: true })
 			.click();
