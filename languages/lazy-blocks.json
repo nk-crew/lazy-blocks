@@ -711,12 +711,12 @@
          "Some blocks on this page require attention before you can save.": [
             ""
          ],
+         "Edit Block": [
+            ""
+         ],
          "Validation failed. %d control require attention.": [
             "",
             "Validation failed. %d controls require attention."
-         ],
-         "Edit Block": [
-            ""
          ],
          "Remove post meta used by this block?": [
             ""

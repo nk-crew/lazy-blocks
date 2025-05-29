@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-08T11:57:37+00:00\n"
+"POT-Creation-Date: 2025-05-29T17:54:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lazy-blocks\n"
@@ -81,7 +81,7 @@ msgid "Duplicate “%1$s”"
 msgstr ""
 
 #: classes/class-blocks.php:363
-#: assets/block-builder/boxes/controls/control.js:210
+#: assets/block-builder/boxes/controls/control.js:211
 msgid "Duplicate"
 msgstr ""
 
@@ -132,7 +132,7 @@ msgstr ""
 
 #: classes/class-blocks.php:460
 #: assets/block-builder/boxes/general/index.js:213
-#: assets/block-builder/boxes/wizard/index.js:271
+#: assets/block-builder/boxes/wizard/index.js:276
 msgid "Description"
 msgstr ""
 
@@ -142,7 +142,7 @@ msgid "Basic"
 msgstr ""
 
 #: classes/class-controls.php:42
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:74
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:73
 msgid "Content"
 msgstr ""
 
@@ -209,29 +209,29 @@ msgstr ""
 msgid "Render callback is not specified."
 msgstr ""
 
-#: classes/class-templates.php:155
+#: classes/class-templates.php:168
 msgid "Templates"
 msgstr ""
 
-#: classes/class-templates.php:156
+#: classes/class-templates.php:169
 msgid "Template"
 msgstr ""
 
-#: classes/class-templates.php:298
+#: classes/class-templates.php:311
 #: assets/admin/templates/index.js:178
 msgid "Post Types"
 msgstr ""
 
-#: classes/class-templates.php:299
+#: classes/class-templates.php:312
 #: assets/admin/templates/index.js:193
 msgid "Template Lock"
 msgstr ""
 
-#: classes/class-templates.php:330
+#: classes/class-templates.php:343
 msgid "All"
 msgstr ""
 
-#: classes/class-templates.php:332
+#: classes/class-templates.php:345
 msgid "Insert"
 msgstr ""
 
@@ -443,12 +443,12 @@ msgstr ""
 msgid "Export Blocks"
 msgstr ""
 
-#: assets/admin/tools/tools.js:315
+#: assets/admin/tools/tools.js:316
 msgid "Export Templates"
 msgstr ""
 
-#: assets/admin/tools/tools.js:342
-#: assets/admin/tools/tools.js:371
+#: assets/admin/tools/tools.js:334
+#: assets/admin/tools/tools.js:363
 msgid "Import"
 msgstr ""
 
@@ -589,28 +589,29 @@ msgstr ""
 msgid "Loading…"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:194
+#: assets/block-builder/boxes/controls/control.js:195
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:52
 msgid "(no label)"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:215
+#: assets/block-builder/boxes/controls/control.js:216
 msgid "(copy)"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:249
+#: assets/block-builder/boxes/controls/control.js:250
 msgid "Remove"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:255
+#: assets/block-builder/boxes/controls/control.js:256
 msgid "Do you really want to remove control?"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:291
+#: assets/block-builder/boxes/controls/control.js:292
 #: assets/components/copied/index.js:14
 msgid "Copied!"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:292
+#: assets/block-builder/boxes/controls/control.js:293
 msgid "Copy Name"
 msgstr ""
 
@@ -704,7 +705,7 @@ msgstr ""
 msgid "Placement"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:99
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:98
 msgid "Inspector"
 msgstr ""
 
@@ -908,35 +909,35 @@ msgstr ""
 msgid "Block Name"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:185
+#: assets/block-builder/boxes/wizard/index.js:190
 msgid "Choose Template"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:193
+#: assets/block-builder/boxes/wizard/index.js:198
 msgid "Set Block Title"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:201
+#: assets/block-builder/boxes/wizard/index.js:206
 msgid "Set Additional Options"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:245
+#: assets/block-builder/boxes/wizard/index.js:250
 msgid "Title"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:282
+#: assets/block-builder/boxes/wizard/index.js:287
 msgid "Previous Step"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:287
+#: assets/block-builder/boxes/wizard/index.js:292
 msgid "Skip Setup Wizard"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:301
+#: assets/block-builder/boxes/wizard/index.js:306
 msgid "Finish"
 msgstr ""
 
-#: assets/block-builder/boxes/wizard/index.js:302
+#: assets/block-builder/boxes/wizard/index.js:307
 msgid "Continue"
 msgstr ""
 
@@ -975,12 +976,12 @@ msgid "Icon Picker"
 msgstr ""
 
 #. Translators: %s - error text.
-#: assets/components/preview-server-callback/index.js:224
+#: assets/components/preview-server-callback/index.js:225
 msgid "Error loading block preview: %s"
 msgstr ""
 
 #. Translators: %s - block slug.
-#: assets/components/preview-server-callback/render-block-content.js:155
+#: assets/components/preview-server-callback/render-block-content.js:167
 msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
 msgstr ""
 
@@ -1036,16 +1037,16 @@ msgstr ""
 msgid "Some blocks on this page require attention before you can save."
 msgstr ""
 
+#: assets/editor/blocks/main/edit.js:328
+msgid "Edit Block"
+msgstr ""
+
 #. translators: %d: number of child controls.
-#: assets/editor/blocks/main/edit.js:335
+#: assets/editor/blocks/main/edit.js:353
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
 msgstr[0] ""
 msgstr[1] ""
-
-#: assets/editor/blocks/main/edit.js:381
-msgid "Edit Block"
-msgstr ""
 
 #: assets/editor/plugins/remove-block-with-saved-post-meta/index.js:145
 msgid "Remove post meta used by this block?"
