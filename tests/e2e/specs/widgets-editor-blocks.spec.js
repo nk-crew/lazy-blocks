@@ -14,9 +14,7 @@ import { removeAllBlocks } from '../utils/remove-all-blocks';
 async function addBlock(page, blockName) {
 	await page.click('role=button[name="Add block"i]');
 
-	const searchBox = page.locator(
-		'role=searchbox[name="Search for blocks and patterns"i]'
-	);
+	const searchBox = page.getByPlaceholder('Search');
 
 	// Clear the input.
 	await searchBox.evaluate((node) => {

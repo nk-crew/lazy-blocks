@@ -31,32 +31,19 @@ test.describe('block builder create block', () => {
 	}) => {
 		await admin.createNewPost({
 			postType: 'lazyblocks',
-			title: 'Test Block',
+			title: '',
 			status: 'publish',
 		});
 
-		const slugInput = await page.$$(
-			'.lazyblocks-component-block-slug input'
-		);
+		await editor.canvas.getByRole('button', { name: 'Continue' }).click();
 
-		for (const input of slugInput) {
-			if (await input.isVisible()) {
-				await input.fill('test');
-				break; // Stop after finding and filling the first visible input
-			}
-		}
-
-		// Enable single code output.
 		await editor.canvas
-			.locator(
-				'label:has-text("Single output code for Frontend and Editor")'
-			)
-			.click();
+			.getByLabel('Title', { exact: true })
+			.fill('Test Block');
 
-		// Add block code.
-		await editor.canvas
-			.locator('textarea.ace_text-input')
-			.fill('Hello there');
+		await editor.canvas.getByRole('button', { name: 'Continue' }).click();
+
+		await editor.canvas.getByRole('button', { name: 'Finish' }).click();
 
 		// Publish post.
 		await page.locator('role=button[name="Publish"i]').click();

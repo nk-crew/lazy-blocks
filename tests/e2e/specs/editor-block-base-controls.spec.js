@@ -4,6 +4,7 @@
  */
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
+import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block with Base control', () => {
@@ -46,61 +47,40 @@ test.describe('editor block with Base control', () => {
 		}
 
 		// Generate Text control
-		await editor.canvas
-			.getByLabel('Inspector Controls')
-			.getByRole('button')
-			.click();
-
-		await editor.canvas.getByText('(no label)').click();
-
-		await page.getByLabel('Label').fill('Test Text Control');
-
-		await page.getByLabel('Type').click();
-
-		await page.getByRole('button', { name: 'Text', exact: true }).click();
+		await createControl({
+			page,
+			editor,
+			type: 'Text',
+			label: 'Test Text Control',
+		});
 
 		// Generate Select control
-		await editor.canvas
-			.getByLabel('Inspector Controls')
-			.locator('button.lzb-block-builder-controls-item-appender')
-			.click();
-
-		await editor.canvas.getByText('(no label)').click();
-
-		await page.getByLabel('Label').fill('Test Select Control');
-
-		await page.getByLabel('Type').click();
-
-		await page.getByRole('button', { name: 'Select' }).click();
-
-		await page.getByRole('button', { name: '+ Add Choice' }).click();
-		await page.getByPlaceholder('Label').fill('First Selector Choice');
-		await page.getByPlaceholder('Value').fill('first');
-		await page.getByRole('button', { name: '+ Add Choice' }).click();
-
-		await page
-			.getByPlaceholder('Label')
-			.nth(1)
-			.fill('Second Selector Choice');
-
-		await page.getByPlaceholder('Value').nth(1).fill('second');
+		await createControl({
+			page,
+			editor,
+			type: 'Select',
+			label: 'Test Select Control',
+			options: [
+				{ label: 'First Selector Choice', value: 'first' },
+				{ label: 'Second Selector Choice', value: 'second' },
+			],
+		});
 
 		await page.getByLabel('Both (Array)').check();
 
 		// Generate Checkbox control
+		await createControl({
+			page,
+			editor,
+			type: 'Checkbox',
+			label: 'Test Checkbox Control',
+			checked: true,
+		});
+
 		await editor.canvas
-			.getByLabel('Inspector Controls')
-			.locator('button.lzb-block-builder-controls-item-appender')
+			.locator('#lazyblocks-boxes-code-output-method')
 			.click();
-
-		await editor.canvas.getByText('(no label)').click();
-
-		await page.getByLabel('Label').fill('Test Checkbox Control');
-		await page.getByLabel('Type').click();
-		await page.getByRole('button', { name: 'Checkbox' }).click();
-		await page.locator('#lazyblocks-control-checkbox-checked').check();
-
-		await editor.canvas.getByLabel('PHP').click();
+		await editor.canvas.getByRole('option', { name: 'PHP' }).click();
 
 		// Publish post.
 		await page.locator('role=button[name="Save"i]').click();
@@ -155,13 +135,13 @@ test.describe('editor block with Base control', () => {
 		// Backend render.
 		await expect(
 			editor.canvas
-				.locator('.lzb-preview-server')
+				.getByLabel('Block: Test Base Block')
 				.getByText('Test text control is: Just a text')
 		).toBeVisible();
 
 		await expect(
 			editor.canvas
-				.locator('.lzb-preview-server')
+				.getByLabel('Block: Test Base Block')
 				.getByText(
 					'Test select control label is: Second Selector Choice'
 				)
@@ -169,13 +149,13 @@ test.describe('editor block with Base control', () => {
 
 		await expect(
 			editor.canvas
-				.locator('.lzb-preview-server')
+				.getByLabel('Block: Test Base Block')
 				.getByText('Test select control value is: second')
 		).toBeVisible();
 
 		await expect(
 			editor.canvas
-				.locator('.lzb-preview-server')
+				.getByLabel('Block: Test Base Block')
 				.getByText('The checkbox test control is False')
 		).toBeVisible();
 

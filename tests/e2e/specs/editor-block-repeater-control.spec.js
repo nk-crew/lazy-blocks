@@ -4,6 +4,7 @@
  */
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
+import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block with Repeater control', () => {
@@ -45,37 +46,30 @@ test.describe('editor block with Repeater control', () => {
 			await closeModal.click();
 		}
 
-		await editor.canvas
-			.getByLabel('Inspector Controls')
-			.getByRole('button')
-			.click();
-
-		await editor.canvas.getByText('(no label)').click();
-
-		await page.getByLabel('Label').fill('Test Repeater Control');
-
-		await page.getByLabel('Type').click();
-
-		await page.getByRole('button', { name: 'Repeater' }).click();
+		// Create.
+		await createControl({
+			page,
+			editor,
+			type: 'Repeater',
+			label: 'Test Repeater Control',
+		});
 
 		await editor.canvas
 			.getByRole('button', { name: 'Show Child Controls' })
 			.click();
 
+		await createControl({
+			page,
+			editor,
+			type: 'Text',
+			label: 'Text control nested in repeater',
+			isChild: true,
+		});
+
 		await editor.canvas
-			.locator('.lzb-block-builder-controls-item-appender')
-			.first()
+			.locator('#lazyblocks-boxes-code-output-method')
 			.click();
-
-		await editor.canvas.getByText('(no label)').click();
-
-		await page.getByLabel('Label').fill('Text control nested in repeater');
-
-		await page.getByLabel('Type').click();
-
-		await page.getByRole('button', { name: 'Text', exact: true }).click();
-
-		await editor.canvas.getByLabel('PHP').click();
+		await editor.canvas.getByRole('option', { name: 'PHP' }).click();
 
 		// Publish post.
 		await page.locator('role=button[name="Save"i]').click();

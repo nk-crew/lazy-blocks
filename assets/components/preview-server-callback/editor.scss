@@ -2,11 +2,13 @@
  * Better appender styles.
  */
 // We use these variables in order to support nested inner blocks.
+.wp-block:has(.lazyblock-inner-blocks),
 .lazyblock {
 	--lazyblocks-appender_pointer-events: initial;
 	--lazyblocks-appender-overlay_display: none;
 	--lazyblocks-appender-inserter_visibility: visible;
 }
+.wp-block:has(.lazyblock-inner-blocks):not(.is-selected),
 .lazyblock:not(.is-selected) {
 	--lazyblocks-appender_pointer-events: none;
 	--lazyblocks-appender-overlay_display: block;
