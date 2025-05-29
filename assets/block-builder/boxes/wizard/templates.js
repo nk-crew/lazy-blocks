@@ -24,10 +24,10 @@ export const templates = {
 				placement: 'inspector',
 			},
 		],
-		template: `<div class="basic-block">
+		template: `<div useBlockProps>
 	{{text-control}}
 </div>`,
-		style: `.basic-block {
+		style: `__BLOCK_CLASSNAME__ {
 	background-color: #f9f9f9;
 	padding: 20px;
 }`,
@@ -86,32 +86,32 @@ export const templates = {
 				group: 'styles',
 			},
 		],
-		template: `<div class="hero-block" style="background-color: {{background-color}}">
+		template: `<div useBlockProps style="background-color: {{background-color}}">
 	<div class="hero-content">
 		<h2 class="hero-title">{{hero-title}}</h2>
 		<div class="hero-subtitle">{{hero-subtitle}}</div>
 		<a href="{{button-url}}" class="hero-button">{{button-text}}</a>
 	</div>
 </div>`,
-		style: `.hero-block {
+		style: `__BLOCK_CLASSNAME__ {
 	padding: 60px 20px;
 	text-align: center;
 }
-.hero-content {
+__BLOCK_CLASSNAME__ .hero-content {
 	max-width: 800px;
 	margin: 0 auto;
 }
-.hero-title {
+__BLOCK_CLASSNAME__ .hero-title {
 	font-size: 36px;
 	margin-bottom: 20px;
 	color: #333;
 }
-.hero-subtitle {
+__BLOCK_CLASSNAME__ .hero-subtitle {
 	font-size: 18px;
 	margin-bottom: 30px;
 	color: #666;
 }
-.hero-button {
+__BLOCK_CLASSNAME__ .hero-button {
 	display: inline-block;
 	padding: 12px 24px;
 	background-color: #205cc7;
@@ -120,7 +120,7 @@ export const templates = {
 	border-radius: 4px;
 	font-weight: bold;
 }
-.hero-button:hover {
+__BLOCK_CLASSNAME__ .hero-button:hover {
 	background-color: #154eb4;
 }`,
 	},
@@ -192,7 +192,7 @@ export const templates = {
 				placement: 'inspector',
 			},
 		],
-		template: `<div class="testimonials-block">
+		template: `<div useBlockProps>
 	<h2 class="testimonials-title">{{testimonials-title}}</h2>
 
 	<div class="testimonials-container">
@@ -217,52 +217,52 @@ export const templates = {
 		{{/each}}
 	</div>
 </div>`,
-		style: `.testimonials-title {
+		style: `__BLOCK_CLASSNAME__ .testimonials-title {
 	text-align: center;
 	font-size: 32px;
 	margin-bottom: 40px;
 	color: #333;
 }
-.testimonials-container {
+__BLOCK_CLASSNAME__ .testimonials-container {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	gap: 30px;
 }
-.testimonial-item {
+__BLOCK_CLASSNAME__ .testimonial-item {
 	background-color: #f9f9f9;
 	border-radius: 8px;
 	padding: 25px;
 	box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
 }
-.testimonial-quote {
+__BLOCK_CLASSNAME__ .testimonial-quote {
 	font-style: italic;
 	margin-bottom: 20px;
 	color: #555;
 	line-height: 1.6;
 	font-size: 1.1rem;
 }
-.testimonial-author {
+__BLOCK_CLASSNAME__ .testimonial-author {
 	display: flex;
 	align-items: center;
 }
-.testimonial-avatar {
+__BLOCK_CLASSNAME__ .testimonial-avatar {
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
 	overflow: hidden;
 	margin-right: 15px;
 }
-.testimonial-avatar img {
+__BLOCK_CLASSNAME__ .testimonial-avatar img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
-.testimonial-name {
+__BLOCK_CLASSNAME__ .testimonial-name {
 	font-size: 1.2rem;
 	font-weight: 500;
 	color: #333;
 }
-.testimonial-position {
+__BLOCK_CLASSNAME__ .testimonial-position {
 	font-size: 0.9rem;
 	color: #777;
 }`,
@@ -323,7 +323,7 @@ export const templates = {
 				placement: 'inspector',
 			},
 		],
-		template: `<div class="alert-block {{#if dismissible}}alert-dismissible{{/if}}">
+		template: `<div useBlockProps{{#if dismissible}} class="alert-dismissible"{{/if}}>
 	<div class="alert-content">
 		{{#if alert-title}}<h4 class="alert-title">{{alert-title}}</h4>{{/if}}
 		<div class="alert-message">{{{alert-content}}}</div>
@@ -334,7 +334,7 @@ export const templates = {
 		</button>
 	{{/if}}
 </div>`,
-		style: `.alert-block {
+		style: `__BLOCK_CLASSNAME__ {
 	display: flex;
 	padding: 16px;
 	border-radius: 4px;
@@ -343,18 +343,18 @@ export const templates = {
     border-left: 4px solid #b3b3b3;
     color: #4a4a4a;
 }
-.alert-content {
+__BLOCK_CLASSNAME__ .alert-content {
 	flex-grow: 1;
 }
-.alert-title {
+__BLOCK_CLASSNAME__ .alert-title {
 	margin-top: 0;
 	margin-bottom: 8px;
 	font-size: 18px;
 }
-.alert-message p:last-child {
+__BLOCK_CLASSNAME__ .alert-message p:last-child {
 	margin-bottom: 0;
 }
-.alert-dismiss {
+__BLOCK_CLASSNAME__ .alert-dismiss {
 	background: none;
 	border: none;
 	cursor: pointer;
@@ -364,30 +364,30 @@ export const templates = {
 	right: 16px;
 	opacity: 0.7;
 }
-.alert-dismiss:hover {
+__BLOCK_CLASSNAME__ .alert-dismiss:hover {
 	opacity: 1;
 }
 
 /* Alert types */
-.is-style-info .alert-block {
+__BLOCK_CLASSNAME__.is-style-info {
 	background-color: #e8f4fd;
 	border-left: 4px solid #3498db;
 	color: #0c5d95;
 }
 
-.is-style-success .alert-block {
+__BLOCK_CLASSNAME__.is-style-success {
 	background-color: #e8f8f5;
 	border-left: 4px solid #2ecc71;
 	color: #1b7943;
 }
 
-.is-style-warning .alert-block {
+__BLOCK_CLASSNAME__.is-style-warning {
 	background-color: #fef9e7;
 	border-left: 4px solid #f1c40f;
 	color: #9a7d0a;
 }
 
-.is-style-error .alert-block {
+__BLOCK_CLASSNAME__.is-style-error {
 	background-color: #fdedec;
 	border-left: 4px solid #e74c3c;
 	color: #922b21;

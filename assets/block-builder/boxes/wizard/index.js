@@ -151,9 +151,14 @@ export default function Wizard({ onClose }) {
 			code_single_output: true,
 		};
 
+		const finalStyles = templates[template].style.replace(
+			/__BLOCK_CLASSNAME__/g,
+			`.wp-block-lazyblock-${slug}`
+		);
+
 		if (isPro) {
 			newData.code_frontend_html = templates[template].template;
-			newData.style_block = templates[template].style;
+			newData.style_block = finalStyles;
 		} else {
 			newData.code_frontend_html = `${templates[template].template}
 
@@ -163,7 +168,7 @@ export default function Wizard({ onClose }) {
 	for best practices and for better performance.
 }}
 <style>
-${templates[template].style}
+${finalStyles}
 </style>`;
 		}
 
