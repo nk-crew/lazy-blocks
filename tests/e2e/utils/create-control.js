@@ -5,6 +5,7 @@ export async function createControl({
 	label,
 	options,
 	checked,
+	placement = 'inspector',
 	isChild = false,
 }) {
 	// Create and select control.
@@ -45,5 +46,19 @@ export async function createControl({
 	// Set checked
 	if (checked) {
 		await page.locator('#lazyblocks-control-checkbox-checked').check();
+	}
+
+	// Set placement
+	if (placement === 'content') {
+		await page
+			.getByRole('button', { name: 'Content', exact: true })
+			.click();
+		await page
+			.getByRole('button', { name: 'Inspector', exact: true })
+			.click();
+	} else if (placement === 'both') {
+		await page
+			.getByRole('button', { name: 'Content', exact: true })
+			.click();
 	}
 }

@@ -48,7 +48,6 @@ export default function PlacementRow(props) {
 				<div />
 				<ButtonGroup>
 					<Button
-						id="lazyblocks-settings-row-placement"
 						variant={isContent ? 'primary' : ''}
 						isPressed={isContent}
 						disabled={
