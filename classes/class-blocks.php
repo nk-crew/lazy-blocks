@@ -1585,6 +1585,11 @@ class LazyBlocks_Blocks {
 			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
 		}
 
+		// If block render is empty, we should not render anything.
+		if ( 'frontend' === $context && ! $this->is_block_content_exists( $result ) ) {
+			return null;
+		}
+
 		$has_block_props = preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result );
 
 		// If user didn't add useBlockProps, add our wrapper with useBlockProps attribute to parse it later.
