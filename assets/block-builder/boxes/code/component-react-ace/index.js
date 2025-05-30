@@ -95,6 +95,44 @@ createControlsCompleter(
 // Add HTML autocompleter with control names.
 createControlsCompleter('lzb-editor-html', '\\{', (name) => `{{${name}}}`);
 
+// Add CSS autocompleter with block classname.
+addCompleter({
+	getCompletions(editor, session, pos, prefix, callback) {
+		try {
+			if (editor.id === 'lzb-editor-css') {
+				const { getBlockData } = select('lazy-blocks/block-data');
+				const blockData = getBlockData();
+
+				const result = [];
+
+				const slugWithNamespace = (
+					blockData.slug.includes('/')
+						? blockData.slug
+						: `lazyblock/${blockData.slug}`
+				).replace('/', '-');
+				const blockClassName = `wp-block-${slugWithNamespace}`;
+
+				result.push({
+					caption: `.${blockClassName}`,
+					value: `.${blockClassName}`,
+					meta: __('Block Class', 'lazy-blocks'),
+				});
+
+				if (result.length) {
+					callback(null, result);
+				} else {
+					callback(null, []);
+				}
+			}
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.error('Error in autocomplete:', error);
+			callback(null, []);
+		}
+	},
+	identifierRegexps: [new RegExp('.')],
+});
+
 /**
  * Code editor component that wraps AceEditor with additional functionality.
  *
