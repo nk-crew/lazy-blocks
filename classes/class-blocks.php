@@ -282,24 +282,24 @@ class LazyBlocks_Blocks {
 	/**
 	 * Disable month dropdown.
 	 *
-	 * @param array  $return disabled dropdown or no.
+	 * @param array  $result disabled dropdown or no.
 	 * @param object $post_type current post type name.
 	 *
 	 * @return array
 	 */
-	public function disable_months_dropdown( $return, $post_type ) {
-		return 'lazyblocks' === $post_type ? true : $return;
+	public function disable_months_dropdown( $result, $post_type ) {
+		return 'lazyblocks' === $post_type ? true : $result;
 	}
 
 	/**
 	 * Add active/inactive class to row
 	 *
 	 * @param array $classes Array of post classes.
-	 * @param array $class Additional classes added to the post.
+	 * @param array $classname Additional classes added to the post.
 	 * @param int   $post_id The post ID.
 	 * @return array
 	 */
-	public function post_class( $classes, $class, $post_id ) {
+	public function post_class( $classes, $classname, $post_id ) {
 		if ( ! is_admin() ) {
 			return $classes;
 		}
@@ -569,6 +569,12 @@ class LazyBlocks_Blocks {
 		'lazyblocks_supports_inserter'               => 'true',
 		'lazyblocks_supports_reusable'               => 'true',
 		'lazyblocks_supports_lock'                   => 'true',
+		'lazyblocks_supports_color'                  => 'false',
+		'lazyblocks_supports_layout'                 => 'false',
+		'lazyblocks_supports_shadow'                 => 'false',
+		'lazyblocks_supports_spacing'                => 'false',
+		'lazyblocks_supports_dimensions'             => 'false',
+		'lazyblocks_supports_typography'             => 'false',
 		'lazyblocks_supports_align'                  => array( 'wide', 'full' ),
 
 		// Ghost Kit Extensions.
@@ -672,7 +678,7 @@ class LazyBlocks_Blocks {
 
 		// Sanitize each part.
 		$sanitized_parts = array_map(
-			function( $part ) {
+			function ( $part ) {
 				return strtolower( preg_replace( '/[^a-zA-Z0-9\-]+/', '', $part ) );
 			},
 			$parts
@@ -906,7 +912,7 @@ class LazyBlocks_Blocks {
 	 * @param array $all_controls - control data.
 	 */
 	public function marshal_block_data_with_controls( $id = null, $post_title = null, $block_data = null, $all_controls = null ) {
-		$get_meta_value = function( $name ) use ( $id, $block_data ) {
+		$get_meta_value = function ( $name ) use ( $id, $block_data ) {
 			// Get post meta data.
 			if ( $id ) {
 				return $this->get_meta_value_by_id( $name, $id );
@@ -950,6 +956,34 @@ class LazyBlocks_Blocks {
 			'multiple'        => $get_meta_value( 'lazyblocks_supports_multiple' ),
 			'inserter'        => $get_meta_value( 'lazyblocks_supports_inserter' ),
 			'reusable'        => $get_meta_value( 'lazyblocks_supports_reusable' ),
+			'color'           => $get_meta_value( 'lazyblocks_supports_color' ),
+			'layout'          => $get_meta_value( 'lazyblocks_supports_layout' ),
+			'shadow'          => $get_meta_value( 'lazyblocks_supports_shadow' ),
+			'spacing'         => $get_meta_value( 'lazyblocks_supports_spacing' ),
+			'dimensions'      => $get_meta_value( 'lazyblocks_supports_dimensions' ),
+			'typography'      => ( function () use ( $get_meta_value ) {
+				$typography = $get_meta_value( 'lazyblocks_supports_typography' );
+
+				if ( is_array( $typography ) ) {
+					$experimental_map = array(
+						'fontFamily'     => '__experimentalFontFamily',
+						'textDecoration' => '__experimentalTextDecoration',
+						'fontStyle'      => '__experimentalFontStyle',
+						'fontWeight'     => '__experimentalFontWeight',
+						'letterSpacing'  => '__experimentalLetterSpacing',
+						'textTransform'  => '__experimentalTextTransform',
+						'writingMode'    => '__experimentalWritingMode',
+					);
+
+					foreach ( $experimental_map as $old_key => $new_key ) {
+						if ( isset( $typography[ $old_key ] ) ) {
+							$typography[ $new_key ] = $typography[ $old_key ];
+						}
+					}
+				}
+
+				return $typography;
+			} )(),
 			'lock'            => $get_meta_value( 'lazyblocks_supports_lock' ),
 			'align'           => $align,
 			'ghostkit'        => array(
@@ -1402,7 +1436,7 @@ class LazyBlocks_Blocks {
 				'api_version'     => 3,
 				'attributes'      => $attributes,
 				'supports'        => $block['supports'],
-				'render_callback' => function( $render_attributes, $render_content = null ) {
+				'render_callback' => function ( $render_attributes, $render_content = null ) {
 					// Usually this context is used to properly preload content in the Pro plugin.
 					$render_context = is_admin() ? 'editor' : 'frontend';
 
