@@ -71,19 +71,19 @@ export default function SupportsSettings(props) {
 	const { data, updateData } = props;
 
 	const {
-		supports_multiple: supportsMultiple,
-		supports_classname: supportsClassname,
+		supports_color: supportsColor,
+		supports_typography: supportsTypography,
+		supports_spacing: supportsSpacing,
+		supports_dimensions: supportsDimensions,
+		supports_shadow: supportsShadow,
+		supports_layout: supportsLayout,
+		supports_align: supportsAlign,
 		supports_anchor: supportsAnchor,
+		supports_classname: supportsClassname,
+		supports_multiple: supportsMultiple,
 		supports_inserter: supportsInserter,
 		supports_reusable: supportsReusable,
 		supports_lock: supportsLock,
-		supports_color: supportsColor,
-		supports_layout: supportsLayout,
-		supports_shadow: supportsShadow,
-		supports_spacing: supportsSpacing,
-		supports_dimensions: supportsDimensions,
-		supports_typography: supportsTypography,
-		supports_align: supportsAlign,
 	} = data;
 
 	const colorOptions = [
@@ -126,63 +126,6 @@ export default function SupportsSettings(props) {
 
 	return (
 		<>
-			<ToggleControl
-				label={__('Multiple', 'lazy-blocks')}
-				help={__(
-					'Allow use block multiple times on the page.',
-					'lazy-blocks'
-				)}
-				checked={supportsMultiple}
-				onChange={(value) => updateData({ supports_multiple: value })}
-				__nextHasNoMarginBottom
-			/>
-			<ToggleControl
-				label={__('Class Name', 'lazy-blocks')}
-				help={__(
-					'Additional field to add custom class name.',
-					'lazy-blocks'
-				)}
-				checked={supportsClassname}
-				onChange={(value) => updateData({ supports_classname: value })}
-				__nextHasNoMarginBottom
-			/>
-			<ToggleControl
-				label={__('Anchor', 'lazy-blocks')}
-				help={__(
-					'Additional field to add block ID attribute.',
-					'lazy-blocks'
-				)}
-				checked={supportsAnchor}
-				onChange={(value) => updateData({ supports_anchor: value })}
-				__nextHasNoMarginBottom
-			/>
-			<ToggleControl
-				label={__('Inserter', 'lazy-blocks')}
-				help={__('Show block in blocks inserter.', 'lazy-blocks')}
-				checked={supportsInserter}
-				onChange={(value) => updateData({ supports_inserter: value })}
-				__nextHasNoMarginBottom
-			/>
-			<ToggleControl
-				label={__('Reusable', 'lazy-blocks')}
-				help={__(
-					'Allow converting block into reusable block.',
-					'lazy-blocks'
-				)}
-				checked={supportsReusable}
-				onChange={(value) => updateData({ supports_reusable: value })}
-				__nextHasNoMarginBottom
-			/>
-			<ToggleControl
-				label={__('Lock', 'lazy-blocks')}
-				help={__(
-					'Allow block locking/unlocking by a user.',
-					'lazy-blocks'
-				)}
-				checked={supportsLock}
-				onChange={(value) => updateData({ supports_lock: value })}
-				__nextHasNoMarginBottom
-			/>
 			<ToggleControl
 				label={__('Color', 'lazy-blocks')}
 				help={__(
@@ -231,64 +174,52 @@ export default function SupportsSettings(props) {
 					</BaseControl>
 				)}
 			<ToggleControl
-				label={__('Layout', 'lazy-blocks')}
+				label={__('Typography', 'lazy-blocks')}
 				help={__(
-					'Additional fields to manage block layout.',
+					'Additional fields to manage block typography.',
 					'lazy-blocks'
 				)}
-				checked={!!supportsLayout && supportsLayout !== 'false'}
+				checked={!!supportsTypography && supportsTypography !== 'false'}
 				onChange={(value) => {
 					if (value) {
-						const defaultLayout = {};
-						layoutOptions.forEach((option) => {
-							defaultLayout[option] = [
-								'allowEditing',
-								'allowInheriting',
-								'allowVerticalAlignment',
-								'allowJustification',
-								'allowOrientation',
-								'allowCustomContentAndWideSize',
+						const defaultTypography = {};
+						typographyOptions.forEach((option) => {
+							defaultTypography[option] = [
+								'fontSize',
+								'lineHeight',
+								'textAlign',
 							].includes(option);
 						});
-						updateData({ supports_layout: defaultLayout });
+						updateData({ supports_typography: defaultTypography });
 					} else {
-						updateData({ supports_layout: false });
+						updateData({ supports_typography: false });
 					}
 				}}
 				__nextHasNoMarginBottom
 			/>
-			{supportsLayout &&
-				supportsLayout !== 'false' &&
-				typeof supportsLayout === 'object' && (
+			{supportsTypography &&
+				supportsTypography !== 'false' &&
+				typeof supportsTypography === 'object' && (
 					<BaseControl>
 						<Select
 							isMulti
 							placeholder={__(
-								'Select layout options',
+								'Select typography options',
 								'lazy-blocks'
 							)}
-							options={createSelectOptions(layoutOptions)}
-							value={objectToSelectValues(supportsLayout)}
+							options={createSelectOptions(typographyOptions)}
+							value={objectToSelectValues(supportsTypography)}
 							onChange={(value) =>
 								updateObjectSupports(
-									layoutOptions,
+									typographyOptions,
 									value,
 									updateData,
-									'supports_layout'
+									'supports_typography'
 								)
 							}
 						/>
 					</BaseControl>
 				)}
-			<ToggleControl
-				label={__('Shadow', 'lazy-blocks')}
-				help={__(
-					'Additional fields to manage block shadow.',
-					'lazy-blocks'
-				)}
-				checked={supportsShadow}
-				onChange={(value) => updateData({ supports_shadow: value })}
-			/>
 			<ToggleControl
 				label={__('Spacing', 'lazy-blocks')}
 				help={__(
@@ -382,47 +313,59 @@ export default function SupportsSettings(props) {
 					</BaseControl>
 				)}
 			<ToggleControl
-				label={__('Typography', 'lazy-blocks')}
+				label={__('Shadow', 'lazy-blocks')}
 				help={__(
-					'Additional fields to manage block typography.',
+					'Additional fields to manage block shadow.',
 					'lazy-blocks'
 				)}
-				checked={!!supportsTypography && supportsTypography !== 'false'}
+				checked={supportsShadow}
+				onChange={(value) => updateData({ supports_shadow: value })}
+			/>
+			<ToggleControl
+				label={__('Layout', 'lazy-blocks')}
+				help={__(
+					'Additional fields to manage block layout.',
+					'lazy-blocks'
+				)}
+				checked={!!supportsLayout && supportsLayout !== 'false'}
 				onChange={(value) => {
 					if (value) {
-						const defaultTypography = {};
-						typographyOptions.forEach((option) => {
-							defaultTypography[option] = [
-								'fontSize',
-								'lineHeight',
-								'textAlign',
+						const defaultLayout = {};
+						layoutOptions.forEach((option) => {
+							defaultLayout[option] = [
+								'allowEditing',
+								'allowInheriting',
+								'allowVerticalAlignment',
+								'allowJustification',
+								'allowOrientation',
+								'allowCustomContentAndWideSize',
 							].includes(option);
 						});
-						updateData({ supports_typography: defaultTypography });
+						updateData({ supports_layout: defaultLayout });
 					} else {
-						updateData({ supports_typography: false });
+						updateData({ supports_layout: false });
 					}
 				}}
 				__nextHasNoMarginBottom
 			/>
-			{supportsTypography &&
-				supportsTypography !== 'false' &&
-				typeof supportsTypography === 'object' && (
+			{supportsLayout &&
+				supportsLayout !== 'false' &&
+				typeof supportsLayout === 'object' && (
 					<BaseControl>
 						<Select
 							isMulti
 							placeholder={__(
-								'Select typography options',
+								'Select layout options',
 								'lazy-blocks'
 							)}
-							options={createSelectOptions(typographyOptions)}
-							value={objectToSelectValues(supportsTypography)}
+							options={createSelectOptions(layoutOptions)}
+							value={objectToSelectValues(supportsLayout)}
 							onChange={(value) =>
 								updateObjectSupports(
-									typographyOptions,
+									layoutOptions,
 									value,
 									updateData,
-									'supports_typography'
+									'supports_layout'
 								)
 							}
 						/>
@@ -431,7 +374,6 @@ export default function SupportsSettings(props) {
 			<BaseControl
 				id="lazyblocks-supports-align"
 				label={__('Align', 'lazy-blocks')}
-				__nextHasNoMarginBottom
 			>
 				<Select
 					id="lazyblocks-supports-align"
@@ -462,6 +404,63 @@ export default function SupportsSettings(props) {
 					}}
 				/>
 			</BaseControl>
+			<ToggleControl
+				label={__('Anchor', 'lazy-blocks')}
+				help={__(
+					'Additional field to add block ID attribute.',
+					'lazy-blocks'
+				)}
+				checked={supportsAnchor}
+				onChange={(value) => updateData({ supports_anchor: value })}
+				__nextHasNoMarginBottom
+			/>
+			<ToggleControl
+				label={__('Class Name', 'lazy-blocks')}
+				help={__(
+					'Additional field to add custom class name.',
+					'lazy-blocks'
+				)}
+				checked={supportsClassname}
+				onChange={(value) => updateData({ supports_classname: value })}
+				__nextHasNoMarginBottom
+			/>
+			<ToggleControl
+				label={__('Multiple', 'lazy-blocks')}
+				help={__(
+					'Allow use block multiple times on the page.',
+					'lazy-blocks'
+				)}
+				checked={supportsMultiple}
+				onChange={(value) => updateData({ supports_multiple: value })}
+				__nextHasNoMarginBottom
+			/>
+			<ToggleControl
+				label={__('Inserter', 'lazy-blocks')}
+				help={__('Show block in blocks inserter.', 'lazy-blocks')}
+				checked={supportsInserter}
+				onChange={(value) => updateData({ supports_inserter: value })}
+				__nextHasNoMarginBottom
+			/>
+			<ToggleControl
+				label={__('Reusable', 'lazy-blocks')}
+				help={__(
+					'Allow converting block into reusable block.',
+					'lazy-blocks'
+				)}
+				checked={supportsReusable}
+				onChange={(value) => updateData({ supports_reusable: value })}
+				__nextHasNoMarginBottom
+			/>
+			<ToggleControl
+				label={__('Lock', 'lazy-blocks')}
+				help={__(
+					'Allow block locking/unlocking by a user.',
+					'lazy-blocks'
+				)}
+				checked={supportsLock}
+				onChange={(value) => updateData({ supports_lock: value })}
+				__nextHasNoMarginBottom
+			/>
 		</>
 	);
 }

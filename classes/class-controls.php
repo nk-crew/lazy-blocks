@@ -111,7 +111,7 @@ class LazyBlocks_Controls {
 			'repeater',
 		);
 
-		$all_controls = glob( dirname( dirname( __FILE__ ) ) . '/controls/*/index.php' );
+		$all_controls = glob( dirname( __DIR__ ) . '/controls/*/index.php' );
 
 		// include sorted controls.
 		foreach ( $sort as $file_name ) {

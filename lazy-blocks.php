@@ -333,14 +333,14 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 			// Customize the url setting to fix incorrect asset URLs.
 			add_filter(
 				'lzb/plugin_url',
-				function() use ( $url ) {
+				function () use ( $url ) {
 					return $url . ( lazyblocks()->is_pro() ? 'core-plugin/' : '' );
 				}
 			);
 
 			add_filter(
 				'lzb_pro/plugin_url',
-				function() use ( $url ) {
+				function () use ( $url ) {
 					return $url;
 				}
 			);

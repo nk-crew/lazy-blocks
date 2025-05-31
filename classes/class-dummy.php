@@ -57,21 +57,21 @@ class LazyBlocks_Dummy {
 			)
 		);
 
-		$code = '<?php if ( isset( $attributes[\'image\'][\'url\'] ) ) : ?>
-<p>
-	<img src="<?php echo esc_url( $attributes[\'image\'][\'url\'] ); ?>" alt="<?php echo esc_attr( $attributes[\'image\'][\'alt\'] ); ?>">
-</p>
+		$code = '{{#if image.url}}
+  <p>
+  	<img src="{{image.url}}" alt="{{image.alt}}">
+  </p>
 
-<?php if ( isset( $attributes[\'button-label\'] ) ) : ?>
-	<p>
-	<a href="<?php echo esc_url( $attributes[\'button-url\'] ); ?>" class="button button-primary">
-		<?php echo esc_html( $attributes[\'button-label\'] ); ?>
-	</a>
-	</p>
-<?php endif; ?>
-<?php else: ?>
-<p>Image is required to show this block content.</p>
-<?php endif; ?>';
+  {{#if button-label}}
+  	<p>
+  	<a href="{{button-url}}" class="button button-primary">
+  		{{button-label}}
+  	</a>
+  	</p>
+  {{/if}}
+{{else}}
+  <p>Image is required to show this block content.</p>
+{{/if}}';
 
 		if ( $post_id ) {
 			lazyblocks()->blocks()->save_meta_boxes(
@@ -132,7 +132,7 @@ class LazyBlocks_Dummy {
 					'lazyblocks_description'            => esc_html__( 'Example block that helps you to get started with Lazy Blocks plugin', 'lazy-blocks' ),
 					'lazyblocks_keywords'               => 'example,sample,template',
 					'lazyblocks_category'               => 'design',
-					'lazyblocks_code_output_method'     => 'php',
+					'lazyblocks_code_output_method'     => 'html',
 					'lazyblocks_code_show_preview'      => 'always',
 					'lazyblocks_code_single_output'     => 'true',
 					'lazyblocks_code_frontend_html'     => $code,
