@@ -108,6 +108,25 @@ function prepareAttributes(attrs) {
 		} else if (name === 'class') {
 			newAttrs.className = newAttrs.className || newAttrs.class;
 			delete newAttrs.class;
+
+			// Convert string style attribute to React style object.
+		} else if (name === 'style' && typeof newAttrs[name] === 'string') {
+			const styleObj = {};
+			newAttrs[name].split(';').forEach((declaration) => {
+				const [property, value] = declaration
+					.split(':')
+					.map((s) => s.trim());
+
+				if (property && value) {
+					// Convert kebab-case to camelCase
+					const camelProperty = property.replace(
+						/-([a-z])/g,
+						(match, letter) => letter.toUpperCase()
+					);
+					styleObj[camelProperty] = value;
+				}
+			});
+			newAttrs[name] = styleObj;
 		}
 	});
 
@@ -205,9 +224,6 @@ export default function RenderBlockContent({
 					// Get the existing attributes
 					const attrs = { ...domNode.attribs };
 					delete attrs.useblockprops;
-
-					// Get block props from WordPress with merged attributes
-					// const blockProps = useBlockProps(attrs);
 
 					const newBlockAttrs = {
 						...blockAttrs,
