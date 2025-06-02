@@ -2,23 +2,23 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 3.8.3\n"
+"Project-Id-Version: Lazy Blocks 4.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-29T17:54:03+00:00\n"
+"POT-Creation-Date: 2025-06-02T12:15:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
 #: lazy-blocks.php
 #: classes/class-admin.php:252
 #: classes/class-blocks.php:187
-#: classes/class-blocks.php:1188
+#: classes/class-blocks.php:1222
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -77,6 +77,7 @@ msgstr ""
 
 #. translators: %1$ - post title.
 #: classes/class-blocks.php:360
+#, php-format
 msgid "Duplicate “%1$s”"
 msgstr ""
 
@@ -87,6 +88,7 @@ msgstr ""
 
 #. translators: %1$ - post title.
 #: classes/class-blocks.php:374
+#, php-format
 msgid "Export “%1$s”"
 msgstr ""
 
@@ -97,11 +99,13 @@ msgstr ""
 
 #. translators: %1$ - post title.
 #: classes/class-blocks.php:389
+#, php-format
 msgid "Deactivate “%1$s”"
 msgstr ""
 
 #. translators: %1$ - post title.
 #: classes/class-blocks.php:389
+#, php-format
 msgid "Activate “%1$s”"
 msgstr ""
 
@@ -155,6 +159,7 @@ msgid "Advanced"
 msgstr ""
 
 #: classes/class-controls.php:45
+#: assets/block-builder/boxes/supports/index.js:325
 msgid "Layout"
 msgstr ""
 
@@ -172,6 +177,7 @@ msgstr ""
 
 #. translators: 1: WordPress hook name, 2: Version number, 3: Alternative hook name.
 #: classes/class-deprecated.php:131
+#, php-format
 msgid "Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead."
 msgstr ""
 
@@ -243,16 +249,19 @@ msgstr ""
 
 #. translators: %s - block title.
 #: classes/class-tools.php:330
+#, php-format
 msgid "Block \"%s\" activated successfully."
 msgstr ""
 
 #. translators: %s - block title.
 #: classes/class-tools.php:330
+#, php-format
 msgid "Block \"%s\" deactivated successfully."
 msgstr ""
 
 #. translators: %s - number of blocks.
 #: classes/class-tools.php:333
+#, php-format
 msgid "Activated %s block"
 msgid_plural "Activated %s blocks"
 msgstr[0] ""
@@ -260,6 +269,7 @@ msgstr[1] ""
 
 #. translators: %s - number of blocks.
 #: classes/class-tools.php:333
+#, php-format
 msgid "Deactivated %s block"
 msgid_plural "Deactivated %s blocks"
 msgstr[0] ""
@@ -283,6 +293,7 @@ msgstr ""
 
 #. translators: %s - number of blocks.
 #: classes/class-tools.php:438
+#, php-format
 msgid "Imported %s block"
 msgid_plural "Imported %s blocks"
 msgstr[0] ""
@@ -290,6 +301,7 @@ msgstr[1] ""
 
 #. translators: %s - number of templates.
 #: classes/class-tools.php:458
+#, php-format
 msgid "Imported %s template"
 msgid_plural "Imported %s templates"
 msgstr[0] ""
@@ -297,11 +309,13 @@ msgstr[1] ""
 
 #. translators: %s - post type.
 #: classes/class-tools.php:634
+#, php-format
 msgid "Template for these post types '%s' already exists."
 msgstr ""
 
 #. translators: %s - post title.
 #: classes/class-tools.php:680
+#, php-format
 msgid "Added new block '%s'."
 msgstr ""
 
@@ -318,7 +332,7 @@ msgid "Classic Editor (WYSIWYG)"
 msgstr ""
 
 #: controls/code_editor/index.php:23
-#: assets/block-builder/boxes/code/component-react-ace/index.js:127
+#: assets/block-builder/boxes/code/component-react-ace/index.js:165
 msgid "Code Editor"
 msgstr ""
 
@@ -400,6 +414,7 @@ msgstr ""
 
 #. translators: %1$s - template file path.
 #: templates/template-not-found.php:19
+#, php-format
 msgid "Template file <code>%1$s</code> not found."
 msgstr ""
 
@@ -483,7 +498,12 @@ msgstr ""
 
 #. translators: %1$s - control name.
 #: assets/block-builder/boxes/code/component-react-ace/index.js:62
+#, js-format
 msgid "Control \"%1$s\""
+msgstr ""
+
+#: assets/block-builder/boxes/code/component-react-ace/index.js:118
+msgid "Block Class"
 msgstr ""
 
 #: assets/block-builder/boxes/code/index.js:298
@@ -847,62 +867,127 @@ msgstr ""
 msgid "Insert custom HTML attributes with custom content."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:29
+#: assets/block-builder/boxes/supports/index.js:130
+#: controls/color/script.js:134
+msgid "Color"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:131
+msgid "Additional fields to manage colors in the block."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:159
+msgid "Select color options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:177
+msgid "Typography"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:178
+msgid "Additional fields to manage block typography."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:206
+msgid "Select typography options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:224
+msgid "Spacing"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:225
+msgid "Additional fields to manage block spacings."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:252
+msgid "Select spacing options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:270
+msgid "Dimensions"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:271
+msgid "Additional fields to manage block dimensions."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:298
+msgid "Select dimensions options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:316
+msgid "Shadow"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:317
+msgid "Additional fields to manage block shadow."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:326
+msgid "Additional fields to manage block layout."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:357
+msgid "Select layout options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:376
+msgid "Align"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:381
+msgid "Select align options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:408
+msgid "Anchor"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:409
+msgid "Additional field to add block ID attribute."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:418
+msgid "Class Name"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:419
+msgid "Additional field to add custom class name."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:428
 #: controls/checkbox/script.js:174
 #: controls/select/script.js:124
 msgid "Multiple"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:30
+#: assets/block-builder/boxes/supports/index.js:429
 msgid "Allow use block multiple times on the page."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:39
-msgid "Class Name"
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:40
-msgid "Additional field to add custom class name."
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:49
-msgid "Anchor"
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:50
-msgid "Additional field to add block ID attribute."
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:59
+#: assets/block-builder/boxes/supports/index.js:438
 msgid "Inserter"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:60
+#: assets/block-builder/boxes/supports/index.js:439
 msgid "Show block in blocks inserter."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:66
+#: assets/block-builder/boxes/supports/index.js:445
 msgid "Reusable"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:67
+#: assets/block-builder/boxes/supports/index.js:446
 msgid "Allow converting block into reusable block."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:76
+#: assets/block-builder/boxes/supports/index.js:455
 msgid "Lock"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:77
+#: assets/block-builder/boxes/supports/index.js:456
 msgid "Allow block locking/unlocking by a user."
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:87
-msgid "Align"
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:93
-msgid "Select align options"
 msgstr ""
 
 #: assets/block-builder/boxes/title/index.js:74
@@ -977,11 +1062,13 @@ msgstr ""
 
 #. Translators: %s - error text.
 #: assets/components/preview-server-callback/index.js:225
+#, js-format
 msgid "Error loading block preview: %s"
 msgstr ""
 
 #. Translators: %s - block slug.
-#: assets/components/preview-server-callback/render-block-content.js:167
+#: assets/components/preview-server-callback/render-block-content.js:186
+#, js-format
 msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
 msgstr ""
 
@@ -1043,6 +1130,7 @@ msgstr ""
 
 #. translators: %d: number of child controls.
 #: assets/editor/blocks/main/edit.js:353
+#, js-format
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
 msgstr[0] ""
@@ -1153,10 +1241,6 @@ msgstr ""
 
 #: controls/color/script.js:104
 msgid "Display color palette with predefined colors"
-msgstr ""
-
-#: controls/color/script.js:134
-msgid "Color"
 msgstr ""
 
 #: controls/color/script.js:138
@@ -1316,6 +1400,7 @@ msgstr ""
 
 #. translators: %d: number of child controls.
 #: controls/repeater/script.js:198
+#, js-format
 msgid "Show %d Child Control"
 msgid_plural "Show %d Child Controls"
 msgstr[0] ""

@@ -4,9 +4,9 @@
 * Tags: gutenberg, blocks, custom, meta, fields
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 6.2
-* Tested up to: 6.7
+* Tested up to: 6.8
 * Requires PHP: 7.2
-* Stable tag: 3.8.3
+* Stable tag: 4.0.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -130,11 +130,39 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Screenshots
 
-1. Block Builder
-2. Custom Blocks with Example Controls
-3. Posts Templates
+1. Custom block example in Block Builder UI
+2. Custom block example in WordPress editor
+3. Available block controls
 
 ## Changelog
+
+= 4.0.0 - June 2, 2025 =
+
+* deprecated Templates feature. You need to migrate to the WordPress FSE theme and use Template editor natively. Learn more -> [https://wordpress.org/documentation/article/template-editor/](https://wordpress.org/documentation/article/template-editor/). Our implementation will still work for existing sites, but it is deprecated for future use.
+* improved Block Builder UI and reworked some option names and placement
+* added possibility to control the block wrapper and remove the block border from the editor <https://www.lazyblocks.com/docs/blocks-code/use-block-props/>
+* added setup wizard with predefined blocks for quick start your custom blocks <https://www.lazyblocks.com/docs/create-block/#setup-wizard>
+* added more Supports options: color, layout, shadow, spacing, dimensions, typography <https://www.lazyblocks.com/docs/create-block/#block-settings>
+* added `lzb/register_block_type_data` filter to override block registration data
+* removed `lzb/block_render/allow_wrapper` PHP filter, because user can now provide their own wrapper in block code
+* rename "Styles" to "Style Variations" to prevent collision with block custom CSS options
+* fixed saving Ghost Kit supports settings
+* fixed duplicated block IDs after duplicating 2 and more blocks at once
+* fixed URL control size in Inspector
+* fixed block render if output is '0' string
+* fixed block attribute display in the block builder preview
+* fixed render context when inside block builder preview
+* minor fixes and improvements
+* **Pro**
+* added possibility to add Styles and Scripts for your block <https://www.lazyblocks.com/docs/blocks-code/styles-scripts/>
+* added support for Posts Statuses in Posts control settings
+* added support for Meta controls in conditional logic
+* added in SEO plugins proper handling of blocks content, which does not have Editor code output but only Frontend
+* display options in posts and users controls by default when no search text added
+* removed Native Blocks Style feature in favour of use `useBlockProps` attribute
+* fixed default value in multiple Posts, Taxonomy and Users controls
+* fixed SEO plugins don't count blocks content length
+* fixed $wpdb->prepare syntax error in Maria DB
 
 = 3.8.3 - Dec 21, 2024 =
 

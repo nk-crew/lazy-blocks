@@ -321,6 +321,9 @@
          "Control \"%1$s\"": [
             ""
          ],
+         "Block Class": [
+            ""
+         ],
          "HTML + Handlebars": [
             ""
          ],
@@ -573,10 +576,64 @@
          "Insert custom HTML attributes with custom content.": [
             ""
          ],
-         "Multiple": [
+         "Color": [
             ""
          ],
-         "Allow use block multiple times on the page.": [
+         "Additional fields to manage colors in the block.": [
+            ""
+         ],
+         "Select color options": [
+            ""
+         ],
+         "Typography": [
+            ""
+         ],
+         "Additional fields to manage block typography.": [
+            ""
+         ],
+         "Select typography options": [
+            ""
+         ],
+         "Spacing": [
+            ""
+         ],
+         "Additional fields to manage block spacings.": [
+            ""
+         ],
+         "Select spacing options": [
+            ""
+         ],
+         "Dimensions": [
+            ""
+         ],
+         "Additional fields to manage block dimensions.": [
+            ""
+         ],
+         "Select dimensions options": [
+            ""
+         ],
+         "Shadow": [
+            ""
+         ],
+         "Additional fields to manage block shadow.": [
+            ""
+         ],
+         "Additional fields to manage block layout.": [
+            ""
+         ],
+         "Select layout options": [
+            ""
+         ],
+         "Align": [
+            ""
+         ],
+         "Select align options": [
+            ""
+         ],
+         "Anchor": [
+            ""
+         ],
+         "Additional field to add block ID attribute.": [
             ""
          ],
          "Class Name": [
@@ -585,10 +642,10 @@
          "Additional field to add custom class name.": [
             ""
          ],
-         "Anchor": [
+         "Multiple": [
             ""
          ],
-         "Additional field to add block ID attribute.": [
+         "Allow use block multiple times on the page.": [
             ""
          ],
          "Inserter": [
@@ -607,12 +664,6 @@
             ""
          ],
          "Allow block locking/unlocking by a user.": [
-            ""
-         ],
-         "Align": [
-            ""
-         ],
-         "Select align options": [
             ""
          ],
          "Block Name": [
@@ -785,9 +836,6 @@
             ""
          ],
          "Display color palette with predefined colors": [
-            ""
-         ],
-         "Color": [
             ""
          ],
          "Array (Color + Slug)": [
