@@ -15,7 +15,7 @@ jobs:
       - name: Disable xDebug - fixes PHP Fatal Error for `i18n make-pot`
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           coverage: none
 
       - name: Setup Node.js and install dependencies
