@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-= 4.0.0 - June 2, 2025 =
+= 4.0.1 - Jun 4, 2025 =
+
+* restored `lzb/block_render/allow_wrapper` filter to prevent existing user blocks from breaking, but we now deprecate this hook and display a notice to migrate to the useBlockProps attribute
+* **Pro:**
+* fixed updater caching issue that sometimes caused Forbidden errors
+
+= 4.0.0 - Jun 2, 2025 =
 
 * deprecated Templates feature. You need to migrate to the WordPress FSE theme and use Template editor natively. Learn more -> [https://wordpress.org/documentation/article/template-editor/](https://wordpress.org/documentation/article/template-editor/). Our implementation will still work for existing sites, but it is deprecated for future use.
 * improved Block Builder UI and reworked some option names and placement
