@@ -1624,10 +1624,42 @@ class LazyBlocks_Blocks {
 			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
 		}
 
+		// DEPRECATED filter to remove wrapper from block frontend code.
+		// We keep it to support legacy user code https://wordpress.org/support/topic/forcing-blocks-to-auto-have-wrappers-useblockprops/.
+		$allow_wrapper = true;
+
+		if ( 'frontend' === $context ) {
+			$allow_wrapper = apply_filters_deprecated(
+				'lzb/block_render/allow_wrapper',
+				array( $allow_wrapper, $attributes, $context ),
+				'4.0.0',
+				'',
+				'Use `useBlockProps` attribute in your blocks to control the block wrapper - https://www.lazyblocks.com/docs/blocks-code/use-block-props/'
+			);
+
+			// phpcs:ignore
+			$allow_wrapper = apply_filters_deprecated(
+				$block['slug'] . '/' . $context . '_allow_wrapper',
+				array( $allow_wrapper, $attributes ),
+				'4.0.0',
+				'',
+				'Use `useBlockProps` attribute in your blocks to control the block wrapper - https://www.lazyblocks.com/docs/blocks-code/use-block-props/'
+			);
+
+			// phpcs:ignore
+			$allow_wrapper = apply_filters_deprecated(
+				$block['slug'] . '/allow_wrapper',
+				array( $allow_wrapper, $attributes, $context ),
+				'4.0.0',
+				'',
+				'Use `useBlockProps` attribute in your blocks to control the block wrapper - https://www.lazyblocks.com/docs/blocks-code/use-block-props/'
+			);
+		}
+
 		$has_block_props = preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result );
 
 		// If user didn't add useBlockProps, add our wrapper with useBlockProps attribute to parse it later.
-		if ( ! $has_block_props ) {
+		if ( $allow_wrapper && ! $has_block_props ) {
 			$result = '<div useBlockProps>' . $result . '</div>';
 		}
 
