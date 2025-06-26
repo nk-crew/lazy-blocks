@@ -271,10 +271,12 @@ export default function BlockEdit(props) {
 			}
 		}
 
-		hasContentControls =
-			hasContentControls ||
-			lazyBlockData.controls[k].placement === 'content' ||
-			lazyBlockData.controls[k].placement === 'both';
+		if (!lazyBlockData.controls[k].child_of) {
+			hasContentControls =
+				hasContentControls ||
+				lazyBlockData.controls[k].placement === 'content' ||
+				lazyBlockData.controls[k].placement === 'both';
+		}
 	});
 
 	// reserved attributes.
