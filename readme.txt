@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.8
 * Requires PHP: 7.2
-* Stable tag: 4.0.1
+* Stable tag: 4.0.2
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -135,6 +135,10 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.0.2 - Jun 26, 2025 =
+
+* fixed displaying block border in editor when used repeater in inspector
 
 = 4.0.1 - Jun 4, 2025 =
 

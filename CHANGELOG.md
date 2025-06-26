@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.0.2 - Jun 26, 2025 =
+
+* fixed displaying block border in editor when used repeater in inspector
+
 = 4.0.1 - Jun 4, 2025 =
 
 * restored `lzb/block_render/allow_wrapper` filter to prevent existing user blocks from breaking, but we now deprecate this hook and display a notice to migrate to the useBlockProps attribute

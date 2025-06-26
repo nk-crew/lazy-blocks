@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 4.0.1\n"
+"Project-Id-Version: Lazy Blocks 4.0.2\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-04T20:57:18+00:00\n"
+"POT-Creation-Date: 2025-06-26T09:00:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -1124,12 +1124,12 @@ msgstr ""
 msgid "Some blocks on this page require attention before you can save."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:328
+#: assets/editor/blocks/main/edit.js:330
 msgid "Edit Block"
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: assets/editor/blocks/main/edit.js:353
+#: assets/editor/blocks/main/edit.js:355
 #, js-format
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
