@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.8
 * Requires PHP: 7.2
-* Stable tag: 4.0.2
+* Stable tag: 4.0.3
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -105,6 +105,9 @@ Every UI part should be intuitive for simple custom blocks, but if you want to c
 * **Controls Conditions**
 Conditionally display/hide controls. In order not to overload your block with a huge list of controls, you can hide some of them depending on the values of other controls.
 
+* **Styles & Scripts**
+Add custom CSS and JavaScript to your blocks. Define styles for editor and frontend, and script for interactive frontend functionality. Assets are automatically loaded only when needed for optimal performance.
+
 * **Panels and Dividers**
 The Panels and Dividers provides a way to structure controls into groups. It assists in better organizing the block panel UI.
 
@@ -135,6 +138,11 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.0.3 - Jul 7, 2025 =
+
+* **Pro:**
+* fixed incorrect displaying controls in inspector inside different groups
 
 = 4.0.2 - Jun 26, 2025 =
 

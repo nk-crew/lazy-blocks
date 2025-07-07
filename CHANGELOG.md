@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.0.3 - Jul 7, 2025 =
+
+* **Pro:**
+* fixed incorrect displaying controls in inspector inside different groups
+
 = 4.0.2 - Jun 26, 2025 =
 
 * fixed displaying block border in editor when used repeater in inspector
