@@ -1263,7 +1263,7 @@ class LazyBlocks_Blocks {
 			'lazyblocks-editor',
 			'lazyblocksGutenberg',
 			array(
-				'blocks'             => $blocks,
+				'blocks'             => apply_filters( 'lzb/register_blocks', $blocks ),
 				'controls'           => lazyblocks()->controls()->get_controls(),
 				'icons'              => lazyblocks()->icons()->get_all(),
 				'allowed_mime_types' => get_allowed_mime_types(),
@@ -1406,7 +1406,7 @@ class LazyBlocks_Blocks {
 	 * @return string
 	 */
 	// phpcs:disable
-	public function php_eval( $code, $attributes ) {
+	public function php_eval( $code, $attributes, $context ) {
 		ob_start();
 
 		eval( '?>' . $code );
@@ -1438,11 +1438,11 @@ class LazyBlocks_Blocks {
 				'supports'        => $block['supports'],
 				'render_callback' => function ( $render_attributes, $render_content = null ) {
 					// Usually this context is used to properly preload content in the Pro plugin.
-					$render_context = is_admin() ? 'editor' : 'frontend';
+					$render_location = is_admin() ? 'editor' : 'frontend';
 
 					// We should run our function in this way because Gutenberg
 					// has a 3rd parameter in the `render_callback` which conflicts with ours.
-					return $this->render_callback( $render_attributes, $render_content, $render_context );
+					return $this->render_callback( $render_attributes, null, $render_content, $render_location );
 				},
 				'example'         => array(),
 				'styles'          => $block['styles'],
@@ -1490,13 +1490,14 @@ class LazyBlocks_Blocks {
 	 * Render block custom frontend HTML.
 	 *
 	 * @param array  $attributes - The block attributes.
+	 * @param array  $context - Data containing the block's context.
 	 * @param string $content - The block content.
-	 * @param string $context - block context [frontend, editor].
+	 * @param string $render_location - block context [frontend, editor].
 	 * @param array  $block - Data containing the block's specifications (mostly used for live block preview in the block builder).
 	 *
 	 * @return string Returns the post content with latest posts added.
 	 */
-	public function render_callback( $attributes, $content = null, $context = 'frontend', $block = null ) {
+	public function render_callback( $attributes, $context = null, $content = null, $render_location = 'frontend', $block = null ) {
 		if ( ! $block && ( ! isset( $attributes['lazyblock'] ) || ! isset( $attributes['lazyblock']['slug'] ) ) ) {
 			return null;
 		}
@@ -1504,8 +1505,8 @@ class LazyBlocks_Blocks {
 			$block = $this->get_block( $attributes['lazyblock']['slug'] );
 		}
 
-		$context = 'editor' === $context ? 'editor' : 'frontend';
-		$result  = null;
+		$render_location = 'editor' === $render_location ? 'editor' : 'frontend';
+		$result          = null;
 
 		if ( isset( $block['controls'] ) && ! empty( $block['controls'] ) ) {
 			foreach ( $block['controls'] as $control ) {
@@ -1513,7 +1514,7 @@ class LazyBlocks_Blocks {
 					$control_val = $attributes[ $control['name'] ] ?? null;
 
 					// apply filters for control values.
-					$control_val = lazyblocks()->controls()->filter_control_value( $control_val, $control, $block, $context );
+					$control_val = lazyblocks()->controls()->filter_control_value( $control_val, $control, $block, $render_location );
 
 					if ( null !== $control_val ) {
 						$attributes[ $control['name'] ] = $control_val;
@@ -1525,19 +1526,19 @@ class LazyBlocks_Blocks {
 		// phpcs:disable
 
 		// apply filter for block attributes.
-		$attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block, $context );
-		$attributes = apply_filters( $block['slug'] . '/' . $context . '_attributes', $attributes, $content, $block );
-		$attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block, $context );
+		$attributes = apply_filters( 'lzb/block_render/attributes', $attributes, $content, $block, $render_location, $context );
+		$attributes = apply_filters( $block['slug'] . '/' . $render_location . '_attributes', $attributes, $content, $block, $context );
+		$attributes = apply_filters( $block['slug'] . '/attributes', $attributes, $content, $block, $render_location, $context );
 
 		// apply filter for custom output callback.
-		$result = apply_filters( 'lzb/block_render/callback', $result, $attributes, $context );
-		$result = apply_filters( $block['slug'] . '/' . $context . '_callback', $result, $attributes );
-		$result = apply_filters( $block['slug'] . '/callback', $result, $attributes, $context );
+		$result = apply_filters( 'lzb/block_render/callback', $result, $attributes, $render_location, $context );
+		$result = apply_filters( $block['slug'] . '/' . $render_location . '_callback', $result, $attributes );
+		$result = apply_filters( $block['slug'] . '/callback', $result, $attributes, $render_location, $context );
 
 		// phpcs:enable
 
 		// Custom render name.
-		$custom_render_name = $context . '_html';
+		$custom_render_name = $render_location . '_html';
 		if ( isset( $block['code']['output_method'] ) && isset( $block['code']['single_output'] ) && $block['code']['single_output'] ) {
 			$custom_render_name = 'frontend_html';
 		}
@@ -1553,13 +1554,14 @@ class LazyBlocks_Blocks {
 				$template_path_editor = '/blocks/' . $template_slug . '/editor.php';
 				$template_path        = '/blocks/' . $template_slug . '/block.php';
 				$template_args        = array(
-					'attributes' => $attributes,
-					'block'      => $block,
-					'context'    => $context,
+					'attributes'      => $attributes,
+					'block'           => $block,
+					'render_location' => $render_location,
+					'context'         => $context,
 				);
 
 				// Editor template.
-				if ( 'editor' === $context && $this->template_exists( $template_path_editor, $template_args ) ) {
+				if ( 'editor' === $render_location && $this->template_exists( $template_path_editor, $template_args ) ) {
 					$this->include_template( $template_path_editor, $template_args );
 
 					// Frontend template.
@@ -1573,9 +1575,9 @@ class LazyBlocks_Blocks {
 
 				$result = ob_get_clean();
 				// Callback function.
-			} elseif ( isset( $code[ $context . '_callback' ] ) && ! empty( $code[ $context . '_callback' ] ) && is_callable( $code[ $context . '_callback' ] ) ) {
+			} elseif ( isset( $code[ $render_location . '_callback' ] ) && ! empty( $code[ $render_location . '_callback' ] ) && is_callable( $code[ $render_location . '_callback' ] ) ) {
 				ob_start();
-				call_user_func( $code[ $context . '_callback' ], $attributes );
+				call_user_func( $code[ $render_location . '_callback' ], $attributes );
 				$result = ob_get_clean();
 
 				// Custom code.
@@ -1584,26 +1586,27 @@ class LazyBlocks_Blocks {
 			} elseif ( isset( $code[ $custom_render_name ] ) ) {
 				// PHP output.
 				if ( isset( $code['output_method'] ) && 'php' === $code['output_method'] ) {
-					$result = $this->php_eval( $code[ $custom_render_name ], $attributes );
+					$result = $this->php_eval( $code[ $custom_render_name ], $attributes, $context );
 
 					// Handlebars.
 				} else {
-					$result = lazyblocks()->handlebars()->object->render( $code[ $custom_render_name ], $attributes );
+					$data   = is_array( $context ) && ! empty( $context ) ? array_merge( $attributes, $context ) : $attributes;
+					$result = lazyblocks()->handlebars()->object->render( $code[ $custom_render_name ], $data );
 				}
 			}
 		}
 
 		// If block render is empty, we should not render anything.
-		if ( 'frontend' === $context && ! $this->is_block_content_exists( $result ) ) {
+		if ( 'frontend' === $render_location && ! $this->is_block_content_exists( $result ) ) {
 			return null;
 		}
 
 		// Replace the <InnerBlocks /> with the block content.
-		if ( 'frontend' === $context ) {
+		if ( 'frontend' === $render_location ) {
 			// Add inner-blocks wrapper with class lazyblock-inner-blocks.
-			$allow_inner_blocks_wrapper = apply_filters( 'lzb/block_render/allow_inner_blocks_wrapper', true, $attributes );
+			$allow_inner_blocks_wrapper = apply_filters( 'lzb/block_render/allow_inner_blocks_wrapper', true, $attributes, $context );
 			// phpcs:ignore
-			$allow_inner_blocks_wrapper = apply_filters( $block['slug'] . '/allow_inner_blocks_wrapper', $allow_inner_blocks_wrapper, $attributes );
+			$allow_inner_blocks_wrapper = apply_filters( $block['slug'] . '/allow_inner_blocks_wrapper', $allow_inner_blocks_wrapper, $attributes, $context );
 
 			if ( $allow_inner_blocks_wrapper ) {
 				// Check for a class/className attribute provided in the template to become the InnerBlocks wrapper class.
@@ -1628,10 +1631,10 @@ class LazyBlocks_Blocks {
 		// We keep it to support legacy user code https://wordpress.org/support/topic/forcing-blocks-to-auto-have-wrappers-useblockprops/.
 		$allow_wrapper = true;
 
-		if ( 'frontend' === $context ) {
+		if ( 'frontend' === $render_location ) {
 			$allow_wrapper = apply_filters_deprecated(
 				'lzb/block_render/allow_wrapper',
-				array( $allow_wrapper, $attributes, $context ),
+				array( $allow_wrapper, $attributes, $render_location ),
 				'4.0.0',
 				'',
 				'Use `useBlockProps` attribute in your blocks to control the block wrapper - https://www.lazyblocks.com/docs/blocks-code/use-block-props/'
@@ -1639,7 +1642,7 @@ class LazyBlocks_Blocks {
 
 			// phpcs:ignore
 			$allow_wrapper = apply_filters_deprecated(
-				$block['slug'] . '/' . $context . '_allow_wrapper',
+				$block['slug'] . '/' . $render_location . '_allow_wrapper',
 				array( $allow_wrapper, $attributes ),
 				'4.0.0',
 				'',
@@ -1649,7 +1652,7 @@ class LazyBlocks_Blocks {
 			// phpcs:ignore
 			$allow_wrapper = apply_filters_deprecated(
 				$block['slug'] . '/allow_wrapper',
-				array( $allow_wrapper, $attributes, $context ),
+				array( $allow_wrapper, $attributes, $render_location ),
 				'4.0.0',
 				'',
 				'Use `useBlockProps` attribute in your blocks to control the block wrapper - https://www.lazyblocks.com/docs/blocks-code/use-block-props/'
@@ -1664,7 +1667,7 @@ class LazyBlocks_Blocks {
 		}
 
 		// Parse any useBlockProps (whether added by user or by us) on frontend only.
-		if ( 'frontend' === $context && preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result, $matches ) ) {
+		if ( 'frontend' === $render_location && preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result, $matches ) ) {
 			$tag_name     = isset( $matches[1] ) ? $matches[1] : 'div';
 			$before_attrs = isset( $matches[2] ) ? $matches[2] : '';
 			$after_attrs  = isset( $matches[3] ) ? $matches[3] : '';
@@ -1729,11 +1732,11 @@ class LazyBlocks_Blocks {
 		}
 
 		// add filter for block output.
-		$result = apply_filters( 'lzb/block_render/output', $result, $attributes, $context, $block );
+		$result = apply_filters( 'lzb/block_render/output', $result, $attributes, $render_location, $block, $context );
 		// phpcs:ignore
-		$result = apply_filters( $block['slug'] . '/' . $context . '_output', $result, $attributes, $block );
+		$result = apply_filters( $block['slug'] . '/' . $render_location . '_output', $result, $attributes, $block, $context );
 		// phpcs:ignore
-		$result = apply_filters( $block['slug'] . '/output', $result, $attributes, $context, $block );
+		$result = apply_filters( $block['slug'] . '/output', $result, $attributes, $render_location, $block, $context );
 
 		return $result;
 	}
@@ -1754,11 +1757,11 @@ class LazyBlocks_Blocks {
 		$template = locate_template( array( $template_name ) );
 
 		// Allow 3rd party plugin filter template file from their plugin.
-		$template = apply_filters( 'lzb/block_render/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['context'] );
+		$template = apply_filters( 'lzb/block_render/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['render_location'], $args['context'] );
 		// phpcs:ignore
-		$template = apply_filters( $args['block']['slug'] . '/' . $args['context'] . '_template_exists', $template, $template_name, $args['attributes'], $args['block'] );
+		$template = apply_filters( $args['block']['slug'] . '/' . $args['render_location'] . '_template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['context'] );
 		// phpcs:ignore
-		$template = apply_filters( $args['block']['slug'] . '/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['context'] );
+		$template = apply_filters( $args['block']['slug'] . '/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['render_location'], $args['context'] );
 
 		// DEPRECATED.
 		$template = apply_filters( 'lzb/template_exists', $template, $template_name, $args );
@@ -1782,11 +1785,11 @@ class LazyBlocks_Blocks {
 		$template = locate_template( array( $template_name ) );
 
 		// Allow 3rd party plugin filter template file from their plugin.
-		$template = apply_filters( 'lzb/block_render/include_template', $template, $args['attributes'], $args['block'], $args['context'] );
+		$template = apply_filters( 'lzb/block_render/include_template', $template, $args['attributes'], $args['block'], $args['render_location'], $args['context'] );
 		// phpcs:ignore
-		$template = apply_filters( $args['block']['slug'] . '/' . $args['context'] . '_include_template', $template, $args['attributes'], $args['block'] );
+		$template = apply_filters( $args['block']['slug'] . '/' . $args['render_location'] . '_include_template', $template, $args['attributes'], $args['block'], $args['context'] );
 		// phpcs:ignore
-		$template = apply_filters( $args['block']['slug'] . '/include_template', $template, $args['attributes'], $args['block'], $args['context'] );
+		$template = apply_filters( $args['block']['slug'] . '/include_template', $template, $args['attributes'], $args['block'], $args['render_location'], $args['context'] );
 
 		// DEPRECATED.
 		$template = apply_filters( 'lzb/include_template', $template, $template_name, $args );

@@ -51,17 +51,6 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 			)
 		);
 
-		// Get Lazy Block Editor Preview.
-		register_rest_route(
-			$namespace,
-			'/block-render-code-preview/',
-			array(
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => array( $this, 'get_block' ),
-				'permission_callback' => array( $this, 'get_block_permission' ),
-			)
-		);
-
 		// Get Lazy Block Data.
 		register_rest_route(
 			$namespace,
@@ -210,17 +199,19 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		global $post;
 
 		$post_id          = $request->get_param( 'post_id' ) ? intval( $request->get_param( 'post_id' ) ) : 0;
-		$block_context    = $request->get_param( 'context' );
+		$render_location  = $request->get_param( 'render_location' );
 		$block_name       = $request->get_param( 'name' );
 		$block_attributes = $request->get_param( 'attributes' );
+		$context          = $request->get_param( 'context' );
 
 		// add global data to fix meta data output in preview.
 		global $lzb_preview_block_data;
 		$lzb_preview_block_data = array(
 			'post_id'          => $post_id,
-			'block_context'    => $block_context,
+			'render_location'  => $render_location,
 			'block_name'       => $block_name,
 			'block_attributes' => $block_attributes,
+			'context'          => $context,
 		);
 
 		if ( 0 < $post_id ) {
@@ -236,7 +227,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 			return $this->error( 'lazy_block_invalid', esc_html__( 'Invalid block.', 'lazy-blocks' ) );
 		}
 
-		$block_result = lazyblocks()->blocks()->render_callback( $block_attributes, null, $block_context, $block );
+		$block_result = lazyblocks()->blocks()->render_callback( $block_attributes, $context, null, $render_location, $block );
 
 		if ( isset( $block_result ) && null !== $block_result ) {
 			return $this->success( $block_result );
@@ -368,7 +359,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		}
 
 		try {
-			$block_result = lazyblocks()->blocks()->render_callback( $attributes, null, $context, $block_data );
+			$block_result = lazyblocks()->blocks()->render_callback( $attributes, null, null, $context, $block_data );
 		} catch ( Throwable $e ) {
 			return $this->error( 'lazy_block_render_failed', $e->getMessage() . PHP_EOL . PHP_EOL . $e->getTraceAsString() );
 		}
