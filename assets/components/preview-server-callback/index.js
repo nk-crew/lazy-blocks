@@ -257,7 +257,7 @@ export default function PreviewServerCallback(props) {
 
 	return (
 		<>
-			<PreviewErrorBoundary key={response}>{result}</PreviewErrorBoundary>
+			<PreviewErrorBoundary>{result}</PreviewErrorBoundary>
 			<link ref={blockContentWrapper} />
 		</>
 	);
