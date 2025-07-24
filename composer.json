@@ -20,8 +20,8 @@
 		"php-stubs/wordpress-stubs": "^6.8",
 		"php-stubs/wordpress-tests-stubs": "^6.8",
 		"spatie/phpunit-watcher": "^1.24",
-		"yoast/phpunit-polyfills": "^3.0",
-		"phpunit/phpunit": "^11.0"
+		"yoast/phpunit-polyfills": "^1.0",
+		"phpunit/phpunit": "^9.6"
 	},
 	"scripts": {
 		"lint": "phpcs --standard=phpcs.xml.dist",
