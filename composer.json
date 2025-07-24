@@ -8,7 +8,7 @@
 		"Blocks"
 	],
 	"require": {
-		"php": ">=8.1"
+		"php": ">=8.3"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.1",
