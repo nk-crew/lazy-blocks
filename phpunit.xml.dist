@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <phpunit
-    bootstrap="tests/phpunit/bootstrap-phpunit12.php"
-    backupGlobals="false"
-    colors="true"
-    processIsolation="false"
-    stopOnFailure="false"
-    cacheDirectory=".phpunit.cache"
-    backupStaticProperties="false"
-    testdox="true"
+	bootstrap="tests/phpunit/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	processIsolation="false"
+	stopOnFailure="false"
+	cacheDirectory=".phpunit.cache"
+	backupStaticProperties="false"
+	testdox="true"
 >
-    <testsuites>
-        <testsuite name="phpunit">
-            <directory suffix="Test.php">./tests/phpunit/</directory>
-        </testsuite>
-    </testsuites>
-    <source>
-        <include>
-            <directory suffix=".php">./classes/</directory>
-            <directory suffix=".php">./controls/</directory>
-        </include>
-    </source>
+	<testsuites>
+		<testsuite name="phpunit">
+			<directory suffix="Test.php">./tests/phpunit/</directory>
+		</testsuite>
+	</testsuites>
+	<source>
+		<include>
+			<directory suffix=".php">./classes/</directory>
+			<directory suffix=".php">./controls/</directory>
+		</include>
+	</source>
 </phpunit>
