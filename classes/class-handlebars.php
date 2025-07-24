@@ -51,7 +51,7 @@ class LazyBlocks_Handlebars {
 		// {{truncate 'string' 2 'true'}}.
 		$this->object->registerHelper(
 			'truncate',
-			function( $str, $len, $ellipsis = 'true' ) {
+			function ( $str, $len, $ellipsis = 'true' ) {
 				if ( $str && $len && mb_strlen( $str, 'UTF-8' ) > $len ) {
 					$new_str = mb_substr( $str, 0, $len + 1, 'UTF-8' );
 					$count   = mb_strlen( $new_str, 'UTF-8' );
@@ -82,7 +82,7 @@ class LazyBlocks_Handlebars {
 		// slightly changed https://gist.github.com/doginthehat/1890659.
 		$this->object->registerHelper(
 			'compare',
-			function( $lvalue, $operator, $rvalue = null, $options = null ) {
+			function ( $lvalue, $operator, $rvalue = null, $options = null ) {
 				if ( null === $rvalue ) {
 					return $options['inverse']();
 				}
@@ -146,7 +146,7 @@ class LazyBlocks_Handlebars {
 		// https://stackoverflow.com/questions/33059203/error-missing-helper-in-handlebars-js/46317662#46317662.
 		$this->object->registerHelper(
 			'math',
-			function( $lvalue, $operator, $rvalue ) {
+			function ( $lvalue, $operator, $rvalue ) {
 				$result = '';
 
 				switch ( $operator ) {
@@ -175,7 +175,7 @@ class LazyBlocks_Handlebars {
 		// {{{do_shortcode 'my_shortcode' this}}}.
 		$this->object->registerHelper(
 			'do_shortcode',
-			function( $shortcode_name, $attributes ) {
+			function ( $shortcode_name, $attributes ) {
 				$result = '[' . $shortcode_name;
 
 				// prepare attributes.
@@ -226,7 +226,7 @@ class LazyBlocks_Handlebars {
 		// {{date_i18n 'F j, Y H:i' '2018-09-16 15:35'}}.
 		$this->object->registerHelper(
 			'date_i18n',
-			function( $format, $time ) {
+			function ( $format, $time ) {
 				return date_i18n( $format, strtotime( $time ) );
 			}
 		);
@@ -235,7 +235,7 @@ class LazyBlocks_Handlebars {
 		// {{var_dump 'test'}}.
 		$this->object->registerHelper(
 			'var_dump',
-			function( $val ) {
+			function ( $val ) {
 				ob_start();
 				var_dump( $val );
 				return ob_get_clean();
@@ -246,7 +246,7 @@ class LazyBlocks_Handlebars {
 		// {{wp_get_attachment_image 123 'thumbnail'}}.
 		$this->object->registerHelper(
 			'wp_get_attachment_image',
-			function( $attachment_id, $size = 'thumbnail', $icon = false, $attr = '' ) {
+			function ( $attachment_id, $size = 'thumbnail', $icon = false, $attr = '' ) {
 				// Prevent options from being passed.
 				// Add default values if options are not set.
 				if ( ! isset( $size ) || $this->is_handlebars_options_attribute( $size ) ) {

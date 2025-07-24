@@ -172,10 +172,10 @@ class LazyBlocks_Tools {
 	/**
 	 * Clear PHP string code.
 	 *
-	 * @param string $string code string.
+	 * @param string $code_string code string.
 	 * @return string
 	 */
-	public function clean_php_string_code( $string ) {
+	public function clean_php_string_code( $code_string ) {
 		$str_replace  = array(
 			'  '      => '    ',
 			'array (' => 'array(',
@@ -187,13 +187,13 @@ class LazyBlocks_Tools {
 		);
 
 		// change 2-spaces to 4-spaces.
-		$string = str_replace( array_keys( $str_replace ), array_values( $str_replace ), $string );
+		$code_string = str_replace( array_keys( $str_replace ), array_values( $str_replace ), $code_string );
 
 		// correct formats '=> array('.
 		// additional spaces.
-		$string = preg_replace( array_keys( $preg_replace ), array_values( $preg_replace ), $string );
+		$code_string = preg_replace( array_keys( $preg_replace ), array_values( $preg_replace ), $code_string );
 
-		return $string;
+		return $code_string;
 	}
 
 	/**
