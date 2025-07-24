@@ -23,7 +23,7 @@
 		"test:e2e:ui": "playwright test --config tests/e2e/playwright.config.js --ui",
 		"test:e2e:install-playwright": "npx playwright install",
 		"pretest:unit:php": "wp-env start",
-		"test:unit:php": "wp-env run --env-cwd='wp-content/plugins/lazy-blocks' tests-wordpress vendor/bin/phpunit -c phpunit.xml.dist --verbose",
+		"test:unit:php": "wp-env run --env-cwd='wp-content/plugins/lazy-blocks' tests-wordpress vendor/bin/phpunit -c phpunit.xml.dist",
 		"lint": "concurrently \"npm run lint:js\" \"npm run lint:css\"",
 		"lint:css": "stylelint --custom-syntax postcss-scss \"assets/**/*.scss\"",
 		"lint:js": "eslint --ext .js assets/ controls/",
