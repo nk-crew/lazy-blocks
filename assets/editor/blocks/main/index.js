@@ -3,6 +3,7 @@
  * WordPress dependencies.
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { applyFilters } from '@wordpress/hooks';
 
 /**
  * Internal dependencies.
@@ -41,8 +42,8 @@ options.blocks.forEach((item) => {
 		registerIcon = <span dangerouslySetInnerHTML={{ __html: item.icon }} />;
 	}
 
-	// register block.
-	registerBlockType(item.slug, {
+	// Prepare initial block arguments.
+	const blockArgs = {
 		apiVersion: 3,
 		title: item.title || item.slug,
 		description: item.description,
@@ -58,5 +59,16 @@ options.blocks.forEach((item) => {
 		},
 
 		save: BlockSave,
-	});
+	};
+
+	// Apply filter to allow modify block arguments.
+	const filteredBlockArgs = applyFilters(
+		'lzb.registerBlockType.args',
+		blockArgs,
+		item.slug,
+		item
+	);
+
+	// register block.
+	registerBlockType(item.slug, filteredBlockArgs);
 });

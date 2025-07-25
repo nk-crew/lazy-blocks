@@ -1,5 +1,5 @@
 <?php
-class Select_Control_Test extends WP_UnitTestCase {
+class SelectControlTest extends WP_UnitTestCase {
 	public function add_test_block( $attrs = array() ) {
 		$block_slug = 'lazyblock/test';
 

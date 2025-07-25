@@ -1,14 +1,26 @@
+<?xml version="1.0"?>
 <phpunit
-	bootstrap="tests/phpunit/bootstrap.php"
-	backupGlobals="false"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
+    bootstrap="tests/phpunit/bootstrap.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processUniqueFiles="false"
+    stopOnFailure="false"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutChangesToGlobalState="true"
 >
-	<testsuites>
-		<testsuite name="phpunit">
-			<directory suffix="-test.php">./tests/phpunit/</directory>
-		</testsuite>
-	</testsuites>
+    <testsuites>
+        <testsuite name="phpunit">
+            <directory suffix="Test.php">./tests/phpunit/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./classes/</directory>
+            <directory suffix=".php">./controls/</directory>
+        </whitelist>
+    </filter>
 </phpunit>

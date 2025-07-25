@@ -7,6 +7,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { Spinner, PanelBody } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useEntityProp } from '@wordpress/core-data';
+import { applyFilters } from '@wordpress/hooks';
 
 /**
  * Internal dependencies.
@@ -72,6 +73,40 @@ export default function BlockBuilder() {
 		return <Wizard onClose={() => setSetupWizardClosed(true)} />;
 	}
 
+	// Define default panels
+	const defaultPanels = [
+		{
+			name: 'style-variations',
+			title: __('Style Variations', 'lazy-blocks'),
+			component: StyleVariationsSettings,
+			initialOpen: false,
+		},
+		{
+			name: 'supports',
+			title: __('Supports', 'lazy-blocks'),
+			component: SupportsSettings,
+			initialOpen: false,
+		},
+		{
+			name: 'supports-ghost-kit',
+			title: __('Supports Ghost Kit', 'lazy-blocks'),
+			component: SupportsGhostKitSettings,
+			initialOpen: false,
+		},
+		{
+			name: 'condition',
+			title: __('Condition', 'lazy-blocks'),
+			component: ConditionSettings,
+			initialOpen: false,
+		},
+	];
+
+	// Apply filters to allow extensions
+	const panels = applyFilters('lzb.constructor.panels', defaultPanels, {
+		blockData,
+		updateBlockData,
+	});
+
 	return (
 		<>
 			<InspectorControls>
@@ -90,48 +125,21 @@ export default function BlockBuilder() {
 									updateData={updateBlockData}
 								/>
 								<ProNotice />
-								<PanelBody
-									title={__(
-										'Style Variations',
-										'lazy-blocks'
-									)}
-									initialOpen={false}
-								>
-									<StyleVariationsSettings
-										data={blockData}
-										updateData={updateBlockData}
-									/>
-								</PanelBody>
-								<PanelBody
-									title={__('Supports', 'lazy-blocks')}
-									initialOpen={false}
-								>
-									<SupportsSettings
-										data={blockData}
-										updateData={updateBlockData}
-									/>
-								</PanelBody>
-								<PanelBody
-									title={__(
-										'Supports Ghost Kit',
-										'lazy-blocks'
-									)}
-									initialOpen={false}
-								>
-									<SupportsGhostKitSettings
-										data={blockData}
-										updateData={updateBlockData}
-									/>
-								</PanelBody>
-								<PanelBody
-									title={__('Condition', 'lazy-blocks')}
-									initialOpen={false}
-								>
-									<ConditionSettings
-										data={blockData}
-										updateData={updateBlockData}
-									/>
-								</PanelBody>
+								{panels.map((panel) => {
+									const PanelComponent = panel.component;
+									return (
+										<PanelBody
+											key={panel.name}
+											title={panel.title}
+											initialOpen={panel.initialOpen}
+										>
+											<PanelComponent
+												data={blockData}
+												updateData={updateBlockData}
+											/>
+										</PanelBody>
+									);
+								})}
 							</>
 						);
 					}}

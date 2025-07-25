@@ -5,7 +5,7 @@
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 6.2
 * Tested up to: 6.8
-* Requires PHP: 7.2
+* Requires PHP: 8.0
 * Stable tag: 4.0.3
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>

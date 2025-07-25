@@ -267,13 +267,13 @@ class LazyBlocks_Templates {
 	/**
 	 * Disable month dropdown.
 	 *
-	 * @param array  $return disabled dropdown or no.
+	 * @param array  $result disabled dropdown or no.
 	 * @param object $post_type current post type name.
 	 *
 	 * @return array
 	 */
-	public function disable_months_dropdown( $return, $post_type ) {
-		return 'lazyblocks_templates' === $post_type ? true : $return;
+	public function disable_months_dropdown( $result, $post_type ) {
+		return 'lazyblocks_templates' === $post_type ? true : $result;
 	}
 
 	/**

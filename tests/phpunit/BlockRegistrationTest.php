@@ -1,5 +1,5 @@
 <?php
-class Block_Registration_Test extends WP_UnitTestCase {
+class BlockRegistrationTest extends WP_UnitTestCase {
 	// Test if the latest registered block is test block.
 	public function test_block_registered() {
 		$block_slug = 'lazyblock/test';

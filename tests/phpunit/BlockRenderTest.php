@@ -1,5 +1,5 @@
 <?php
-class Block_Render_Test extends WP_UnitTestCase {
+class BlockRenderTest extends WP_UnitTestCase {
 	public function add_test_block( $attrs = array() ) {
 		$block_slug = 'lazyblock/test';
 

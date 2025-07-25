@@ -130,7 +130,7 @@ class LazyBlocks_Control {
 		add_filter( 'lzb/controls/all', array( $this, 'get_control_data' ) );
 		add_filter(
 			'lzb/control_value',
-			function( $value, $control_data, $block_data, $context ) {
+			function ( $value, $control_data, $block_data, $context ) {
 				if ( ! $control_data || $this->name !== $control_data['type'] ) {
 					return $value;
 				}
@@ -145,7 +145,7 @@ class LazyBlocks_Control {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'register_assets' ) );
 		add_action(
 			'enqueue_block_editor_assets',
-			function() {
+			function () {
 				$blocks = lazyblocks()->blocks()->get_blocks();
 
 				// Skip assets enqueue if there are no blocks.
@@ -162,7 +162,7 @@ class LazyBlocks_Control {
 		);
 		add_action(
 			'enqueue_block_assets',
-			function() {
+			function () {
 				if ( ! is_admin() ) {
 					return;
 				}

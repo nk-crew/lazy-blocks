@@ -35,6 +35,7 @@ export default function PreviewServerCallback(props) {
 		onBeforeChange = () => {},
 		onChange = () => {},
 		withBlockProps = false,
+		context,
 	} = props;
 
 	const [response, setResponse] = useState(null);
@@ -75,9 +76,10 @@ export default function PreviewServerCallback(props) {
 			path: 'lazy-blocks/v1/block-render',
 			method: 'POST',
 			data: {
-				context: 'editor',
+				render_location: 'editor',
 				name: block,
 				post_id: postId || 0,
+				context,
 				...(attributes !== null ? { attributes } : {}),
 				...urlQueryArgs,
 			},
@@ -197,8 +199,17 @@ export default function PreviewServerCallback(props) {
 		// shows data as soon as possible
 		if (prevProps === undefined) {
 			fetchData();
-		} else if (!isEqual(prevProps.attributes, props.attributes)) {
-			debouncedFetchData();
+		} else {
+			// Check for changes in both attributes AND context
+			const attributesChanged = !isEqual(
+				prevProps.attributes,
+				props.attributes
+			);
+			const contextChanged = !isEqual(prevProps.context, props.context);
+
+			if (attributesChanged || contextChanged) {
+				debouncedFetchData();
+			}
 		}
 	});
 
@@ -246,7 +257,7 @@ export default function PreviewServerCallback(props) {
 
 	return (
 		<>
-			<PreviewErrorBoundary key={response}>{result}</PreviewErrorBoundary>
+			<PreviewErrorBoundary>{result}</PreviewErrorBoundary>
 			<link ref={blockContentWrapper} />
 		</>
 	);

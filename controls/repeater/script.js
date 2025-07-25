@@ -32,6 +32,13 @@ function RepeaterControlWrapper(props) {
 	const { __unstableMarkLastChangeAsPersistent = false } =
 		useDispatch('core/block-editor') || {};
 
+	const toBool = (value) => {
+		if (typeof value === 'string') {
+			return value.toLowerCase() === 'true';
+		}
+		return Boolean(value);
+	};
+
 	return (
 		<BaseControl {...useBlockControlProps(props)}>
 			<RepeaterControl
@@ -82,7 +89,9 @@ function RepeaterControlWrapper(props) {
 
 						// Add default values of controls.
 						newRow[innerControl.name] =
-							innerControl.default || innerControl.checked || '';
+							innerControl.default ||
+							toBool(innerControl.checked) ||
+							'';
 					});
 
 					val.push(newRow);

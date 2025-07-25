@@ -51,16 +51,14 @@ jobs:
       fail-fast: true
       matrix:
         php:
-          - '7.4'
-          - '8.0'
-          - '8.1'
-          - '8.2'
+          - '8.3'
+          - '8.4'
         wordpress: [''] # Latest WordPress version.
         include:
           # Test with the previous WP version.
-          - php: '7.4'
+          - php: '8.3'
             wordpress: 'previous major version'
-          - php: '8.2'
+          - php: '8.4'
             wordpress: 'previous major version'
 
     env:
@@ -189,7 +187,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.3'
           coverage: none
           tools: cs2pr
 

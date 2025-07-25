@@ -123,15 +123,21 @@ test.describe('editor block with Repeater control', () => {
 
 		// Editor render.
 		await expect(
-			editor.canvas.locator('.lzb-preview-server').getByText('Test Row 1')
+			editor.canvas
+				.locator('.wp-block-lazyblock-test-repeater-block')
+				.getByText('Test Row 1')
 		).toBeVisible();
 
 		await expect(
-			editor.canvas.locator('.lzb-preview-server').getByText('Test Row 2')
+			editor.canvas
+				.locator('.wp-block-lazyblock-test-repeater-block')
+				.getByText('Test Row 2')
 		).toBeVisible();
 
 		await expect(
-			editor.canvas.locator('.lzb-preview-server').getByText('Test Row 3')
+			editor.canvas
+				.locator('.wp-block-lazyblock-test-repeater-block')
+				.getByText('Test Row 3')
 		).toBeVisible();
 
 		// Publish.
