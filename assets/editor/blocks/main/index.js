@@ -63,7 +63,7 @@ options.blocks.forEach((item) => {
 
 	// Apply filter to allow modify block arguments.
 	const filteredBlockArgs = applyFilters(
-		'lazyblocks.registerBlockType.args',
+		'lzb.registerBlockType.args',
 		blockArgs,
 		item.slug,
 		item

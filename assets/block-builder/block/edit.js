@@ -102,11 +102,10 @@ export default function BlockBuilder() {
 	];
 
 	// Apply filters to allow extensions
-	const panels = applyFilters(
-		'lazy-blocks.block-builder.panels',
-		defaultPanels,
-		{ blockData, updateBlockData }
-	);
+	const panels = applyFilters('lzb.constructor.panels', defaultPanels, {
+		blockData,
+		updateBlockData,
+	});
 
 	return (
 		<>
