@@ -25,6 +25,7 @@
 
 	.lzb-content-title {
 		display: flex;
+		color: #000;
 		align-items: center;
 		padding: 20px;
 		padding-top: 0;
@@ -51,6 +52,7 @@
 		}
 
 		h6 {
+			color: currentColor;
 			margin: 0;
 			font-size: 13px;
 			font-weight: 600;
@@ -80,6 +82,7 @@
 	// Columns
 	.lzb-content-controls {
 		display: flex;
+		color: #000;
 		flex-wrap: wrap;
 		margin-bottom: calc(-1 * var(--lzb-controls-columns-gap));
 		margin-left: calc(-1 * var(--lzb-controls-columns-gap));
