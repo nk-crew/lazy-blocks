@@ -86,6 +86,15 @@ export default function TypeRow(props) {
 						}
 					});
 				}
+
+				// Disable URL control when placement is "content" or "both"
+				if (
+					!isDisabled &&
+					controlTypeData.name === 'url' &&
+					(data.placement === 'content' || data.placement === 'both')
+				) {
+					isDisabled = true;
+				}
 			}
 
 			// Hidden restrictions.
