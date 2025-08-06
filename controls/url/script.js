@@ -9,6 +9,7 @@ import shorthash from 'shorthash';
 import { useState } from '@wordpress/element';
 import { addFilter } from '@wordpress/hooks';
 import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
+import { TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -19,8 +20,30 @@ import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 function ComponentRender(props) {
 	const [key, setKey] = useState(shorthash.unique(`${new Date()}`));
 
+	const baseControlProps = useBlockControlProps(
+		props,
+		props.placement === 'content' ? { label: false } : {}
+	);
+
+	// If placement is 'content', render TextControl instead of LinkControl.
+	if (props.placement === 'content') {
+		return (
+			<BaseControl {...baseControlProps}>
+				<TextControl
+					label={props.data.label}
+					placeholder={props.data.placeholder}
+					value={props.getValue()}
+					onChange={props.onChange}
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+				/>
+			</BaseControl>
+		);
+	}
+
+	// Default LinkControl render for other placements.
 	return (
-		<BaseControl {...useBlockControlProps(props)}>
+		<BaseControl {...baseControlProps}>
 			<LinkControl
 				key={key}
 				className="wp-block-navigation-link__inline-link-input"

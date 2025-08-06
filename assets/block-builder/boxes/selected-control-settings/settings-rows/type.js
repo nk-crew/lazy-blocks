@@ -86,6 +86,62 @@ export default function TypeRow(props) {
 						}
 					});
 				}
+
+				// restrict if block does not contain supported placement
+				if (
+					!isDisabled &&
+					controlTypeData.restrictions.placement_settings &&
+					data.placement
+				) {
+					const placementSettings =
+						controlTypeData.restrictions.placement_settings;
+
+					// If control is inside a repeater, check repeater's placement instead
+					let currentPlacement = data.placement;
+					if (data.child_of && blockData && blockData.controls) {
+						const parentControl = blockData.controls[data.child_of];
+						if (parentControl) {
+							currentPlacement = parentControl.placement;
+						}
+					}
+
+					// Check if current placement is allowed
+					let isPlacementAllowed = false;
+
+					switch (currentPlacement) {
+						case 'content':
+							isPlacementAllowed =
+								placementSettings.includes('content');
+							break;
+						case 'inspector':
+							isPlacementAllowed =
+								placementSettings.includes('inspector');
+							break;
+						case 'both':
+							// Don't allow 'both' if control has fallback restrictions
+							const hasFallback =
+								placementSettings.includes(
+									'content-fallback'
+								) ||
+								placementSettings.includes(
+									'inspector-fallback'
+								);
+
+							isPlacementAllowed =
+								!hasFallback &&
+								(placementSettings.includes('content') ||
+									placementSettings.includes('inspector'));
+							break;
+						case 'nowhere':
+							// 'nowhere' placement is always allowed as it doesn't render anywhere
+							isPlacementAllowed = true;
+							break;
+					}
+
+					if (!isPlacementAllowed) {
+						isDisabled = true;
+					}
+				}
 			}
 
 			// Hidden restrictions.

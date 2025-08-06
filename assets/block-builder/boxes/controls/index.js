@@ -79,8 +79,11 @@ export default function ControlsSettings(props) {
 
 			if (
 				!controlData.child_of &&
-				placement !== controlPlacement &&
-				controlPlacement !== 'both'
+				!(
+					placement === controlPlacement ||
+					(controlPlacement === 'both' &&
+						(placement === 'content' || placement === 'inspector'))
+				)
 			) {
 				return;
 			}
