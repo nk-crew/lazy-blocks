@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-07T13:06:31+00:00\n"
+"POT-Creation-Date: 2025-08-06T07:57:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -189,29 +189,29 @@ msgstr ""
 msgid "Example block that helps you to get started with Lazy Blocks plugin"
 msgstr ""
 
-#: classes/class-rest.php:130
+#: classes/class-rest.php:119
 msgid "Sorry, you are not allowed to read Gutenberg blocks of this post."
 msgstr ""
 
-#: classes/class-rest.php:133
+#: classes/class-rest.php:122
 msgid "Sorry, you are not allowed to read Gutenberg blocks as this user."
 msgstr ""
 
-#: classes/class-rest.php:155
+#: classes/class-rest.php:144
 msgid "Sorry, you are not allowed to read Gutenberg blocks data."
 msgstr ""
 
-#: classes/class-rest.php:158
-#: classes/class-rest.php:182
+#: classes/class-rest.php:147
+#: classes/class-rest.php:171
 msgid "Sorry, you are not allowed to read Gutenberg blocks data as this user."
 msgstr ""
 
-#: classes/class-rest.php:236
+#: classes/class-rest.php:227
 msgid "Invalid block."
 msgstr ""
 
-#: classes/class-rest.php:244
-#: classes/class-rest.php:379
+#: classes/class-rest.php:235
+#: classes/class-rest.php:370
 msgid "Render callback is not specified."
 msgstr ""
 
@@ -467,19 +467,19 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:94
+#: assets/block-builder/block/edit.js:80
 msgid "Style Variations"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:106
+#: assets/block-builder/block/edit.js:86
 msgid "Supports"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:115
+#: assets/block-builder/block/edit.js:92
 msgid "Supports Ghost Kit"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:127
+#: assets/block-builder/block/edit.js:98
 msgid "Condition"
 msgstr ""
 
@@ -545,7 +545,7 @@ msgstr ""
 #: controls/color/script.js:111
 #: controls/image/script.js:125
 #: controls/radio/script.js:84
-#: controls/repeater/script.js:331
+#: controls/repeater/script.js:340
 #: controls/select/script.js:110
 #: controls/select/script.js:132
 #: controls/toggle/script.js:60
@@ -753,11 +753,11 @@ msgstr ""
 msgid "WPML Translation"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:119
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:175
 msgid "Type"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:168
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:224
 #: assets/components/icon-picker/index.js:89
 msgid "Type to Search…"
 msgstr ""
@@ -1061,7 +1061,7 @@ msgid "Icon Picker"
 msgstr ""
 
 #. Translators: %s - error text.
-#: assets/components/preview-server-callback/index.js:225
+#: assets/components/preview-server-callback/index.js:236
 #, js-format
 msgid "Error loading block preview: %s"
 msgstr ""
@@ -1377,12 +1377,12 @@ msgid "Allows you to reset selected option value to null"
 msgstr ""
 
 #: controls/repeater/repeater-control.js:199
-#: controls/repeater/script.js:277
+#: controls/repeater/script.js:286
 msgid "Row {{#}}"
 msgstr ""
 
 #: controls/repeater/repeater-control.js:350
-#: controls/repeater/script.js:291
+#: controls/repeater/script.js:300
 msgid "+ Add Row"
 msgstr ""
 
@@ -1390,47 +1390,47 @@ msgstr ""
 msgid "Toggle all rows"
 msgstr ""
 
-#: controls/repeater/script.js:192
+#: controls/repeater/script.js:201
 msgid "Show Child Controls"
 msgstr ""
 
-#: controls/repeater/script.js:194
+#: controls/repeater/script.js:203
 msgid "Hide Child Controls"
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: controls/repeater/script.js:198
+#: controls/repeater/script.js:207
 #, js-format
 msgid "Show %d Child Control"
 msgid_plural "Show %d Child Controls"
 msgstr[0] ""
 msgstr[1] ""
 
-#: controls/repeater/script.js:276
+#: controls/repeater/script.js:285
 msgid "Row Label"
 msgstr ""
 
-#: controls/repeater/script.js:278
+#: controls/repeater/script.js:287
 msgid "Example: \"My row number {{#}} with inner control {{control_name}}\""
 msgstr ""
 
-#: controls/repeater/script.js:290
+#: controls/repeater/script.js:299
 msgid "Add Button Label"
 msgstr ""
 
-#: controls/repeater/script.js:303
+#: controls/repeater/script.js:312
 msgid "Minimum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:315
+#: controls/repeater/script.js:324
 msgid "Maximum Rows"
 msgstr ""
 
-#: controls/repeater/script.js:327
+#: controls/repeater/script.js:336
 msgid "Collapsible Rows"
 msgstr ""
 
-#: controls/repeater/script.js:342
+#: controls/repeater/script.js:351
 msgid "Collapsed by Default"
 msgstr ""
 
