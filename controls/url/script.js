@@ -20,23 +20,17 @@ import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 function ComponentRender(props) {
 	const [key, setKey] = useState(shorthash.unique(`${new Date()}`));
 
-	// Call hooks at the top level, before any conditional logic.
-	const baseControlProps = useBlockControlProps(props);
-	const baseControlPropsWithoutLabel = useBlockControlProps(props, {
-		label: false,
-	});
+	const baseControlProps = useBlockControlProps(
+		props,
+		props.placement === 'content' ? { label: false } : {}
+	);
 
 	// If placement is 'content', render TextControl instead of LinkControl.
 	if (props.placement === 'content') {
-		const maxlength = props.data.characters_limit
-			? parseInt(props.data.characters_limit, 10)
-			: '';
-
 		return (
-			<BaseControl {...baseControlPropsWithoutLabel}>
+			<BaseControl {...baseControlProps}>
 				<TextControl
 					label={props.data.label}
-					maxLength={maxlength}
 					placeholder={props.data.placeholder}
 					value={props.getValue()}
 					onChange={props.onChange}
