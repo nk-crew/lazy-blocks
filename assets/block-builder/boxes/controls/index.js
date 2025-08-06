@@ -93,7 +93,25 @@ export default function ControlsSettings(props) {
 					addControl(newControlData, resortId);
 				},
 				removeControl(optionalId = false) {
-					removeControl(optionalId || id);
+					const controlIdToRemove = optionalId || id;
+
+					// Find all child controls that need to be removed
+					const childControlsToRemove = [];
+					Object.keys(controls).forEach((controlId) => {
+						if (
+							controls[controlId].child_of === controlIdToRemove
+						) {
+							childControlsToRemove.push(controlId);
+						}
+					});
+
+					// Remove child controls first (call the actual removeControl dispatch function)
+					childControlsToRemove.forEach((childId) => {
+						removeControl(childId);
+					});
+
+					// Then remove the parent control
+					removeControl(controlIdToRemove);
 				},
 				updateData(newData, optionalId = false) {
 					updateControlData(optionalId || id, newData);
