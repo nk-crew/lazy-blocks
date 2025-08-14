@@ -91,6 +91,9 @@ export default function CodePreview(props) {
 		if (!loadData) {
 			return;
 		}
+		if (loadData.slug === '') {
+			return;
+		}
 		if (!isMountedRef.current) {
 			return;
 		}
