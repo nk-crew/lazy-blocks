@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.1.0 - Aug 18, 2025 =
+
+* requires PHP version 8.0 or higher, with version 8.3 and above recommended
+* added JS filter for devs: `lzb.registerBlockType.args`
+* added PHP filters for devs: `lzb/register_blocks`, `lzb/get_blocks`
+* fixed content wrapper controls color inheritance from parent
+* fixed losing focus from input fields in the inspector controls when block render preview updated
+* fixed URL control rendering in Content - display fallback Text control
+* disable possibility to add URL control inside Repeater inserted inside Content
+* remove child controls when the repeater control removed
+* minor fixes
+* **Pro:**
+* added support for block relations and context
+* improved block content retrieval for SEO plugins to enable accurate analysis and added preload to prevent multiple fetches on editor page load. Learn more -> <https://www.lazyblocks.com/docs/blocks-code/relationships/>
+
 = 4.0.3 - Jul 7, 2025 =
 
 * **Pro:**
