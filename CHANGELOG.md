@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 = 4.1.0 - Aug 18, 2025 =
 
+* !breaking change - in Theme Templates renamed `$context` to `$render_location` to use `$context` for Gutenberg blocks Context feature instead: <https://www.lazyblocks.com/docs/blocks-code/relationships/>
 * requires PHP version 8.0 or higher, with version 8.3 and above recommended
 * added JS filter for devs: `lzb.registerBlockType.args`
 * added PHP filters for devs: `lzb/register_blocks`, `lzb/get_blocks`
