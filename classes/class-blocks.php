@@ -1402,6 +1402,7 @@ class LazyBlocks_Blocks {
 	 *
 	 * @param string $code - user code string.
 	 * @param array  $attributes - block attributes.
+	 * @param array  $context - block context.
 	 *
 	 * @return string
 	 */
