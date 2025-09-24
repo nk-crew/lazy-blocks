@@ -124,6 +124,10 @@ class ExportPermissionTest extends WP_UnitTestCase {
 			$can_export,
 			'Administrator should be able to export blocks'
 		);
+
+		// Test with valid nonce (admins can generate valid nonces)
+		$valid_nonce = wp_create_nonce( 'lzb-export-block-nonce' );
+		$this->assertNotEmpty( $valid_nonce, 'Admin should be able to create export nonce' );
 	}
 
 	/**
@@ -162,8 +166,8 @@ class ExportPermissionTest extends WP_UnitTestCase {
 		// 2. Contributor accesses /wp-admin/edit.php?post_type=lazyblocks&lazyblocks_export_block={id}
 		// 3. Export should be blocked with the fix
 
-		// Build the export URL
-		$export_url = admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_export_block=' . $this->test_block_id );
+		// Build the export URL with an invalid nonce
+		$export_url = admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_export_block=' . $this->test_block_id . '&lazyblocks_export_nonce=invalid_nonce' );
 
 		// Test as contributor - should be blocked
 		wp_set_current_user( $this->contributor_user );
@@ -222,6 +226,10 @@ class ExportPermissionTest extends WP_UnitTestCase {
 			'Administrator should have edit_lazyblocks capability'
 		);
 
+		// Build export URL with valid nonce for admin
+		$valid_nonce = wp_create_nonce( 'lzb-export-block-nonce' );
+		$admin_export_url = admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_export_block=' . $this->test_block_id . '&lazyblocks_export_nonce=' . $valid_nonce );
+
 		// Set cookies for admin authentication
 		$admin_cookies = array();
 		if ( function_exists( 'wp_generate_auth_cookie' ) ) {
@@ -235,7 +243,7 @@ class ExportPermissionTest extends WP_UnitTestCase {
 		}
 
 		// Make HTTP request as admin
-		$admin_response = wp_remote_get( $export_url, array(
+		$admin_response = wp_remote_get( $admin_export_url, array(
 			'cookies' => $admin_cookies,
 			'redirection' => 0,
 			'timeout' => 10,

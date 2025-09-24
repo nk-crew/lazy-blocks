@@ -96,7 +96,7 @@ test.describe('Export Permission Security', () => {
 		});
 		expect(hasEditCapability).toBe(true);
 
-		// Verify export link exists for admin
+		// Verify export link exists for admin with nonce
 		const exportLink = page.locator(
 			`a[href*="lazyblocks_export_block=${postID}"]`
 		);
@@ -105,6 +105,8 @@ test.describe('Export Permission Security', () => {
 			await expect(exportLink.first()).toBeVisible();
 			const exportHref = await exportLink.first().getAttribute('href');
 			expect(exportHref).toContain(`lazyblocks_export_block=${postID}`);
+			// Verify nonce is included in the export link
+			expect(exportHref).toContain('lazyblocks_export_nonce=');
 		}
 	});
 
@@ -152,10 +154,13 @@ test.describe('Export Permission Security', () => {
 		// Log out to test without authentication
 		await logoutUser(page);
 
+		// Generate a fake nonce (unauthenticated users can't generate valid nonces)
+		const fakeNonce = 'invalid_nonce_12345';
+
 		// Test the vulnerability - attempt to access export URL directly
 		const exportUrl = createURL(
 			'wp-admin/edit.php',
-			`post_type=lazyblocks&lazyblocks_export_block=${blockId}`
+			`post_type=lazyblocks&lazyblocks_export_block=${blockId}&lazyblocks_export_nonce=${fakeNonce}`
 		);
 
 		// Set up listeners to detect if export happens
@@ -228,10 +233,13 @@ test.describe('Export Permission Security', () => {
 				testUser.password
 			);
 
+			// Generate a fake nonce (contributors can't get valid export nonces)
+			const fakeNonce = 'invalid_nonce_contributor';
+
 			// Test the vulnerability - attempt to access export URL directly
 			const exportUrl = createURL(
 				'wp-admin/edit.php',
-				`post_type=lazyblocks&lazyblocks_export_block=${blockId}`
+				`post_type=lazyblocks&lazyblocks_export_block=${blockId}&lazyblocks_export_nonce=${fakeNonce}`
 			);
 
 			// Set up listeners to detect if export happens
@@ -261,8 +269,8 @@ test.describe('Export Permission Security', () => {
 				if (response) {
 					const status = response.status();
 					expect(status).not.toBe(200); // Should not be OK
-					// Should be 403 Forbidden or 302 redirect to login
-					expect([302, 403]).toContain(status);
+					// Should be 403 Forbidden, 500 or 302 redirect to login.
+					expect([302, 403, 500]).toContain(status);
 				}
 
 				// Check 3: Verify error page content (permission denied message)
@@ -280,7 +288,8 @@ test.describe('Export Permission Security', () => {
 						'Sorry, you are not allowed to edit posts'
 					) ||
 					pageContent.includes('permission') ||
-					pageContent.includes('not allowed');
+					pageContent.includes('not allowed') ||
+					pageContent.includes('Security check failed');
 
 				expect(hasPermissionError).toBe(true);
 			} catch (error) {
