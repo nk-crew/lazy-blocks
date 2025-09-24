@@ -475,7 +475,8 @@ class LazyBlocks_Tools {
 	 */
 	public function maybe_export_json() {
 		// Verify nonce for CSRF protection.
-		$nonce = filter_input( INPUT_GET, 'lazyblocks_export_nonce', FILTER_SANITIZE_STRING );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$nonce = isset( $_GET['lazyblocks_export_nonce'] ) ? sanitize_key( $_GET['lazyblocks_export_nonce'] ) : '';
 
 		// Only check nonce if export parameters are present.
 		$has_export_params = isset( $_GET['lazyblocks_export_block'] ) ||
