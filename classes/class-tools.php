@@ -496,11 +496,11 @@ class LazyBlocks_Tools {
 		);
 		$template_ids = is_array( $template_ids ) && isset( $template_ids['lazyblocks_export_templates'] ) ? $template_ids['lazyblocks_export_templates'] : array();
 
-		if ( isset( $block_id ) && current_user_can( 'read_lazyblock', $block_id ) ) {
+		if ( isset( $block_id ) && current_user_can( 'edit_lazyblocks' ) ) {
 			$this->export_json( array( $block_id ) );
-		} elseif ( isset( $block_ids ) && ! empty( $block_ids ) && current_user_can( 'read_lazyblock', $block_ids[0] ) ) {
+		} elseif ( isset( $block_ids ) && ! empty( $block_ids ) && current_user_can( 'edit_lazyblocks' ) ) {
 			$this->export_json( $block_ids );
-		} elseif ( isset( $template_ids ) && ! empty( $template_ids ) && current_user_can( 'read_lazyblock', $template_ids[0] ) ) {
+		} elseif ( isset( $template_ids ) && ! empty( $template_ids ) && current_user_can( 'edit_lazyblocks' ) ) {
 			$this->export_json( $template_ids, 'templates' );
 		}
 	}
@@ -667,7 +667,7 @@ class LazyBlocks_Tools {
 		$block_id_complete = filter_input( INPUT_GET, 'lazyblocks_duplicate_complete', FILTER_SANITIZE_NUMBER_INT );
 
 		// Duplicate block.
-		if ( isset( $block_id ) && current_user_can( 'read_lazyblock', $block_id ) ) {
+		if ( isset( $block_id ) && current_user_can( 'edit_lazyblocks' ) ) {
 			$this->duplicate_block( $block_id );
 		}
 
