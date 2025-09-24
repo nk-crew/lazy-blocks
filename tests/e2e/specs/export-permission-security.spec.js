@@ -289,7 +289,7 @@ test.describe('Export Permission Security', () => {
 					) ||
 					pageContent.includes('permission') ||
 					pageContent.includes('not allowed') ||
-					pageContent.includes('Security check failed');
+					pageContent.includes('Export permission denied');
 
 				expect(hasPermissionError).toBe(true);
 			} catch (error) {

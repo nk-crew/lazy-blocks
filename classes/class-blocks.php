@@ -367,7 +367,7 @@ class LazyBlocks_Blocks {
 					$this->get_admin_url(
 						array(
 							'lazyblocks_export_block' => intval( $post->ID ),
-							'lazyblocks_export_nonce' => wp_create_nonce( 'lzb-export-block-nonce' ),
+							'lazyblocks_export_nonce' => wp_create_nonce( 'lzb-export-blocks-nonce' ),
 						)
 					),
 					sprintf(

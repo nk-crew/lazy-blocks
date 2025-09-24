@@ -126,7 +126,7 @@ class ExportPermissionTest extends WP_UnitTestCase {
 		);
 
 		// Test with valid nonce (admins can generate valid nonces)
-		$valid_nonce = wp_create_nonce( 'lzb-export-block-nonce' );
+		$valid_nonce = wp_create_nonce( 'lzb-export-blocks-nonce' );
 		$this->assertNotEmpty( $valid_nonce, 'Admin should be able to create export nonce' );
 	}
 
@@ -227,7 +227,7 @@ class ExportPermissionTest extends WP_UnitTestCase {
 		);
 
 		// Build export URL with valid nonce for admin
-		$valid_nonce = wp_create_nonce( 'lzb-export-block-nonce' );
+		$valid_nonce = wp_create_nonce( 'lzb-export-blocks-nonce' );
 		$admin_export_url = admin_url( 'edit.php?post_type=lazyblocks&lazyblocks_export_block=' . $this->test_block_id . '&lazyblocks_export_nonce=' . $valid_nonce );
 
 		// Set cookies for admin authentication

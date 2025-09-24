@@ -248,7 +248,7 @@ class LazyBlocks_Tools {
 			'blocks'       => array(),
 			'templates'    => array(),
 			'nonce'        => wp_create_nonce( 'lzb-tools-import-nonce' ),
-			'export_nonce' => wp_create_nonce( 'lzb-export-block-nonce' ),
+			'export_nonce' => wp_create_nonce( 'lzb-export-blocks-nonce' ),
 		);
 
 		if ( ! empty( $blocks ) ) {
@@ -482,8 +482,8 @@ class LazyBlocks_Tools {
 							isset( $_GET['lazyblocks_export_blocks'] ) ||
 							isset( $_GET['lazyblocks_export_templates'] );
 
-		if ( $has_export_params && ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-export-block-nonce' ) ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'lazy-blocks' ) );
+		if ( $has_export_params && ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-export-blocks-nonce' ) ) ) {
+			wp_die( esc_html__( 'Export permission denied.', 'lazy-blocks' ) );
 		}
 
 		$block_id  = filter_input( INPUT_GET, 'lazyblocks_export_block', FILTER_SANITIZE_NUMBER_INT );
@@ -509,6 +509,8 @@ class LazyBlocks_Tools {
 		);
 		$template_ids = is_array( $template_ids ) && isset( $template_ids['lazyblocks_export_templates'] ) ? $template_ids['lazyblocks_export_templates'] : array();
 
+		// Security: Only administrators with edit_lazyblocks capability can export.
+		// This prevents contributors from bypassing UI restrictions via direct URL access.
 		if ( isset( $block_id ) && current_user_can( 'edit_lazyblocks' ) ) {
 			$this->export_json( array( $block_id ) );
 		} elseif ( isset( $block_ids ) && ! empty( $block_ids ) && current_user_can( 'edit_lazyblocks' ) ) {
