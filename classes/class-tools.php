@@ -473,6 +473,18 @@ class LazyBlocks_Tools {
 	 * Export JSON.
 	 */
 	public function maybe_export_json() {
+		// Verify nonce for CSRF protection.
+		$nonce = filter_input( INPUT_GET, 'lazyblocks_export_nonce', FILTER_SANITIZE_STRING );
+
+		// Only check nonce if export parameters are present.
+		$has_export_params = isset( $_GET['lazyblocks_export_block'] ) ||
+							isset( $_GET['lazyblocks_export_blocks'] ) ||
+							isset( $_GET['lazyblocks_export_templates'] );
+
+		if ( $has_export_params && ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-export-block-nonce' ) ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'lazy-blocks' ) );
+		}
+
 		$block_id  = filter_input( INPUT_GET, 'lazyblocks_export_block', FILTER_SANITIZE_NUMBER_INT );
 		$block_ids = filter_input_array(
 			INPUT_GET,
