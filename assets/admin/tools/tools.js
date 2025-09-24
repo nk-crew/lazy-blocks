@@ -47,6 +47,11 @@ export default function Templates() {
 		const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 		let url = window.location.href;
 
+		// Add export nonce for CSRF protection
+		if (data.export_nonce) {
+			url += `&lazyblocks_export_nonce=${data.export_nonce}`;
+		}
+
 		data[type].forEach((item) => {
 			if (!disabledStates[`disabled${typeLabel}`][item.data.id]) {
 				url += `&lazyblocks_export_${type}[]=${item.data.id}`;

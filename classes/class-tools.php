@@ -245,9 +245,10 @@ class LazyBlocks_Tools {
 		$blocks    = lazyblocks()->blocks()->get_blocks( true, true, true );
 		$templates = lazyblocks()->templates()->get_templates( true, true );
 		$data      = array(
-			'blocks'    => array(),
-			'templates' => array(),
-			'nonce'     => wp_create_nonce( 'lzb-tools-import-nonce' ),
+			'blocks'       => array(),
+			'templates'    => array(),
+			'nonce'        => wp_create_nonce( 'lzb-tools-import-nonce' ),
+			'export_nonce' => wp_create_nonce( 'lzb-export-block-nonce' ),
 		);
 
 		if ( ! empty( $blocks ) ) {
