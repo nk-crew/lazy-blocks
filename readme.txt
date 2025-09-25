@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 6.8
 * Requires PHP: 8.0
-* Stable tag: 4.1.0
+* Stable tag: 4.1.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,13 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.1.1 - Sep 25, 2025 =
+
+* security fix: prevent unauthorized block export access
+* added `$content` attribute to `lzb/block_render/output` filters
+* **Pro:**
+* fixed rendering blocks in widgets screen when Rank Math is active
 
 = 4.1.0 - Aug 18, 2025 =
 

@@ -8,13 +8,13 @@
          "Lazy Blocks": [
             ""
          ],
+         "https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline": [
+            ""
+         ],
          "Easily create custom blocks and custom meta fields for Gutenberg without hard coding.": [
             ""
          ],
          "Lazy Blocks Team": [
-            ""
-         ],
-         "https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline": [
             ""
          ],
          "Documentation": [
@@ -182,6 +182,9 @@
          "Imported %s template": [
             "",
             "Imported %s templates"
+         ],
+         "Export permission denied.": [
+            ""
          ],
          "Template for these post types '%s' already exists.": [
             ""

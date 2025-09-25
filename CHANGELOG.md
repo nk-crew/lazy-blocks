@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.1.1 - Sep 25, 2025 =
+
+* security fix: prevent unauthorized block export access
+* added `$content` attribute to `lzb/block_render/output` filters
+* **Pro:**
+* fixed rendering blocks in widgets screen when Rank Math is active
+
 = 4.1.0 - Aug 18, 2025 =
 
 * !breaking change - in Theme Templates renamed `$context` to `$render_location` to use `$context` for Gutenberg blocks Context feature instead: <https://www.lazyblocks.com/docs/blocks-code/relationships/>
