@@ -13,12 +13,7 @@ import {
 	COOKIE_PATTERNS,
 	TEST_USER_DEFAULTS,
 } from './config.js';
-import {
-	createURL,
-	isCurrentURL,
-	pressKeyWithModifier,
-	waitForSelector,
-} from './helpers.js';
+import { createURL, isCurrentURL, pressKeyWithModifier } from './helpers.js';
 
 /**
  * Creates a test user with the specified role.
@@ -140,7 +135,7 @@ export async function logoutUser(page) {
 		// Try to use admin bar logout (more reliable)
 		await Promise.all([
 			page.hover(SELECTORS.ADMIN_BAR_USER_MENU),
-			waitForSelector(page, SELECTORS.ADMIN_BAR_LOGOUT, {
+			page.waitForSelector(SELECTORS.ADMIN_BAR_LOGOUT, {
 				visible: true,
 				timeout: TIMEOUTS.SHORT,
 			}),
@@ -161,7 +156,8 @@ export async function logoutUser(page) {
 	}
 
 	// Wait for login page to confirm logout
-	await waitForSelector(page, SELECTORS.LOGIN_FORM, {
+	await page.waitForSelector(SELECTORS.LOGIN_FORM, {
+		visible: true,
 		timeout: TIMEOUTS.MEDIUM,
 	});
 }

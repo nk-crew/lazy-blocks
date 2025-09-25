@@ -16,7 +16,8 @@ import {
 	logoutUser,
 	deleteTestUser,
 } from '../utils/user-management';
-import { createURL, getPageTitle, waitForPageLoad } from '../utils/helpers';
+import { createURL } from '../utils/helpers';
+import { TIMEOUTS } from '../utils/config';
 
 test.describe('Export Permission Security', () => {
 	let sharedBlockId = null;
@@ -74,7 +75,7 @@ test.describe('Export Permission Security', () => {
 		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
 
 		// Verify page loaded correctly
-		const pageTitle = await getPageTitle(page);
+		const pageTitle = await page.title();
 		expect(pageTitle).toContain('Blocks');
 
 		await expect(page.locator(`#post-${postID}`)).toBeVisible();
@@ -180,7 +181,9 @@ test.describe('Export Permission Security', () => {
 		try {
 			// Attempt to access the export URL without authentication
 			const response = await page.goto(exportUrl);
-			await waitForPageLoad(page);
+			await page.waitForLoadState('networkidle', {
+				timeout: TIMEOUTS.LONG,
+			});
 			page.off('response', exportListener);
 
 			// Check 1: Verify no file download was triggered

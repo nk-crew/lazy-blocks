@@ -6,7 +6,7 @@
  * and navigation helpers.
  */
 
-import { WP_BASE_URL, TIMEOUTS } from './config.js';
+import { WP_BASE_URL } from './config.js';
 
 /**
  * Creates a WordPress URL by joining the base URL with the provided path.
@@ -83,76 +83,4 @@ export async function pressKeyWithModifier(page, modifier, key) {
 	}
 
 	await page.keyboard.press(`${modifierKey}+${key}`);
-}
-
-/**
- * Waits for navigation to complete with proper timeout.
- *
- * @param {Object} page      - Playwright page object
- * @param {string} waitUntil - Wait until option ('networkidle', 'domcontentloaded', 'load')
- * @param {number} timeout   - Timeout in milliseconds
- * @return {Promise} Navigation promise
- */
-export async function waitForNavigation(
-	page,
-	waitUntil = 'networkidle',
-	timeout = TIMEOUTS.LONG
-) {
-	return page.waitForNavigation({
-		waitUntil,
-		timeout,
-	});
-}
-
-/**
- * Clears an input field by selecting all text and typing new value.
- * This is more reliable than using .fill() when the field might have existing content.
- *
- * @param {Object} page     - Playwright page object
- * @param {string} selector - CSS selector for the input field
- * @param {string} value    - Value to type
- */
-export async function clearAndType(page, selector, value) {
-	await page.focus(selector);
-	await pressKeyWithModifier(page, 'primary', 'a'); // Select all
-	await page.type(selector, value);
-}
-
-/**
- * Waits for a selector to be present and optionally visible.
- *
- * @param {Object}  page            - Playwright page object
- * @param {string}  selector        - CSS selector to wait for
- * @param {Object}  options         - Options object
- * @param {boolean} options.visible - Wait for element to be visible
- * @param {number}  options.timeout - Timeout in milliseconds
- * @return {Promise} Element handle promise
- */
-export async function waitForSelector(page, selector, options = {}) {
-	const { visible = true, timeout = TIMEOUTS.MEDIUM } = options;
-
-	return page.waitForSelector(selector, {
-		visible,
-		timeout,
-	});
-}
-
-/**
- * Gets the current page title.
- *
- * @param {Object} page - Playwright page object
- * @return {Promise<string>} Page title
- */
-export async function getPageTitle(page) {
-	return page.title();
-}
-
-/**
- * Waits for page to load completely.
- *
- * @param {Object} page    - Playwright page object
- * @param {number} timeout - Timeout in milliseconds
- */
-export async function waitForPageLoad(page, timeout = TIMEOUTS.LONG) {
-	await page.waitForLoadState('networkidle', { timeout });
 }
