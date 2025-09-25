@@ -487,7 +487,7 @@ class LazyBlocks_Tools {
 
 		// Verify nonce for CSRF protection - required for all export operations.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$nonce = isset( $_GET['lazyblocks_export_nonce'] ) ? sanitize_key( $_GET['lazyblocks_export_nonce'] ) : '';
+		$nonce = isset( $_GET['lazyblocks_export_nonce'] ) ? sanitize_key( $_GET['lazyblocks_export_nonce'] ) : false;
 
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-export-blocks-nonce' ) ) {
 			wp_die( esc_html__( 'Export permission denied.', 'lazy-blocks' ) );
