@@ -474,16 +474,22 @@ class LazyBlocks_Tools {
 	 * Export JSON.
 	 */
 	public function maybe_export_json() {
-		// Verify nonce for CSRF protection.
+		// Check if any export parameters are present.
+		$has_export_params = isset( $_GET['lazyblocks_export_block'] ) ||
+							isset( $_GET['lazyblocks_export_blocks'] ) ||
+							isset( $_GET['lazyblocks_export_templates'] ) ||
+							isset( $_GET['lazyblocks_export_nonce'] );
+
+		// Exit early if no export parameters - this is the normal case on every admin page.
+		if ( ! $has_export_params ) {
+			return;
+		}
+
+		// Verify nonce for CSRF protection - required for all export operations.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$nonce = isset( $_GET['lazyblocks_export_nonce'] ) ? sanitize_key( $_GET['lazyblocks_export_nonce'] ) : '';
 
-		// Only check nonce if export parameters are present.
-		$has_export_params = isset( $_GET['lazyblocks_export_block'] ) ||
-							isset( $_GET['lazyblocks_export_blocks'] ) ||
-							isset( $_GET['lazyblocks_export_templates'] );
-
-		if ( $has_export_params && ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-export-blocks-nonce' ) ) ) {
+		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'lzb-export-blocks-nonce' ) ) {
 			wp_die( esc_html__( 'Export permission denied.', 'lazy-blocks' ) );
 		}
 
