@@ -257,6 +257,9 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 			}
 
 			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+
+			// Clear blocks cache after updating block data.
+			lazyblocks()->blocks()->clear_blocks_cache();
 		}
 
 		return $this->success( $meta );
