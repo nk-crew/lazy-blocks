@@ -98,7 +98,7 @@ function ComponentInContentRender(props) {
 			{isOpen && (
 				<Modal
 					title={__('URL Editor', 'lazy-blocks')}
-					onRequestClose={() => setIsOpen(!isOpen)}
+					onRequestClose={() => setIsOpen(false)}
 					focusOnMount="firstContentElement"
 					size="medium"
 					className="lazyblocks-control-url-content-modal"
