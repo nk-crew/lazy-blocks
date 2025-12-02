@@ -1260,7 +1260,7 @@ class LazyBlocks_Blocks {
 		}
 
 		// Show admin notice after cache clear.
-		if ( isset( $_GET['lzb_cache_cleared'] ) ) {
+		if ( isset( $_GET['lzb_cache_cleared'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['lzb_cache_cleared'] ) ) ) {
 			add_action( 'admin_notices', array( $this, 'cache_cleared_notice' ) );
 		}
 	}
