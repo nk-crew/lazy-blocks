@@ -18,12 +18,7 @@ import { applyFilters } from '@wordpress/hooks';
 import BlockSlugControl from '../../../components/block-slug';
 import IconPicker from '../../../components/icon-picker';
 import Select from '../../../components/select';
-
-function checkValidSlug(slug) {
-	return /^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/.test(
-		slug.includes('/') ? slug : `lazyblock/${slug}`
-	);
-}
+import { isValidSlug } from '../../../utils/block-slug';
 
 export const SlugSettingsControl = ({ value, onChange }) => {
 	const [isSlugValid, setIsSlugValid] = useState(true);
@@ -33,7 +28,7 @@ export const SlugSettingsControl = ({ value, onChange }) => {
 			return;
 		}
 
-		const isValid = checkValidSlug(value);
+		const isValid = isValidSlug(value);
 
 		if (isValid !== isSlugValid) {
 			setIsSlugValid(isValid);

@@ -28,6 +28,7 @@ import {
 import CodeEditor from './component-react-ace';
 import Box from '../../../components/box';
 import Select from '../../../components/select';
+import { getSlugWithNamespaceDash } from '../../../utils/block-slug';
 
 const {
 	plugin_version: pluginVersion,
@@ -701,7 +702,7 @@ export default function CustomCodeSettings(props) {
 						mode="bash"
 						value={`/${wpContentDir}/themes/${currentTheme.stylesheet}/
 ├── blocks/
-│   └── lazyblock-${data.slug}/
+│   └── ${getSlugWithNamespaceDash(data.slug)}/
 │       ├── block.php                # Frontend & Editor template (required)
 │       │                            # This file is always used for block render
 │       │
@@ -756,7 +757,7 @@ export default function CustomCodeSettings(props) {
 						title: (
 							<>
 								{icons.wp}
-								{`${currentTheme.stylesheet}/blocks/lazyblock-${data.slug}`}
+								{`${currentTheme.stylesheet}/blocks/${getSlugWithNamespaceDash(data.slug)}`}
 							</>
 						),
 						className: 'lazyblocks-control-tabs-tab',

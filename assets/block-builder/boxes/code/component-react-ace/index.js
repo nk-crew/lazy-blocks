@@ -31,6 +31,7 @@ import { useEffect, useRef, memo } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 import FixCssFrame from '../fix-css-frame';
+import { getBlockClassName } from '../../../../utils/block-slug';
 
 /**
  * Helper function to create completers for different editor types.
@@ -105,12 +106,7 @@ addCompleter({
 
 				const result = [];
 
-				const slugWithNamespace = (
-					blockData.slug.includes('/')
-						? blockData.slug
-						: `lazyblock/${blockData.slug}`
-				).replace('/', '-');
-				const blockClassName = `wp-block-${slugWithNamespace}`;
+				const blockClassName = getBlockClassName(blockData.slug);
 
 				result.push({
 					caption: `.${blockClassName}`,
