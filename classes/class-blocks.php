@@ -1244,7 +1244,7 @@ class LazyBlocks_Blocks {
 		if (
 			isset( $_GET['lzb_clear_cache'] ) &&
 			isset( $_GET['_wpnonce'] ) &&
-			wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'lzb_clear_cache' ) &&
+			wp_verify_nonce( wp_unslash( $_GET['_wpnonce'] ), 'lzb_clear_cache' ) &&
 			current_user_can( 'manage_options' )
 		) {
 			$this->clear_blocks_cache();
