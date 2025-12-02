@@ -78,21 +78,16 @@ function ComponentInContentRender(props) {
 					aria-expanded={isOpen ? 'true' : 'false'}
 				/>
 				<BaseControl {...baseControlProps}>
-					<div
-						className="lzb-url-control__input"
-						style={{ position: 'relative' }}
-					>
-						<TextControl
-							value={value}
-							placeholder={
-								props.data.placeholder ||
-								__('Add URL', 'lazy-blocks')
-							}
-							readOnly
-							// Prevent focusing the input directly — overlay button handles interactions
-							tabIndex={-1}
-						/>
-					</div>
+					<TextControl
+						value={value}
+						placeholder={
+							props.data.placeholder ||
+							__('Add URL', 'lazy-blocks')
+						}
+						readOnly
+						// Prevent focusing the input directly — overlay button handles interactions
+						tabIndex={-1}
+					/>
 				</BaseControl>
 			</div>
 			{isOpen && (
