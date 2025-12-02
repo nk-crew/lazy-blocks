@@ -26,7 +26,7 @@ import { usePrevious } from '@wordpress/compose';
 /**
  * Internal dependencies.
  */
-import CustomPointerSensor from '../../assets/utils/dnd-kit-custom-pointer-sensor';
+import CustomPointerSensor from '../../utils/dnd-kit-custom-pointer-sensor';
 
 const SortableItem = function (props) {
 	const { id, values, focusInput } = props;
@@ -147,7 +147,7 @@ const SortableItem = function (props) {
 	);
 };
 
-export default function ComponentChoices(props) {
+export default function Choices(props) {
 	const {
 		value = [],
 		onChange,

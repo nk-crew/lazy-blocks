@@ -6,14 +6,14 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies.
  */
-import ComponentChoices from '../../../../controls/select/component-choices';
+import Choices from '../../../components/choices';
 
 export default function StyleVariationsSettings(props) {
 	const { data, updateData } = props;
 	const { styles } = data;
 
 	return (
-		<ComponentChoices
+		<Choices
 			label={null}
 			labelAddChoice={__('+ Add Style Variation', 'lazy-blocks')}
 			help={

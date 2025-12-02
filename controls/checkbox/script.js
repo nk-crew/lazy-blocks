@@ -17,7 +17,7 @@ import {
 import BaseControl from '../../assets/components/base-control';
 import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
-import ComponentChoices from '../select/component-choices';
+import Choices from '../../assets/components/choices';
 
 /**
  * Control render in editor.
@@ -193,7 +193,7 @@ addFilter(
 				{data.multiple === 'true' && (
 					<>
 						<PanelBody>
-							<ComponentChoices
+							<Choices
 								value={data.choices}
 								onChange={(val) => updateData({ choices: val })}
 							/>

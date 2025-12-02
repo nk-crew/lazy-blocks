@@ -10,7 +10,7 @@ import { PanelBody, RadioControl, ToggleControl } from '@wordpress/components';
  * Internal dependencies.
  */
 import BaseControl from '../../assets/components/base-control';
-import ComponentChoices from '../select/component-choices';
+import Choices from '../../assets/components/choices';
 import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 /**
@@ -65,7 +65,7 @@ addFilter(
 		return (
 			<>
 				<PanelBody>
-					<ComponentChoices
+					<Choices
 						value={choices}
 						onChange={(val) => updateData({ choices: val })}
 					/>
