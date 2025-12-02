@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class LazyBlocks_Blocks {
 	/**
-	 * Transient key for blocks cache.
+	 * Transient key prefix for blocks cache.
 	 *
 	 * @var string
 	 */
-	const BLOCKS_CACHE_KEY = 'lzb_blocks_cache';
+	const BLOCKS_CACHE_KEY_PREFIX = 'lzb_blocks_cache_';
 
 	/**
 	 * Default block icon cache.
@@ -27,6 +27,13 @@ class LazyBlocks_Blocks {
 	 * @var string|null
 	 */
 	private static $default_icon = null;
+
+	/**
+	 * Cache hash for current request (includes controls and filter callbacks).
+	 *
+	 * @var string|null
+	 */
+	private static $cache_hash = null;
 
 	/**
 	 * Rules to sanitize SVG
@@ -1080,7 +1087,7 @@ class LazyBlocks_Blocks {
 		if ( null === $this->blocks || $no_cache ) {
 			// Try to get blocks from transient cache first.
 			if ( ! $no_cache ) {
-				$cached_blocks = get_transient( self::BLOCKS_CACHE_KEY );
+				$cached_blocks = get_transient( $this->get_cache_key() );
 
 				if ( false !== $cached_blocks && is_array( $cached_blocks ) ) {
 					$this->blocks = $cached_blocks;
@@ -1114,7 +1121,7 @@ class LazyBlocks_Blocks {
 				$cache_expiration = apply_filters( 'lzb/cache_expiration', DAY_IN_SECONDS );
 
 				if ( $cache_expiration > 0 && ! $no_cache ) {
-					set_transient( self::BLOCKS_CACHE_KEY, $this->blocks, $cache_expiration );
+					set_transient( $this->get_cache_key(), $this->blocks, $cache_expiration );
 				}
 			}
 		}
@@ -1207,16 +1214,51 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Get the cache key for blocks.
+	 *
+	 * The key includes a hash of registered control types and filter callbacks
+	 * to automatically invalidate cache when controls or filters change
+	 * (e.g., plugin activation/deactivation, Pro version toggle).
+	 *
+	 * @return string
+	 */
+	private function get_cache_key() {
+		if ( null === self::$cache_hash ) {
+			global $wp_filter;
+
+			$all_controls = lazyblocks()->controls()->get_controls();
+
+			// Count filter callbacks for block-related filters.
+			// This ensures cache invalidates when Pro or third-party plugins add/remove filters.
+			$block_data_count     = isset( $wp_filter['lzb/block_data'] ) ? count( $wp_filter['lzb/block_data']->callbacks ) : 0;
+			$block_defaults_count = isset( $wp_filter['lzb/block_defaults'] ) ? count( $wp_filter['lzb/block_defaults']->callbacks ) : 0;
+
+			$hash_data = array(
+				'controls'               => array_keys( $all_controls ),
+				'block_data_filters'     => $block_data_count,
+				'block_defaults_filters' => $block_defaults_count,
+			);
+
+			self::$cache_hash = md5( wp_json_encode( $hash_data ) );
+		}
+
+		return self::BLOCKS_CACHE_KEY_PREFIX . self::$cache_hash;
+	}
+
+	/**
 	 * Clear blocks cache.
 	 *
 	 * This method can be called programmatically to clear the blocks cache.
 	 * It's automatically triggered when blocks are created, updated, deleted, trashed, or restored.
 	 */
 	public function clear_blocks_cache() {
-		delete_transient( self::BLOCKS_CACHE_KEY );
+		delete_transient( $this->get_cache_key() );
 
 		// Also reset in-memory cache.
 		$this->blocks = null;
+
+		// Reset cache hash.
+		self::$cache_hash = null;
 
 		/**
 		 * Fires after the blocks cache has been cleared.
