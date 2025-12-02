@@ -373,7 +373,8 @@
 	}
 
 	.lazyblocks-control-url-in-content-button:hover,
-	.lazyblocks-control-url-in-content-button:focus {
+	.lazyblocks-control-url-in-content-button:focus,
+	.lazyblocks-control-url-in-content-button[aria-expanded="true"] {
 		~ .lazyblocks-control-url input[type="text"] {
 			color: #191e23;
 			border-color: #007cba;
