@@ -2,7 +2,6 @@
  * External dependencies.
  */
 import shorthash from 'shorthash';
-import classnames from 'classnames/dedupe';
 
 /**
  * WordPress dependencies.
@@ -65,7 +64,7 @@ function ComponentInContentRender(props) {
 
 	return (
 		<>
-			<div className={classnames('lazyblocks-control-url-in-content')}>
+			<div className="lazyblocks-control-url-in-content">
 				<Button
 					className="lazyblocks-control-url-in-content-button"
 					aria-label={__('Edit URL', 'lazy-blocks')}
