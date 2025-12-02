@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-02T08:57:27+00:00\n"
+"POT-Creation-Date: 2025-12-02T13:08:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -17,8 +17,8 @@ msgstr ""
 #. Plugin Name of the plugin
 #: lazy-blocks.php
 #: classes/class-admin.php:252
-#: classes/class-blocks.php:187
-#: classes/class-blocks.php:1223
+#: classes/class-blocks.php:213
+#: classes/class-blocks.php:1364
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -52,93 +52,101 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: classes/class-blocks.php:109
-#: classes/class-blocks.php:127
+#: classes/class-blocks.php:135
+#: classes/class-blocks.php:153
 msgid "Inactive"
 msgstr ""
 
-#: classes/class-blocks.php:136
+#: classes/class-blocks.php:162
 msgid "Active"
 msgstr ""
 
-#: classes/class-blocks.php:188
-#: classes/class-blocks.php:189
+#: classes/class-blocks.php:214
+#: classes/class-blocks.php:215
 msgid "Blocks"
 msgstr ""
 
-#: classes/class-blocks.php:190
+#: classes/class-blocks.php:216
 #: assets/components/document-tabs/index.js:62
 #: assets/components/document-tabs/index.js:64
 msgid "Block"
 msgstr ""
 
-#: classes/class-blocks.php:191
+#: classes/class-blocks.php:217
 msgid "Add Block"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:360
+#: classes/class-blocks.php:386
 #, php-format
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:363
+#: classes/class-blocks.php:389
 #: assets/block-builder/boxes/controls/control.js:211
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:375
+#: classes/class-blocks.php:401
 #, php-format
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:378
-#: classes/class-blocks.php:413
+#: classes/class-blocks.php:404
+#: classes/class-blocks.php:439
 msgid "Export"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:390
+#: classes/class-blocks.php:416
 #, php-format
 msgid "Deactivate “%1$s”"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:390
+#: classes/class-blocks.php:416
 #, php-format
 msgid "Activate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:394
-#: classes/class-blocks.php:417
+#: classes/class-blocks.php:420
+#: classes/class-blocks.php:443
 msgid "Deactivate"
 msgstr ""
 
-#: classes/class-blocks.php:394
-#: classes/class-blocks.php:415
+#: classes/class-blocks.php:420
+#: classes/class-blocks.php:441
 msgid "Activate"
 msgstr ""
 
-#: classes/class-blocks.php:457
-#: assets/block-builder/boxes/general/index.js:179
+#: classes/class-blocks.php:483
+#: assets/block-builder/boxes/general/index.js:174
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:459
-#: assets/block-builder/boxes/general/index.js:46
+#: classes/class-blocks.php:485
+#: assets/block-builder/boxes/general/index.js:41
 msgid "Slug"
 msgstr ""
 
-#: classes/class-blocks.php:460
-#: assets/block-builder/boxes/general/index.js:94
+#: classes/class-blocks.php:486
+#: assets/block-builder/boxes/general/index.js:89
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:461
-#: assets/block-builder/boxes/general/index.js:213
+#: classes/class-blocks.php:487
+#: assets/block-builder/boxes/general/index.js:208
 #: assets/block-builder/boxes/wizard/index.js:276
 msgid "Description"
+msgstr ""
+
+#: classes/class-blocks.php:1274
+msgid "Lazy Blocks cache has been cleared."
+msgstr ""
+
+#: classes/class-blocks.php:1294
+msgid "Clear Cache"
 msgstr ""
 
 #: classes/class-controls.php:41
@@ -212,7 +220,7 @@ msgid "Invalid block."
 msgstr ""
 
 #: classes/class-rest.php:235
-#: classes/class-rest.php:370
+#: classes/class-rest.php:373
 msgid "Render callback is not specified."
 msgstr ""
 
@@ -337,7 +345,7 @@ msgid "Classic Editor (WYSIWYG)"
 msgstr ""
 
 #: controls/code_editor/index.php:23
-#: assets/block-builder/boxes/code/component-react-ace/index.js:165
+#: assets/block-builder/boxes/code/component-react-ace/index.js:161
 msgid "Code Editor"
 msgstr ""
 
@@ -502,45 +510,45 @@ msgid "Preview"
 msgstr ""
 
 #. translators: %1$s - control name.
-#: assets/block-builder/boxes/code/component-react-ace/index.js:62
+#: assets/block-builder/boxes/code/component-react-ace/index.js:63
 #, js-format
 msgid "Control \"%1$s\""
 msgstr ""
 
-#: assets/block-builder/boxes/code/component-react-ace/index.js:118
+#: assets/block-builder/boxes/code/component-react-ace/index.js:114
 msgid "Block Class"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:298
+#: assets/block-builder/boxes/code/index.js:299
 msgid "HTML + Handlebars"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:302
+#: assets/block-builder/boxes/code/index.js:303
 msgid "PHP"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:306
+#: assets/block-builder/boxes/code/index.js:307
 msgid "Theme Template"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:317
+#: assets/block-builder/boxes/code/index.js:318
 msgid "CSS"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:318
+#: assets/block-builder/boxes/code/index.js:319
 msgid "JS"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:323
+#: assets/block-builder/boxes/code/index.js:324
 msgid "Select output method"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:415
+#: assets/block-builder/boxes/code/index.js:416
 msgid "Unified Block Code"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:423
-#: assets/block-builder/boxes/code/index.js:444
+#: assets/block-builder/boxes/code/index.js:424
+#: assets/block-builder/boxes/code/index.js:445
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:19
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:19
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
@@ -557,48 +565,48 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:436
+#: assets/block-builder/boxes/code/index.js:437
 msgid "With Editor Style"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:460
+#: assets/block-builder/boxes/code/index.js:461
 msgid "Code Output in Editor"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:467
+#: assets/block-builder/boxes/code/index.js:468
 msgid "Always Visible"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:474
+#: assets/block-builder/boxes/code/index.js:475
 msgid "Visible only when Selected"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:481
+#: assets/block-builder/boxes/code/index.js:482
 msgid "Visible only when Not Selected"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:488
+#: assets/block-builder/boxes/code/index.js:489
 #: assets/block-builder/boxes/controls/index.js:272
 msgid "Hidden"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:546
+#: assets/block-builder/boxes/code/index.js:547
 msgid "Lazy Blocks will search for a template file in your theme directory. Read more:"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:555
+#: assets/block-builder/boxes/code/index.js:556
 msgid "How to use theme template"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:566
+#: assets/block-builder/boxes/code/index.js:567
 msgid "Simple text field example see here:"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:580
+#: assets/block-builder/boxes/code/index.js:581
 msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:586
+#: assets/block-builder/boxes/code/index.js:587
 msgid "Note 2: supported custom PHP callback to output block"
 msgstr ""
 
@@ -656,23 +664,23 @@ msgstr ""
 msgid "Inspector Controls"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:56
+#: assets/block-builder/boxes/general/index.js:51
 msgid "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:100
+#: assets/block-builder/boxes/general/index.js:95
 msgid "Select category"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:115
+#: assets/block-builder/boxes/general/index.js:110
 msgid "Keywords"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:116
+#: assets/block-builder/boxes/general/index.js:111
 msgid "Make it easier to discover a block with keyword aliases"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:126
+#: assets/block-builder/boxes/general/index.js:121
 msgid "Type keyword and push Enter"
 msgstr ""
 
@@ -1125,16 +1133,16 @@ msgstr ""
 msgid "Block used for adding blocks inside it in cases when template locked from adding blocks."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:102
+#: assets/editor/blocks/main/edit.js:104
 msgid "Some blocks on this page require attention before you can save."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:330
+#: assets/editor/blocks/main/edit.js:332
 msgid "Edit Block"
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: assets/editor/blocks/main/edit.js:355
+#: assets/editor/blocks/main/edit.js:357
 #, js-format
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
@@ -1464,14 +1472,14 @@ msgstr ""
 msgid "Looks like this control does not exists."
 msgstr ""
 
-#: controls/url/script.js:71
+#: controls/url/script.js:70
 msgid "Edit URL"
 msgstr ""
 
-#: controls/url/script.js:85
+#: controls/url/script.js:84
 msgid "Add URL"
 msgstr ""
 
-#: controls/url/script.js:95
+#: controls/url/script.js:94
 msgid "URL Editor"
 msgstr ""
