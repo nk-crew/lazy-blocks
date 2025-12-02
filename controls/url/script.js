@@ -118,7 +118,7 @@ addFilter('lzb.editor.control.url.render', 'lzb.editor', (render, props) => (
 ));
 
 /**
- * Content placement render - wraps control in popover for content placement.
+ * Content placement render - wraps control in modal for content placement.
  * Uses higher priority (50) to override the base render.
  */
 addFilter(
