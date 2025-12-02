@@ -297,7 +297,9 @@
 	position: relative;
 
 	.block-editor-link-control {
-		min-width: 100%;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
 	}
 
 	.block-editor-link-control__settings,
@@ -353,6 +355,31 @@
 		}
 		.components-menu-item__item {
 			min-width: 130px;
+		}
+	}
+}
+
+// URL control in content placement.
+.lazyblocks-control-url-in-content {
+	position: relative;
+
+	.lazyblocks-control-url-in-content-button {
+		position: absolute;
+		inset: -5px;
+		opacity: 0;
+		transition: opacity 140ms ease;
+		height: auto;
+		z-index: 2;
+	}
+
+	.lazyblocks-control-url-in-content-button:hover,
+	.lazyblocks-control-url-in-content-button:focus,
+	.lazyblocks-control-url-in-content-button[aria-expanded="true"] {
+		~ .lazyblocks-control-url input[type="text"] {
+			color: #191e23;
+			border-color: #007cba;
+			outline: 2px solid transparent;
+			box-shadow: 0 0 0 1px #007cba;
 		}
 	}
 }
