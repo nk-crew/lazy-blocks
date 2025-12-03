@@ -1258,7 +1258,28 @@ class LazyBlocks_Blocks {
 	 * It's automatically triggered when blocks are created, updated, deleted, trashed, or restored.
 	 */
 	public function clear_blocks_cache() {
-		delete_transient( $this->get_cache_key() );
+		global $wpdb;
+
+		// Delete all transients with the blocks cache prefix.
+		// This prevents orphaned transients when the cache key changes
+		// (e.g., controls or filters change between requests).
+		$transient_prefix = '_transient_' . self::BLOCKS_CACHE_KEY_PREFIX;
+		$like             = $wpdb->esc_like( $transient_prefix ) . '%';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$results = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",
+				$like
+			)
+		);
+
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $option_name ) {
+				// Extract the transient key from the option name.
+				$transient_key = substr( $option_name, strlen( '_transient_' ) );
+				delete_transient( $transient_key );
+			}
+		}
 
 		// Also reset in-memory cache.
 		$this->blocks = null;
