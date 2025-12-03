@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 4.1.1\n"
+"Project-Id-Version: Lazy Blocks 4.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-02T13:08:23+00:00\n"
+"POT-Creation-Date: 2025-12-03T17:56:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -17,8 +17,8 @@ msgstr ""
 #. Plugin Name of the plugin
 #: lazy-blocks.php
 #: classes/class-admin.php:252
-#: classes/class-blocks.php:213
-#: classes/class-blocks.php:1364
+#: classes/class-blocks.php:226
+#: classes/class-blocks.php:1446
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -52,100 +52,100 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: classes/class-blocks.php:135
-#: classes/class-blocks.php:153
+#: classes/class-blocks.php:148
+#: classes/class-blocks.php:166
 msgid "Inactive"
 msgstr ""
 
-#: classes/class-blocks.php:162
+#: classes/class-blocks.php:175
 msgid "Active"
 msgstr ""
 
-#: classes/class-blocks.php:214
-#: classes/class-blocks.php:215
+#: classes/class-blocks.php:227
+#: classes/class-blocks.php:228
 msgid "Blocks"
 msgstr ""
 
-#: classes/class-blocks.php:216
+#: classes/class-blocks.php:229
 #: assets/components/document-tabs/index.js:62
 #: assets/components/document-tabs/index.js:64
 msgid "Block"
 msgstr ""
 
-#: classes/class-blocks.php:217
+#: classes/class-blocks.php:230
 msgid "Add Block"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:386
+#: classes/class-blocks.php:399
 #, php-format
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:389
+#: classes/class-blocks.php:402
 #: assets/block-builder/boxes/controls/control.js:211
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:401
+#: classes/class-blocks.php:414
 #, php-format
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:404
-#: classes/class-blocks.php:439
+#: classes/class-blocks.php:417
+#: classes/class-blocks.php:452
 msgid "Export"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:416
+#: classes/class-blocks.php:429
 #, php-format
 msgid "Deactivate “%1$s”"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:416
+#: classes/class-blocks.php:429
 #, php-format
 msgid "Activate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:420
-#: classes/class-blocks.php:443
+#: classes/class-blocks.php:433
+#: classes/class-blocks.php:456
 msgid "Deactivate"
 msgstr ""
 
-#: classes/class-blocks.php:420
-#: classes/class-blocks.php:441
+#: classes/class-blocks.php:433
+#: classes/class-blocks.php:454
 msgid "Activate"
 msgstr ""
 
-#: classes/class-blocks.php:483
+#: classes/class-blocks.php:496
 #: assets/block-builder/boxes/general/index.js:174
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:485
+#: classes/class-blocks.php:498
 #: assets/block-builder/boxes/general/index.js:41
 msgid "Slug"
 msgstr ""
 
-#: classes/class-blocks.php:486
+#: classes/class-blocks.php:499
 #: assets/block-builder/boxes/general/index.js:89
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:487
+#: classes/class-blocks.php:500
 #: assets/block-builder/boxes/general/index.js:208
 #: assets/block-builder/boxes/wizard/index.js:276
 msgid "Description"
 msgstr ""
 
-#: classes/class-blocks.php:1274
+#: classes/class-blocks.php:1356
 msgid "Lazy Blocks cache has been cleared."
 msgstr ""
 
-#: classes/class-blocks.php:1294
+#: classes/class-blocks.php:1376
 msgid "Clear Cache"
 msgstr ""
 
@@ -714,9 +714,9 @@ msgstr ""
 
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:44
 #: assets/block-builder/boxes/style-variations/index.js:35
+#: assets/components/choices/index.js:157
 #: controls/checkbox/script.js:217
 #: controls/radio/script.js:111
-#: controls/select/component-choices.js:157
 #: controls/select/script.js:159
 msgid "Label"
 msgstr ""
@@ -1056,6 +1056,21 @@ msgstr ""
 msgid "Upgrade Now"
 msgstr ""
 
+#: assets/components/choices/index.js:161
+#: controls/checkbox/script.js:213
+#: controls/radio/script.js:107
+#: controls/select/script.js:155
+msgid "Value"
+msgstr ""
+
+#: assets/components/choices/index.js:164
+msgid "Choices"
+msgstr ""
+
+#: assets/components/choices/index.js:165
+msgid "+ Add Choice"
+msgstr ""
+
 #: assets/components/document-tabs/index.js:76
 #: assets/components/document-tabs/index.js:78
 msgid "Control"
@@ -1209,13 +1224,6 @@ msgstr ""
 #: controls/radio/script.js:99
 #: controls/select/script.js:147
 msgid "Allows you to change attribute output format"
-msgstr ""
-
-#: controls/checkbox/script.js:213
-#: controls/radio/script.js:107
-#: controls/select/component-choices.js:161
-#: controls/select/script.js:155
-msgid "Value"
 msgstr ""
 
 #: controls/checkbox/script.js:221
@@ -1445,14 +1453,6 @@ msgstr ""
 
 #: controls/repeater/script.js:351
 msgid "Collapsed by Default"
-msgstr ""
-
-#: controls/select/component-choices.js:164
-msgid "Choices"
-msgstr ""
-
-#: controls/select/component-choices.js:165
-msgid "+ Add Choice"
 msgstr ""
 
 #: controls/select/script.js:33

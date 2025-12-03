@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.2.0 - Dec 3, 2025 =
+
+* added caching for the get_blocks() function to prevent loading block custom posts on every page load. This fixes the issue with heavy SQL calls on sites using a large number of blocks (20+)
+* fixed URL control inside the 'content' placement. Since you asked to keep it working in Content, we restored the control here and now display settings in a Modal - this is a workaround for Gutenberg limitations with URL components inside iframe preview
+* fixed required control check and post locking when a block is rendered inside a preview example
+* **Pro:**
+* added Link control: <https://www.lazyblocks.com/docs/blocks-controls/link/>
+* added Token Field control: <https://www.lazyblocks.com/docs/blocks-controls/token-field/>
+* added Token Field appearance for Taxonomy control
+* fixed incorrect path display for theme template code folder for blocks with custom namespace
+
 = 4.1.1 - Sep 25, 2025 =
 
 * security fix: prevent unauthorized block export access

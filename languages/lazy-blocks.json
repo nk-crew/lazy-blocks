@@ -714,6 +714,15 @@
          "Upgrade Now": [
             ""
          ],
+         "Value": [
+            ""
+         ],
+         "Choices": [
+            ""
+         ],
+         "+ Add Choice": [
+            ""
+         ],
          "Control": [
             ""
          ],
@@ -815,9 +824,6 @@
             ""
          ],
          "Allows you to change attribute output format": [
-            ""
-         ],
-         "Value": [
             ""
          ],
          "Both (Array)": [
@@ -972,12 +978,6 @@
             ""
          ],
          "Collapsed by Default": [
-            ""
-         ],
-         "Choices": [
-            ""
-         ],
-         "+ Add Choice": [
             ""
          ],
          "-- Select --": [
