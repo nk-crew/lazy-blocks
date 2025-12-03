@@ -109,6 +109,12 @@ class LazyBlocks_Blocks {
 		add_action( 'wp_trash_post', array( $this, 'maybe_clear_blocks_cache_on_delete' ) );
 		add_action( 'untrash_post', array( $this, 'maybe_clear_blocks_cache_on_delete' ) );
 
+		// Plugin and theme activation/deactivation/update cache invalidation.
+		add_action( 'activated_plugin', array( $this, 'clear_blocks_cache' ) );
+		add_action( 'deactivated_plugin', array( $this, 'clear_blocks_cache' ) );
+		add_action( 'switch_theme', array( $this, 'clear_blocks_cache' ) );
+		add_action( 'upgrader_process_complete', array( $this, 'maybe_clear_blocks_cache_on_upgrade' ), 10, 2 );
+
 		// Manual cache clear action.
 		add_action( 'admin_init', array( $this, 'handle_manual_cache_clear' ) );
 
@@ -1275,6 +1281,19 @@ class LazyBlocks_Blocks {
 	 */
 	public function maybe_clear_blocks_cache_on_delete( $post_id ) {
 		if ( 'lazyblocks' === get_post_type( $post_id ) ) {
+			$this->clear_blocks_cache();
+		}
+	}
+
+	/**
+	 * Clear blocks cache on plugin or theme updates.
+	 *
+	 * @param WP_Upgrader $upgrader - WP_Upgrader instance.
+	 * @param array       $hook_extra - Array of bulk item update data.
+	 */
+	public function maybe_clear_blocks_cache_on_upgrade( $upgrader, $hook_extra ) {
+		// Only clear cache for plugin or theme updates.
+		if ( isset( $hook_extra['type'] ) && in_array( $hook_extra['type'], array( 'plugin', 'theme' ), true ) ) {
 			$this->clear_blocks_cache();
 		}
 	}
