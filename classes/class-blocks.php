@@ -15,11 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class LazyBlocks_Blocks {
 	/**
-	 * Transient key for blocks cache.
+	 * Transient key prefix for blocks cache.
 	 *
 	 * @var string
 	 */
-	const BLOCKS_CACHE_KEY = 'lzb_blocks_cache';
+	const BLOCKS_CACHE_KEY_PREFIX = 'lzb_blocks_cache_';
 
 	/**
 	 * Default block icon cache.
@@ -27,6 +27,13 @@ class LazyBlocks_Blocks {
 	 * @var string|null
 	 */
 	private static $default_icon = null;
+
+	/**
+	 * Cache hash for current request (includes controls and filter callbacks).
+	 *
+	 * @var string|null
+	 */
+	private static $cache_hash = null;
 
 	/**
 	 * Rules to sanitize SVG
@@ -101,6 +108,12 @@ class LazyBlocks_Blocks {
 		add_action( 'delete_post', array( $this, 'maybe_clear_blocks_cache_on_delete' ) );
 		add_action( 'wp_trash_post', array( $this, 'maybe_clear_blocks_cache_on_delete' ) );
 		add_action( 'untrash_post', array( $this, 'maybe_clear_blocks_cache_on_delete' ) );
+
+		// Plugin and theme activation/deactivation/update cache invalidation.
+		add_action( 'activated_plugin', array( $this, 'clear_blocks_cache' ) );
+		add_action( 'deactivated_plugin', array( $this, 'clear_blocks_cache' ) );
+		add_action( 'switch_theme', array( $this, 'clear_blocks_cache' ) );
+		add_action( 'upgrader_process_complete', array( $this, 'maybe_clear_blocks_cache_on_upgrade' ), 10, 2 );
 
 		// Manual cache clear action.
 		add_action( 'admin_init', array( $this, 'handle_manual_cache_clear' ) );
@@ -1080,7 +1093,7 @@ class LazyBlocks_Blocks {
 		if ( null === $this->blocks || $no_cache ) {
 			// Try to get blocks from transient cache first.
 			if ( ! $no_cache ) {
-				$cached_blocks = get_transient( self::BLOCKS_CACHE_KEY );
+				$cached_blocks = get_transient( $this->get_cache_key() );
 
 				if ( false !== $cached_blocks && is_array( $cached_blocks ) ) {
 					$this->blocks = $cached_blocks;
@@ -1114,7 +1127,7 @@ class LazyBlocks_Blocks {
 				$cache_expiration = apply_filters( 'lzb/cache_expiration', DAY_IN_SECONDS );
 
 				if ( $cache_expiration > 0 && ! $no_cache ) {
-					set_transient( self::BLOCKS_CACHE_KEY, $this->blocks, $cache_expiration );
+					set_transient( $this->get_cache_key(), $this->blocks, $cache_expiration );
 				}
 			}
 		}
@@ -1207,16 +1220,72 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Get the cache key for blocks.
+	 *
+	 * The key includes a hash of registered control types and filter callbacks
+	 * to automatically invalidate cache when controls or filters change
+	 * (e.g., plugin activation/deactivation, Pro version toggle).
+	 *
+	 * @return string
+	 */
+	private function get_cache_key() {
+		if ( null === self::$cache_hash ) {
+			global $wp_filter;
+
+			$all_controls = lazyblocks()->controls()->get_controls();
+
+			// Count filter callbacks for block-related filters.
+			// This ensures cache invalidates when Pro or third-party plugins add/remove filters.
+			$block_data_count     = isset( $wp_filter['lzb/block_data'] ) ? count( $wp_filter['lzb/block_data']->callbacks ) : 0;
+			$block_defaults_count = isset( $wp_filter['lzb/block_defaults'] ) ? count( $wp_filter['lzb/block_defaults']->callbacks ) : 0;
+
+			$hash_data = array(
+				'controls'               => array_keys( $all_controls ),
+				'block_data_filters'     => $block_data_count,
+				'block_defaults_filters' => $block_defaults_count,
+			);
+
+			self::$cache_hash = md5( wp_json_encode( $hash_data ) );
+		}
+
+		return self::BLOCKS_CACHE_KEY_PREFIX . self::$cache_hash;
+	}
+
+	/**
 	 * Clear blocks cache.
 	 *
 	 * This method can be called programmatically to clear the blocks cache.
 	 * It's automatically triggered when blocks are created, updated, deleted, trashed, or restored.
 	 */
 	public function clear_blocks_cache() {
-		delete_transient( self::BLOCKS_CACHE_KEY );
+		global $wpdb;
+
+		// Delete all transients with the blocks cache prefix.
+		// This prevents orphaned transients when the cache key changes
+		// (e.g., controls or filters change between requests).
+		$transient_prefix = '_transient_' . self::BLOCKS_CACHE_KEY_PREFIX;
+		$like             = $wpdb->esc_like( $transient_prefix ) . '%';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$results = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",
+				$like
+			)
+		);
+
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $option_name ) {
+				// Extract the transient key from the option name.
+				$transient_key = substr( $option_name, strlen( '_transient_' ) );
+				delete_transient( $transient_key );
+			}
+		}
 
 		// Also reset in-memory cache.
 		$this->blocks = null;
+
+		// Reset cache hash.
+		self::$cache_hash = null;
 
 		/**
 		 * Fires after the blocks cache has been cleared.
@@ -1233,6 +1302,19 @@ class LazyBlocks_Blocks {
 	 */
 	public function maybe_clear_blocks_cache_on_delete( $post_id ) {
 		if ( 'lazyblocks' === get_post_type( $post_id ) ) {
+			$this->clear_blocks_cache();
+		}
+	}
+
+	/**
+	 * Clear blocks cache on plugin or theme updates.
+	 *
+	 * @param WP_Upgrader $upgrader - WP_Upgrader instance.
+	 * @param array       $hook_extra - Array of bulk item update data.
+	 */
+	public function maybe_clear_blocks_cache_on_upgrade( $upgrader, $hook_extra ) {
+		// Only clear cache for plugin or theme updates.
+		if ( isset( $hook_extra['type'] ) && in_array( $hook_extra['type'], array( 'plugin', 'theme' ), true ) ) {
 			$this->clear_blocks_cache();
 		}
 	}
