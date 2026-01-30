@@ -4,29 +4,31 @@
  */
 class SecurityTest extends WP_UnitTestCase {
 	/**
-	 * Test that users without unfiltered_html capability cannot execute PHP code.
+	 * Test that saved PHP blocks render correctly regardless of current user capabilities.
+	 * This tests that blocks created by admins can be viewed by all users.
 	 */
-	public function test_php_execution_requires_unfiltered_html_capability() {
-		// Create a contributor user (does not have unfiltered_html capability).
+	public function test_saved_php_blocks_render_for_all_users() {
+		// Create a block with PHP output (simulating it was created by an admin).
+		$block_slug = 'lazyblock/test-php-saved';
+		lazyblocks()->add_block( array(
+			'slug' => $block_slug,
+			'code' => array(
+				'output_method'  => 'php',
+				'frontend_html'  => '<?php echo "Saved block content"; ?>',
+			),
+		) );
+
+		lazyblocks()->blocks()->register_block_render();
+
+		// Now switch to a contributor user (who cannot create PHP blocks).
 		$user_id = $this->factory->user->create( array( 'role' => 'contributor' ) );
 		wp_set_current_user( $user_id );
 
 		// Verify contributor does not have unfiltered_html capability.
 		$this->assertFalse( current_user_can( 'unfiltered_html' ) );
 
-		// Create a block with PHP output.
-		$block_slug = 'lazyblock/test-php';
-		lazyblocks()->add_block( array(
-			'slug' => $block_slug,
-			'code' => array(
-				'output_method'  => 'php',
-				'frontend_html'  => '<?php echo "This should not execute"; ?>',
-			),
-		) );
-
-		lazyblocks()->blocks()->register_block_render();
-
-		// Try to render the block - should return WP_Error.
+		// Try to render the saved block - should render successfully.
+		// Saved blocks should work for all users, regardless of capabilities.
 		$result = lazyblocks()->blocks()->render_callback(
 			array( 'lazyblock' => array( 'slug' => $block_slug ) ),
 			null,
@@ -34,11 +36,59 @@ class SecurityTest extends WP_UnitTestCase {
 			'frontend'
 		);
 
-		// Verify that PHP execution was blocked.
+		// Verify that the block rendered successfully.
+		$this->assertNotInstanceOf( 'WP_Error', $result );
+		$this->assertStringContainsString( 'Saved block content', $result );
+
+		// Clean up.
+		lazyblocks()->blocks()->remove_block( $block_slug );
+		$registry = WP_Block_Type_Registry::get_instance();
+		if ( $registry->is_registered( $block_slug ) ) {
+			$registry->unregister( $block_slug );
+		}
+	}
+
+	/**
+	 * Test that block builder preview blocks PHP execution for users without unfiltered_html.
+	 */
+	public function test_block_builder_preview_requires_unfiltered_html_capability() {
+		// Create a contributor user (does not have unfiltered_html capability).
+		$user_id = $this->factory->user->create( array( 'role' => 'contributor' ) );
+		wp_set_current_user( $user_id );
+
+		// Verify contributor does not have unfiltered_html capability.
+		$this->assertFalse( current_user_can( 'unfiltered_html' ) );
+
+		// Set the global flag to simulate block builder preview context.
+		global $lzb_block_builder_preview;
+		$lzb_block_builder_preview = true;
+
+		// Create a block with PHP output.
+		$block_slug = 'lazyblock/test-php-preview';
+		lazyblocks()->add_block( array(
+			'slug' => $block_slug,
+			'code' => array(
+				'output_method'  => 'php',
+				'frontend_html'  => '<?php echo "This should not execute in preview"; ?>',
+			),
+		) );
+
+		lazyblocks()->blocks()->register_block_render();
+
+		// Try to render the block in preview context - should return WP_Error.
+		$result = lazyblocks()->blocks()->render_callback(
+			array( 'lazyblock' => array( 'slug' => $block_slug ) ),
+			null,
+			null,
+			'frontend'
+		);
+
+		// Verify that PHP execution was blocked in preview context.
 		$this->assertInstanceOf( 'WP_Error', $result );
 		$this->assertEquals( 'lazy_block_cannot_execute_php', $result->get_error_code() );
 
 		// Clean up.
+		$lzb_block_builder_preview = false;
 		lazyblocks()->blocks()->remove_block( $block_slug );
 		$registry = WP_Block_Type_Registry::get_instance();
 		if ( $registry->is_registered( $block_slug ) ) {

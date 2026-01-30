@@ -1821,7 +1821,10 @@ class LazyBlocks_Blocks {
 			} elseif ( isset( $code[ $custom_render_name ] ) ) {
 				// PHP output.
 				if ( isset( $code['output_method'] ) && 'php' === $code['output_method'] ) {
-					if ( ! $this->is_allowed_unfiltered_html() ) {
+					// Only check capabilities when in block builder preview context (creating/editing unsaved blocks).
+					// Saved blocks should render for all users regardless of who is viewing.
+					global $lzb_block_builder_preview;
+					if ( ! empty( $lzb_block_builder_preview ) && ! $this->is_allowed_unfiltered_html() ) {
 						return new WP_Error( 'lazy_block_cannot_execute_php', __( 'Not allowed to execute PHP code.', 'lazy-blocks' ) );
 					}
 					$result = $this->php_eval( $code[ $custom_render_name ], $attributes, $context );
