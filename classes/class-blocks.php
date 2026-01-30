@@ -771,6 +771,16 @@ class LazyBlocks_Blocks {
 					'lazyblocks_style_block' === $meta ||
 					'lazyblocks_script_view' === $meta
 				) {
+					// Disallow PHP code for users without unfiltered_html capability.
+					if (
+						(
+							'lazyblocks_code_editor_html' === $meta ||
+							'lazyblocks_code_frontend_html' === $meta
+						) &&
+						! $this->is_allowed_unfiltered_html()
+					) {
+						continue;
+					}
 					$new_meta_value = wp_slash( $data[ $meta ] );
 				} else {
 					$new_meta_value = wp_slash( $data[ $meta ] );
@@ -1811,6 +1821,9 @@ class LazyBlocks_Blocks {
 			} elseif ( isset( $code[ $custom_render_name ] ) ) {
 				// PHP output.
 				if ( isset( $code['output_method'] ) && 'php' === $code['output_method'] ) {
+					if ( ! $this->is_allowed_unfiltered_html() ) {
+						return new WP_Error( 'lazy_block_cannot_execute_php', __( 'Not allowed to execute PHP code.', 'lazy-blocks' ) );
+					}
 					$result = $this->php_eval( $code[ $custom_render_name ], $attributes, $context );
 
 					// Handlebars.
