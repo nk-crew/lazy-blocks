@@ -183,7 +183,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 */
 	public function block_builder_preview_permission( $request ) {
 		$base_permission = $this->get_block_data_permission( $request );
-		
+
 		if ( is_wp_error( $base_permission ) || true !== $base_permission ) {
 			return $base_permission;
 		}
