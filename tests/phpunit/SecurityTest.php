@@ -4,21 +4,87 @@
  */
 class SecurityTest extends WP_UnitTestCase {
 	/**
+	 * Block slugs created during tests that need cleanup.
+	 *
+	 * @var array
+	 */
+	private $created_blocks = array();
+
+	/**
+	 * Clean up blocks after each test.
+	 */
+	public function tear_down() {
+		$registry = WP_Block_Type_Registry::get_instance();
+
+		foreach ( $this->created_blocks as $block_slug ) {
+			lazyblocks()->blocks()->remove_block( $block_slug );
+			if ( $registry->is_registered( $block_slug ) ) {
+				$registry->unregister( $block_slug );
+			}
+		}
+		$this->created_blocks = array();
+
+		// Reset global flag.
+		global $lzb_block_builder_preview;
+		$lzb_block_builder_preview = false;
+
+		// Reset WP_Block_Supports.
+		if ( class_exists( 'WP_Block_Supports' ) ) {
+			WP_Block_Supports::$block_to_render = null;
+		}
+
+		parent::tear_down();
+	}
+
+	/**
+	 * Helper to add a test block and track it for cleanup.
+	 *
+	 * @param string $slug  Block slug.
+	 * @param array  $attrs Block attributes.
+	 */
+	private function add_test_block( $slug, $attrs = array() ) {
+		$this->created_blocks[] = $slug;
+
+		lazyblocks()->add_block(
+			array_merge(
+				array( 'slug' => $slug ),
+				$attrs
+			)
+		);
+
+		lazyblocks()->blocks()->register_block_render();
+	}
+
+	/**
+	 * Helper to prepare WP_Block_Supports for render_callback calls.
+	 *
+	 * @param string $slug Block slug.
+	 */
+	private function prepare_block_supports( $slug ) {
+		if ( class_exists( 'WP_Block_Supports' ) ) {
+			WP_Block_Supports::$block_to_render = array(
+				'blockName' => $slug,
+				'attrs'     => array(),
+			);
+		}
+	}
+
+	/**
 	 * Test that saved PHP blocks render correctly regardless of current user capabilities.
 	 * This tests that blocks created by admins can be viewed by all users.
 	 */
 	public function test_saved_php_blocks_render_for_all_users() {
-		// Create a block with PHP output (simulating it was created by an admin).
 		$block_slug = 'lazyblock/test-php-saved';
-		lazyblocks()->add_block( array(
-			'slug' => $block_slug,
-			'code' => array(
-				'output_method'  => 'php',
-				'frontend_html'  => '<?php echo "Saved block content"; ?>',
-			),
-		) );
 
-		lazyblocks()->blocks()->register_block_render();
+		$this->add_test_block(
+			$block_slug,
+			array(
+				'code' => array(
+					'output_method'  => 'php',
+					'frontend_html'  => '<?php echo "Saved block content"; ?>',
+				),
+			)
+		);
 
 		// Now switch to a contributor user (who cannot create PHP blocks).
 		$user_id = $this->factory->user->create( array( 'role' => 'contributor' ) );
@@ -26,6 +92,9 @@ class SecurityTest extends WP_UnitTestCase {
 
 		// Verify contributor does not have unfiltered_html capability.
 		$this->assertFalse( current_user_can( 'unfiltered_html' ) );
+
+		// Prepare WP_Block_Supports for render_callback.
+		$this->prepare_block_supports( $block_slug );
 
 		// Try to render the saved block - should render successfully.
 		// Saved blocks should work for all users, regardless of capabilities.
@@ -39,13 +108,6 @@ class SecurityTest extends WP_UnitTestCase {
 		// Verify that the block rendered successfully.
 		$this->assertNotInstanceOf( 'WP_Error', $result );
 		$this->assertStringContainsString( 'Saved block content', $result );
-
-		// Clean up.
-		lazyblocks()->blocks()->remove_block( $block_slug );
-		$registry = WP_Block_Type_Registry::get_instance();
-		if ( $registry->is_registered( $block_slug ) ) {
-			$registry->unregister( $block_slug );
-		}
 	}
 
 	/**
@@ -63,17 +125,20 @@ class SecurityTest extends WP_UnitTestCase {
 		global $lzb_block_builder_preview;
 		$lzb_block_builder_preview = true;
 
-		// Create a block with PHP output.
 		$block_slug = 'lazyblock/test-php-preview';
-		lazyblocks()->add_block( array(
-			'slug' => $block_slug,
-			'code' => array(
-				'output_method'  => 'php',
-				'frontend_html'  => '<?php echo "This should not execute in preview"; ?>',
-			),
-		) );
 
-		lazyblocks()->blocks()->register_block_render();
+		$this->add_test_block(
+			$block_slug,
+			array(
+				'code' => array(
+					'output_method'  => 'php',
+					'frontend_html'  => '<?php echo "This should not execute in preview"; ?>',
+				),
+			)
+		);
+
+		// Prepare WP_Block_Supports for render_callback.
+		$this->prepare_block_supports( $block_slug );
 
 		// Try to render the block in preview context - should return WP_Error.
 		$result = lazyblocks()->blocks()->render_callback(
@@ -86,14 +151,6 @@ class SecurityTest extends WP_UnitTestCase {
 		// Verify that PHP execution was blocked in preview context.
 		$this->assertInstanceOf( 'WP_Error', $result );
 		$this->assertEquals( 'lazy_block_cannot_execute_php', $result->get_error_code() );
-
-		// Clean up.
-		$lzb_block_builder_preview = false;
-		lazyblocks()->blocks()->remove_block( $block_slug );
-		$registry = WP_Block_Type_Registry::get_instance();
-		if ( $registry->is_registered( $block_slug ) ) {
-			$registry->unregister( $block_slug );
-		}
 	}
 
 	/**
@@ -109,17 +166,20 @@ class SecurityTest extends WP_UnitTestCase {
 		if ( ! is_multisite() ) {
 			$this->assertTrue( current_user_can( 'unfiltered_html' ) );
 
-			// Create a block with PHP output.
 			$block_slug = 'lazyblock/test-php-admin';
-			lazyblocks()->add_block( array(
-				'slug' => $block_slug,
-				'code' => array(
-					'output_method'  => 'php',
-					'frontend_html'  => '<?php echo "PHP Executed"; ?>',
-				),
-			) );
 
-			lazyblocks()->blocks()->register_block_render();
+			$this->add_test_block(
+				$block_slug,
+				array(
+					'code' => array(
+						'output_method'  => 'php',
+						'frontend_html'  => '<?php echo "PHP Executed"; ?>',
+					),
+				)
+			);
+
+			// Prepare WP_Block_Supports for render_callback.
+			$this->prepare_block_supports( $block_slug );
 
 			// Try to render the block - should execute successfully.
 			$result = lazyblocks()->blocks()->render_callback(
@@ -132,13 +192,6 @@ class SecurityTest extends WP_UnitTestCase {
 			// Verify that PHP execution was allowed.
 			$this->assertNotInstanceOf( 'WP_Error', $result );
 			$this->assertStringContainsString( 'PHP Executed', $result );
-
-			// Clean up.
-			lazyblocks()->blocks()->remove_block( $block_slug );
-			$registry = WP_Block_Type_Registry::get_instance();
-			if ( $registry->is_registered( $block_slug ) ) {
-				$registry->unregister( $block_slug );
-			}
 		} else {
 			// In multisite, skip this test as regular admins don't have unfiltered_html.
 			$this->markTestSkipped( 'Skipping test in multisite environment - only super admins have unfiltered_html capability.' );
