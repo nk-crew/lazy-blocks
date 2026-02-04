@@ -113,6 +113,7 @@ test.describe('editor block with Base control', () => {
 		editor,
 		admin,
 		requestUtils,
+		context,
 	}) => {
 		await manuallyAddBaseBlock(page, editor, admin, requestUtils);
 
@@ -122,7 +123,11 @@ test.describe('editor block with Base control', () => {
 			name: 'lazyblock/test-base-block',
 		});
 
-		await page.getByLabel('Test Text Control').fill('Just a text');
+		// Wait for inspector controls to load before interacting.
+		const textControl = page.getByLabel('Test Text Control');
+		await textControl.waitFor({ state: 'visible', timeout: 15000 });
+
+		await textControl.fill('Just a text');
 
 		await page.getByLabel('Test Select Control').selectOption('second');
 
@@ -132,32 +137,30 @@ test.describe('editor block with Base control', () => {
 			)
 			.uncheck();
 
-		// Backend render.
+		// Wait for the block preview to update via REST API.
+		// Lazy Blocks renders the preview using a REST request after attribute changes.
+		const blockLocator = editor.canvas.locator(
+			'.wp-block-lazyblock-test-base-block'
+		);
+
+		// Backend render - use longer timeout to allow for REST API response.
 		await expect(
-			editor.canvas
-				.getByLabel('Block: Test Base Block')
-				.getByText('Test text control is: Just a text')
-		).toBeVisible();
+			blockLocator.getByText('Test text control is: Just a text')
+		).toBeVisible({ timeout: 10000 });
 
 		await expect(
-			editor.canvas
-				.getByLabel('Block: Test Base Block')
-				.getByText(
-					'Test select control label is: Second Selector Choice'
-				)
-		).toBeVisible();
+			blockLocator.getByText(
+				'Test select control label is: Second Selector Choice'
+			)
+		).toBeVisible({ timeout: 10000 });
 
 		await expect(
-			editor.canvas
-				.getByLabel('Block: Test Base Block')
-				.getByText('Test select control value is: second')
-		).toBeVisible();
+			blockLocator.getByText('Test select control value is: second')
+		).toBeVisible({ timeout: 10000 });
 
 		await expect(
-			editor.canvas
-				.getByLabel('Block: Test Base Block')
-				.getByText('The checkbox test control is False')
-		).toBeVisible();
+			blockLocator.getByText('The checkbox test control is False')
+		).toBeVisible({ timeout: 10000 });
 
 		await page
 			.getByRole('button', { name: 'Publish', exact: true })
@@ -166,25 +169,32 @@ test.describe('editor block with Base control', () => {
 			.getByLabel('Editor publish')
 			.getByRole('button', { name: 'Publish', exact: true })
 			.click();
-		await page
-			.getByLabel('Editor publish')
-			.getByRole('link', { name: 'View Post' })
-			.click();
+
+		// View Post opens in a new tab, so we need to handle it.
+		const [frontendPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page
+				.getByLabel('Editor publish')
+				.getByRole('link', { name: 'View Post' })
+				.click(),
+		]);
+
+		await frontendPage.waitForLoadState('domcontentloaded');
 
 		// Frontend render.
 		await expect(
-			page.getByText('Test text control is: Just a text')
+			frontendPage.getByText('Test text control is: Just a text')
 		).toBeVisible();
 		await expect(
-			page.getByText(
+			frontendPage.getByText(
 				'Test select control label is: Second Selector Choice'
 			)
 		).toBeVisible();
 		await expect(
-			page.getByText('Test select control value is: second')
+			frontendPage.getByText('Test select control value is: second')
 		).toBeVisible();
 		await expect(
-			page.getByText('The checkbox test control is False')
+			frontendPage.getByText('The checkbox test control is False')
 		).toBeVisible();
 	});
 });

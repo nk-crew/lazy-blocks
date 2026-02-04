@@ -93,7 +93,6 @@ test.describe('editor block rendering', () => {
 	// @link https://github.com/nk-crew/lazy-blocks/issues/32
 	test('should duplicate block correctly with unique ID', async ({
 		editor,
-		page,
 		admin,
 		pageUtils,
 		requestUtils,
@@ -131,9 +130,12 @@ test.describe('editor block rendering', () => {
 		expect(firstBlockId).toBeDefined();
 		expect(firstBlockId?.trim()).not.toBe('');
 
-		// Clone block first time
-		await editor.clickBlockToolbarButton('Options');
-		await page.click('role=menuitem[name=/Duplicate/i]');
+		// Click on the block wrapper to select it
+		const blockWrapper = editor.canvas.locator('.wp-block-lazyblock-test');
+		await blockWrapper.click();
+
+		// Use keyboard shortcut to duplicate the block (Cmd/Ctrl+Shift+D)
+		await pageUtils.pressKeys('primaryShift+d');
 
 		// Wait for both blocks to be loaded
 		await expect(
@@ -155,9 +157,8 @@ test.describe('editor block rendering', () => {
 			expect(secondBlockId).not.toEqual(firstBlockId);
 		}).toPass({ timeout: 5000 });
 
-		// Select the second block and duplicate it
-		await editor.clickBlockToolbarButton('Options');
-		await page.click('role=menuitem[name=/Duplicate/i]');
+		// The duplicated block is now selected, duplicate it again
+		await pageUtils.pressKeys('primaryShift+d');
 
 		// Wait for all three blocks to be loaded
 		await expect(
@@ -184,9 +185,8 @@ test.describe('editor block rendering', () => {
 		await pageUtils.pressKeys('primary+a');
 		await pageUtils.pressKeys('primary+a');
 
-		// Duplicate all selected blocks
-		await editor.clickBlockToolbarButton('Options');
-		await page.click('role=menuitem[name=/Duplicate/i]');
+		// Duplicate all selected blocks using keyboard shortcut
+		await pageUtils.pressKeys('primaryShift+d');
 
 		// Now we should have 6 blocks (3 original + 3 duplicated)
 		await expect(

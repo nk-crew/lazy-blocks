@@ -102,6 +102,7 @@ test.describe('editor block with Repeater control', () => {
 		editor,
 		admin,
 		requestUtils,
+		context,
 	}) => {
 		await manuallyAddRepeaterBlock(page, editor, admin, requestUtils);
 
@@ -148,14 +149,21 @@ test.describe('editor block with Repeater control', () => {
 			.getByLabel('Editor publish')
 			.getByRole('button', { name: 'Publish', exact: true })
 			.click();
-		await page
-			.getByLabel('Editor publish')
-			.getByRole('link', { name: 'View Post' })
-			.click();
+
+		// View Post opens in a new tab, so we need to handle it.
+		const [frontendPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page
+				.getByLabel('Editor publish')
+				.getByRole('link', { name: 'View Post' })
+				.click(),
+		]);
+
+		await frontendPage.waitForLoadState('domcontentloaded');
 
 		// Frontend render.
-		await expect(page.getByText('Test Row 1')).toBeVisible();
-		await expect(page.getByText('Test Row 2')).toBeVisible();
-		await expect(page.getByText('Test Row 3')).toBeVisible();
+		await expect(frontendPage.getByText('Test Row 1')).toBeVisible();
+		await expect(frontendPage.getByText('Test Row 2')).toBeVisible();
+		await expect(frontendPage.getByText('Test Row 3')).toBeVisible();
 	});
 });
