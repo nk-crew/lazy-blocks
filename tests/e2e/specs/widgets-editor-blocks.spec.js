@@ -27,15 +27,8 @@ async function addBlock(page, blockName) {
 
 	await page.click(`role=option`);
 
-	const addedBlock = page.locator(
-		'role=document >> css=.is-selected[data-block]'
-	);
-	await addedBlock.focus();
-
-	const blockId = await addedBlock.getAttribute('data-block');
-	const stableSelector = `[data-block="${blockId}"]`;
-
-	return page.locator(stableSelector);
+	// Wait for the lazy block to be added and rendered in the widgets editor.
+	await page.locator(`[data-type="${blockName}"]`).waitFor();
 }
 
 test.describe('widgets editor render blocks', () => {

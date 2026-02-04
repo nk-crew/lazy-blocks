@@ -15,6 +15,7 @@ test.describe('editor block attribute useBlockProps', () => {
 		page,
 		admin,
 		requestUtils,
+		context,
 	}) => {
 		await createBlock({
 			requestUtils,
@@ -45,14 +46,21 @@ test.describe('editor block attribute useBlockProps', () => {
 			.getByLabel('Editor publish')
 			.getByRole('button', { name: 'Publish', exact: true })
 			.click();
-		await page
-			.getByLabel('Editor publish')
-			.getByRole('link', { name: 'View Post' })
-			.click();
+
+		// View Post opens in a new tab, so we need to handle it.
+		const [frontendPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page
+				.getByLabel('Editor publish')
+				.getByRole('link', { name: 'View Post' })
+				.click(),
+		]);
+
+		await frontendPage.waitForLoadState('domcontentloaded');
 
 		// Frontend render.
 		await expect(
-			page.locator('.wp-block-lazyblock-test:text("Hello There")')
+			frontendPage.locator('.wp-block-lazyblock-test:text("Hello There")')
 		).toBeVisible();
 	});
 
@@ -61,6 +69,7 @@ test.describe('editor block attribute useBlockProps', () => {
 		page,
 		admin,
 		requestUtils,
+		context,
 	}) => {
 		await createBlock({
 			requestUtils,
@@ -91,14 +100,21 @@ test.describe('editor block attribute useBlockProps', () => {
 			.getByLabel('Editor publish')
 			.getByRole('button', { name: 'Publish', exact: true })
 			.click();
-		await page
-			.getByLabel('Editor publish')
-			.getByRole('link', { name: 'View Post' })
-			.click();
+
+		// View Post opens in a new tab, so we need to handle it.
+		const [frontendPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page
+				.getByLabel('Editor publish')
+				.getByRole('link', { name: 'View Post' })
+				.click(),
+		]);
+
+		await frontendPage.waitForLoadState('domcontentloaded');
 
 		// Frontend render.
 		await expect(
-			page.locator('.wp-block-lazyblock-test:text("Hello There")')
+			frontendPage.locator('.wp-block-lazyblock-test:text("Hello There")')
 		).toBeVisible();
 	});
 
@@ -107,6 +123,7 @@ test.describe('editor block attribute useBlockProps', () => {
 		page,
 		admin,
 		requestUtils,
+		context,
 	}) => {
 		await createBlock({
 			requestUtils,
@@ -136,12 +153,19 @@ test.describe('editor block attribute useBlockProps', () => {
 			.getByLabel('Editor publish')
 			.getByRole('button', { name: 'Publish', exact: true })
 			.click();
-		await page
-			.getByLabel('Editor publish')
-			.getByRole('link', { name: 'View Post' })
-			.click();
+
+		// View Post opens in a new tab, so we need to handle it.
+		const [frontendPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page
+				.getByLabel('Editor publish')
+				.getByRole('link', { name: 'View Post' })
+				.click(),
+		]);
+
+		await frontendPage.waitForLoadState('domcontentloaded');
 
 		// Frontend render.
-		await expect(page.locator(expectSelector)).toBeVisible();
+		await expect(frontendPage.locator(expectSelector)).toBeVisible();
 	});
 });

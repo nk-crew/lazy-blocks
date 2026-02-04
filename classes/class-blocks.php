@@ -771,6 +771,16 @@ class LazyBlocks_Blocks {
 					'lazyblocks_style_block' === $meta ||
 					'lazyblocks_script_view' === $meta
 				) {
+					// Disallow PHP code for users without unfiltered_html capability.
+					if (
+						(
+							'lazyblocks_code_editor_html' === $meta ||
+							'lazyblocks_code_frontend_html' === $meta
+						) &&
+						! $this->is_allowed_unfiltered_html()
+					) {
+						continue;
+					}
 					$new_meta_value = wp_slash( $data[ $meta ] );
 				} else {
 					$new_meta_value = wp_slash( $data[ $meta ] );
@@ -1811,6 +1821,12 @@ class LazyBlocks_Blocks {
 			} elseif ( isset( $code[ $custom_render_name ] ) ) {
 				// PHP output.
 				if ( isset( $code['output_method'] ) && 'php' === $code['output_method'] ) {
+					// Only check capabilities when in block builder preview context (creating/editing unsaved blocks).
+					// Saved blocks should render for all users regardless of who is viewing.
+					global $lzb_block_builder_preview;
+					if ( ! empty( $lzb_block_builder_preview ) && ! $this->is_allowed_unfiltered_html() ) {
+						return new WP_Error( 'lazy_block_cannot_execute_php', __( 'Not allowed to execute PHP code.', 'lazy-blocks' ) );
+					}
 					$result = $this->php_eval( $code[ $custom_render_name ], $attributes, $context );
 
 					// Handlebars.
@@ -1941,7 +1957,18 @@ class LazyBlocks_Blocks {
 			// Then they are removed this option and we reverted this anchor render back
 			//
 			// @link https://github.com/WordPress/gutenberg/pull/51288.
-			if ( isset( $attributes['anchor'] ) && $attributes['anchor'] ) {
+			// Check if WordPress will add the id via apply_block_supports() to avoid duplication.
+			// get_block_wrapper_attributes() merges extra_attributes with block supports, concatenating duplicate ids.
+			$wp_block_supports_attrs = array();
+			if ( class_exists( 'WP_Block_Supports' ) && ! empty( WP_Block_Supports::$block_to_render ) ) {
+				$wp_block_supports_attrs = WP_Block_Supports::get_instance()->apply_block_supports();
+			}
+
+			// Only set anchor if:
+			// 1. id is not already set from useBlockProps attributes.
+			// 2. anchor attribute exists and has a value.
+			// 3. WordPress block supports won't add it (would cause duplication).
+			if ( isset( $attributes['anchor'] ) && $attributes['anchor'] && ! isset( $array_atts['id'] ) && empty( $wp_block_supports_attrs['id'] ) ) {
 				$array_atts['id'] = esc_attr( $attributes['anchor'] );
 			}
 
