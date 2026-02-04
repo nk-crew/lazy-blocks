@@ -1957,7 +1957,18 @@ class LazyBlocks_Blocks {
 			// Then they are removed this option and we reverted this anchor render back
 			//
 			// @link https://github.com/WordPress/gutenberg/pull/51288.
-			if ( isset( $attributes['anchor'] ) && $attributes['anchor'] ) {
+			// Check if WordPress will add the id via apply_block_supports() to avoid duplication.
+			// get_block_wrapper_attributes() merges extra_attributes with block supports, concatenating duplicate ids.
+			$wp_block_supports_attrs = array();
+			if ( class_exists( 'WP_Block_Supports' ) && ! empty( WP_Block_Supports::$block_to_render ) ) {
+				$wp_block_supports_attrs = WP_Block_Supports::get_instance()->apply_block_supports();
+			}
+
+			// Only set anchor if:
+			// 1. id is not already set from useBlockProps attributes.
+			// 2. anchor attribute exists and has a value.
+			// 3. WordPress block supports won't add it (would cause duplication).
+			if ( isset( $attributes['anchor'] ) && $attributes['anchor'] && ! isset( $array_atts['id'] ) && empty( $wp_block_supports_attrs['id'] ) ) {
 				$array_atts['id'] = esc_attr( $attributes['anchor'] );
 			}
 
