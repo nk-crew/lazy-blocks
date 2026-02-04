@@ -27,13 +27,15 @@ function ImageControl(props) {
 	} = props;
 
 	const { mediaUpload, imagePreviewData } = useSelect((select) => {
-		const { getMedia } = select('core');
+		const { getEntityRecord } = select('core');
 
 		let preview = false;
 
 		if (value && Object.keys(value).length) {
 			if (value.id) {
-				const mediaImg = getMedia(value.id) || false;
+				const mediaImg =
+					getEntityRecord('postType', 'attachment', value.id) ||
+					false;
 
 				if (mediaImg) {
 					preview = {

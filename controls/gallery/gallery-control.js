@@ -32,14 +32,16 @@ function GalleryControl(props) {
 	} = props;
 
 	const { mediaUpload, imagesPreviewData } = useSelect((select) => {
-		const { getMedia } = select('core');
+		const { getEntityRecord } = select('core');
 
 		const preview = {};
 
 		if (value && Object.keys(value).length) {
 			value.forEach((img) => {
 				if (!preview[img.id]) {
-					const mediaImg = getMedia(img.id) || false;
+					const mediaImg =
+						getEntityRecord('postType', 'attachment', img.id) ||
+						false;
 
 					if (mediaImg) {
 						preview[img.id] = {
