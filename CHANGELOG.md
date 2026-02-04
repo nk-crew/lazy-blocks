@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.2.1 - Feb 4, 2026 =
+
+* fixed context-aware capability check for PHP block rendering (resolves XSS)
+
 = 4.2.0 - Dec 3, 2025 =
 
 * added caching for the get_blocks() function to prevent loading block custom posts on every page load. This fixes the issue with heavy SQL calls on sites using a large number of blocks (20+)
