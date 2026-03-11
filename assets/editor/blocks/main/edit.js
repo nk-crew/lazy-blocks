@@ -50,22 +50,32 @@ export default function BlockEdit(props) {
 	const [allowErrorNotice, setAllowErrorNotice] = useState(!isSelected);
 	const [invalidControlsCount, setInvalidControlsCount] = useState(0);
 
-	const { innerBlockSelected, postType, isPreviewMode } = useSelect(
-		(select) => {
-			const { hasSelectedInnerBlock, getSettings } =
-				select('core/block-editor');
+	const { innerBlockSelected, postType, isPreviewMode, hasActiveMetaBoxes } =
+		useSelect(
+			(select) => {
+				const { hasSelectedInnerBlock, getSettings } =
+					select('core/block-editor');
 
-			// This select is not available in the Widgets editor, so we have to check it.
-			const { getCurrentPostType } = select('core/editor') || {};
+				// This select is not available in the Widgets editor, so we have to check it.
+				const { getCurrentPostType } = select('core/editor') || {};
+				const { isMetaBoxLocationActive } =
+					select('core/edit-post') || {};
 
-			return {
-				innerBlockSelected: hasSelectedInnerBlock(clientId, true),
-				postType: getCurrentPostType && getCurrentPostType(),
-				isPreviewMode: getSettings().isPreviewMode,
-			};
-		},
-		[clientId]
-	);
+				return {
+					innerBlockSelected: hasSelectedInnerBlock(clientId, true),
+					postType: getCurrentPostType && getCurrentPostType(),
+					isPreviewMode: getSettings().isPreviewMode,
+					hasActiveMetaBoxes: Boolean(
+						(isMetaBoxLocationActive &&
+							(isMetaBoxLocationActive('normal') ||
+								isMetaBoxLocationActive('side') ||
+								isMetaBoxLocationActive('advanced'))) ||
+							false
+					),
+				};
+			},
+			[clientId]
+		);
 
 	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
 
@@ -342,8 +352,21 @@ export default function BlockEdit(props) {
 				return null;
 			}
 
+			const inspectorProps = {
+				key: `inspector-${group}`,
+			};
+
+			// Grouped InspectorControls do not render reliably on edit screens
+			// that still expose legacy metabox areas.
+			if (!hasActiveMetaBoxes) {
+				inspectorProps.group = group;
+			}
+
 			return (
-				<InspectorControls key={`inspector-${group}`} group={group}>
+				<InspectorControls
+					key={`inspector-${group}`}
+					{...inspectorProps}
+				>
 					<div
 						className={`lzb-inspector-controls lzb-inspector-controls-${group}`}
 						data-lazyblocks-block-name={props.name}
