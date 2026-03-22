@@ -18,7 +18,7 @@ concurrency:
 jobs:
   compute-previous-wordpress-version:
     name: Compute previous WordPress version
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
       previous-wordpress-version: ${{ steps.get-previous-wordpress-version.outputs.previous-wordpress-version }}
 
@@ -44,7 +44,7 @@ jobs:
   test-php:
     name: PHP ${{ matrix.php }}${{ matrix.wordpress != '' && format( ' (WP {0}) ', matrix.wordpress ) || '' }} on ubuntu-latest
     needs: compute-previous-wordpress-version
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 20
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
     strategy:
@@ -158,7 +158,7 @@ jobs:
 
   lint:
     name: Lint JS + CSS
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 20
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
 
@@ -176,7 +176,7 @@ jobs:
 
   phpcs:
     name: PHP coding standards
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 20
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
 
