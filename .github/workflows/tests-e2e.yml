@@ -18,7 +18,7 @@ concurrency:
 jobs:
   playwright:
     name: Playwright
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
 
     steps:
