@@ -50,22 +50,32 @@ export default function BlockEdit(props) {
 	const [allowErrorNotice, setAllowErrorNotice] = useState(!isSelected);
 	const [invalidControlsCount, setInvalidControlsCount] = useState(0);
 
-	const { innerBlockSelected, postType, isPreviewMode } = useSelect(
-		(select) => {
-			const { hasSelectedInnerBlock, getSettings } =
-				select('core/block-editor');
+	const { innerBlockSelected, postType, isPreviewMode, hasActiveMetaBoxes } =
+		useSelect(
+			(select) => {
+				const { hasSelectedInnerBlock, getSettings } =
+					select('core/block-editor');
 
-			// This select is not available in the Widgets editor, so we have to check it.
-			const { getCurrentPostType } = select('core/editor') || {};
+				// This select is not available in the Widgets editor, so we have to check it.
+				const { getCurrentPostType } = select('core/editor') || {};
+				const { isMetaBoxLocationActive } =
+					select('core/edit-post') || {};
 
-			return {
-				innerBlockSelected: hasSelectedInnerBlock(clientId, true),
-				postType: getCurrentPostType && getCurrentPostType(),
-				isPreviewMode: getSettings().isPreviewMode,
-			};
-		},
-		[clientId]
-	);
+				return {
+					innerBlockSelected: hasSelectedInnerBlock(clientId, true),
+					postType: getCurrentPostType && getCurrentPostType(),
+					isPreviewMode: getSettings().isPreviewMode,
+					hasActiveMetaBoxes: Boolean(
+						(isMetaBoxLocationActive &&
+							(isMetaBoxLocationActive('normal') ||
+								isMetaBoxLocationActive('side') ||
+								isMetaBoxLocationActive('advanced'))) ||
+							false
+					),
+				};
+			},
+			[clientId]
+		);
 
 	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
 
@@ -240,6 +250,7 @@ export default function BlockEdit(props) {
 	);
 
 	const attsForRender = {};
+	let hasPreviewRenderError = false;
 	const controlsHasGroup = {
 		// Default group is always available to show error notices.
 		default: true,
@@ -248,17 +259,9 @@ export default function BlockEdit(props) {
 	};
 	let hasContentControls = false;
 
-	// prepare data for preview.
+	// Prepare control groups and content controls independently from preview data,
+	// so a malformed control value cannot prevent the inspector from rendering.
 	Object.keys(lazyBlockData.controls).forEach((k) => {
-		if (!lazyBlockData.controls[k].child_of) {
-			attsForRender[lazyBlockData.controls[k].name] = getControlValue(
-				attributes,
-				meta,
-				lazyBlockData,
-				lazyBlockData.controls[k]
-			);
-		}
-
 		if (lazyBlockData.controls[k].placement !== 'content') {
 			switch (lazyBlockData.controls[k].group) {
 				case 'default':
@@ -281,6 +284,33 @@ export default function BlockEdit(props) {
 		}
 	});
 
+	// Prepare data for preview separately and fail gracefully if a control value
+	// or a third-party filter throws for a specific block instance.
+	Object.keys(lazyBlockData.controls).forEach((k) => {
+		const control = lazyBlockData.controls[k];
+
+		if (control.child_of || hasPreviewRenderError) {
+			return;
+		}
+
+		try {
+			attsForRender[control.name] = getControlValue(
+				attributes,
+				meta,
+				lazyBlockData,
+				control
+			);
+		} catch (error) {
+			hasPreviewRenderError = true;
+
+			// eslint-disable-next-line no-console
+			console.error(
+				`Lazy Blocks: failed to prepare preview attributes for block "${props.name}" and control "${control.name}".`,
+				error
+			);
+		}
+	});
+
 	// reserved attributes.
 	const reservedAttributes = [
 		'lazyblock',
@@ -291,7 +321,9 @@ export default function BlockEdit(props) {
 		'blockUniqueClass',
 	];
 	reservedAttributes.forEach((attr) => {
-		attsForRender[attr] = attributes[attr];
+		if (!hasPreviewRenderError) {
+			attsForRender[attr] = attributes[attr];
+		}
 	});
 
 	// show code preview
@@ -342,8 +374,21 @@ export default function BlockEdit(props) {
 				return null;
 			}
 
+			const inspectorProps = {
+				key: `inspector-${group}`,
+			};
+
+			// Grouped InspectorControls do not render reliably on edit screens
+			// that still expose legacy metabox areas.
+			if (!hasActiveMetaBoxes) {
+				inspectorProps.group = group;
+			}
+
 			return (
-				<InspectorControls key={`inspector-${group}`} group={group}>
+				<InspectorControls
+					key={`inspector-${group}`}
+					{...inspectorProps}
+				>
 					<div
 						className={`lzb-inspector-controls lzb-inspector-controls-${group}`}
 						data-lazyblocks-block-name={props.name}
@@ -394,13 +439,15 @@ export default function BlockEdit(props) {
 				{inspectorControlsRender}
 				{blockControlsRender}
 
-				<PreviewServerCallback
-					block={lazyBlockData.slug}
-					clientId={clientId}
-					attributes={attsForRender}
-					context={context}
-					withBlockProps
-				/>
+				{!hasPreviewRenderError ? (
+					<PreviewServerCallback
+						block={lazyBlockData.slug}
+						clientId={clientId}
+						attributes={attsForRender}
+						context={context}
+						withBlockProps
+					/>
+				) : null}
 			</>
 		);
 	}
@@ -444,7 +491,7 @@ export default function BlockEdit(props) {
 						{...props}
 					/>
 				</div>
-				{showPreview ? (
+				{showPreview && !hasPreviewRenderError ? (
 					<div className="lzb-preview-server">
 						<PreviewServerCallback
 							block={lazyBlockData.slug}
