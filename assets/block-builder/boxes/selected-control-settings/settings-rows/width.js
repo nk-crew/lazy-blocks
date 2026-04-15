@@ -5,11 +5,18 @@ import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
 	BaseControl,
+	ToggleGroupControl as StableToggleGroupControl,
+	ToggleGroupControlOption as StableToggleGroupControlOption,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	__experimentalToggleGroupControlOption,
 } from '@wordpress/components';
+
+const ToggleGroupControl =
+	StableToggleGroupControl || __experimentalToggleGroupControl;
+const ToggleGroupControlOption =
+	StableToggleGroupControlOption || __experimentalToggleGroupControlOption;
 
 export default function WidthRow(props) {
 	const { updateData, data } = props;

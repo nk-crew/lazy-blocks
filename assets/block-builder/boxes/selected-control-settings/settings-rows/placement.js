@@ -41,7 +41,11 @@ export default function PlacementRow(props) {
 				__nextHasNoMarginBottom
 			>
 				<div />
-				<div role="group" className="components-button-group">
+				<div
+					role="group"
+					aria-label={__('Placement options', 'lazy-blocks')}
+					className="components-button-group"
+				>
 					<Button
 						variant={isContent ? 'primary' : ''}
 						isPressed={isContent}

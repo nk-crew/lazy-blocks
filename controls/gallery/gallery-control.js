@@ -125,6 +125,10 @@ function GalleryControl(props) {
 							/>
 							<div
 								role="group"
+								aria-label={__(
+									'Gallery actions',
+									'lazy-blocks'
+								)}
 								className="components-button-group lzb-gutenberg-gallery-button"
 							>
 								<Button

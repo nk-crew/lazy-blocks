@@ -331,6 +331,7 @@ function RepeaterControl(props) {
 			</DndContext>
 			<div
 				role="group"
+				aria-label={__('Repeater actions', 'lazy-blocks')}
 				className="components-button-group lzb-gutenberg-repeater-options"
 			>
 				<Button
