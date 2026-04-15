@@ -48,9 +48,10 @@ function StyleProvider(props) {
 
 export default function StyleProviderWrapper({ children }) {
 	const linkRef = useRef();
-	const [ownerDocument, setOwnerDocument] = useState(document);
+	const [ownerDocument, setOwnerDocument] = useState(null);
 
-	// Run once after initial render when DOM is ready
+	// Run once after initial render when DOM is ready.
+	// Uses ownerDocument to ensure correct document reference inside iframes.
 	useEffect(() => {
 		if (linkRef?.current) {
 			setOwnerDocument(linkRef?.current?.ownerDocument);
