@@ -20,7 +20,7 @@ import { CSS } from '@dnd-kit/utilities';
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import { Button, ButtonGroup, Tooltip } from '@wordpress/components';
+import { Button, Tooltip } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
 
 /**
@@ -329,7 +329,10 @@ function RepeaterControl(props) {
 					</div>
 				) : null}
 			</DndContext>
-			<ButtonGroup className="lzb-gutenberg-repeater-options">
+			<div
+				role="group"
+				className="components-button-group lzb-gutenberg-repeater-options"
+			>
 				<Button
 					variant="secondary"
 					size="compact"
@@ -380,7 +383,7 @@ function RepeaterControl(props) {
 				) : (
 					''
 				)}
-			</ButtonGroup>
+			</div>
 		</div>
 	);
 }
