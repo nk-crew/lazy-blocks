@@ -74,6 +74,7 @@
 		"concurrently": "^8.2.0",
 		"cross-env": "^7.0.3",
 		"del": "^6.1.1",
+		"emmet-core": "^1.0.0",
 		"eslint-plugin-playwright": "^0.15.3",
 		"filenamify": "^4.2.0",
 		"glob": "^10.3.3",
