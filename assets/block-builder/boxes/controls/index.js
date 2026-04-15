@@ -19,7 +19,7 @@ import { SortableContext } from '@dnd-kit/sortable';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { TabPanel, Button } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
 
@@ -34,12 +34,13 @@ let initialActiveTab = '';
 
 export default function ControlsSettings(props) {
 	const sensors = useSensors(useSensor(CustomPointerSensor));
+	const controlsRef = useRef();
 
 	const { data } = props;
 
 	useEffect(() => {
 		// fix first loading focus on code editor
-		const $tabsButton = document.querySelector(
+		const $tabsButton = controlsRef.current?.querySelector(
 			'.lazyblocks-control-tabs button'
 		);
 
@@ -310,7 +311,7 @@ export default function ControlsSettings(props) {
 	}
 
 	return (
-		<div className="lzb-block-builder-controls">
+		<div ref={controlsRef} className="lzb-block-builder-controls">
 			<DeselectActiveControlOnClickOutside />
 			<TabPanel
 				className="lazyblocks-control-tabs"
