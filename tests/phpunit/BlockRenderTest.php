@@ -24,6 +24,14 @@ class BlockRenderTest extends WP_UnitTestCase {
 		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
 
+	/**
+	 * Strip WP core block classes (e.g. wp-block-paragraph) that vary
+	 * between WordPress versions so assertions stay version-agnostic.
+	 */
+	private function normalize_block_html( $html ) {
+		return preg_replace( '/ class="wp-block-paragraph"/', '', $html );
+	}
+
 	// Remove test block after each test.
 	public function tear_down() {
 		$this->remove_test_block();
@@ -112,16 +120,18 @@ class BlockRenderTest extends WP_UnitTestCase {
 			'<div class="wp-block-lazyblock-test">' .
 				'<p>Hello:</p>' .
 				'<div class="lazyblock-inner-blocks">' .
-					'<p class="wp-block-paragraph">Inner Blocks</p>' .
-					'<p class="wp-block-paragraph">Number with $ character should not be replaced here -> $10</p>' .
+					'<p>Inner Blocks</p>' .
+					'<p>Number with $ character should not be replaced here -> $10</p>' .
 				'</div>' .
 				'<p>there.</p>' .
 			'</div>',
-			do_blocks(
-				'<!-- wp:lazyblock/test -->' .
-					'<!-- wp:paragraph --><p>Inner Blocks</p><!-- /wp:paragraph -->' .
-					'<!-- wp:paragraph --><p>Number with $ character should not be replaced here -> $10</p><!-- /wp:paragraph -->' .
-				'<!-- /wp:lazyblock/test -->'
+			$this->normalize_block_html(
+				do_blocks(
+					'<!-- wp:lazyblock/test -->' .
+						'<!-- wp:paragraph --><p>Inner Blocks</p><!-- /wp:paragraph -->' .
+						'<!-- wp:paragraph --><p>Number with $ character should not be replaced here -> $10</p><!-- /wp:paragraph -->' .
+					'<!-- /wp:lazyblock/test -->'
+				)
 			)
 		);
 
@@ -146,13 +156,15 @@ class BlockRenderTest extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<div class="wp-block-lazyblock-test">' .
 				'<p>Hello:</p>' .
-				'<div class="custom-class"><p class="wp-block-paragraph">Inner</p></div>' .
+				'<div class="custom-class"><p>Inner</p></div>' .
 				'<p>there.</p>' .
 			'</div>',
-			do_blocks(
-				'<!-- wp:lazyblock/test -->' .
-					'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
-				'<!-- /wp:lazyblock/test -->'
+			$this->normalize_block_html(
+				do_blocks(
+					'<!-- wp:lazyblock/test -->' .
+						'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
+					'<!-- /wp:lazyblock/test -->'
+				)
 			)
 		);
 
@@ -179,13 +191,15 @@ class BlockRenderTest extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<div class="wp-block-lazyblock-test">' .
 				'<p>Hello:</p>' .
-				'<p class="wp-block-paragraph">Inner</p>' .
+				'<p>Inner</p>' .
 				'<p>there.</p>' .
 			'</div>',
-			do_blocks(
-				'<!-- wp:lazyblock/test -->' .
-					'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
-				'<!-- /wp:lazyblock/test -->'
+			$this->normalize_block_html(
+				do_blocks(
+					'<!-- wp:lazyblock/test -->' .
+						'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
+					'<!-- /wp:lazyblock/test -->'
+				)
 			)
 		);
 
@@ -209,12 +223,14 @@ class BlockRenderTest extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<div class="wp-block-lazyblock-test">' .
 				'<p>Test</p>' .
-				'<p class="wp-block-paragraph">Inner</p>' .
+				'<p>Inner</p>' .
 			'</div>',
-			do_blocks(
-				'<!-- wp:lazyblock/test -->' .
-					'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
-				'<!-- /wp:lazyblock/test -->'
+			$this->normalize_block_html(
+				do_blocks(
+					'<!-- wp:lazyblock/test -->' .
+						'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
+					'<!-- /wp:lazyblock/test -->'
+				)
 			)
 		);
 	}
