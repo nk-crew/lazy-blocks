@@ -139,7 +139,7 @@ class LazyBlocks_Tools {
 							'placeholder'          => '',
 							'characters_limit'     => '',
 							'width'                => '100',
-							'group'                => 'settings',
+							'group'                => 'list',
 							'hide_if_not_selected' => 'false',
 							'required'             => 'false',
 							'translate'            => 'false',
@@ -151,7 +151,7 @@ class LazyBlocks_Tools {
 							$should_remove_field = isset( $block['controls'][ $k ][ $field ] ) && $val === $block['controls'][ $k ][ $field ];
 
 							if ( ! $should_remove_field && 'group' === $field && isset( $block['controls'][ $k ][ $field ] ) ) {
-								$should_remove_field = in_array( $block['controls'][ $k ][ $field ], array( 'default', 'settings' ), true );
+								$should_remove_field = in_array( $block['controls'][ $k ][ $field ], array( 'default', 'settings', 'list' ), true );
 							}
 
 							if ( $should_remove_field ) {
@@ -598,7 +598,7 @@ class LazyBlocks_Tools {
 			'help'                 => '',
 			'child_of'             => '',
 			'placement'            => 'content',
-			'group'                => 'settings',
+			'group'                => 'list',
 			'width'                => '100',
 			'hide_if_not_selected' => 'false',
 			'required'             => 'false',

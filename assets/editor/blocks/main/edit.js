@@ -38,7 +38,7 @@ if (!options || !options.blocks || !options.blocks.length) {
 
 const DEFAULT_GROUP = 'settings';
 const LEGACY_DEFAULT_GROUP = 'default';
-const INSPECTOR_GROUPS = [DEFAULT_GROUP, 'list', 'styles', 'advanced'];
+const INSPECTOR_GROUPS = ['list', DEFAULT_GROUP, 'styles', 'advanced'];
 
 function normalizeControlGroup(group = LEGACY_DEFAULT_GROUP) {
 	if (group === DEFAULT_GROUP) {
