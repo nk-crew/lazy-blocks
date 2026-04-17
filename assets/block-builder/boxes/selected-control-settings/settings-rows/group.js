@@ -6,6 +6,8 @@ import { PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 
 export default function GroupRow(props) {
 	const { updateData, data } = props;
+	const groupValue =
+		!data.group || data.group === 'default' ? 'settings' : data.group;
 
 	return (
 		<PanelBody>
@@ -16,9 +18,10 @@ export default function GroupRow(props) {
 			>
 				<SelectControl
 					id="lazyblocks-settings-row-group"
-					value={data.group}
+					value={groupValue}
 					options={[
-						{ label: 'Default', value: 'default' },
+						{ label: 'Settings', value: 'settings' },
+						{ label: 'List View', value: 'list' },
 						{ label: 'Styles', value: 'styles' },
 						{ label: 'Advanced', value: 'advanced' },
 					]}
