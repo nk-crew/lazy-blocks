@@ -16,16 +16,15 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import SettingsRows from './settings-rows';
 
 export default function SelectedControlSettings() {
-	const { id, data } = useSelect((select) => {
-		const { getSelectedControlId, getSelectedControl } = select(
-			'lazy-blocks/block-data'
-		);
+	const id = useSelect(
+		(select) => select('lazy-blocks/block-data').getSelectedControlId(),
+		[]
+	);
 
-		return {
-			id: getSelectedControlId(),
-			data: getSelectedControl(),
-		};
-	}, []);
+	const data = useSelect(
+		(select) => select('lazy-blocks/block-data').getSelectedControl(),
+		[]
+	);
 
 	const { updateControlData } = useDispatch('lazy-blocks/block-data');
 

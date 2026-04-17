@@ -1486,6 +1486,19 @@ class LazyBlocks_Blocks {
 	public function register_block() {
 		$blocks = $this->get_blocks();
 
+		// Filter out blocks with invalid slugs (e.g., Auto Draft blocks with empty slug).
+		$blocks = array_values(
+			array_filter(
+				$blocks,
+				function ( $block ) {
+					$name_after_slug = explode( '/', $block['slug'] );
+					$name_after_slug = isset( $name_after_slug[1] ) ? $name_after_slug[1] : '';
+
+					return $block['slug'] && $name_after_slug;
+				}
+			)
+		);
+
 		LazyBlocks_Assets::register_style( 'lazyblocks-editor', 'build/editor' );
 		wp_style_add_data( 'lazyblocks-editor', 'rtl', 'replace' );
 

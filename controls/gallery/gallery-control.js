@@ -2,13 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import {
-	Button,
-	ButtonGroup,
-	Tooltip,
-	DropZone,
-	withNotices,
-} from '@wordpress/components';
+import { Button, Tooltip, DropZone, withNotices } from '@wordpress/components';
 import { MediaPlaceholder, MediaUpload } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
@@ -129,7 +123,14 @@ function GalleryControl(props) {
 									});
 								}}
 							/>
-							<ButtonGroup className="lzb-gutenberg-gallery-button">
+							<div
+								role="group"
+								aria-label={__(
+									'Gallery actions',
+									'lazy-blocks'
+								)}
+								className="components-button-group lzb-gutenberg-gallery-button"
+							>
 								<Button
 									variant="secondary"
 									size="compact"
@@ -183,7 +184,7 @@ function GalleryControl(props) {
 										</svg>
 									</Button>
 								</Tooltip>
-							</ButtonGroup>
+							</div>
 							{value.map((img) => (
 								<div
 									className="lzb-gutenberg-gallery-item"
