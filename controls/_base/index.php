@@ -94,7 +94,7 @@ class LazyBlocks_Control {
 		'help'                 => '',
 		'child_of'             => '',
 		'placement'            => 'content',
-		'group'                => 'list',
+		'group'                => 'settings',
 		'width'                => '100',
 		'hide_if_not_selected' => 'false',
 		'required'             => 'false',

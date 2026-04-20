@@ -20,10 +20,10 @@ export default function GroupRow(props) {
 					id="lazyblocks-settings-row-group"
 					value={groupValue}
 					options={[
-						{ label: 'List View', value: 'list' },
 						{ label: 'Settings', value: 'settings' },
 						{ label: 'Styles', value: 'styles' },
 						{ label: 'Advanced', value: 'advanced' },
+						{ label: 'List View', value: 'list' },
 					]}
 					onChange={(value) =>
 						updateData({
