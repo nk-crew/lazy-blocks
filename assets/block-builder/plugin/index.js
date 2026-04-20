@@ -83,19 +83,18 @@ export default function UpdateEditor() {
 	/**
 	 * Always select block.
 	 */
+	const wasMainBlockSelected = useRef(false);
 	useEffect(() => {
 		// if selected block, do nothing.
 		if (selectedBlock && selectedBlock.name === 'lzb-block-builder/main') {
+			wasMainBlockSelected.current = true;
 			return;
 		}
 
-		// check if selected post title, also do nothing.
-		// `.editor-post-title.is-selected` is added since WP 5.9
-		if (
-			document.querySelector(
-				'.editor-post-title__block.is-selected, .editor-post-title.is-selected'
-			)
-		) {
+		// If the main block was previously selected and now nothing is selected,
+		// the user likely clicked on the post title or elsewhere.
+		// Don't auto-select in that case (iframe-safe, no DOM queries needed).
+		if (wasMainBlockSelected.current && !selectedBlock) {
 			return;
 		}
 
@@ -108,6 +107,7 @@ export default function UpdateEditor() {
 
 		if (selectBlockId) {
 			selectBlock(selectBlockId);
+			wasMainBlockSelected.current = true;
 		}
 	}, [selectedBlock, blocks, selectBlock]);
 

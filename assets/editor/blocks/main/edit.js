@@ -36,6 +36,18 @@ if (!options || !options.blocks || !options.blocks.length) {
 	};
 }
 
+const DEFAULT_GROUP = 'settings';
+const LEGACY_DEFAULT_GROUP = 'default';
+const INSPECTOR_GROUPS = [DEFAULT_GROUP, 'styles', 'advanced', 'list'];
+
+function normalizeControlGroup(group = LEGACY_DEFAULT_GROUP) {
+	if (group === DEFAULT_GROUP) {
+		return LEGACY_DEFAULT_GROUP;
+	}
+
+	return group;
+}
+
 const blocksWithErrors = {};
 
 export default function BlockEdit(props) {
@@ -240,12 +252,13 @@ export default function BlockEdit(props) {
 	);
 
 	const attsForRender = {};
-	const controlsHasGroup = {
-		// Default group is always available to show error notices.
-		default: true,
-		styles: false,
-		advanced: false,
-	};
+	const controlsHasGroup = INSPECTOR_GROUPS.reduce(
+		(result, group) => ({
+			...result,
+			[group]: group === DEFAULT_GROUP,
+		}),
+		{}
+	);
 	let hasContentControls = false;
 
 	// prepare data for preview.
@@ -260,15 +273,18 @@ export default function BlockEdit(props) {
 		}
 
 		if (lazyBlockData.controls[k].placement !== 'content') {
-			switch (lazyBlockData.controls[k].group) {
-				case 'default':
-					controlsHasGroup.default = true;
+			const group =
+				lazyBlockData.controls[k].group || LEGACY_DEFAULT_GROUP;
+
+			switch (group) {
+				case LEGACY_DEFAULT_GROUP:
+				case DEFAULT_GROUP:
+					controlsHasGroup[DEFAULT_GROUP] = true;
 					break;
 				case 'styles':
-					controlsHasGroup.styles = true;
-					break;
 				case 'advanced':
-					controlsHasGroup.advanced = true;
+				case 'list':
+					controlsHasGroup[group] = true;
 					break;
 			}
 		}
@@ -342,13 +358,15 @@ export default function BlockEdit(props) {
 				return null;
 			}
 
+			const normalizedGroup = normalizeControlGroup(group);
+
 			return (
 				<InspectorControls key={`inspector-${group}`} group={group}>
 					<div
 						className={`lzb-inspector-controls lzb-inspector-controls-${group}`}
 						data-lazyblocks-block-name={props.name}
 					>
-						{'default' === group &&
+						{DEFAULT_GROUP === group &&
 							allowErrorNotice &&
 							invalidControlsCount > 0 && (
 								<div className="lzb-invalid-notice">
@@ -366,7 +384,7 @@ export default function BlockEdit(props) {
 							)}
 						<RenderControls
 							placement="inspector"
-							group={group}
+							group={normalizedGroup}
 							isLazyBlockSelected={isLazyBlockSelected}
 							allowErrorNotice={allowErrorNotice}
 							meta={meta}

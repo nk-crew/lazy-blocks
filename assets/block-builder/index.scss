@@ -187,6 +187,36 @@ html {
 	}
 }
 
+.lzb-date-time-picker-mode-control {
+	width: 100%;
+
+	// Older WordPress: class is on wrapper, radiogroup is a child.
+	.components-toggle-group-control__group,
+	> div[role="radiogroup"] {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr 1fr;
+		width: 100%;
+	}
+
+	// Newer WordPress: class is on the radiogroup element itself.
+	&[role="radiogroup"] {
+		display: grid !important;
+		grid-template-columns: 1fr 1.4fr 1fr;
+	}
+
+	button {
+		justify-content: center;
+		min-width: 0;
+		padding-right: 12px;
+		padding-left: 12px;
+		white-space: nowrap;
+	}
+
+	button > * {
+		white-space: nowrap;
+	}
+}
+
 // Notice
 .lzb-block-builder-notice {
 	margin-right: 0;
