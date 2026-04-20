@@ -55,6 +55,8 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 		}
 
 		// Create Checkbox control with "Allow Multiple" and choices.
+		// Note: We cannot pass options to createControl here because the
+		// "+ Add Choice" UI only appears after enabling the "Multiple" toggle.
 		await createControl({
 			page,
 			editor,
@@ -80,16 +82,16 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 		await page.getByPlaceholder('Label').nth(3).fill('Option C');
 		await page.getByPlaceholder('Value').nth(2).fill('option_c');
 
-		// Enable "Save in Meta" - scroll sidebar to reveal the toggle.
-		// The sidebar panel is scrollable, scroll the settings container.
-		const saveInMetaLabel = page.getByText('Save in Meta', { exact: true });
-		await saveInMetaLabel.evaluate((el) => {
-			el.scrollIntoView({ behavior: 'instant', block: 'center' });
-		});
+		// Enable "Save in Meta" - locate the BaseControl wrapper containing the toggle.
+		const saveInMetaPanel = page
+			.locator('.components-base-control')
+			.filter({
+				has: page.locator('.components-base-control__label', {
+					hasText: 'Save in Meta',
+				}),
+			});
+		await saveInMetaPanel.scrollIntoViewIfNeeded();
 		await page.waitForTimeout(300);
-
-		// Find the toggle in the Save in Meta section and check it.
-		const saveInMetaPanel = saveInMetaLabel.locator('..').locator('..');
 		await saveInMetaPanel.locator('input[type="checkbox"]').first().check();
 
 		// Set output method to PHP.
