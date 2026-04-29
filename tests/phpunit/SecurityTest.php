@@ -221,7 +221,7 @@ class SecurityTest extends WP_UnitTestCase {
 
 		lazyblocks()->blocks()->save_meta_boxes( $post_id, $data );
 
-		// Verify that the PHP code fields were NOT saved.
+		// Verify that unfiltered code fields were NOT saved.
 		$editor_html     = get_post_meta( $post_id, 'lazyblocks_code_editor_html', true );
 		$frontend_html   = get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true );
 		$frontend_script = get_post_meta( $post_id, 'lazyblocks_script_view', true );

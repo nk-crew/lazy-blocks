@@ -765,10 +765,6 @@ class LazyBlocks_Blocks {
 	public function guard_unfiltered_block_meta( $check, $object_id, $meta_key, $_meta_value, $_meta_arg ) {
 		unset( $_meta_value, $_meta_arg );
 
-		if ( 'lazyblocks' !== get_post_type( $object_id ) ) {
-			return $check;
-		}
-
 		$unsafe_meta_keys = apply_filters(
 			'lzb/unfiltered_block_meta_keys',
 			array(
@@ -778,7 +774,15 @@ class LazyBlocks_Blocks {
 			)
 		);
 
-		if ( in_array( $meta_key, $unsafe_meta_keys, true ) && ! $this->is_allowed_unfiltered_html() ) {
+		if ( ! in_array( $meta_key, $unsafe_meta_keys, true ) ) {
+			return $check;
+		}
+
+		if ( 'lazyblocks' !== get_post_type( $object_id ) ) {
+			return $check;
+		}
+
+		if ( ! $this->is_allowed_unfiltered_html() ) {
 			return false;
 		}
 
@@ -812,7 +816,7 @@ class LazyBlocks_Blocks {
 					'lazyblocks_style_block' === $meta ||
 					'lazyblocks_script_view' === $meta
 				) {
-					// Disallow PHP code for users without unfiltered_html capability.
+					// Disallow unfiltered code fields for users without unfiltered_html capability.
 					if (
 						(
 							'lazyblocks_code_editor_html' === $meta ||
