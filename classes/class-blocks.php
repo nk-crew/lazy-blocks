@@ -757,10 +757,14 @@ class LazyBlocks_Blocks {
 	 * @param null|bool $check      Whether to short-circuit the metadata update.
 	 * @param int       $object_id  Post ID.
 	 * @param string    $meta_key   Meta key.
+	 * @param mixed     $_meta_value Metadata value to store.
+	 * @param mixed     $_meta_arg   Unique flag for add_post_metadata or previous value for update_post_metadata.
 	 *
 	 * @return null|bool
 	 */
-	public function guard_unfiltered_block_meta( $check, $object_id, $meta_key ) {
+	public function guard_unfiltered_block_meta( $check, $object_id, $meta_key, $_meta_value, $_meta_arg ) {
+		unset( $_meta_value, $_meta_arg );
+
 		if ( 'lazyblocks' !== get_post_type( $object_id ) ) {
 			return $check;
 		}
@@ -812,7 +816,8 @@ class LazyBlocks_Blocks {
 					if (
 						(
 							'lazyblocks_code_editor_html' === $meta ||
-							'lazyblocks_code_frontend_html' === $meta
+							'lazyblocks_code_frontend_html' === $meta ||
+							'lazyblocks_script_view' === $meta
 						) &&
 						! $this->is_allowed_unfiltered_html()
 					) {

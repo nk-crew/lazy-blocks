@@ -215,17 +215,20 @@ class SecurityTest extends WP_UnitTestCase {
 		$data = array(
 			'lazyblocks_code_editor_html'   => '<?php echo "malicious code"; ?>',
 			'lazyblocks_code_frontend_html' => '<?php echo "more malicious code"; ?>',
+			'lazyblocks_script_view'        => 'alert(1);',
 			'lazyblocks_slug'               => 'test-block',
 		);
 
 		lazyblocks()->blocks()->save_meta_boxes( $post_id, $data );
 
 		// Verify that the PHP code fields were NOT saved.
-		$editor_html   = get_post_meta( $post_id, 'lazyblocks_code_editor_html', true );
-		$frontend_html = get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true );
+		$editor_html     = get_post_meta( $post_id, 'lazyblocks_code_editor_html', true );
+		$frontend_html   = get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true );
+		$frontend_script = get_post_meta( $post_id, 'lazyblocks_script_view', true );
 
 		$this->assertEmpty( $editor_html, 'Editor HTML should be empty for users without unfiltered_html capability' );
 		$this->assertEmpty( $frontend_html, 'Frontend HTML should be empty for users without unfiltered_html capability' );
+		$this->assertEmpty( $frontend_script, 'Frontend script should be empty for users without unfiltered_html capability' );
 
 		// Clean up.
 		wp_delete_post( $post_id, true );
@@ -244,21 +247,31 @@ class SecurityTest extends WP_UnitTestCase {
 			)
 		);
 
-		$payload = '<img src=x onerror=alert(1)>';
+		$guarded_meta_keys = array(
+			'lazyblocks_code_editor_html',
+			'lazyblocks_code_frontend_html',
+			'lazyblocks_script_view',
+		);
 
-		$added = add_post_meta( $post_id, 'lazyblocks_code_frontend_html', $payload, true );
+		foreach ( $guarded_meta_keys as $meta_key ) {
+			$payload = 'lazyblocks_script_view' === $meta_key ? 'alert(1);' : '<img src=x onerror=alert(1)>';
 
-		$this->assertFalse( $added, 'Direct add_post_meta should be blocked for users without unfiltered_html.' );
-		$this->assertEmpty( get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true ) );
+			$added = add_post_meta( $post_id, $meta_key, $payload, true );
 
-		add_filter( 'lzb/allow_unfiltered_html', '__return_true' );
-		add_post_meta( $post_id, 'lazyblocks_code_frontend_html', '<p>Safe existing template</p>', true );
-		remove_filter( 'lzb/allow_unfiltered_html', '__return_true' );
+			$this->assertFalse( $added, sprintf( 'Direct add_post_meta should be blocked for %s.', $meta_key ) );
+			$this->assertEmpty( get_post_meta( $post_id, $meta_key, true ) );
 
-		$updated = update_post_meta( $post_id, 'lazyblocks_code_frontend_html', $payload );
+			add_filter( 'lzb/allow_unfiltered_html', '__return_true' );
+			$allowed_add = add_post_meta( $post_id, $meta_key, 'Safe existing template', true );
+			remove_filter( 'lzb/allow_unfiltered_html', '__return_true' );
 
-		$this->assertFalse( $updated, 'Direct update_post_meta should be blocked for users without unfiltered_html.' );
-		$this->assertSame( '<p>Safe existing template</p>', get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true ) );
+			$this->assertNotFalse( $allowed_add, sprintf( 'Privileged add_post_meta setup should work for %s.', $meta_key ) );
+
+			$updated = update_post_meta( $post_id, $meta_key, $payload );
+
+			$this->assertFalse( $updated, sprintf( 'Direct update_post_meta should be blocked for %s.', $meta_key ) );
+			$this->assertSame( 'Safe existing template', get_post_meta( $post_id, $meta_key, true ) );
+		}
 
 		wp_delete_post( $post_id, true );
 	}
