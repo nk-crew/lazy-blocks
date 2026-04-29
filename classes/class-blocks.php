@@ -100,6 +100,10 @@ class LazyBlocks_Blocks {
 		// Disable different post statuses.
 		add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
 
+		// Prevent direct meta API writes from bypassing block builder sanitization.
+		add_filter( 'add_post_metadata', array( $this, 'guard_unfiltered_block_meta' ), 10, 5 );
+		add_filter( 'update_post_metadata', array( $this, 'guard_unfiltered_block_meta' ), 10, 5 );
+
 		// Disabled the display of statuses in the list of blocks and replaced the Draft title in the submenu to Inactive.
 		add_filter( 'views_edit-lazyblocks', array( $this, 'change_activation_views_labels' ) );
 
@@ -742,6 +746,39 @@ class LazyBlocks_Blocks {
 		$allow_unfiltered_html = current_user_can( 'unfiltered_html' );
 
 		return apply_filters( 'lzb/allow_unfiltered_html', $allow_unfiltered_html );
+	}
+
+	/**
+	 * Prevent unsafe block code fields from being written outside save_meta_boxes().
+	 *
+	 * WordPress XML-RPC and custom fields can write post meta directly, bypassing
+	 * the block builder REST endpoint where these fields are normally checked.
+	 *
+	 * @param null|bool $check      Whether to short-circuit the metadata update.
+	 * @param int       $object_id  Post ID.
+	 * @param string    $meta_key   Meta key.
+	 *
+	 * @return null|bool
+	 */
+	public function guard_unfiltered_block_meta( $check, $object_id, $meta_key ) {
+		if ( 'lazyblocks' !== get_post_type( $object_id ) ) {
+			return $check;
+		}
+
+		$unsafe_meta_keys = apply_filters(
+			'lzb/unfiltered_block_meta_keys',
+			array(
+				'lazyblocks_code_editor_html',
+				'lazyblocks_code_frontend_html',
+				'lazyblocks_script_view',
+			)
+		);
+
+		if ( in_array( $meta_key, $unsafe_meta_keys, true ) && ! $this->is_allowed_unfiltered_html() ) {
+			return false;
+		}
+
+		return $check;
 	}
 
 	/**

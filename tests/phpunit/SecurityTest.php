@@ -230,4 +230,36 @@ class SecurityTest extends WP_UnitTestCase {
 		// Clean up.
 		wp_delete_post( $post_id, true );
 	}
+
+	/**
+	 * Test that direct meta writes cannot bypass code field capability checks.
+	 */
+	public function test_direct_meta_writes_block_code_fields_for_non_privileged_users() {
+		$user_id = $this->factory->user->create( array( 'role' => 'contributor' ) );
+		wp_set_current_user( $user_id );
+
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type' => 'lazyblocks',
+			)
+		);
+
+		$payload = '<img src=x onerror=alert(1)>';
+
+		$added = add_post_meta( $post_id, 'lazyblocks_code_frontend_html', $payload, true );
+
+		$this->assertFalse( $added, 'Direct add_post_meta should be blocked for users without unfiltered_html.' );
+		$this->assertEmpty( get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true ) );
+
+		add_filter( 'lzb/allow_unfiltered_html', '__return_true' );
+		add_post_meta( $post_id, 'lazyblocks_code_frontend_html', '<p>Safe existing template</p>', true );
+		remove_filter( 'lzb/allow_unfiltered_html', '__return_true' );
+
+		$updated = update_post_meta( $post_id, 'lazyblocks_code_frontend_html', $payload );
+
+		$this->assertFalse( $updated, 'Direct update_post_meta should be blocked for users without unfiltered_html.' );
+		$this->assertSame( '<p>Safe existing template</p>', get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true ) );
+
+		wp_delete_post( $post_id, true );
+	}
 }
