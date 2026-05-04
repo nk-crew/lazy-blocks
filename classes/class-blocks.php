@@ -100,6 +100,10 @@ class LazyBlocks_Blocks {
 		// Disable different post statuses.
 		add_action( 'save_post', array( $this, 'normalize_lazyblocks_post_status' ), 20, 2 );
 
+		// Prevent direct meta API writes from bypassing block builder sanitization.
+		add_filter( 'add_post_metadata', array( $this, 'guard_unfiltered_block_meta' ), 10, 5 );
+		add_filter( 'update_post_metadata', array( $this, 'guard_unfiltered_block_meta' ), 10, 5 );
+
 		// Disabled the display of statuses in the list of blocks and replaced the Draft title in the submenu to Inactive.
 		add_filter( 'views_edit-lazyblocks', array( $this, 'change_activation_views_labels' ) );
 
@@ -745,6 +749,47 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Prevent unsafe block code fields from being written outside save_meta_boxes().
+	 *
+	 * WordPress XML-RPC and custom fields can write post meta directly, bypassing
+	 * the block builder REST endpoint where these fields are normally checked.
+	 *
+	 * @param null|bool $check      Whether to short-circuit the metadata update.
+	 * @param int       $object_id  Post ID.
+	 * @param string    $meta_key   Meta key.
+	 * @param mixed     $_meta_value Metadata value to store.
+	 * @param mixed     $_meta_arg   Unique flag for add_post_metadata or previous value for update_post_metadata.
+	 *
+	 * @return null|bool
+	 */
+	public function guard_unfiltered_block_meta( $check, $object_id, $meta_key, $_meta_value, $_meta_arg ) {
+		unset( $_meta_value, $_meta_arg );
+
+		$unsafe_meta_keys = apply_filters(
+			'lzb/unfiltered_block_meta_keys',
+			array(
+				'lazyblocks_code_editor_html',
+				'lazyblocks_code_frontend_html',
+				'lazyblocks_script_view',
+			)
+		);
+
+		if ( ! in_array( $meta_key, $unsafe_meta_keys, true ) ) {
+			return $check;
+		}
+
+		if ( 'lazyblocks' !== get_post_type( $object_id ) ) {
+			return $check;
+		}
+
+		if ( ! $this->is_allowed_unfiltered_html() ) {
+			return false;
+		}
+
+		return $check;
+	}
+
+	/**
 	 * Save Format metabox
 	 *
 	 * @param int   $post_id The post ID.
@@ -771,11 +816,12 @@ class LazyBlocks_Blocks {
 					'lazyblocks_style_block' === $meta ||
 					'lazyblocks_script_view' === $meta
 				) {
-					// Disallow PHP code for users without unfiltered_html capability.
+					// Disallow unfiltered code fields for users without unfiltered_html capability.
 					if (
 						(
 							'lazyblocks_code_editor_html' === $meta ||
-							'lazyblocks_code_frontend_html' === $meta
+							'lazyblocks_code_frontend_html' === $meta ||
+							'lazyblocks_script_view' === $meta
 						) &&
 						! $this->is_allowed_unfiltered_html()
 					) {

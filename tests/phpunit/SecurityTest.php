@@ -215,19 +215,64 @@ class SecurityTest extends WP_UnitTestCase {
 		$data = array(
 			'lazyblocks_code_editor_html'   => '<?php echo "malicious code"; ?>',
 			'lazyblocks_code_frontend_html' => '<?php echo "more malicious code"; ?>',
+			'lazyblocks_script_view'        => 'alert(1);',
 			'lazyblocks_slug'               => 'test-block',
 		);
 
 		lazyblocks()->blocks()->save_meta_boxes( $post_id, $data );
 
-		// Verify that the PHP code fields were NOT saved.
-		$editor_html   = get_post_meta( $post_id, 'lazyblocks_code_editor_html', true );
-		$frontend_html = get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true );
+		// Verify that unfiltered code fields were NOT saved.
+		$editor_html     = get_post_meta( $post_id, 'lazyblocks_code_editor_html', true );
+		$frontend_html   = get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true );
+		$frontend_script = get_post_meta( $post_id, 'lazyblocks_script_view', true );
 
 		$this->assertEmpty( $editor_html, 'Editor HTML should be empty for users without unfiltered_html capability' );
 		$this->assertEmpty( $frontend_html, 'Frontend HTML should be empty for users without unfiltered_html capability' );
+		$this->assertEmpty( $frontend_script, 'Frontend script should be empty for users without unfiltered_html capability' );
 
 		// Clean up.
+		wp_delete_post( $post_id, true );
+	}
+
+	/**
+	 * Test that direct meta writes cannot bypass code field capability checks.
+	 */
+	public function test_direct_meta_writes_block_code_fields_for_non_privileged_users() {
+		$user_id = $this->factory->user->create( array( 'role' => 'contributor' ) );
+		wp_set_current_user( $user_id );
+
+		$post_id = $this->factory->post->create(
+			array(
+				'post_type' => 'lazyblocks',
+			)
+		);
+
+		$guarded_meta_keys = array(
+			'lazyblocks_code_editor_html',
+			'lazyblocks_code_frontend_html',
+			'lazyblocks_script_view',
+		);
+
+		foreach ( $guarded_meta_keys as $meta_key ) {
+			$payload = 'lazyblocks_script_view' === $meta_key ? 'alert(1);' : '<img src=x onerror=alert(1)>';
+
+			$added = add_post_meta( $post_id, $meta_key, $payload, true );
+
+			$this->assertFalse( $added, sprintf( 'Direct add_post_meta should be blocked for %s.', $meta_key ) );
+			$this->assertEmpty( get_post_meta( $post_id, $meta_key, true ) );
+
+			add_filter( 'lzb/allow_unfiltered_html', '__return_true' );
+			$allowed_add = add_post_meta( $post_id, $meta_key, 'Safe existing template', true );
+			remove_filter( 'lzb/allow_unfiltered_html', '__return_true' );
+
+			$this->assertNotFalse( $allowed_add, sprintf( 'Privileged add_post_meta setup should work for %s.', $meta_key ) );
+
+			$updated = update_post_meta( $post_id, $meta_key, $payload );
+
+			$this->assertFalse( $updated, sprintf( 'Direct update_post_meta should be blocked for %s.', $meta_key ) );
+			$this->assertSame( 'Safe existing template', get_post_meta( $post_id, $meta_key, true ) );
+		}
+
 		wp_delete_post( $post_id, true );
 	}
 }
