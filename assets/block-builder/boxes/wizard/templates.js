@@ -146,7 +146,7 @@ __BLOCK_CLASSNAME__ .hero-button:hover {
 				type: 'repeater',
 				name: 'testimonials',
 				label: 'Testimonials',
-				group: 'default',
+				group: 'settings',
 				rows_min: '1',
 				rows_label: 'Testimonial',
 				rows_add_button_label: 'Add Testimonial',

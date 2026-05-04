@@ -34,10 +34,8 @@ export default function BlockBuilder() {
 	const [codeContext, setCodeContext] = useState('frontend');
 	const [setupWizardClosed, setSetupWizardClosed] = useState(false);
 
-	const { blockData } = useSelect(
-		(select) => ({
-			blockData: select('lazy-blocks/block-data').getBlockData(),
-		}),
+	const blockData = useSelect(
+		(select) => select('lazy-blocks/block-data').getBlockData(),
 		[]
 	);
 

@@ -1532,6 +1532,19 @@ class LazyBlocks_Blocks {
 	public function register_block() {
 		$blocks = $this->get_blocks();
 
+		// Filter out blocks with invalid slugs (e.g., Auto Draft blocks with empty slug).
+		$blocks = array_values(
+			array_filter(
+				$blocks,
+				function ( $block ) {
+					$name_after_slug = explode( '/', $block['slug'] );
+					$name_after_slug = isset( $name_after_slug[1] ) ? $name_after_slug[1] : '';
+
+					return $block['slug'] && $name_after_slug;
+				}
+			)
+		);
+
 		LazyBlocks_Assets::register_style( 'lazyblocks-editor', 'build/editor' );
 		wp_style_add_data( 'lazyblocks-editor', 'rtl', 'replace' );
 
@@ -1740,15 +1753,28 @@ class LazyBlocks_Blocks {
 			$meta_attributes = $this->prepare_block_meta_attributes( $block['controls'], '', $block );
 			foreach ( $meta_attributes as $attribute ) {
 				if ( isset( $attribute['meta'] ) && $attribute['meta'] ) {
+					$meta_args = array(
+						'single'  => true,
+						'type'    => $attribute['type'],
+						'default' => $attribute['default'],
+					);
+
+					// For array-type meta, WordPress requires show_in_rest.schema.items (since WP 5.3).
+					if ( 'array' === $attribute['type'] && isset( $attribute['items'] ) ) {
+						$meta_args['show_in_rest'] = array(
+							'schema' => array(
+								'type'  => 'array',
+								'items' => $attribute['items'],
+							),
+						);
+					} else {
+						$meta_args['show_in_rest'] = true;
+					}
+
 					register_meta(
 						'post',
 						$attribute['meta'],
-						array(
-							'show_in_rest' => true,
-							'single'       => true,
-							'type'         => $attribute['type'],
-							'default'      => $attribute['default'],
-						)
+						$meta_args
 					);
 				}
 			}
@@ -1793,6 +1819,17 @@ class LazyBlocks_Blocks {
 			foreach ( $block['controls'] as $control ) {
 				if ( ! isset( $control['child_of'] ) || ! $control['child_of'] ) {
 					$control_val = $attributes[ $control['name'] ] ?? null;
+
+					// Resolve meta control values from post meta when not provided in attributes
+					// (e.g., during frontend rendering where meta values aren't in the block comment).
+					if ( null === $control_val && isset( $control['save_in_meta'] ) && 'true' === $control['save_in_meta'] ) {
+						$meta_key     = ! empty( $control['save_in_meta_name'] ) ? $control['save_in_meta_name'] : $control['name'];
+						$current_post = get_post();
+
+						if ( $current_post ) {
+							$control_val = get_post_meta( $current_post->ID, $meta_key, true );
+						}
+					}
 
 					// apply filters for control values.
 					$control_val = lazyblocks()->controls()->filter_control_value( $control_val, $control, $block, $render_location );
