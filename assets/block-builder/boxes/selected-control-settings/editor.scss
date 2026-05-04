@@ -197,7 +197,7 @@
 		transition: 0.15s background-color ease-in-out;
 
 		&:hover {
-			background-color: #007cba;
+			background-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 		}
 
 		svg {

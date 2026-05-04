@@ -319,9 +319,9 @@
 
 		&:focus {
 			color: #191e23;
-			border-color: #007cba;
+			border-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 			outline: 2px solid transparent;
-			box-shadow: 0 0 0 1px #007cba;
+			box-shadow: 0 0 0 1px var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 		}
 	}
 
@@ -377,9 +377,9 @@
 	.lazyblocks-control-url-in-content-button[aria-expanded="true"] {
 		~ .lazyblocks-control-url input[type="text"] {
 			color: #191e23;
-			border-color: #007cba;
+			border-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 			outline: 2px solid transparent;
-			box-shadow: 0 0 0 1px #007cba;
+			box-shadow: 0 0 0 1px var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 		}
 	}
 }
@@ -437,7 +437,7 @@
 
 	.lzb-gutenberg-gallery-button-edit:hover,
 	.lzb-gutenberg-gallery-button-edit:focus {
-		color: #2279ea;
+		color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 	}
 
 	.lzb-gutenberg-gallery-button-remove {
@@ -716,7 +716,7 @@
 
 	.lzb-gutenberg-repeater-btn-duplicate:hover,
 	.lzb-gutenberg-repeater-btn-duplicate:focus {
-		color: #2279ea;
+		color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 	}
 	.lzb-gutenberg-repeater-btn-remove:hover,
 	.lzb-gutenberg-repeater-btn-remove:focus {

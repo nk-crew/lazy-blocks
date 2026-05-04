@@ -3,16 +3,21 @@
  * WordPress dependencies.
  */
 import { ColorPalette as WPColorPalette } from '@wordpress/components';
-import { __experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients } from '@wordpress/block-editor';
+import {
+	useMultipleOriginColorsAndGradients,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients,
+} from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
+
+const useColorsAndGradients =
+	useMultipleOriginColorsAndGradients ||
+	__experimentalUseMultipleOriginColorsAndGradients;
 
 function useColors() {
 	// New way to get colors and gradients.
-	if (
-		useMultipleOriginColorsAndGradients &&
-		useMultipleOriginColorsAndGradients()
-	) {
-		return useMultipleOriginColorsAndGradients().colors;
+	if (useColorsAndGradients && useColorsAndGradients()) {
+		return useColorsAndGradients().colors;
 	}
 
 	// Old way.
@@ -46,8 +51,6 @@ export default function ColorPalette(props) {
 			onChange={(val) => {
 				onChange(val);
 			}}
-			__experimentalHasMultipleOrigins
-			__experimentalIsRenderedInSidebar
 		/>
 	);
 }
