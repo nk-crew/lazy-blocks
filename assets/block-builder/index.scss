@@ -227,8 +227,8 @@ html {
 	}
 
 	&.is-info {
-		color: $blue-50;
-		background-color: rgba($blue-30, 0.1);
+		color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+		background-color: rgba(var(--wp-admin-theme-color--rgb), 0.1);
 
 		p {
 			color: inherit;

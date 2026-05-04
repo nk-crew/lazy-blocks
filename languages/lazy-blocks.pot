@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-04T18:08:49+00:00\n"
+"POT-Creation-Date: 2026-05-04T08:53:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Clear Cache"
 msgstr ""
 
-#: classes/class-blocks.php:1828
+#: classes/class-blocks.php:1841
 #: classes/class-rest.php:198
 msgid "Not allowed to execute PHP code."
 msgstr ""
@@ -160,7 +160,7 @@ msgid "Basic"
 msgstr ""
 
 #: classes/class-controls.php:42
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:73
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:72
 msgid "Content"
 msgstr ""
 
@@ -262,19 +262,19 @@ msgid "Export / Import"
 msgstr ""
 
 #. translators: %s - block title.
-#: classes/class-tools.php:331
+#: classes/class-tools.php:337
 #, php-format
 msgid "Block \"%s\" activated successfully."
 msgstr ""
 
 #. translators: %s - block title.
-#: classes/class-tools.php:331
+#: classes/class-tools.php:337
 #, php-format
 msgid "Block \"%s\" deactivated successfully."
 msgstr ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:334
+#: classes/class-tools.php:340
 #, php-format
 msgid "Activated %s block"
 msgid_plural "Activated %s blocks"
@@ -282,31 +282,31 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:334
+#: classes/class-tools.php:340
 #, php-format
 msgid "Deactivated %s block"
 msgid_plural "Deactivated %s blocks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-tools.php:373
+#: classes/class-tools.php:379
 msgid "No file selected"
 msgstr ""
 
-#: classes/class-tools.php:383
+#: classes/class-tools.php:389
 msgid "Error uploading file. Please try again"
 msgstr ""
 
-#: classes/class-tools.php:389
+#: classes/class-tools.php:395
 msgid "Incorrect file type"
 msgstr ""
 
-#: classes/class-tools.php:400
+#: classes/class-tools.php:406
 msgid "Import file empty"
 msgstr ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:439
+#: classes/class-tools.php:445
 #, php-format
 msgid "Imported %s block"
 msgid_plural "Imported %s blocks"
@@ -314,30 +314,30 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - number of templates.
-#: classes/class-tools.php:459
+#: classes/class-tools.php:465
 #, php-format
 msgid "Imported %s template"
 msgid_plural "Imported %s templates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-tools.php:493
+#: classes/class-tools.php:499
 msgid "Export permission denied."
 msgstr ""
 
 #. translators: %s - post type.
-#: classes/class-tools.php:656
+#: classes/class-tools.php:662
 #, php-format
 msgid "Template for these post types '%s' already exists."
 msgstr ""
 
 #. translators: %s - post title.
-#: classes/class-tools.php:702
+#: classes/class-tools.php:708
 #, php-format
 msgid "Added new block '%s'."
 msgstr ""
 
-#: classes/class-tools.php:733
+#: classes/class-tools.php:739
 msgid "(Copy)"
 msgstr ""
 
@@ -350,7 +350,7 @@ msgid "Classic Editor (WYSIWYG)"
 msgstr ""
 
 #: controls/code_editor/index.php:23
-#: assets/block-builder/boxes/code/component-react-ace/index.js:161
+#: assets/block-builder/boxes/code/component-react-ace/index.js:167
 msgid "Code Editor"
 msgstr ""
 
@@ -485,19 +485,19 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:80
+#: assets/block-builder/block/edit.js:78
 msgid "Style Variations"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:86
+#: assets/block-builder/block/edit.js:84
 msgid "Supports"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:92
+#: assets/block-builder/block/edit.js:90
 msgid "Supports Ghost Kit"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:98
+#: assets/block-builder/block/edit.js:96
 msgid "Condition"
 msgstr ""
 
@@ -515,45 +515,45 @@ msgid "Preview"
 msgstr ""
 
 #. translators: %1$s - control name.
-#: assets/block-builder/boxes/code/component-react-ace/index.js:63
+#: assets/block-builder/boxes/code/component-react-ace/index.js:69
 #, js-format
 msgid "Control \"%1$s\""
 msgstr ""
 
-#: assets/block-builder/boxes/code/component-react-ace/index.js:114
+#: assets/block-builder/boxes/code/component-react-ace/index.js:120
 msgid "Block Class"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:299
+#: assets/block-builder/boxes/code/index.js:303
 msgid "HTML + Handlebars"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:303
+#: assets/block-builder/boxes/code/index.js:307
 msgid "PHP"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:307
+#: assets/block-builder/boxes/code/index.js:311
 msgid "Theme Template"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:318
+#: assets/block-builder/boxes/code/index.js:322
 msgid "CSS"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:319
+#: assets/block-builder/boxes/code/index.js:323
 msgid "JS"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:324
+#: assets/block-builder/boxes/code/index.js:328
 msgid "Select output method"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:416
+#: assets/block-builder/boxes/code/index.js:420
 msgid "Unified Block Code"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:424
-#: assets/block-builder/boxes/code/index.js:445
+#: assets/block-builder/boxes/code/index.js:428
+#: assets/block-builder/boxes/code/index.js:449
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:19
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:19
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
@@ -570,48 +570,48 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:437
+#: assets/block-builder/boxes/code/index.js:441
 msgid "With Editor Style"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:461
+#: assets/block-builder/boxes/code/index.js:465
 msgid "Code Output in Editor"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:468
+#: assets/block-builder/boxes/code/index.js:472
 msgid "Always Visible"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:475
+#: assets/block-builder/boxes/code/index.js:479
 msgid "Visible only when Selected"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:482
+#: assets/block-builder/boxes/code/index.js:486
 msgid "Visible only when Not Selected"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:489
-#: assets/block-builder/boxes/controls/index.js:272
+#: assets/block-builder/boxes/code/index.js:493
+#: assets/block-builder/boxes/controls/index.js:273
 msgid "Hidden"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:547
+#: assets/block-builder/boxes/code/index.js:551
 msgid "Lazy Blocks will search for a template file in your theme directory. Read more:"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:556
+#: assets/block-builder/boxes/code/index.js:560
 msgid "How to use theme template"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:567
+#: assets/block-builder/boxes/code/index.js:571
 msgid "Simple text field example see here:"
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:581
+#: assets/block-builder/boxes/code/index.js:585
 msgid "Note 1: if you use blocks as Metaboxes, you may leave this code editor blank."
 msgstr ""
 
-#: assets/block-builder/boxes/code/index.js:587
+#: assets/block-builder/boxes/code/index.js:591
 msgid "Note 2: supported custom PHP callback to output block"
 msgstr ""
 
@@ -653,19 +653,19 @@ msgstr ""
 msgid "Copy Name"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:164
+#: assets/block-builder/boxes/controls/index.js:165
 msgid "Add Child Control"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:165
+#: assets/block-builder/boxes/controls/index.js:166
 msgid "Add Control"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:221
+#: assets/block-builder/boxes/controls/index.js:222
 msgid "Content Controls"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:252
+#: assets/block-builder/boxes/controls/index.js:253
 msgid "Inspector Controls"
 msgstr ""
 
@@ -689,7 +689,7 @@ msgstr ""
 msgid "Type keyword and push Enter"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/index.js:44
+#: assets/block-builder/boxes/selected-control-settings/index.js:43
 msgid "Select control to see settings."
 msgstr ""
 
@@ -701,7 +701,7 @@ msgstr ""
 msgid "Appears when inserting a new block"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/group.js:14
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/group.js:16
 msgid "Group"
 msgstr ""
 
@@ -739,11 +739,15 @@ msgstr ""
 msgid "Control name must include only alphanumeric characters, dashes or underscores. Example: my-control-name"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:45
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:40
 msgid "Placement"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:98
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:46
+msgid "Placement options"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:97
 msgid "Inspector"
 msgstr ""
 
@@ -780,23 +784,23 @@ msgstr ""
 msgid "Type to Search…"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:16
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:25
 msgid "25%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:17
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:26
 msgid "50%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:18
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:27
 msgid "75%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:19
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:28
 msgid "100%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:27
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:35
 msgid "Width"
 msgstr ""
 
@@ -1137,11 +1141,11 @@ msgstr ""
 msgid "And much more…"
 msgstr ""
 
-#: assets/components/render-controls/index.js:338
+#: assets/components/render-controls/index.js:349
 msgid "Custom fields are not enabled for this post type. Enable \"custom-fields\" support to use this control."
 msgstr ""
 
-#: assets/components/render-controls/index.js:343
+#: assets/components/render-controls/index.js:354
 msgid "Learn how"
 msgstr ""
 
@@ -1153,16 +1157,16 @@ msgstr ""
 msgid "Block used for adding blocks inside it in cases when template locked from adding blocks."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:104
+#: assets/editor/blocks/main/edit.js:116
 msgid "Some blocks on this page require attention before you can save."
 msgstr ""
 
-#: assets/editor/blocks/main/edit.js:332
+#: assets/editor/blocks/main/edit.js:348
 msgid "Edit Block"
 msgstr ""
 
 #. translators: %d: number of child controls.
-#: assets/editor/blocks/main/edit.js:357
+#: assets/editor/blocks/main/edit.js:375
 #, js-format
 msgid "Validation failed. %d control require attention."
 msgid_plural "Validation failed. %d controls require attention."
@@ -1273,27 +1277,31 @@ msgstr ""
 msgid "Array (Color + Slug)"
 msgstr ""
 
-#: controls/date_time/script.js:64
+#: controls/date_time/script.js:74
 msgid "Select Date"
 msgstr ""
 
-#: controls/date_time/script.js:69
+#: controls/date_time/script.js:79
 msgid "Select Date and Time"
 msgstr ""
 
-#: controls/date_time/script.js:74
+#: controls/date_time/script.js:84
 msgid "Select Time"
 msgstr ""
 
-#: controls/date_time/script.js:170
+#: controls/date_time/script.js:180
 msgid "Reset"
 msgstr ""
 
-#: controls/date_time/script.js:274
+#: controls/date_time/script.js:277
 msgid "Date"
 msgstr ""
 
-#: controls/date_time/script.js:296
+#: controls/date_time/script.js:281
+msgid "Date & Time"
+msgstr ""
+
+#: controls/date_time/script.js:285
 msgid "Time"
 msgstr ""
 
@@ -1335,15 +1343,19 @@ msgstr ""
 msgid "If nothing selected, all file types will be allowed to use."
 msgstr ""
 
-#: controls/gallery/gallery-control.js:85
+#: controls/gallery/gallery-control.js:79
 msgid "images"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:138
+#: controls/gallery/gallery-control.js:128
+msgid "Gallery actions"
+msgstr ""
+
+#: controls/gallery/gallery-control.js:139
 msgid "Edit Gallery"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:141
+#: controls/gallery/gallery-control.js:142
 msgid "Clear the gallery"
 msgstr ""
 
@@ -1407,12 +1419,16 @@ msgstr ""
 msgid "Row {{#}}"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:350
+#: controls/repeater/repeater-control.js:334
+msgid "Repeater actions"
+msgstr ""
+
+#: controls/repeater/repeater-control.js:354
 #: controls/repeater/script.js:300
 msgid "+ Add Row"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:355
+#: controls/repeater/repeater-control.js:359
 msgid "Toggle all rows"
 msgstr ""
 

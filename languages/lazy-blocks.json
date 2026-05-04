@@ -483,6 +483,9 @@
          "Placement": [
             ""
          ],
+         "Placement options": [
+            ""
+         ],
          "Inspector": [
             ""
          ],
@@ -874,6 +877,9 @@
          "Date": [
             ""
          ],
+         "Date & Time": [
+            ""
+         ],
          "Time": [
             ""
          ],
@@ -899,6 +905,9 @@
             ""
          ],
          "images": [
+            ""
+         ],
+         "Gallery actions": [
             ""
          ],
          "Edit Gallery": [
@@ -944,6 +953,9 @@
             ""
          ],
          "Row {{#}}": [
+            ""
+         ],
+         "Repeater actions": [
             ""
          ],
          "+ Add Row": [
