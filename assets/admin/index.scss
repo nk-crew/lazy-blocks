@@ -127,7 +127,7 @@
 }
 
 // Go Pro links.
-#adminmenu a[href*="lazyblocks.com/pro/"],
+#adminmenu .wp-submenu a[href*="lazyblocks.com/pro/"],
 .wp-list-table.plugins a[href*="lazyblocks.com/pro/"],
 .lzb-admin-toolbar a[href*="lazyblocks.com/pro/"] {
 	font-weight: 700;
@@ -139,6 +139,6 @@
 
 	&:hover,
 	&:focus {
-		color: #e11937;
+		color: #f4647a;
 	}
 }
