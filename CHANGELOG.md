@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.3.0 - May 4, 2026 =
+
+* added compatibility for WordPress 7.0
+* added support Groups **Content** and **List** groups for controls in Inspector
+* fixed Checkbox with multiple options and **Save in Meta** error
+* fixed possible vulnerability - stronger checks on who can change block code (editor, front-end output, and scripts), so permissions are respected even if something tries to update block meta outside the normal editor
+* fixed displaying unfinished block drafts with an empty slug
+* minor fixes and changes
+
 = 4.2.1 - Feb 4, 2026 =
 
 * fixed context-aware capability check for PHP block rendering (resolves XSS)

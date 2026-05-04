@@ -4,9 +4,9 @@
 * Tags: gutenberg, blocks, custom, meta, fields
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 6.2
-* Tested up to: 6.9
+* Tested up to: 7.0
 * Requires PHP: 8.0
-* Stable tag: 4.2.1
+* Stable tag: 4.3.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,15 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.3.0 - May 4, 2026 =
+
+* added compatibility for WordPress 7.0
+* added support Groups **Content** and **List** groups for controls in Inspector
+* fixed Checkbox with multiple options and **Save in Meta** error
+* fixed possible vulnerability - stronger checks on who can change block code (editor, front-end output, and scripts), so permissions are respected even if something tries to update block meta outside the normal editor
+* fixed displaying unfinished block drafts with an empty slug
+* minor fixes and changes
 
 = 4.2.1 - Feb 4, 2026 =
 
