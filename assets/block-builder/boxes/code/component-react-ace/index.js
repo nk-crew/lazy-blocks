@@ -19,7 +19,13 @@ import 'ace-builds/src-noconflict/snippets/text';
 import 'ace-builds/src-noconflict/snippets/html';
 import 'ace-builds/src-noconflict/snippets/handlebars';
 import 'ace-builds/src-noconflict/snippets/php';
+import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/ext-emmet';
+import emmetCore from 'emmet-core';
+
+const emmetExt = ace.require('ace/ext/emmet');
+emmetExt.setCore(emmetCore);
+emmetExt.load = () => true;
 
 import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
 

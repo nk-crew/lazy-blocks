@@ -139,7 +139,7 @@ class LazyBlocks_Tools {
 							'placeholder'          => '',
 							'characters_limit'     => '',
 							'width'                => '100',
-							'group'                => 'default',
+							'group'                => 'settings',
 							'hide_if_not_selected' => 'false',
 							'required'             => 'false',
 							'translate'            => 'false',
@@ -148,7 +148,13 @@ class LazyBlocks_Tools {
 						);
 
 						foreach ( $default_fields_to_remove as $field => $val ) {
-							if ( isset( $block['controls'][ $k ][ $field ] ) && $val === $block['controls'][ $k ][ $field ] ) {
+							$should_remove_field = isset( $block['controls'][ $k ][ $field ] ) && $val === $block['controls'][ $k ][ $field ];
+
+							if ( ! $should_remove_field && 'group' === $field && isset( $block['controls'][ $k ][ $field ] ) ) {
+								$should_remove_field = in_array( $block['controls'][ $k ][ $field ], array( 'default', 'settings', 'list' ), true );
+							}
+
+							if ( $should_remove_field ) {
 								unset( $block['controls'][ $k ][ $field ] );
 
 								if ( 'save_in_meta' === $field && isset( $block['controls'][ $field ]['save_in_meta_name'] ) ) {
@@ -592,7 +598,7 @@ class LazyBlocks_Tools {
 			'help'                 => '',
 			'child_of'             => '',
 			'placement'            => 'content',
-			'group'                => 'default',
+			'group'                => 'settings',
 			'width'                => '100',
 			'hide_if_not_selected' => 'false',
 			'required'             => 'false',

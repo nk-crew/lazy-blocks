@@ -2,12 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	BaseControl,
-	ButtonGroup,
-	Button,
-} from '@wordpress/components';
+import { PanelBody, BaseControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -46,7 +41,11 @@ export default function PlacementRow(props) {
 				__nextHasNoMarginBottom
 			>
 				<div />
-				<ButtonGroup>
+				<div
+					role="group"
+					aria-label={__('Placement options', 'lazy-blocks')}
+					className="components-button-group"
+				>
 					<Button
 						variant={isContent ? 'primary' : ''}
 						isPressed={isContent}
@@ -97,7 +96,7 @@ export default function PlacementRow(props) {
 					>
 						{__('Inspector', 'lazy-blocks')}
 					</Button>
-				</ButtonGroup>
+				</div>
 			</BaseControl>
 		</PanelBody>
 	);

@@ -25,6 +25,14 @@ if (!options || !options.blocks || !options.blocks.length) {
 	};
 }
 
+function normalizeControlGroup(group = 'default') {
+	if (group === 'settings') {
+		return 'default';
+	}
+
+	return group;
+}
+
 /**
  * We created the class Component because the functional one is not working correctly for some reason.
  * {@link https://shot.nkdev.info/AkJ2naU7MazVtAnv5F2A}
@@ -131,7 +139,7 @@ export default class RenderControls extends Component {
 	 * Render controls
 	 *
 	 * @param {string}         placement  - controls placement [inspector, content]
-	 * @param {string}         group      - control group [default, styles, advanced]
+	 * @param {string}         group      - control group [default/settings, content, list, styles, advanced]
 	 * @param {string|boolean} childOf    - parent control name.
 	 * @param {number|boolean} childIndex - child index in parent.
 	 *
@@ -143,6 +151,8 @@ export default class RenderControls extends Component {
 		childOf = '',
 		childIndex = false
 	) {
+		group = normalizeControlGroup(group);
+
 		let result = [];
 		const controls = this.getControls(childOf);
 
@@ -207,6 +217,7 @@ export default class RenderControls extends Component {
 			meta,
 		} = this.props;
 		let result = false;
+		const controlGroup = normalizeControlGroup(controlData.group);
 
 		let placementCheck =
 			controlData.type &&
@@ -219,7 +230,7 @@ export default class RenderControls extends Component {
 
 		// Group check.
 		if (placement !== 'content') {
-			placementCheck = placementCheck && controlData.group === group;
+			placementCheck = placementCheck && controlGroup === group;
 		}
 
 		// restrictions.
