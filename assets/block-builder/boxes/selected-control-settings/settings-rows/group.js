@@ -21,9 +21,10 @@ export default function GroupRow(props) {
 					value={groupValue}
 					options={[
 						{ label: 'Settings', value: 'settings' },
+						{ label: 'Content', value: 'content' },
+						{ label: 'List View', value: 'list' },
 						{ label: 'Styles', value: 'styles' },
 						{ label: 'Advanced', value: 'advanced' },
-						{ label: 'List View', value: 'list' },
 					]}
 					onChange={(value) =>
 						updateData({

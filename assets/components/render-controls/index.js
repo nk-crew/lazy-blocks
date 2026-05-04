@@ -139,7 +139,7 @@ export default class RenderControls extends Component {
 	 * Render controls
 	 *
 	 * @param {string}         placement  - controls placement [inspector, content]
-	 * @param {string}         group      - control group [default/settings, styles, advanced, list]
+	 * @param {string}         group      - control group [default/settings, content, list, styles, advanced]
 	 * @param {string|boolean} childOf    - parent control name.
 	 * @param {number|boolean} childIndex - child index in parent.
 	 *

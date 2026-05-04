@@ -38,7 +38,13 @@ if (!options || !options.blocks || !options.blocks.length) {
 
 const DEFAULT_GROUP = 'settings';
 const LEGACY_DEFAULT_GROUP = 'default';
-const INSPECTOR_GROUPS = [DEFAULT_GROUP, 'styles', 'advanced', 'list'];
+const INSPECTOR_GROUPS = [
+	DEFAULT_GROUP,
+	'content',
+	'list',
+	'styles',
+	'advanced',
+];
 
 function normalizeControlGroup(group = LEGACY_DEFAULT_GROUP) {
 	if (group === DEFAULT_GROUP) {
@@ -281,9 +287,10 @@ export default function BlockEdit(props) {
 				case DEFAULT_GROUP:
 					controlsHasGroup[DEFAULT_GROUP] = true;
 					break;
+				case 'content':
+				case 'list':
 				case 'styles':
 				case 'advanced':
-				case 'list':
 					controlsHasGroup[group] = true;
 					break;
 			}
