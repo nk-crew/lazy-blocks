@@ -1154,6 +1154,10 @@ class LazyBlocks_Blocks {
 	 * @return array|null
 	 */
 	public function get_blocks( $db_only = false, $no_cache = false, $keep_duplicates = false ) {
+		if ( $no_cache ) {
+			$this->clear_blocks_result_cache();
+		}
+
 		$result_cache_key = $this->get_blocks_result_cache_key( $db_only, $keep_duplicates );
 
 		if ( ! $no_cache && isset( $this->blocks_result_cache[ $result_cache_key ] ) ) {
