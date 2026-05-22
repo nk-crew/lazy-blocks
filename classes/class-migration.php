@@ -35,6 +35,10 @@ class LazyBlocks_Migration {
 	 * Init.
 	 */
 	public function init() {
+		if ( function_exists( 'lazyblocks' ) && lazyblocks()->blocks() ) {
+			lazyblocks()->blocks()->maybe_sync_role_caps();
+		}
+
 		// Migration code added after `$this->initial_version` plugin version.
 		$saved_version   = get_option( 'lzb_db_version', $this->initial_version );
 		$current_version = LAZY_BLOCKS_VERSION;
