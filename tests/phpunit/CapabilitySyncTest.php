@@ -195,4 +195,15 @@ class CapabilitySyncTest extends WP_UnitTestCase {
 		$this->assert_lazyblocks_capability_matrix_applied();
 		$this->assertSame( LAZY_BLOCKS_VERSION, get_option( 'lzb_db_version' ) );
 	}
+
+	/**
+	 * Fresh installs should receive capabilities during plugin activation.
+	 */
+	public function test_activation_hook_syncs_role_caps_for_fresh_installs() {
+		$this->remove_lazyblocks_capabilities();
+
+		lazyblocks()->activation_hook();
+
+		$this->assert_lazyblocks_capability_matrix_applied();
+	}
 }

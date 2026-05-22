@@ -29,20 +29,6 @@ class LazyBlocks_Blocks {
 	private static $default_icon = null;
 
 	/**
-	 * Role capability sync option name.
-	 *
-	 * @var string
-	 */
-	const ROLE_CAPS_SYNC_OPTION = 'lzb_role_caps_version';
-
-	/**
-	 * Role capability sync version.
-	 *
-	 * @var string
-	 */
-	const ROLE_CAPS_SYNC_VERSION = '1';
-
-	/**
 	 * Cache hash for current request (includes controls and filter callbacks).
 	 *
 	 * @var string|null
@@ -358,25 +344,9 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
-	 * Synchronize Lazy Blocks capabilities once per sync version.
-	 *
-	 * @return bool
-	 */
-	public function maybe_sync_role_caps() {
-		if ( self::ROLE_CAPS_SYNC_VERSION === get_option( self::ROLE_CAPS_SYNC_OPTION ) ) {
-			return false;
-		}
-
-		$this->sync_role_caps();
-		update_option( self::ROLE_CAPS_SYNC_OPTION, self::ROLE_CAPS_SYNC_VERSION );
-
-		return true;
-	}
-
-	/**
 	 * Add Roles
 	 *
-	 * @deprecated Use maybe_sync_role_caps() or sync_role_caps().
+	 * @deprecated Use sync_role_caps().
 	 *
 	 * @return void
 	 */

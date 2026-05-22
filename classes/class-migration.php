@@ -35,10 +35,6 @@ class LazyBlocks_Migration {
 	 * Init.
 	 */
 	public function init() {
-		if ( function_exists( 'lazyblocks' ) && lazyblocks()->blocks() ) {
-			lazyblocks()->blocks()->maybe_sync_role_caps();
-		}
-
 		// Migration code added after `$this->initial_version` plugin version.
 		$saved_version   = get_option( 'lzb_db_version', $this->initial_version );
 		$current_version = LAZY_BLOCKS_VERSION;
@@ -62,6 +58,10 @@ class LazyBlocks_Migration {
 	public function get_migrations() {
 		return array(
 			array(
+				'version' => '4.3.0',
+				'cb'      => array( $this, 'v_4_3_0_sync_role_caps' ),
+			),
+			array(
 				'version' => '2.5.0',
 				'cb'      => array( $this, 'v_2_5_0' ),
 			),
@@ -70,6 +70,17 @@ class LazyBlocks_Migration {
 				'cb'      => array( $this, 'v_2_1_0' ),
 			),
 		);
+	}
+
+	/**
+	 * Synchronize Lazy Blocks capabilities during the 4.3.0 upgrade path.
+	 *
+	 * @return void
+	 */
+	public function v_4_3_0_sync_role_caps() {
+		if ( function_exists( 'lazyblocks' ) && lazyblocks()->blocks() ) {
+			lazyblocks()->blocks()->sync_role_caps();
+		}
 	}
 
 	/**

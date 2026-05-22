@@ -120,7 +120,7 @@ if ( ! class_exists( 'LazyBlocks' ) ) :
 		 */
 		public function activation_hook() {
 			if ( $this->blocks ) {
-				$this->blocks->maybe_sync_role_caps();
+				$this->blocks->sync_role_caps();
 			}
 
 			LazyBlocks_Dummy::add();
