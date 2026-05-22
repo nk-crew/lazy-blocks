@@ -17,7 +17,7 @@ test.describe('editor block with frame and content controls', () => {
 		admin,
 		requestUtils,
 	}) => {
-		await createBlock({
+		const blockID = await createBlock({
 			requestUtils,
 			title: 'Block with frame',
 			slug: 'test',
@@ -28,7 +28,7 @@ test.describe('editor block with frame and content controls', () => {
 		// Create control.
 		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
 
-		await page.getByLabel('“Block with frame” (Edit)').click();
+		await page.locator(`#post-${blockID} .row-title`).click();
 
 		await createControl({
 			page,
@@ -63,7 +63,7 @@ test.describe('editor block with frame and content controls', () => {
 		admin,
 		requestUtils,
 	}) => {
-		await createBlock({
+		const blockID = await createBlock({
 			requestUtils,
 			title: 'Block with frame',
 			slug: 'test',
@@ -74,7 +74,7 @@ test.describe('editor block with frame and content controls', () => {
 		// Create control.
 		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
 
-		await page.getByLabel('“Block with frame” (Edit)').click();
+		await page.locator(`#post-${blockID} .row-title`).click();
 
 		await createControl({
 			page,
@@ -109,7 +109,7 @@ test.describe('editor block with frame and content controls', () => {
 		admin,
 		requestUtils,
 	}) => {
-		await createBlock({
+		const blockID = await createBlock({
 			requestUtils,
 			title: 'Block with frame',
 			slug: 'test',
@@ -120,7 +120,7 @@ test.describe('editor block with frame and content controls', () => {
 		// Create control.
 		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
 
-		await page.getByLabel('“Block with frame” (Edit)').click();
+		await page.locator(`#post-${blockID} .row-title`).click();
 
 		await createControl({
 			page,

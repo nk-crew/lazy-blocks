@@ -26,6 +26,8 @@ async function globalSetup(config) {
 	await requestUtils.setupRest();
 
 	// Reset the test environment before running the tests.
+	await requestUtils.activatePlugin('lazy-blocks');
+
 	await Promise.all([
 		requestUtils.activateTheme('empty-theme'),
 		// Disable this test plugin as it's conflicting with some of the tests.

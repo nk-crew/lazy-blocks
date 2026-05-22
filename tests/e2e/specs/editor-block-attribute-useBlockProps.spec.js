@@ -134,7 +134,7 @@ test.describe('editor block attribute useBlockProps', () => {
 		});
 
 		const expectSelector =
-			'figure.wp-block-lazyblock-test.test-custom-class[data-test="hello"][style="background-color: red; color: blue;"]:text("Hello There")';
+			'figure.wp-block-lazyblock-test.test-custom-class[data-test="hello"]';
 
 		await admin.createNewPost();
 
@@ -142,8 +142,17 @@ test.describe('editor block attribute useBlockProps', () => {
 			name: 'lazyblock/test',
 		});
 
+		const editorBlock = editor.canvas
+			.locator(expectSelector)
+			.filter({ hasText: 'Hello There' });
+
 		// Editor render.
-		await expect(editor.canvas.locator(expectSelector)).toBeVisible();
+		await expect(editorBlock).toBeVisible();
+		await expect(editorBlock).toHaveCSS(
+			'background-color',
+			'rgb(255, 0, 0)'
+		);
+		await expect(editorBlock).toHaveCSS('color', 'rgb(0, 0, 255)');
 
 		// Publish.
 		await page
@@ -165,7 +174,16 @@ test.describe('editor block attribute useBlockProps', () => {
 
 		await frontendPage.waitForLoadState('domcontentloaded');
 
+		const frontendBlock = frontendPage
+			.locator(expectSelector)
+			.filter({ hasText: 'Hello There' });
+
 		// Frontend render.
-		await expect(frontendPage.locator(expectSelector)).toBeVisible();
+		await expect(frontendBlock).toBeVisible();
+		await expect(frontendBlock).toHaveCSS(
+			'background-color',
+			'rgb(255, 0, 0)'
+		);
+		await expect(frontendBlock).toHaveCSS('color', 'rgb(0, 0, 255)');
 	});
 });
