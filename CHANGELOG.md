@@ -2,10 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-= 4.3.1 - TBD =
-
-* improved performance for programmatically registered blocks by avoiding repeated block list preparation within the same request
-
 = 4.3.0 - May 4, 2026 =
 
 * added compatibility for WordPress 7.0
