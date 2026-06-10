@@ -83,4 +83,134 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 
 		lazyblocks()->blocks()->remove_block( $block_slug );
 	}
+
+	public function test_get_blocks_does_not_prepare_user_blocks_more_than_once_per_request() {
+		$block_slug = 'lazyblock/request-cache-test';
+		$prepare_count = 0;
+
+		$count_prepare = function( $block_data ) use ( &$prepare_count ) {
+			if ( isset( $block_data['slug'] ) && 'lazyblock/' === $block_data['slug'] ) {
+				$prepare_count++;
+			}
+
+			return $block_data;
+		};
+
+		add_filter( 'lzb/block_data', $count_prepare );
+
+		lazyblocks()->add_block( array(
+			'slug' => $block_slug,
+		) );
+
+		lazyblocks()->blocks()->get_blocks();
+		lazyblocks()->blocks()->get_blocks();
+
+		remove_filter( 'lzb/block_data', $count_prepare );
+		lazyblocks()->blocks()->remove_block( $block_slug );
+
+		$this->assertEquals(
+			1,
+			$prepare_count
+		);
+	}
+
+	public function test_get_blocks_request_cache_is_cleared_when_user_blocks_change() {
+		$first_block_slug  = 'lazyblock/request-cache-first';
+		$second_block_slug = 'lazyblock/request-cache-second';
+
+		lazyblocks()->add_block( array(
+			'slug' => $first_block_slug,
+		) );
+
+		lazyblocks()->blocks()->get_blocks();
+
+		$this->assertNotNull( lazyblocks()->blocks()->get_block( $first_block_slug ) );
+
+		lazyblocks()->add_block( array(
+			'slug' => $second_block_slug,
+		) );
+
+		$this->assertNotNull( lazyblocks()->blocks()->get_block( $second_block_slug ) );
+
+		lazyblocks()->blocks()->remove_block( $first_block_slug );
+
+		$this->assertNull( lazyblocks()->blocks()->get_block( $first_block_slug ) );
+
+		lazyblocks()->blocks()->remove_block( $second_block_slug );
+	}
+
+	public function test_get_blocks_filter_runs_on_repeated_calls() {
+		$block_slug = 'lazyblock/request-cache-filter';
+		$filter_count = 0;
+
+		$count_filter = function( $blocks ) use ( &$filter_count ) {
+			$filter_count++;
+
+			return $blocks;
+		};
+
+		add_filter( 'lzb/get_blocks', $count_filter );
+
+		lazyblocks()->add_block( array(
+			'slug' => $block_slug,
+		) );
+
+		lazyblocks()->blocks()->get_blocks();
+		lazyblocks()->blocks()->get_blocks();
+
+		remove_filter( 'lzb/get_blocks', $count_filter );
+		lazyblocks()->blocks()->remove_block( $block_slug );
+
+		$this->assertEquals(
+			2,
+			$filter_count
+		);
+	}
+
+	public function test_get_blocks_no_cache_clears_prepared_request_cache() {
+		$block_slug = 'lazyblock/request-cache-no-cache';
+
+		$set_first_description = function( $block_data ) {
+			if ( isset( $block_data['slug'] ) && 'lazyblock/' === $block_data['slug'] ) {
+				$block_data['description'] = 'First description';
+			}
+
+			return $block_data;
+		};
+
+		$set_second_description = function( $block_data ) {
+			if ( isset( $block_data['slug'] ) && 'lazyblock/' === $block_data['slug'] ) {
+				$block_data['description'] = 'Second description';
+			}
+
+			return $block_data;
+		};
+
+		add_filter( 'lzb/block_data', $set_first_description );
+
+		lazyblocks()->add_block( array(
+			'slug' => $block_slug,
+		) );
+
+		$block = lazyblocks()->blocks()->get_block( $block_slug );
+
+		$this->assertEquals(
+			'First description',
+			$block['description']
+		);
+
+		remove_filter( 'lzb/block_data', $set_first_description );
+		add_filter( 'lzb/block_data', $set_second_description );
+
+		lazyblocks()->blocks()->get_blocks( false, true );
+		$block = lazyblocks()->blocks()->get_block( $block_slug );
+
+		remove_filter( 'lzb/block_data', $set_second_description );
+		lazyblocks()->blocks()->remove_block( $block_slug );
+
+		$this->assertEquals(
+			'Second description',
+			$block['description']
+		);
+	}
 }
