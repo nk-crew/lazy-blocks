@@ -79,9 +79,6 @@ class LazyBlocks_Blocks {
 		// https://github.com/nk-crew/lazy-blocks/issues/247 .
 		add_filter( 'allowed_block_types_all', array( $this, 'allowed_block_types_all' ), 100, 2 );
 
-		// Custom post roles.
-		add_action( 'admin_init', array( $this, 'add_role_caps' ) );
-
 		// Additional elements in blocks list table.
 		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 10, 2 );
 		add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
@@ -296,30 +293,65 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Get the Lazy Blocks role capability matrix.
+	 *
+	 * @return array
+	 */
+	public function get_role_caps_matrix() {
+		return array(
+			'administrator' => array(
+				'edit_lazyblock',
+				'edit_lazyblocks',
+				'edit_other_lazyblocks',
+				'publish_lazyblocks',
+				'read_lazyblock',
+				'read_private_lazyblocks',
+				'delete_lazyblocks',
+				'delete_lazyblock',
+			),
+			'editor'        => array(
+				'read_lazyblock',
+				'read_private_lazyblocks',
+			),
+			'author'        => array(
+				'read_lazyblock',
+				'read_private_lazyblocks',
+			),
+			'contributor'   => array(
+				'read_lazyblock',
+				'read_private_lazyblocks',
+			),
+		);
+	}
+
+	/**
+	 * Synchronize Lazy Blocks capabilities for built-in roles.
+	 *
+	 * @return void
+	 */
+	public function sync_role_caps() {
+		foreach ( $this->get_role_caps_matrix() as $role_name => $caps ) {
+			$role = get_role( $role_name );
+
+			if ( ! $role ) {
+				continue;
+			}
+
+			foreach ( $caps as $capability ) {
+				$role->add_cap( $capability );
+			}
+		}
+	}
+
+	/**
 	 * Add Roles
+	 *
+	 * @deprecated Use sync_role_caps().
+	 *
+	 * @return void
 	 */
 	public function add_role_caps() {
-		global $wp_roles;
-
-		if ( isset( $wp_roles ) ) {
-			$wp_roles->add_cap( 'administrator', 'edit_lazyblock' );
-			$wp_roles->add_cap( 'administrator', 'edit_lazyblocks' );
-			$wp_roles->add_cap( 'administrator', 'edit_other_lazyblocks' );
-			$wp_roles->add_cap( 'administrator', 'publish_lazyblocks' );
-			$wp_roles->add_cap( 'administrator', 'read_lazyblock' );
-			$wp_roles->add_cap( 'administrator', 'read_private_lazyblocks' );
-			$wp_roles->add_cap( 'administrator', 'delete_lazyblocks' );
-			$wp_roles->add_cap( 'administrator', 'delete_lazyblock' );
-
-			$wp_roles->add_cap( 'editor', 'read_lazyblock' );
-			$wp_roles->add_cap( 'editor', 'read_private_lazyblocks' );
-
-			$wp_roles->add_cap( 'author', 'read_lazyblock' );
-			$wp_roles->add_cap( 'author', 'read_private_lazyblocks' );
-
-			$wp_roles->add_cap( 'contributor', 'read_lazyblock' );
-			$wp_roles->add_cap( 'contributor', 'read_private_lazyblocks' );
-		}
+		$this->sync_role_caps();
 	}
 
 	/**

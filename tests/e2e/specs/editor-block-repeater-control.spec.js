@@ -32,7 +32,7 @@ test.describe('editor block with Repeater control', () => {
 
 		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
 
-		await page.getByLabel('“Test Repeater Block” (Edit)').click();
+		await page.locator(`#post-${blockID} .row-title`).click();
 
 		await page.waitForTimeout(500);
 
