@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const zip = require('gulp-zip');
 const del = require('del');
 const changeFileContent = require('gulp-change-file-content');
-const yargs = require('yargs/yargs');
+const yargs = require('yargs');
 const parseVersionString = require('parse-version-string').default;
 
 const pkg = require('./package.json');
