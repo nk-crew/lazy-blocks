@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.0
 * Requires PHP: 8.0
-* Stable tag: 4.3.0
+* Stable tag: 4.3.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,14 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.3.1 - Jun 11, 2026 =
+
+* improved performance by caching prepared `get_blocks()` results within a single request
+* fixed Lazy Blocks role capability sync to run once on plugin upgrade instead of on every admin request
+* **Pro:**
+* fixed SEO frontend preload performance by batching initial block renders in a single request
+* fixed code editor syntax highlighting when system dark mode is enabled
 
 = 4.3.0 - May 4, 2026 =
 

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.3.1 - Jun 11, 2026 =
+
+* improved performance by caching prepared `get_blocks()` results within a single request
+* fixed Lazy Blocks role capability sync to run once on plugin upgrade instead of on every admin request
+* **Pro:**
+* fixed SEO frontend preload performance by batching initial block renders in a single request
+* fixed code editor syntax highlighting when system dark mode is enabled
+
 = 4.3.0 - May 4, 2026 =
 
 * added compatibility for WordPress 7.0
