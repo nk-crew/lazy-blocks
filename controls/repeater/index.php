@@ -75,6 +75,20 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
 			return $attribute_data;
 		}
 
+		// Allow both the URL-encoded JSON string (produced by the editor) and a raw
+		// array to pass block attribute schema validation.
+		//
+		// Repeater values are registered as `string` because the editor serializes them
+		// with `encodeURI( JSON.stringify( value ) )`. However, when a Repeater value is
+		// authored directly in the block markup as a JSON array
+		// (e.g. `{"my_repeater":[{"text":"a"}]}`), `WP_Block_Type::prepare_attributes_for_render()`
+		// runs it through `rest_validate_value_from_schema()`, the array fails the `string`
+		// check, and WordPress drops the attribute and falls back to the empty default. The
+		// block then renders empty on the front end even though `filter_control_value()`
+		// already handles the array form. Accepting both types keeps the encoded-string form
+		// and the default valid while letting the raw-array form reach the render callback.
+		$attribute_data['type'] = array( 'string', 'array' );
+
 		$attribute_data['default'] = rawurlencode( wp_json_encode( array() ) );
 
 		return $attribute_data;
