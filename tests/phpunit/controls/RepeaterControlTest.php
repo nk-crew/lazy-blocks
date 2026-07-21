@@ -112,4 +112,25 @@ class RepeaterControlTest extends WP_UnitTestCase {
 			do_blocks( '<!-- wp:lazyblock/test {"my_repeater":[{"text":"a"},{"text":"b"},{"text":"c"}]} /-->' )
 		);
 	}
+
+	// A meta-backed Repeater must keep a single scalar type: `register_meta()` does not
+	// accept a `string`/`array` union, and its value is resolved from post meta rather than
+	// from the block markup, so the schema-validation widening must not apply here.
+	public function test_meta_backed_repeater_keeps_scalar_type() {
+		$this->add_test_block( array(
+			'controls' => array(
+				'control_repeater' => array(
+					'type' => 'repeater',
+					'name' => 'my_repeater',
+					'save_in_meta' => 'true',
+					'placement' => 'content',
+				),
+			),
+		) );
+
+		$block           = lazyblocks()->blocks()->get_block( 'lazyblock/test' );
+		$meta_attributes = lazyblocks()->blocks()->prepare_block_meta_attributes( $block['controls'], '', $block );
+
+		$this->assertSame( 'string', $meta_attributes['my_repeater']['type'] );
+	}
 }

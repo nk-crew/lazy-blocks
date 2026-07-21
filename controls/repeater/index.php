@@ -87,7 +87,13 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
 		// block then renders empty on the front end even though `filter_control_value()`
 		// already handles the array form. Accepting both types keeps the encoded-string form
 		// and the default valid while letting the raw-array form reach the render callback.
-		$attribute_data['type'] = array( 'string', 'array' );
+		//
+		// This is skipped for meta-backed controls: their value is resolved from post meta
+		// (not from the block markup) so the schema-validation issue does not apply, and
+		// `register_meta()` only accepts a single scalar `type`, not a union.
+		if ( ! isset( $attribute_data['source'] ) || 'meta' !== $attribute_data['source'] ) {
+			$attribute_data['type'] = array( 'string', 'array' );
+		}
 
 		$attribute_data['default'] = rawurlencode( wp_json_encode( array() ) );
 
