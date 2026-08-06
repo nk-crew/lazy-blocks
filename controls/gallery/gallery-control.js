@@ -26,36 +26,39 @@ function GalleryControl(props) {
 	} = props;
 
 	const { mediaUpload, imagesPreviewData } = useSelect((select) => {
-		const { getEntityRecord } = select('core');
+		const { getEntityRecords } = select('core');
 
 		const preview = {};
 
-		if (value && Object.keys(value).length) {
-			value.forEach((img) => {
-				if (!preview[img.id]) {
-					const mediaImg =
-						getEntityRecord('postType', 'attachment', img.id) ||
-						false;
+		if (value && value.length) {
+			const ids = [...new Set(value.map((img) => img.id))];
 
-					if (mediaImg) {
-						preview[img.id] = {
-							alt: mediaImg.alt_text,
-							url: mediaImg.source_url,
-						};
+			for (let i = 0; i < ids.length; i += 100) {
+				const chunk = ids.slice(i, i + 100);
 
-						if (
-							mediaImg.media_details &&
-							mediaImg.media_details.sizes &&
-							mediaImg.media_details.sizes[previewSize]
-						) {
-							preview[img.id].url =
-								mediaImg.media_details.sizes[
-									previewSize
-								].source_url;
-						}
+				const mediaItems = getEntityRecords('postType', 'attachment', {
+					include: chunk,
+					per_page: chunk.length,
+				});
+
+				(mediaItems || []).forEach((mediaImg) => {
+					preview[mediaImg.id] = {
+						alt: mediaImg.alt_text,
+						url: mediaImg.source_url,
+					};
+
+					if (
+						mediaImg.media_details &&
+						mediaImg.media_details.sizes &&
+						mediaImg.media_details.sizes[previewSize]
+					) {
+						preview[mediaImg.id].url =
+							mediaImg.media_details.sizes[
+								previewSize
+							].source_url;
 					}
-				}
-			});
+				});
+			}
 		}
 
 		return {
