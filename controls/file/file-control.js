@@ -1,10 +1,11 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { Button, DropZone, withNotices } from '@wordpress/components';
+
 import { MediaPlaceholder } from '@wordpress/block-editor';
+import { Button, DropZone, withNotices } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 const { allowed_mime_types: wpAllowedMimeTypes } =
 	window.lazyblocksBlockBuilderData || window.lazyblocksGutenberg;

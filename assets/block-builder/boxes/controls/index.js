@@ -3,32 +3,30 @@
  */
 import './editor.scss';
 
-/**
- * External dependencies.
- */
-import classnames from 'classnames/dedupe';
 import {
-	DndContext,
 	closestCenter,
+	DndContext,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
-
+import { Button, TabPanel } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
+import { useEffect, useRef } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef } from '@wordpress/element';
-import { TabPanel, Button } from '@wordpress/components';
-import { useDispatch } from '@wordpress/data';
-
+/**
+ * External dependencies.
+ */
+import classnames from 'classnames/dedupe';
+import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 /**
  * Internal dependencies.
  */
 import Control from './control';
 import DeselectActiveControlOnClickOutside from './deselect-active-on-click-outside';
-import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 
 let initialActiveTab = '';
 

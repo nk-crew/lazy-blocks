@@ -2,8 +2,9 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
+
 import { BaseControl, ToggleControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.

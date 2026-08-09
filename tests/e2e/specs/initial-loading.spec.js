@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 
 test.describe('initial loading', () => {
 	test('should have lazy blocks in admin menu', async ({ page, admin }) => {

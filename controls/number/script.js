@@ -1,9 +1,10 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
+
 import { PanelBody, TextControl } from '@wordpress/components';
+import { addFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -50,6 +51,7 @@ addFilter('lzb.editor.control.number.render', 'lzb.editor', (render, props) => {
  * @return {Object} validation data.
  */
 function validate(validationData, value, data) {
+	// biome-ignore lint/suspicious/noGlobalIsNan: the control value is a string, and Number.isNaN would report "abc" as valid.
 	if (value === '' || isNaN(value)) {
 		return { valid: false };
 	}

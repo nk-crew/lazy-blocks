@@ -1,34 +1,34 @@
 /**
  * External dependencies.
  */
-import classnames from 'classnames/dedupe';
+
 import {
-	DndContext,
 	closestCenter,
+	DndContext,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import {
 	SortableContext,
-	verticalListSortingStrategy,
 	useSortable,
+	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-
+import { Button, Tooltip } from '@wordpress/components';
+import { withInstanceId } from '@wordpress/compose';
+import { useEffect, useState } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
-import { Button, Tooltip } from '@wordpress/components';
-import { withInstanceId } from '@wordpress/compose';
+import classnames from 'classnames/dedupe';
 
 /**
  * Internal dependencies
  */
 import CustomPointerSensor from '../../assets/utils/dnd-kit-custom-pointer-sensor';
 
-const RepeaterItem = function (props) {
+const RepeaterItem = (props) => {
 	const {
 		attributes,
 		listeners,
@@ -89,7 +89,7 @@ const RepeaterItem = function (props) {
 				/>
 				{!props.controlData.rows_max ||
 				props.count < props.controlData.rows_max ? (
-					// eslint-disable-next-line react/button-has-type
+					// biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint.
 					<button
 						className="lzb-gutenberg-repeater-btn-duplicate"
 						onClick={props.onDuplicate}
@@ -119,7 +119,7 @@ const RepeaterItem = function (props) {
 				) : null}
 				{!props.controlData.rows_min ||
 				props.count > props.controlData.rows_min ? (
-					// eslint-disable-next-line react/button-has-type
+					// biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint.
 					<button
 						className="lzb-gutenberg-repeater-btn-remove"
 						onClick={props.onRemove}

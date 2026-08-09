@@ -2,26 +2,24 @@
  * WordPress dependencies.
  */
 import { applyFilters } from '@wordpress/hooks';
-
+import ProNotice from '../../../../components/pro-notice';
 /**
  * Internal dependencies.
  */
 import getControlTypeData from '../../../../utils/get-control-type-data';
-import ProNotice from '../../../../components/pro-notice';
-
-import LabelRow from './label';
-import NameRow from './name';
-import TypeRow from './type';
-import RequiredRow from './required';
 import ControlSpecificRows from './control-specific-rows';
 import DefaultRow from './default';
-import HelpRow from './help';
-import PlacementRow from './placement';
-import WidthRow from './width';
-import HideIfNotSelectedRow from './hide-if-not-selected';
-import TranslateRow from './translate';
-import SaveInMetaRow from './save-in-meta';
 import GroupRow from './group';
+import HelpRow from './help';
+import HideIfNotSelectedRow from './hide-if-not-selected';
+import LabelRow from './label';
+import NameRow from './name';
+import PlacementRow from './placement';
+import RequiredRow from './required';
+import SaveInMetaRow from './save-in-meta';
+import TranslateRow from './translate';
+import TypeRow from './type';
+import WidthRow from './width';
 
 export default function settingsRows(props) {
 	const { data, id } = props;

@@ -3,10 +3,11 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
-import { useSelect } from '@wordpress/data';
+
 import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { addFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -59,7 +60,7 @@ addFilter('lzb.editor.control.image.getValue', 'lzb.editor', (value) => {
 			} else {
 				value = JSON.parse(decodeURIComponent(value));
 			}
-		} catch (e) {
+		} catch (_e) {
 			value = [];
 		}
 	}

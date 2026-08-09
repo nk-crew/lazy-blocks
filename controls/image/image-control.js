@@ -2,7 +2,7 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
+
 import { MediaPlaceholder } from '@wordpress/block-editor';
 import {
 	BaseControl,
@@ -11,6 +11,7 @@ import {
 	withNotices,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 

@@ -4,14 +4,13 @@
 import './editor.scss';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames/dedupe';
-
-/**
  * WordPress dependencies
  */
 import { Modal } from '@wordpress/components';
+/**
+ * External dependencies
+ */
+import classnames from 'classnames/dedupe';
 
 export default function ModalComponent(props) {
 	let className = 'lzb-component-modal';

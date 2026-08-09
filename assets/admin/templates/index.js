@@ -4,17 +4,17 @@
  */
 import './index.scss';
 
+import { PanelRow, SelectControl } from '@wordpress/components';
+import { useDebounce } from '@wordpress/compose';
+import { useEntityProp } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
+import { useCallback, useEffect } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
 import { registerPlugin } from '@wordpress/plugins';
-import { useCallback, useEffect } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
-import { useEntityProp } from '@wordpress/core-data';
-import { PanelRow, SelectControl } from '@wordpress/components';
-import { useDebounce } from '@wordpress/compose';
-import { PluginDocumentSettingPanel } from '@wordpress/editor';
 
 /**
  * Internal dependencies

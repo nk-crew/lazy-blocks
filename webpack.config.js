@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-const { resolve } = require('path');
+const { resolve } = require('node:path');
 
 const glob = require('glob');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
@@ -11,21 +11,23 @@ const RtlCssPlugin = require('rtlcss-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Prepare JS for controls.
-const entryControls = glob.sync('./controls/**/script.js').reduce(function (
-	entries,
-	entry
-) {
-	const matchForRename = /controls\/([\w\d_]+)\/script\.js$/g.exec(entry);
+const entryControls = glob
+	.sync('./controls/**/script.js')
+	.reduce((entries, entry) => {
+		const matchForRename = /controls\/([\w\d_]+)\/script\.js$/g.exec(entry);
 
-	if (matchForRename !== null && typeof matchForRename[1] !== 'undefined') {
-		entries[`control-${matchForRename[1].replace('_', '-')}`] = resolve(
-			process.cwd(),
-			entry
-		);
-	}
+		if (
+			matchForRename !== null &&
+			typeof matchForRename[1] !== 'undefined'
+		) {
+			entries[`control-${matchForRename[1].replace('_', '-')}`] = resolve(
+				process.cwd(),
+				entry
+			);
+		}
 
-	return entries;
-}, {});
+		return entries;
+	}, {});
 
 const newConfig = {
 	...defaultConfig,

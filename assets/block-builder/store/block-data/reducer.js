@@ -3,7 +3,7 @@
  * WordPress dependencies.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { omit, merge } from 'lodash';
+import { merge, omit } from 'lodash';
 
 /**
  * Internal dependencies.

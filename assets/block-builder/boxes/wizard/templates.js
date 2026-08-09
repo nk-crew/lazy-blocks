@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies.
  */
-import { HeroIcon, TestimonialsIcon, AlertIcon } from './icons';
+import { AlertIcon, HeroIcon, TestimonialsIcon } from './icons';
 
 export const templates = {
 	basic: {

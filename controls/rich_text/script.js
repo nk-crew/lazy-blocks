@@ -1,8 +1,9 @@
 /**
  * WordPress dependencies.
  */
-import { addFilter } from '@wordpress/hooks';
+
 import { RichText } from '@wordpress/block-editor';
+import { addFilter } from '@wordpress/hooks';
 
 /**
  * Internal dependencies.

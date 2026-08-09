@@ -2,19 +2,19 @@
  * WordPress dependencies.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { cloneDeep } from 'lodash';
+
+import { ExternalLink, Notice, PanelBody } from '@wordpress/components';
+import { select } from '@wordpress/data';
 import { Component, Fragment, RawHTML } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
-import { PanelBody, ExternalLink, Notice } from '@wordpress/components';
-import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-
+import { cloneDeep } from 'lodash';
+import checkControlValidity from '../../utils/check-control-validity';
 /**
  * Internal dependencies.
  */
 import getControlTypeData from '../../utils/get-control-type-data';
 import getControlValue from '../../utils/get-control-value';
-import checkControlValidity from '../../utils/check-control-validity';
 
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {

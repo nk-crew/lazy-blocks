@@ -3,18 +3,17 @@
  */
 import './editor.scss';
 
-/**
- * External dependencies.
- */
-import slugify from 'slugify';
-
+import { useEntityProp } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
+import { useEffect, useRef } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useRef, useEffect } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
-import { useEntityProp } from '@wordpress/core-data';
+/**
+ * External dependencies.
+ */
+import slugify from 'slugify';
 
 const REGEXP_NEWLINES = /[\r\n]+/g;
 

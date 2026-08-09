@@ -7,11 +7,11 @@
  */
 
 import {
-	WP_ADMIN_USER,
-	SELECTORS,
-	TIMEOUTS,
 	COOKIE_PATTERNS,
+	SELECTORS,
 	TEST_USER_DEFAULTS,
+	TIMEOUTS,
+	WP_ADMIN_USER,
 } from './config.js';
 import { createURL, isCurrentURL, pressKeyWithModifier } from './helpers.js';
 
@@ -88,7 +88,7 @@ export async function loginUser(
 		if (page.isClosed()) {
 			throw new Error('Page is closed, cannot perform login');
 		}
-	} catch (error) {
+	} catch (_error) {
 		throw new Error('Page context is invalid, cannot perform login');
 	}
 
@@ -179,7 +179,7 @@ export async function deleteTestUser(requestUtils, userId, reassign = true) {
 				reassign: reassign ? 1 : undefined, // Reassign to admin user (ID 1)
 			},
 		});
-	} catch (error) {
+	} catch (_error) {
 		// User might already be deleted or not exist
 		// Silently ignore deletion errors in tests
 	}
@@ -223,7 +223,7 @@ export async function switchUserToAdmin(page) {
 		if (page.isClosed()) {
 			return; // Skip if page is already closed
 		}
-	} catch (error) {
+	} catch (_error) {
 		return; // Skip if page context is invalid
 	}
 

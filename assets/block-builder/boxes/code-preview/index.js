@@ -1,13 +1,13 @@
 import './editor.scss';
 
+import apiFetch from '@wordpress/api-fetch';
+import { TabPanel } from '@wordpress/components';
+import { useThrottle } from '@wordpress/compose';
+import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
-import { TabPanel } from '@wordpress/components';
-import { useThrottle } from '@wordpress/compose';
-import apiFetch from '@wordpress/api-fetch';
 
 export default function CodePreview(props) {
 	const { data, codeContext } = props;

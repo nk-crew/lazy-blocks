@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('block builder create block', () => {

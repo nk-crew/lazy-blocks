@@ -6,18 +6,18 @@
  * permission enforcement for export functionality.
  */
 
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
-import { removeAllBlocks } from '../utils/remove-all-blocks';
+import { expect, test } from '@wordpress/e2e-test-utils-playwright';
+import { TIMEOUTS } from '../utils/config';
 import { createBlock } from '../utils/create-block';
+import { createURL } from '../utils/helpers';
+import { removeAllBlocks } from '../utils/remove-all-blocks';
 import {
 	createTestUserWithDefaults,
+	deleteTestUser,
+	logoutUser,
 	switchUserToAdmin,
 	switchUserToContributor,
-	logoutUser,
-	deleteTestUser,
 } from '../utils/user-management';
-import { createURL } from '../utils/helpers';
-import { TIMEOUTS } from '../utils/config';
 
 test.describe('Export Permission Security', () => {
 	let sharedBlockId = null;
@@ -89,7 +89,7 @@ test.describe('Export Permission Security', () => {
 						.select('core')
 						.canUser('create', 'posts', 'lazyblocks');
 					return canEdit !== false;
-				} catch (e) {
+				} catch (_e) {
 					return true; // Assume admin has capability
 				}
 			}
@@ -135,7 +135,7 @@ test.describe('Export Permission Security', () => {
 					// Admin users should have the required 'edit_lazyblocks' capability
 					result.hasRequiredCapability = true;
 				}
-			} catch (e) {
+			} catch (_e) {
 				// Error checking permissions
 			}
 
@@ -225,7 +225,7 @@ test.describe('Export Permission Security', () => {
 			// Create a contributor user using role defaults
 			testUser = await createTestUserWithDefaults(
 				requestUtils,
-				'test_contributor_' + Date.now(),
+				`test_contributor_${Date.now()}`,
 				'contributor'
 			);
 
@@ -312,7 +312,7 @@ test.describe('Export Permission Security', () => {
 			// Cleanup: Switch back to admin (only if page is still valid)
 			try {
 				await switchUserToAdmin(page);
-			} catch (error) {
+			} catch (_error) {
 				// Skip user switching if page is closed - cleanup can continue
 			}
 

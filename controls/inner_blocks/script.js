@@ -1,10 +1,11 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
+
 import { useInnerBlocksProps } from '@wordpress/block-editor';
-import { PanelBody, Notice, Button } from '@wordpress/components';
+import { Button, Notice, PanelBody } from '@wordpress/components';
+import { addFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -54,29 +55,27 @@ addFilter(
 	'lzb.constructor',
 	() => {
 		return (
-			<>
-				<PanelBody>
-					<Notice
-						status="error"
-						isDismissible={false}
-						className="lzb-block-builder-notice"
+			<PanelBody>
+				<Notice
+					status="error"
+					isDismissible={false}
+					className="lzb-block-builder-notice"
+				>
+					<p>
+						{__(
+							'The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates.',
+							'lazy-blocks'
+						)}
+					</p>
+					<Button
+						href="https://www.lazyblocks.com/docs/blocks-controls/inner-blocks/"
+						target="_blank"
+						variant="primary"
 					>
-						<p>
-							{__(
-								'The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates.',
-								'lazy-blocks'
-							)}
-						</p>
-						<Button
-							href="https://www.lazyblocks.com/docs/blocks-controls/inner-blocks/"
-							target="_blank"
-							variant="primary"
-						>
-							{__('Read More', 'lazy-blocks')}
-						</Button>
-					</Notice>
-				</PanelBody>
-			</>
+						{__('Read More', 'lazy-blocks')}
+					</Button>
+				</Notice>
+			</PanelBody>
 		);
 	}
 );

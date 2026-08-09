@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
@@ -60,7 +60,7 @@ test.describe('widgets editor render blocks', () => {
 			await page
 				.locator('role=button[name="Close"]')
 				.click({ timeout: 3000 });
-		} catch (error) {}
+		} catch (_error) {}
 
 		await addBlock(page, 'lazyblock/test');
 

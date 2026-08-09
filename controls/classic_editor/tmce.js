@@ -3,13 +3,13 @@
  * With changes to work as control.
  */
 
+import { Button, Flex, FlexItem } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
-import { Button, Flex, FlexItem } from '@wordpress/components';
 
 import Modal from '../../assets/components/modal';
 

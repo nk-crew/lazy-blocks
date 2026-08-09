@@ -1,12 +1,13 @@
 /**
  * WordPress dependencies.
  */
-import { createBlock } from '@wordpress/blocks';
-import { registerPlugin } from '@wordpress/plugins';
-import { useEffect, useRef } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { doAction } from '@wordpress/hooks';
+
 import apiFetch from '@wordpress/api-fetch';
+import { createBlock } from '@wordpress/blocks';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect, useRef } from '@wordpress/element';
+import { doAction } from '@wordpress/hooks';
+import { registerPlugin } from '@wordpress/plugins';
 
 export default function UpdateEditor() {
 	const {

@@ -1,23 +1,23 @@
 /**
  * External dependencies.
  */
-import shorthash from 'shorthash';
 
+import { LinkControl } from '@wordpress/block-editor';
+import { Button, TextControl } from '@wordpress/components';
 /**
  * WordPress dependencies.
  */
 import { useState } from '@wordpress/element';
 import { addFilter } from '@wordpress/hooks';
-import { LinkControl } from '@wordpress/block-editor';
-import { TextControl, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import shorthash from 'shorthash';
 
 /**
  * Internal dependencies.
  */
 import BaseControl from '../../assets/components/base-control';
-import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 import Modal from '../../assets/components/modal';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 /**
  * Base URL control component - renders BaseControl with LinkControl.

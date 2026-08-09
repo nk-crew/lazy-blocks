@@ -3,15 +3,15 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
-import { PanelBody } from '@wordpress/components';
 
+import { PanelBody } from '@wordpress/components';
+import { addFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
+import BaseControl from '../../assets/components/base-control';
 /**
  * Internal dependencies.
  */
 import Select from '../../assets/components/select';
-import BaseControl from '../../assets/components/base-control';
 import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 import FileControl from './file-control';
@@ -60,7 +60,7 @@ addFilter('lzb.editor.control.file.getValue', 'lzb.editor', (value) => {
 			} else {
 				value = JSON.parse(decodeURIComponent(value));
 			}
-		} catch (e) {
+		} catch (_e) {
 			value = [];
 		}
 	}

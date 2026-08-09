@@ -1,12 +1,12 @@
 import './index.scss';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { differenceWith } from 'lodash';
-import { useSelect } from '@wordpress/data';
-import { useEffect, useState, useMemo, useCallback } from '@wordpress/element';
-import { useEntityProp } from '@wordpress/core-data';
 import { Button, ToggleControl } from '@wordpress/components';
 import { usePrevious } from '@wordpress/compose';
+import { useEntityProp } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
+import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { differenceWith } from 'lodash';
 
 import Modal from '../../../components/modal';
 import useAllBlocks from '../../../hooks/use-all-blocks';
