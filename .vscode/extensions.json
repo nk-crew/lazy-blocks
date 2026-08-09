@@ -1,9 +1,8 @@
 {
 	"recommendations": [
-		"esbenp.prettier-vscode",
+		"biomejs.biome",
 		"streetsidesoftware.code-spell-checker",
 		"editorconfig.editorconfig",
-		"dbaeumer.vscode-eslint",
 		"stylelint.vscode-stylelint"
 	]
 }
