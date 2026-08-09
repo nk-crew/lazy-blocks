@@ -13,11 +13,7 @@ const config = defineConfig(
 			new URL('./config/global-setup.js', `file:${__filename}`).href
 		),
 		timeout: 100_000,
-		overrides: {
-			reporter: process.env.CI
-				? [['github'], ['./config/flaky-tests-reporter.js']]
-				: 'list',
-		},
+		reporters: ['./config/flaky-tests-reporter.js'],
 	})
 );
 

@@ -7,6 +7,7 @@ yarn-error.log*
 .phpunit.result.cache
 /artifacts
 /tests/e2e/artifacts
+/flaky-tests
 
 # The /.cache folder is needed for phpcs to cache results between runs, while other .cache folders must be ignored
 # It is not possible to re-include a file if a parent directory of that file is excluded
