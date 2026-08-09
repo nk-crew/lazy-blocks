@@ -2,14 +2,15 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+
 import {
-	Notice,
 	BaseControl,
 	Button,
+	Notice,
 	ToggleControl,
 } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 export default function SupportsGhostKitSettings(props) {
 	const { data, updateData } = props;

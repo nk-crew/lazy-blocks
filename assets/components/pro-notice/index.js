@@ -3,11 +3,11 @@
  */
 import './editor.scss';
 
+import { BaseControl, PanelBody } from '@wordpress/components';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { PanelBody, BaseControl } from '@wordpress/components';
 
 const { lazyblocksBlockBuilderData } = window;
 

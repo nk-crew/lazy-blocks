@@ -1,12 +1,13 @@
 /**
  * WordPress dependencies.
  */
-import { useSelect } from '@wordpress/data';
+
 import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 
 export default function BlockEdit({ clientId }) {
 	const { hasChildBlocks } = useSelect(

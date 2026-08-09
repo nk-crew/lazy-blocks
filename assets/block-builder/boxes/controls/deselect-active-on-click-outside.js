@@ -1,8 +1,9 @@
 /**
  * WordPress dependencies.
  */
+
+import { dispatch, select } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
 
 export default function DeselectActiveControlOnClickOutside() {
 	const ref = useRef();

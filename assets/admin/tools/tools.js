@@ -2,13 +2,14 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { useState, useRef } from '@wordpress/element';
+
 import {
 	BaseControl,
 	TextareaControl,
 	ToggleControl,
 } from '@wordpress/components';
+import { useRef, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal Dependencies
@@ -240,7 +241,7 @@ export default function Templates() {
 							/>
 						</div>
 						<div className="lzb-export-buttons">
-							{/* eslint-disable-next-line react/button-has-type */}
+							{/* biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint. */}
 							<button
 								className="button"
 								onClick={() => {
@@ -265,7 +266,7 @@ export default function Templates() {
 						>
 							{__('Export JSON', 'lazy-blocks')}
 						</a>
-						{/* eslint-disable-next-line react/button-has-type */}
+						{/* biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint. */}
 						<button
 							className="button"
 							onClick={() => {
@@ -363,7 +364,7 @@ export default function Templates() {
 									/>
 
 									<div className="lzb-export-buttons">
-										{/* eslint-disable-next-line react/button-has-type */}
+										{/* biome-ignore lint/a11y/useButtonType: the implicit "submit" type is what posts the import form. */}
 										<button className="button button-primary">
 											{__('Import', 'lazy-blocks')}
 										</button>

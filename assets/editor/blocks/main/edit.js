@@ -2,30 +2,30 @@
 /**
  * External dependencies.
  */
-import classnames from 'classnames/dedupe';
 
+import {
+	BlockControls,
+	InspectorControls,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import { ToolbarButton } from '@wordpress/components';
+import { useThrottle } from '@wordpress/compose';
+import { useEntityProp } from '@wordpress/core-data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect, useRef, useState } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { useRef, useEffect, useState } from '@wordpress/element';
-import { ToolbarButton } from '@wordpress/components';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { useEntityProp } from '@wordpress/core-data';
-import { useThrottle } from '@wordpress/compose';
-import {
-	InspectorControls,
-	useBlockProps,
-	BlockControls,
-} from '@wordpress/block-editor';
+import classnames from 'classnames/dedupe';
 
 /**
  * Internal dependencies.
  */
 import PreviewServerCallback from '../../../components/preview-server-callback';
 import RenderControls from '../../../components/render-controls';
-import getControlValue from '../../../utils/get-control-value';
 import checkControlValidity from '../../../utils/check-control-validity';
+import getControlValue from '../../../utils/get-control-value';
 
 let options = window.lazyblocksGutenberg;
 if (!options || !options.blocks || !options.blocks.length) {
@@ -258,13 +258,10 @@ export default function BlockEdit(props) {
 	);
 
 	const attsForRender = {};
-	const controlsHasGroup = INSPECTOR_GROUPS.reduce(
-		(result, group) => ({
-			...result,
-			[group]: group === DEFAULT_GROUP,
-		}),
-		{}
-	);
+	const controlsHasGroup = INSPECTOR_GROUPS.reduce((result, group) => {
+		result[group] = group === DEFAULT_GROUP;
+		return result;
+	}, {});
 	let hasContentControls = false;
 
 	// prepare data for preview.

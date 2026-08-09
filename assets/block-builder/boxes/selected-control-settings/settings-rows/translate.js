@@ -1,8 +1,9 @@
 /**
  * WordPress dependencies.
  */
+
+import { BaseControl, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, BaseControl, ToggleControl } from '@wordpress/components';
 
 export default function WPMLRow(props) {
 	const { updateData, data } = props;

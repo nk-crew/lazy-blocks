@@ -1,12 +1,12 @@
 /**
  * External dependencies.
  */
-import classnames from 'classnames/dedupe';
 
 /**
  * WordPress dependencies.
  */
-import { Dropdown, Button } from '@wordpress/components';
+import { Button, Dropdown } from '@wordpress/components';
+import classnames from 'classnames/dedupe';
 
 /**
  * Internal dependencies.

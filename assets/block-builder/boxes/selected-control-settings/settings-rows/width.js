@@ -1,17 +1,18 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
+
 import {
-	PanelBody,
-	BaseControl,
-	ToggleGroupControl as StableToggleGroupControl,
-	ToggleGroupControlOption as StableToggleGroupControlOption,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption,
+	BaseControl,
+	PanelBody,
+	ToggleGroupControl as StableToggleGroupControl,
+	ToggleGroupControlOption as StableToggleGroupControlOption,
 } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 const ToggleGroupControl =
 	StableToggleGroupControl || __experimentalToggleGroupControl;

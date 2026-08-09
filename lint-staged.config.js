@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const micromatch = require('micromatch');
 
 function excludeVendor(lint) {
@@ -21,5 +20,7 @@ function excludeVendor(lint) {
 module.exports = {
 	'**/*.php': excludeVendor('composer run-script lint'),
 	'**/*.{css,scss}': excludeVendor('wp-scripts lint-style'),
-	'**/*.{js,jsx}': excludeVendor('wp-scripts lint-js'),
+	'**/*.{js,jsx,json,jsonc}': excludeVendor(
+		'biome check --write --no-errors-on-unmatched --files-ignore-unknown=true'
+	),
 };

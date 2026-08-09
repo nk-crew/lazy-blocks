@@ -2,12 +2,13 @@
 /**
  * WordPress dependencies.
  */
-import { ColorPalette as WPColorPalette } from '@wordpress/components';
+
 import {
-	useMultipleOriginColorsAndGradients,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients,
+	useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
+import { ColorPalette as WPColorPalette } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 const useColorsAndGradients =

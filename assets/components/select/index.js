@@ -3,28 +3,25 @@
  */
 import './editor.scss';
 
-import StyleProvider from './style-provider';
-
-/**
- * External dependencies
- */
-import CreatableSelect from 'react-select/creatable';
-import AsyncSelect from 'react-select/async';
-import ReactSelect, { components } from 'react-select';
-import selectStyles from 'gutenberg-react-select-styles';
-
 import {
+	closestCenter,
 	DndContext,
 	PointerSensor,
-	closestCenter,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-
 import { arrayMoveImmutable } from 'array-move';
+import selectStyles from 'gutenberg-react-select-styles';
+import ReactSelect, { components } from 'react-select';
+import AsyncSelect from 'react-select/async';
+/**
+ * External dependencies
+ */
+import CreatableSelect from 'react-select/creatable';
+import StyleProvider from './style-provider';
 
 export default function Select(props) {
 	const { value, onChange, styles = {} } = props;

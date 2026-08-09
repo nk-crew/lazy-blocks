@@ -2,22 +2,22 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
+
 import {
 	PanelBody,
+	RadioControl,
 	SelectControl,
 	ToggleControl,
-	RadioControl,
 } from '@wordpress/components';
+import { addFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
  */
 import BaseControl from '../../assets/components/base-control';
-import useBlockControlProps from '../../assets/hooks/use-block-control-props';
-
 import Choices from '../../assets/components/choices';
+import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 /**
  * Control render in editor.

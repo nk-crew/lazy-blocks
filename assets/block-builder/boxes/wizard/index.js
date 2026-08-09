@@ -3,20 +3,19 @@
  */
 import './editor.scss';
 
+import { Button, TextareaControl, TextControl } from '@wordpress/components';
+import { useEntityProp } from '@wordpress/core-data';
+import { useDispatch, useSelect, select as wpSelect } from '@wordpress/data';
+/**
+ * WordPress dependencies.
+ */
+import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 /**
  * External dependencies.
  */
 import classnames from 'classnames/dedupe';
 import slugify from 'slugify';
-
-/**
- * WordPress dependencies.
- */
-import { useState } from '@wordpress/element';
-import { useSelect, useDispatch, select as wpSelect } from '@wordpress/data';
-import { useEntityProp } from '@wordpress/core-data';
-import { Button, TextControl, TextareaControl } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -239,27 +238,25 @@ ${finalStyles}
 			)}
 
 			{step === 2 && (
-				<>
-					<div className="lzb-block-builder-wizard-step-title">
-						<IconPicker
-							value={icon}
-							onChange={(value) => setIcon(value)}
+				<div className="lzb-block-builder-wizard-step-title">
+					<IconPicker
+						value={icon}
+						onChange={(value) => setIcon(value)}
+					/>
+					<div>
+						<TextControl
+							label={__('Title', 'lazy-blocks')}
+							value={title}
+							onChange={(val) => {
+								setTitle(val);
+								generateSlug(val);
+							}}
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 						/>
-						<div>
-							<TextControl
-								label={__('Title', 'lazy-blocks')}
-								value={title}
-								onChange={(val) => {
-									setTitle(val);
-									generateSlug(val);
-								}}
-								__next40pxDefaultSize
-								__nextHasNoMarginBottom
-							/>
-							<span>{slug ? `lazyblock/${slug}` : ''}</span>
-						</div>
+						<span>{slug ? `lazyblock/${slug}` : ''}</span>
 					</div>
-				</>
+				</div>
 			)}
 
 			{step === 3 && (

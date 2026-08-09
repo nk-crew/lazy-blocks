@@ -1,32 +1,32 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { Spinner, PanelBody } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/block-editor';
-import { useEntityProp } from '@wordpress/core-data';
-import { applyFilters } from '@wordpress/hooks';
 
+import { InspectorControls } from '@wordpress/block-editor';
+import { PanelBody, Spinner } from '@wordpress/components';
+import { useEntityProp } from '@wordpress/core-data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
+import DocumentTabs from '../../components/document-tabs';
+import PreviewErrorBoundary from '../../components/preview-error-boundary';
 /**
  * Internal dependencies.
  */
 import ProNotice from '../../components/pro-notice';
-import DocumentTabs from '../../components/document-tabs';
 import StyleProviderWrapper from '../../components/select/style-provider';
-import TitleSettings from '../boxes/title';
+import CustomCodeSettings from '../boxes/code';
+import CodePreview from '../boxes/code-preview';
+import ConditionSettings from '../boxes/condition';
+import ControlsSettings from '../boxes/controls';
 import GeneralSettings from '../boxes/general';
+import SelectedControlSettings from '../boxes/selected-control-settings';
 import StyleVariationsSettings from '../boxes/style-variations';
 import SupportsSettings from '../boxes/supports';
 import SupportsGhostKitSettings from '../boxes/supports-ghost-kit';
-import ConditionSettings from '../boxes/condition';
-import ControlsSettings from '../boxes/controls';
-import SelectedControlSettings from '../boxes/selected-control-settings';
-import CustomCodeSettings from '../boxes/code';
-import CodePreview from '../boxes/code-preview';
+import TitleSettings from '../boxes/title';
 import Wizard from '../boxes/wizard';
-import PreviewErrorBoundary from '../../components/preview-error-boundary';
 
 import '../../components/tab-panel';
 

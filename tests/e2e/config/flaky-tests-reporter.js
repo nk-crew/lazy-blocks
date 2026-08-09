@@ -9,7 +9,8 @@
 /**
  * External dependencies
  */
-import fs from 'fs';
+
+import fs from 'node:fs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import filenamify from 'filenamify';
 

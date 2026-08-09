@@ -2,11 +2,7 @@
 	"name": "nk-crew/lazy-blocks",
 	"type": "package",
 	"description": "Lazy Blocks plugin for WordPress custom block",
-	"keywords": [
-		"WordPress",
-		"Plugins",
-		"Blocks"
-	],
+	"keywords": ["WordPress", "Plugins", "Blocks"],
 	"require": {
 		"php": ">=8.3"
 	},

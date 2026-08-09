@@ -5,11 +5,11 @@
  * This is a copy of Gutenberg component
  * https://github.com/WordPress/gutenberg/blob/trunk/packages/components/src/style-provider/index.tsx
  */
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import * as uuid from 'uuid';
 
-import { useRef, useState, useEffect } from '@wordpress/element';
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import * as uuid from 'uuid';
 
 const uuidCache = new Set();
 // Use a weak map so that when the container is detached it's automatically

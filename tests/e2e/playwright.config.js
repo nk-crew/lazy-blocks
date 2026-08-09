@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
-import os from 'os';
-import path from 'path';
-import { fileURLToPath } from 'url';
+
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig, devices } from '@playwright/test';
 
@@ -21,12 +22,12 @@ const config = defineConfig({
 	timeout: parseInt(process.env.TIMEOUT || '', 10) || 100_000, // Defaults to 100 seconds.
 	// Don't report slow test "files", as we will be running our tests in serial.
 	reportSlowTests: null,
-	testDir: fileURLToPath(new URL('./specs', 'file:' + __filename).href),
+	testDir: fileURLToPath(new URL('./specs', `file:${__filename}`).href),
 	outputDir: path.join(process.cwd(), 'artifacts/test-results'),
 	snapshotPathTemplate:
 		'{testDir}/{testFileDir}/__snapshots__/{arg}-{projectName}{ext}',
 	globalSetup: fileURLToPath(
-		new URL('./config/global-setup.js', 'file:' + __filename).href
+		new URL('./config/global-setup.js', `file:${__filename}`).href
 	),
 	use: {
 		baseURL: process.env.WP_BASE_URL || 'http://localhost:8889',

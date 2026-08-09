@@ -3,19 +3,19 @@
  * WordPress dependencies.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { merge } from 'lodash';
-import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { applyFilters } from '@wordpress/hooks';
+
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
-
+import { useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 /**
  * External dependencies.
  */
 import classnames from 'classnames/dedupe';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { merge } from 'lodash';
 
 /**
  * Internal dependencies.

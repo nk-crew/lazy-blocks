@@ -2,7 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';

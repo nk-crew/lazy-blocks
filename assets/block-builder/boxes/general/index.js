@@ -1,16 +1,17 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+
 import {
-	PanelBody,
 	BaseControl,
-	TextareaControl,
 	Notice,
+	PanelBody,
+	TextareaControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.

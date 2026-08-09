@@ -3,32 +3,30 @@
  */
 import './editor.scss';
 
-import classnames from 'classnames/dedupe';
-
+import {
+	BaseControl,
+	Button,
+	Dropdown,
+	Notice,
+	SelectControl,
+	TabPanel,
+	ToggleControl,
+} from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
-import { applyFilters } from '@wordpress/hooks';
-import {
-	BaseControl,
-	SelectControl,
-	ToggleControl,
-	Button,
-	TabPanel,
-	Notice,
-	Dropdown,
-} from '@wordpress/components';
-
+import classnames from 'classnames/dedupe';
+import Box from '../../../components/box';
+import Select from '../../../components/select';
+import { getSlugWithNamespaceDash } from '../../../utils/block-slug';
 /**
  * Internal dependencies.
  */
 import CodeEditor from './component-react-ace';
-import Box from '../../../components/box';
-import Select from '../../../components/select';
-import { getSlugWithNamespaceDash } from '../../../utils/block-slug';
 
 const {
 	plugin_version: pluginVersion,
@@ -544,67 +542,65 @@ export default function CustomCodeSettings(props) {
 			renderContent={() => {
 				return applyFilters(
 					`lzb.constructor.code-settings.info`,
-					<>
-						{data.code_output_method === 'template' ? (
-							<Notice status="info" isDismissible={false}>
-								<div style={{ minWidth: '300px' }}>
+					data.code_output_method === 'template' ? (
+						<Notice status="info" isDismissible={false}>
+							<div style={{ minWidth: '300px' }}>
+								{__(
+									'Lazy Blocks will search for a template file in your theme directory. Read more:',
+									'lazy-blocks'
+								)}{' '}
+								<a
+									href={`https://www.lazyblocks.com/docs/blocks-code/theme-template/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_theme_template&utm_content=${pluginVersion}`}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
 									{__(
-										'Lazy Blocks will search for a template file in your theme directory. Read more:',
+										'How to use theme template',
+										'lazy-blocks'
+									)}
+								</a>
+							</div>
+						</Notice>
+					) : (
+						<Notice status="info" isDismissible={false}>
+							<div style={{ minWidth: '300px' }}>
+								<p className="description">
+									{__(
+										'Simple text field example see here:',
 										'lazy-blocks'
 									)}{' '}
 									<a
-										href={`https://www.lazyblocks.com/docs/blocks-code/theme-template/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_theme_template&utm_content=${pluginVersion}`}
+										href={`https://www.lazyblocks.com/docs/blocks-controls/text/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_control&utm_content=${pluginVersion}`}
 										target="_blank"
 										rel="noopener noreferrer"
 									>
-										{__(
-											'How to use theme template',
-											'lazy-blocks'
-										)}
+										https://www.lazyblocks.com/docs/blocks-controls/text/
 									</a>
-								</div>
-							</Notice>
-						) : (
-							<Notice status="info" isDismissible={false}>
-								<div style={{ minWidth: '300px' }}>
-									<p className="description">
-										{__(
-											'Simple text field example see here:',
-											'lazy-blocks'
-										)}{' '}
-										<a
-											href={`https://www.lazyblocks.com/docs/blocks-controls/text/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_control&utm_content=${pluginVersion}`}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											https://www.lazyblocks.com/docs/blocks-controls/text/
-										</a>
-									</p>
-									<hr />
-									<p className="description">
-										{__(
-											'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.',
-											'lazy-blocks'
-										)}
-									</p>
-									<p className="description">
-										{__(
-											'Note 2: supported custom PHP callback to output block',
-											'lazy-blocks'
-										)}{' '}
-										<a
-											href={`https://www.lazyblocks.com/docs/blocks-code/php-callback/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_php_callback&utm_content=${pluginVersion}`}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											https://www.lazyblocks.com/docs/blocks-code/php-callback/
-										</a>
-										.
-									</p>
-								</div>
-							</Notice>
-						)}
-					</>,
+								</p>
+								<hr />
+								<p className="description">
+									{__(
+										'Note 1: if you use blocks as Metaboxes, you may leave this code editor blank.',
+										'lazy-blocks'
+									)}
+								</p>
+								<p className="description">
+									{__(
+										'Note 2: supported custom PHP callback to output block',
+										'lazy-blocks'
+									)}{' '}
+									<a
+										href={`https://www.lazyblocks.com/docs/blocks-code/php-callback/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_php_callback&utm_content=${pluginVersion}`}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										https://www.lazyblocks.com/docs/blocks-code/php-callback/
+									</a>
+									.
+								</p>
+							</div>
+						</Notice>
+					),
 					settingsFilterData
 				);
 			}}
@@ -615,76 +611,72 @@ export default function CustomCodeSettings(props) {
 	const settingsOutputCode = applyFilters(
 		`lzb.constructor.code-settings.output-code`,
 		data.code_output_method !== 'template' ? (
-			<>
-				<BaseControl __nextHasNoMarginBottom>
-					<div
-						className={classnames(
-							'lzb-block-builder-output-code-wrapper',
-							isStyleTab && 'lzb-block-builder-output-code-style',
-							isScriptTab &&
-								'lzb-block-builder-output-code-script'
-						)}
-					>
-						<div className="lzb-block-builder-output-code-toolbar">
-							{settingsOutputMethod || null}
-							{settingsAdditional || null}
-							{settingsInfo || null}
-						</div>
-						<CodeEditor
-							key={`code_${tab}` + data.code_output_method}
-							mode={
-								// eslint-disable-next-line no-nested-ternary
-								isStyleTab
-									? 'css'
-									: // eslint-disable-next-line no-nested-ternary
-										isScriptTab
-										? 'javascript'
-										: data.code_output_method === 'html'
-											? 'handlebars'
-											: 'php'
-							}
-							onChange={(value) =>
-								updateData({
-									// eslint-disable-next-line no-nested-ternary
-									[isStyleTab
-										? `style_${tab.replace('-style', '')}`
-										: isScriptTab
-											? `script_${tab.replace('-script', '')}`
-											: `code_${tab}_html`]: value,
-								})
-							}
-							value={
-								// eslint-disable-next-line no-nested-ternary
-								isStyleTab && !isPro
-									? proStylesComment
-									: isScriptTab && !isPro
-										? proScriptComment
-										: data[
-												// eslint-disable-next-line no-nested-ternary
-												isStyleTab
-													? `style_${tab.replace('-style', '')}`
-													: isScriptTab
-														? `script_${tab.replace(
-																'-script',
-																''
-															)}`
-														: `code_${tab}_html`
-											]
-							}
-							minLines={13}
-							maxLines={30}
-							editorProps={{
-								// eslint-disable-next-line no-nested-ternary
-								id: `lzb-editor-${isStyleTab ? 'css' : isScriptTab ? 'js' : data.code_output_method}`,
-							}}
-							readOnly={
-								(isStyleTab && !isPro) ||
-								(isScriptTab && !isPro)
-							}
-						/>
+			<BaseControl __nextHasNoMarginBottom>
+				<div
+					className={classnames(
+						'lzb-block-builder-output-code-wrapper',
+						isStyleTab && 'lzb-block-builder-output-code-style',
+						isScriptTab && 'lzb-block-builder-output-code-script'
+					)}
+				>
+					<div className="lzb-block-builder-output-code-toolbar">
+						{settingsOutputMethod || null}
+						{settingsAdditional || null}
+						{settingsInfo || null}
 					</div>
-				</BaseControl>
-			</>
+					<CodeEditor
+						key={`code_${tab}${data.code_output_method}`}
+						mode={
+							// eslint-disable-next-line no-nested-ternary
+							isStyleTab
+								? 'css'
+								: // eslint-disable-next-line no-nested-ternary
+									isScriptTab
+									? 'javascript'
+									: data.code_output_method === 'html'
+										? 'handlebars'
+										: 'php'
+						}
+						onChange={(value) =>
+							updateData({
+								// eslint-disable-next-line no-nested-ternary
+								[isStyleTab
+									? `style_${tab.replace('-style', '')}`
+									: isScriptTab
+										? `script_${tab.replace('-script', '')}`
+										: `code_${tab}_html`]: value,
+							})
+						}
+						value={
+							// eslint-disable-next-line no-nested-ternary
+							isStyleTab && !isPro
+								? proStylesComment
+								: isScriptTab && !isPro
+									? proScriptComment
+									: data[
+											// eslint-disable-next-line no-nested-ternary
+											isStyleTab
+												? `style_${tab.replace('-style', '')}`
+												: isScriptTab
+													? `script_${tab.replace(
+															'-script',
+															''
+														)}`
+													: `code_${tab}_html`
+										]
+						}
+						minLines={13}
+						maxLines={30}
+						editorProps={{
+							// eslint-disable-next-line no-nested-ternary
+							id: `lzb-editor-${isStyleTab ? 'css' : isScriptTab ? 'js' : data.code_output_method}`,
+						}}
+						readOnly={
+							(isStyleTab && !isPro) || (isScriptTab && !isPro)
+						}
+					/>
+				</div>
+			</BaseControl>
 		) : null,
 		settingsFilterData
 	);
@@ -695,16 +687,15 @@ export default function CustomCodeSettings(props) {
 		data.code_output_method === 'template' &&
 			currentTheme &&
 			currentTheme.stylesheet ? (
-			<>
-				<div className="lzb-block-builder-theme-template-wrapper">
-					<div className="lzb-block-builder-theme-template-toolbar">
-						{settingsOutputMethod || null}
-						{settingsAdditional || null}
-						{settingsInfo || null}
-					</div>
-					<CodeEditor
-						mode="bash"
-						value={`/${wpContentDir}/themes/${currentTheme.stylesheet}/
+			<div className="lzb-block-builder-theme-template-wrapper">
+				<div className="lzb-block-builder-theme-template-toolbar">
+					{settingsOutputMethod || null}
+					{settingsAdditional || null}
+					{settingsInfo || null}
+				</div>
+				<CodeEditor
+					mode="bash"
+					value={`/${wpContentDir}/themes/${currentTheme.stylesheet}/
 ├── blocks/
 │   └── ${getSlugWithNamespaceDash(data.slug)}/
 │       ├── block.php                # Frontend & Editor template (required)
@@ -727,12 +718,11 @@ export default function CustomCodeSettings(props) {
 │
 │   └── lazyblock-another-block/     # You can create multiple blocks
 │       ├── ...`}
-						minLines={5}
-						maxLines={10}
-						readOnly
-					/>
-				</div>
-			</>
+					minLines={5}
+					maxLines={10}
+					readOnly
+				/>
+			</div>
 		) : null,
 		settingsFilterData
 	);

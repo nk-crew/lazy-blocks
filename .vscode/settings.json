@@ -1,33 +1,35 @@
 {
-  "editor.defaultFormatter": null,
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[php]": {
-    "editor.formatOnSave": false,
-    "editor.defaultFormatter": null
-  },
-  "editor.formatOnSave": true,
-  "scss.validate": false,
-  "css.validate": false,
-  "less.validate": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.stylelint": "explicit"
-  },
-  "stylelint.validate": [
-    "css",
-    "scss"
-  ],
-  "stylelint.snippet": [
-    "css",
-    "scss"
-  ],
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "search.exclude": {
-    "**/.git": true,
-    "**/node_modules": true,
-    "**/build": true
-  },
+	"editor.codeActionsOnSave": {
+		"source.fixAll.biome": "explicit",
+		"source.organizeImports.biome": "explicit",
+		"source.fixAll.stylelint": "explicit"
+	},
+	"editor.defaultFormatter": null,
+	"editor.formatOnSave": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[php]": {
+		"editor.formatOnSave": false,
+		"editor.defaultFormatter": null
+	},
+	"scss.validate": false,
+	"css.validate": false,
+	"less.validate": false,
+	"stylelint.validate": ["css", "scss"],
+	"stylelint.snippet": ["css", "scss"],
+	"search.exclude": {
+		"**/.git": true,
+		"**/node_modules": true,
+		"**/build": true
+	}
 }

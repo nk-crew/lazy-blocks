@@ -3,11 +3,11 @@
  */
 import './editor.scss';
 
+import { useDispatch, useSelect } from '@wordpress/data';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
 
 let globalActiveTab = '';
 let prevSelectedControlId = '';
@@ -51,7 +51,7 @@ export default function DocumentTabs({ children }) {
 			<div className="components-panel__header edit-post-sidebar-header edit-post-sidebar__panel-tabs">
 				<ul>
 					<li>
-						{/* eslint-disable-next-line react/button-has-type */}
+						{/* biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint. */}
 						<button
 							onClick={() => {
 								activateTab('block');
@@ -65,7 +65,7 @@ export default function DocumentTabs({ children }) {
 						</button>
 					</li>
 					<li>
-						{/* eslint-disable-next-line react/button-has-type */}
+						{/* biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint. */}
 						<button
 							onClick={() => {
 								activateTab('control');

@@ -1,27 +1,27 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames/dedupe';
 
-/**
- * WordPress dependencies.
- */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
-import { getSettings, dateI18n } from '@wordpress/date';
 import {
-	Dropdown,
-	PanelBody,
-	Button,
-	DatePicker,
-	TimePicker,
-	ToggleGroupControl as StableToggleGroupControl,
-	ToggleGroupControlOption as StableToggleGroupControlOption,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption,
+	Button,
+	DatePicker,
+	Dropdown,
+	PanelBody,
+	ToggleGroupControl as StableToggleGroupControl,
+	ToggleGroupControlOption as StableToggleGroupControlOption,
+	TimePicker,
 } from '@wordpress/components';
+import { dateI18n, getSettings } from '@wordpress/date';
+import { addFilter } from '@wordpress/hooks';
+/**
+ * WordPress dependencies.
+ */
+import { __ } from '@wordpress/i18n';
+import classnames from 'classnames/dedupe';
 
 const ToggleGroupControl =
 	StableToggleGroupControl || __experimentalToggleGroupControl;

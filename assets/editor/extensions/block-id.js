@@ -1,16 +1,16 @@
 /**
  * External dependencies.
  */
-import shorthash from 'shorthash';
 
+import { getBlockType } from '@wordpress/blocks';
+import { createHigherOrderComponent, useThrottle } from '@wordpress/compose';
+import { useDispatch } from '@wordpress/data';
+import { useCallback, useEffect, useRef } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { addFilter } from '@wordpress/hooks';
-import { useEffect, useRef, useCallback } from '@wordpress/element';
-import { getBlockType } from '@wordpress/blocks';
-import { createHigherOrderComponent, useThrottle } from '@wordpress/compose';
-import { useDispatch } from '@wordpress/data';
+import shorthash from 'shorthash';
 
 import useAllBlocks from '../../hooks/use-all-blocks';
 

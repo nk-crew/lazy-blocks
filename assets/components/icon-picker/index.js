@@ -5,32 +5,32 @@
 import './editor.scss';
 import 'react-virtualized/styles.css';
 
-/**
- * External dependencies
- */
-import classnames from 'classnames/dedupe';
 import {
-	List,
-	CellMeasurer,
-	CellMeasurerCache,
-	AutoSizer,
-} from 'react-virtualized';
+	BaseControl,
+	Button,
+	Dropdown,
+	G,
+	Path,
+	SVG,
+	TextControl,
+	Tooltip,
+} from '@wordpress/components';
+import { Fragment, useEffect, useState } from '@wordpress/element';
 
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState, useEffect } from '@wordpress/element';
+/**
+ * External dependencies
+ */
+import classnames from 'classnames/dedupe';
 import {
-	Button,
-	Dropdown,
-	Tooltip,
-	BaseControl,
-	TextControl,
-	G,
-	Path,
-	SVG,
-} from '@wordpress/components';
+	AutoSizer,
+	CellMeasurer,
+	CellMeasurerCache,
+	List,
+} from 'react-virtualized';
 
 const { icons } =
 	window.lazyblocksBlockBuilderData || window.lazyblocksGutenberg;
@@ -341,7 +341,7 @@ export default function IconPicker({ value, onChange, label }) {
 IconPicker.Dropdown = IconPickerDropdown;
 
 // preview icon.
-IconPicker.Preview = function (props) {
+IconPicker.Preview = (props) => {
 	const { onClick, className, svg, alwaysRender = false } = props;
 
 	let result = '';

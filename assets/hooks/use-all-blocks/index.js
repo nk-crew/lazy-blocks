@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+import { useCallback, useMemo } from '@wordpress/element';
 
 /**
  * Custom hook to get all blocks recursively.

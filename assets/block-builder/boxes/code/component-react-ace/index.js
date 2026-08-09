@@ -27,17 +27,15 @@ const emmetExt = ace.require('ace/ext/emmet');
 emmetExt.setCore(emmetCore);
 emmetExt.load = () => true;
 
-import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
-
+import { select } from '@wordpress/data';
+import { memo, useEffect, useRef } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useEffect, useRef, memo } from '@wordpress/element';
-import { select } from '@wordpress/data';
-
-import FixCssFrame from '../fix-css-frame';
+import { addCompleter } from 'ace-builds/src-noconflict/ext-language_tools';
 import { getBlockClassName } from '../../../../utils/block-slug';
+import FixCssFrame from '../fix-css-frame';
 
 /**
  * Helper function to create completers for different editor types.
@@ -132,7 +130,7 @@ addCompleter({
 			callback(null, []);
 		}
 	},
-	identifierRegexps: [new RegExp('.')],
+	identifierRegexps: [/./],
 });
 
 /**

@@ -1,21 +1,21 @@
 /**
  * External dependencies.
  */
-import classnames from 'classnames/dedupe';
 
+import {
+	BaseControl,
+	Button,
+	Dropdown,
+	PanelBody,
+	TextControl,
+} from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import {
-	PanelBody,
-	BaseControl,
-	TextControl,
-	Button,
-	Dropdown,
-} from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
+import classnames from 'classnames/dedupe';
 
 /**
  * Internal dependencies.
@@ -117,7 +117,7 @@ export default function TypeRow(props) {
 							isPlacementAllowed =
 								placementSettings.includes('inspector');
 							break;
-						case 'both':
+						case 'both': {
 							// Don't allow 'both' if control has fallback restrictions
 							const hasFallback =
 								placementSettings.includes(
@@ -132,6 +132,7 @@ export default function TypeRow(props) {
 								(placementSettings.includes('content') ||
 									placementSettings.includes('inspector'));
 							break;
+						}
 						case 'nowhere':
 							// 'nowhere' placement is always allowed as it doesn't render anywhere
 							isPlacementAllowed = true;
@@ -264,7 +265,7 @@ export default function TypeRow(props) {
 												}
 
 												return (
-													// eslint-disable-next-line react/button-has-type
+													// biome-ignore lint/a11y/useButtonType: intentional opt-out kept from ESLint.
 													<button
 														key={
 															cat + thisType.name

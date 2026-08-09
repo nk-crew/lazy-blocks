@@ -3,12 +3,12 @@
  */
 import './editor.scss';
 
+import { PanelBody } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { PanelBody } from '@wordpress/components';
-import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies.

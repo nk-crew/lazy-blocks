@@ -2,20 +2,20 @@
  * WordPress dependencies.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { isEqual } from 'lodash';
-import { __, sprintf } from '@wordpress/i18n';
-import { useEffect, useState, useRef } from '@wordpress/element';
-import { doAction, applyFilters } from '@wordpress/hooks';
-import { useSelect } from '@wordpress/data';
-import { usePrevious } from '@wordpress/compose';
-import { Spinner } from '@wordpress/components';
-import apiFetch from '@wordpress/api-fetch';
 
+import apiFetch from '@wordpress/api-fetch';
+import { Spinner } from '@wordpress/components';
+import { usePrevious } from '@wordpress/compose';
+import { useSelect } from '@wordpress/data';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import { applyFilters, doAction } from '@wordpress/hooks';
+import { __, sprintf } from '@wordpress/i18n';
+import { isEqual } from 'lodash';
+import PreviewErrorBoundary from '../../components/preview-error-boundary';
 /**
  * Internal dependencies.
  */
 import RenderBlockContent from './render-block-content';
-import PreviewErrorBoundary from '../../components/preview-error-boundary';
 
 /**
  * Block Editor custom PHP preview.

@@ -3,25 +3,24 @@
  */
 import './editor.scss';
 
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
+import { __, sprintf } from '@wordpress/i18n';
 /**
  * External dependencies.
  */
 import HTMLReactParser, { domToReact } from 'html-react-parser';
 import json5 from 'json5';
-
 /**
  * WordPress dependencies.
  */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { isEqual } from 'lodash';
-import { __, sprintf } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
-import {
-	InnerBlocks,
-	useInnerBlocksProps,
-	useBlockProps,
-} from '@wordpress/block-editor';
 
 const CONVERT_ATTRIBUTES = {
 	classname: 'className',
@@ -88,7 +87,7 @@ function prepareAttributes(attrs) {
 			if (firstChar === '[' || firstChar === '{') {
 				try {
 					newAttrs[name] = json5.parse(newAttrs[name]);
-				} catch (e) {
+				} catch (_e) {
 					delete newAttrs[name];
 				}
 			} else {

@@ -1,14 +1,15 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
+
 import {
 	PanelBody,
+	RadioControl,
 	TextControl,
 	ToggleControl,
-	RadioControl,
 } from '@wordpress/components';
+import { addFilter } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.

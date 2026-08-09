@@ -1,10 +1,11 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
-import { BaseControl } from '@wordpress/components';
+
 import apiFetch from '@wordpress/api-fetch';
+import { BaseControl } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.

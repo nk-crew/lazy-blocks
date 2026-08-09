@@ -1,8 +1,9 @@
 /**
  * WordPress dependencies.
  */
+
+import { BaseControl, PanelBody, SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, BaseControl, SelectControl } from '@wordpress/components';
 
 export default function GroupRow(props) {
 	const { updateData, data } = props;

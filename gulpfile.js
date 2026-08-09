@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('node:path');
 
 const gulp = require('gulp');
 const zip = require('gulp-zip');

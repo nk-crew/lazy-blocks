@@ -1,8 +1,9 @@
 /**
  * WordPress dependencies.
  */
+
+import { PanelBody, TextareaControl, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, TextControl, TextareaControl } from '@wordpress/components';
 
 export default function DefaultRow(props) {
 	const { updateData, data } = props;
