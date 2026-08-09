@@ -5,11 +5,20 @@
  * settings, credentials, and constants.
  */
 
+import { getPorts } from '@nk-crew/plugin-toolkit/env-ports';
+
 /**
  * Base URL for the WordPress test site.
- * Can be overridden via WP_BASE_URL environment variable.
+ *
+ * The port is never hardcoded: every checkout derives its own pair, so a
+ * literal one sends the specs at whichever branch happens to own 8889.
+ * `WP_BASE_URL` is exported by the Playwright config, and
+ * `PLAYWRIGHT_TEST_BASE_URL` by Playwright itself once the web server is up.
  */
-export const WP_BASE_URL = process.env.WP_BASE_URL || 'http://localhost:8889';
+export const WP_BASE_URL =
+	process.env.WP_BASE_URL ||
+	process.env.PLAYWRIGHT_TEST_BASE_URL ||
+	`http://localhost:${getPorts().testsPort}`;
 
 /**
  * Default admin user configuration object.
