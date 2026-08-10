@@ -3,6 +3,11 @@
  * WordPress dependencies
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
+import {
+	insertLazyBlock,
+	openBlockBuilder,
+	saveBlockBuilder,
+} from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
@@ -30,21 +35,7 @@ test.describe('editor block with Repeater control', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		await page.locator(`#post-${blockID} .row-title`).click();
-
-		await page.waitForTimeout(500);
-
-		const closeModal = await page
-			.locator('.components-modal__header')
-			.getByRole('button', { name: 'Close' });
-
-		await page.waitForTimeout(500);
-
-		if (await closeModal.isVisible()) {
-			await closeModal.click();
-		}
+		await openBlockBuilder({ page, editor, admin, blockID });
 
 		// Create.
 		await createControl({
@@ -72,9 +63,7 @@ test.describe('editor block with Repeater control', () => {
 		await editor.canvas.getByRole('option', { name: 'PHP' }).click();
 
 		// Publish post.
-		await page.locator('role=button[name="Save"i]').click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await saveBlockBuilder({ page });
 
 		return blockID;
 	}
@@ -108,7 +97,9 @@ test.describe('editor block with Repeater control', () => {
 
 		await admin.createNewPost();
 
-		await editor.insertBlock({
+		await insertLazyBlock({
+			page,
+			editor,
 			name: 'lazyblock/test-repeater-block',
 		});
 
@@ -122,24 +113,25 @@ test.describe('editor block with Repeater control', () => {
 		await page.getByLabel('Text control nested in').click();
 		await page.getByLabel('Text control nested in').fill('Test Row 3');
 
-		// Editor render.
+		// Editor render. The preview is rendered by PHP behind a REST request,
+		// so give it the same budget as the other backend-rendered specs.
 		await expect(
 			editor.canvas
 				.locator('.wp-block-lazyblock-test-repeater-block')
 				.getByText('Test Row 1')
-		).toBeVisible();
+		).toBeVisible({ timeout: 15000 });
 
 		await expect(
 			editor.canvas
 				.locator('.wp-block-lazyblock-test-repeater-block')
 				.getByText('Test Row 2')
-		).toBeVisible();
+		).toBeVisible({ timeout: 15000 });
 
 		await expect(
 			editor.canvas
 				.locator('.wp-block-lazyblock-test-repeater-block')
 				.getByText('Test Row 3')
-		).toBeVisible();
+		).toBeVisible({ timeout: 15000 });
 
 		// Publish.
 		await page

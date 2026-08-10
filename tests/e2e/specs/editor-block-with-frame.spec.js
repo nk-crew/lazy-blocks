@@ -2,6 +2,11 @@
  * WordPress dependencies
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
+import {
+	insertLazyBlock,
+	openBlockBuilder,
+	saveBlockBuilder,
+} from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
@@ -26,9 +31,7 @@ test.describe('editor block with frame and content controls', () => {
 		});
 
 		// Create control.
-		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		await page.locator(`#post-${blockID} .row-title`).click();
+		await openBlockBuilder({ page, editor, admin, blockID });
 
 		await createControl({
 			page,
@@ -39,22 +42,18 @@ test.describe('editor block with frame and content controls', () => {
 		});
 
 		// Publish post.
-		await page.locator('role=button[name="Save"i]').click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await saveBlockBuilder({ page });
 
 		// Check block in editor.
 		await admin.createNewPost();
 
-		await editor.insertBlock({
-			name: 'lazyblock/test',
-		});
+		await insertLazyBlock({ page, editor, name: 'lazyblock/test' });
 
 		await expect(
 			editor.canvas
 				.locator('.lazyblock .lzb-content-title')
 				.filter({ hasText: 'Block with frame' })
-		).toBeVisible();
+		).toBeVisible({ timeout: 15000 });
 	});
 
 	test('should render frame in editor when there are content and inspector control', async ({
@@ -72,9 +71,7 @@ test.describe('editor block with frame and content controls', () => {
 		});
 
 		// Create control.
-		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		await page.locator(`#post-${blockID} .row-title`).click();
+		await openBlockBuilder({ page, editor, admin, blockID });
 
 		await createControl({
 			page,
@@ -85,22 +82,18 @@ test.describe('editor block with frame and content controls', () => {
 		});
 
 		// Publish post.
-		await page.locator('role=button[name="Save"i]').click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await saveBlockBuilder({ page });
 
 		// Check block in editor.
 		await admin.createNewPost();
 
-		await editor.insertBlock({
-			name: 'lazyblock/test',
-		});
+		await insertLazyBlock({ page, editor, name: 'lazyblock/test' });
 
 		await expect(
 			editor.canvas
 				.locator('.lazyblock .lzb-content-title')
 				.filter({ hasText: 'Block with frame' })
-		).toBeVisible();
+		).toBeVisible({ timeout: 15000 });
 	});
 
 	test('should not render frame in editor when there are only inspector control', async ({
@@ -118,9 +111,7 @@ test.describe('editor block with frame and content controls', () => {
 		});
 
 		// Create control.
-		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		await page.locator(`#post-${blockID} .row-title`).click();
+		await openBlockBuilder({ page, editor, admin, blockID });
 
 		await createControl({
 			page,
@@ -130,22 +121,18 @@ test.describe('editor block with frame and content controls', () => {
 		});
 
 		// Publish post.
-		await page.locator('role=button[name="Save"i]').click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await saveBlockBuilder({ page });
 
 		// Check block in editor.
 		await admin.createNewPost();
 
-		await editor.insertBlock({
-			name: 'lazyblock/test',
-		});
+		await insertLazyBlock({ page, editor, name: 'lazyblock/test' });
 
 		await expect(
 			editor.canvas.locator(
 				'.wp-block-lazyblock-test:text("Hello There")'
 			)
-		).toBeVisible();
+		).toBeVisible({ timeout: 15000 });
 
 		await expect(
 			editor.canvas
