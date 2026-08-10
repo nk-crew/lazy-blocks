@@ -30,6 +30,9 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
 			'preview_columns' => '',
 		);
 
+		// Filters.
+		add_filter( 'lzb/prepare_block_attribute', array( $this, 'filter_lzb_prepare_block_attribute' ), 10, 2 );
+
 		parent::__construct();
 	}
 
@@ -47,6 +50,38 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
 	 */
 	public function get_script_depends() {
 		return array( 'lazyblocks-control-gallery' );
+	}
+
+	/**
+	 * Filter block attribute.
+	 *
+	 * @param array $attribute_data - attribute data.
+	 * @param mixed $control - control data.
+	 *
+	 * @return array filtered attribute data.
+	 */
+	public function filter_lzb_prepare_block_attribute( $attribute_data, $control ) {
+		if (
+			! $control ||
+			! isset( $control['type'] ) ||
+			$this->name !== $control['type']
+		) {
+			return $attribute_data;
+		}
+
+		// The editor serializes the value with `encodeURI( JSON.stringify( value ) )`, but the
+		// value may also be authored in the block markup as a raw JSON array of images. Both forms
+		// are handled by `filter_control_value()`, so both have to pass the schema validation in
+		// `WP_Block_Type::prepare_attributes_for_render()` — otherwise the array is dropped and
+		// replaced with the default, and the block renders empty on the front end.
+		//
+		// Skipped for meta controls: their value comes from post meta, not from the block
+		// markup, and `register_meta()` accepts a single scalar type, not a union.
+		if ( ! isset( $attribute_data['source'] ) || 'meta' !== $attribute_data['source'] ) {
+			$attribute_data['type'] = array( 'string', 'array' );
+		}
+
+		return $attribute_data;
 	}
 
 	/**
