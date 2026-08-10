@@ -14,6 +14,9 @@ import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 
+// The REST API limits the `per_page` argument to 100 items.
+const MAX_IMAGES_PER_REQUEST = 100;
+
 function GalleryControl(props) {
 	const {
 		label,
@@ -31,10 +34,14 @@ function GalleryControl(props) {
 		const preview = {};
 
 		if (value && value.length) {
-			const ids = [...new Set(value.map((img) => img.id))];
+			// Images may be stored without an ID (added by URL),
+			// such images can't be requested from the media library.
+			const ids = [
+				...new Set(value.map((img) => img.id).filter(Boolean)),
+			];
 
-			for (let i = 0; i < ids.length; i += 100) {
-				const chunk = ids.slice(i, i + 100);
+			for (let i = 0; i < ids.length; i += MAX_IMAGES_PER_REQUEST) {
+				const chunk = ids.slice(i, i + MAX_IMAGES_PER_REQUEST);
 
 				const mediaItems = getEntityRecords('postType', 'attachment', {
 					include: chunk,
