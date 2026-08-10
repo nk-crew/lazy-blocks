@@ -26,7 +26,8 @@ class LazyBlocks_Control_Gallery extends LazyBlocks_Control {
 			'default_settings' => false,
 		);
 		$this->attributes   = array(
-			'preview_size' => 'medium',
+			'preview_rows'    => '',
+			'preview_columns' => '',
 		);
 
 		parent::__construct();

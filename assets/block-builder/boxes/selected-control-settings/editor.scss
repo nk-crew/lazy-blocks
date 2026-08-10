@@ -32,6 +32,29 @@
 	}
 }
 
+// grid setting, e.g. the gallery preview grid.
+.lzb-block-builder-controls-item-settings-grid {
+	display: flex;
+	align-items: flex-end;
+	gap: 8px;
+
+	// Only the last control drops its bottom margin, which would misalign the
+	// inputs.
+	> .components-base-control {
+		flex: 1;
+		min-width: 0;
+		margin-bottom: 0;
+	}
+
+	// "×" between the two inputs.
+	> span {
+		display: flex;
+		align-items: center;
+		height: 40px;
+		color: $color_dark_lighten;
+	}
+}
+
 // type settings
 .lzb-block-builder-type__dropdown {
 	display: block;

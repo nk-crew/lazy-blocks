@@ -5,7 +5,8 @@
 import { MediaPlaceholder, MediaUpload } from '@wordpress/block-editor';
 import { Button, DropZone, Tooltip, withNotices } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
+import { useLayoutEffect, useState } from '@wordpress/element';
+import { __, _n, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
@@ -15,30 +16,163 @@ import useBlockControlProps from '../../assets/hooks/use-block-control-props';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 
-// The REST API limits the `per_page` argument to 100 items.
+// Only the visible images are requested, so this is reached with large preview
+// grids only. The REST API limits the `per_page` argument to 100 items.
 const MAX_IMAGES_PER_REQUEST = 100;
+
+// The control is just a preview, the gallery itself is edited in the media
+// modal, so we render a limited grid and count the rest in the last item.
+export const DEFAULT_PREVIEW_ROWS = 4;
+export const MAX_PREVIEW_ROWS = 20;
+export const MAX_PREVIEW_COLUMNS = 20;
+
+// Used when the columns count is calculated from the control width.
+const MIN_COLUMN_WIDTH = 62;
+const MIN_AUTO_COLUMNS = 2;
+const MAX_AUTO_COLUMNS = 8;
+
+const ITEM_GAP = 10;
+
+// Preview items are tiny, so there is no need to load anything sharper than
+// a retina item.
+const PREVIEW_PIXEL_RATIO = 2;
+
+/**
+ * Parse a setting which limits the preview grid.
+ *
+ * @param {string|number} value - raw setting value.
+ * @param {number}        max   - highest allowed value.
+ *
+ * @return {number} - sanitized value, 0 when the setting is not set.
+ */
+function parseLimit(value, max) {
+	const parsed = parseInt(value, 10);
+
+	if (Number.isNaN(parsed) || parsed < 1) {
+		return 0;
+	}
+
+	return Math.min(parsed, max);
+}
+
+/**
+ * Calculate the number of preview columns which fit the given container width.
+ *
+ * @param {number} width - container width in pixels.
+ *
+ * @return {number} - columns count, 0 when the width is not measured yet.
+ */
+function getAutoColumnsCount(width) {
+	if (!width) {
+		return 0;
+	}
+
+	return Math.min(
+		MAX_AUTO_COLUMNS,
+		Math.max(MIN_AUTO_COLUMNS, Math.floor(width / MIN_COLUMN_WIDTH))
+	);
+}
+
+/**
+ * Find the smallest registered image size which still looks sharp in a preview
+ * item, so the control never downloads a full size image.
+ *
+ * @param {Object} mediaImg - attachment record.
+ * @param {number} itemWidth - rendered preview item width in pixels.
+ *
+ * @return {string} - image URL.
+ */
+function getPreviewImageUrl(mediaImg, itemWidth) {
+	const sizes =
+		mediaImg.media_details && mediaImg.media_details.sizes
+			? Object.values(mediaImg.media_details.sizes).filter(
+					(size) => size && size.source_url && size.width
+				)
+			: [];
+
+	if (!sizes.length) {
+		return mediaImg.source_url;
+	}
+
+	const targetWidth = itemWidth * PREVIEW_PIXEL_RATIO;
+	const covering = sizes.filter((size) => size.width >= targetWidth);
+
+	const picked = covering.length
+		? covering.reduce((a, b) => (a.width < b.width ? a : b))
+		: sizes.reduce((a, b) => (a.width > b.width ? a : b));
+
+	return picked.source_url;
+}
 
 function GalleryControl(props) {
 	const {
 		label,
 		value,
-		previewSize,
+		previewRows,
+		previewColumns,
 		noticeOperations,
 		noticeUI,
 		controlProps,
 		onChange = () => {},
 	} = props;
 
+	const [galleryNode, setGalleryNode] = useState(null);
+	const [containerWidth, setContainerWidth] = useState(0);
+
+	useLayoutEffect(() => {
+		if (!galleryNode) {
+			return;
+		}
+
+		const measure = () => {
+			setContainerWidth(galleryNode.offsetWidth);
+		};
+
+		measure();
+
+		const observer = new ResizeObserver(measure);
+		observer.observe(galleryNode);
+
+		return () => observer.disconnect();
+	}, [galleryNode]);
+
+	const rows =
+		parseLimit(previewRows, MAX_PREVIEW_ROWS) || DEFAULT_PREVIEW_ROWS;
+	const columns =
+		parseLimit(previewColumns, MAX_PREVIEW_COLUMNS) ||
+		getAutoColumnsCount(containerWidth);
+
+	const images = value && value.length ? value : [];
+
+	// Nothing is rendered until the control is measured, which happens in a
+	// layout effect, before the browser paints. Bailing out early also keeps
+	// the media library request below limited to the visible images.
+	const previewLimit = containerWidth ? columns * rows : 0;
+	const hasHiddenImages = previewLimit > 0 && images.length > previewLimit;
+
+	// The last item is replaced with the "+N" counter.
+	const previewImages = images.slice(
+		0,
+		hasHiddenImages ? previewLimit - 1 : previewLimit
+	);
+	const hiddenImagesCount = hasHiddenImages
+		? images.length - previewImages.length
+		: 0;
+
+	// Items are laid out by `assets/editor/index.scss` using the columns count
+	// and a fixed gap.
+	const itemWidth = columns ? containerWidth / columns - ITEM_GAP : 0;
+
 	const { mediaUpload, imagesPreviewData } = useSelect((select) => {
 		const { getEntityRecords } = select('core');
 
 		const preview = {};
 
-		if (value && value.length) {
+		if (previewImages.length) {
 			// Images may be stored without an ID (added by URL),
 			// such images can't be requested from the media library.
 			const ids = [
-				...new Set(value.map((img) => img.id).filter(Boolean)),
+				...new Set(previewImages.map((img) => img.id).filter(Boolean)),
 			];
 
 			for (let i = 0; i < ids.length; i += MAX_IMAGES_PER_REQUEST) {
@@ -52,19 +186,8 @@ function GalleryControl(props) {
 				(mediaItems || []).forEach((mediaImg) => {
 					preview[mediaImg.id] = {
 						alt: mediaImg.alt_text,
-						url: mediaImg.source_url,
+						url: getPreviewImageUrl(mediaImg, itemWidth),
 					};
-
-					if (
-						mediaImg.media_details &&
-						mediaImg.media_details.sizes &&
-						mediaImg.media_details.sizes[previewSize]
-					) {
-						preview[mediaImg.id].url =
-							mediaImg.media_details.sizes[
-								previewSize
-							].source_url;
-					}
 				});
 			}
 		}
@@ -112,8 +235,10 @@ function GalleryControl(props) {
 					render={({ open }) => (
 						<div
 							className="lzb-gutenberg-gallery"
+							style={{ '--lzb-gallery-columns': columns || null }}
 							onClick={open}
 							role="presentation"
+							ref={setGalleryNode}
 						>
 							<DropZone
 								onFilesDrop={(files) => {
@@ -196,7 +321,7 @@ function GalleryControl(props) {
 									</Button>
 								</Tooltip>
 							</div>
-							{value.map((img) => (
+							{previewImages.map((img) => (
 								<div
 									className="lzb-gutenberg-gallery-item"
 									key={img.id || img.url}
@@ -212,6 +337,23 @@ function GalleryControl(props) {
 									)}
 								</div>
 							))}
+							{hiddenImagesCount > 0 ? (
+								<div
+									className="lzb-gutenberg-gallery-item lzb-gutenberg-gallery-item-more"
+									title={sprintf(
+										/* translators: %d: number of images which are not displayed in the preview. */
+										_n(
+											'%d more image',
+											'%d more images',
+											hiddenImagesCount,
+											'lazy-blocks'
+										),
+										hiddenImagesCount
+									)}
+								>
+									<span>+{hiddenImagesCount}</span>
+								</div>
+							) : null}
 						</div>
 					)}
 				/>
