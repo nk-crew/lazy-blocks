@@ -75,22 +75,14 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
 			return $attribute_data;
 		}
 
-		// Allow both the URL-encoded JSON string (produced by the editor) and a raw
-		// array to pass block attribute schema validation.
+		// The editor serializes the value with `encodeURI( JSON.stringify( value ) )`, but the
+		// value may also be authored in the block markup as a raw JSON array. Both forms are
+		// handled by `filter_control_value()`, so both have to pass the schema validation in
+		// `WP_Block_Type::prepare_attributes_for_render()` — otherwise the array is dropped and
+		// replaced with the empty default, and the block renders empty on the front end.
 		//
-		// Repeater values are registered as `string` because the editor serializes them
-		// with `encodeURI( JSON.stringify( value ) )`. However, when a Repeater value is
-		// authored directly in the block markup as a JSON array
-		// (e.g. `{"my_repeater":[{"text":"a"}]}`), `WP_Block_Type::prepare_attributes_for_render()`
-		// runs it through `rest_validate_value_from_schema()`, the array fails the `string`
-		// check, and WordPress drops the attribute and falls back to the empty default. The
-		// block then renders empty on the front end even though `filter_control_value()`
-		// already handles the array form. Accepting both types keeps the encoded-string form
-		// and the default valid while letting the raw-array form reach the render callback.
-		//
-		// This is skipped for meta-backed controls: their value is resolved from post meta
-		// (not from the block markup) so the schema-validation issue does not apply, and
-		// `register_meta()` only accepts a single scalar `type`, not a union.
+		// Skipped for meta controls: their value comes from post meta, not from the block
+		// markup, and `register_meta()` accepts a single scalar type, not a union.
 		if ( ! isset( $attribute_data['source'] ) || 'meta' !== $attribute_data['source'] ) {
 			$attribute_data['type'] = array( 'string', 'array' );
 		}

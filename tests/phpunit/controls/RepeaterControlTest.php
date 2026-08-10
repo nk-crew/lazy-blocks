@@ -95,10 +95,8 @@ class RepeaterControlTest extends WP_UnitTestCase {
 		);
 	}
 
-	// A Repeater value authored directly in the block markup as a raw JSON array must
-	// survive `WP_Block_Type::prepare_attributes_for_render()` and reach the render callback.
-	// Before the schema accepted the `array` type, WordPress dropped the attribute and the
-	// block rendered empty.
+	// A Repeater value authored in the block markup as a raw JSON array must survive
+	// `WP_Block_Type::prepare_attributes_for_render()` and reach the render callback.
 	public function test_raw_array_value() {
 		$this->register_repeater_block();
 
@@ -113,9 +111,7 @@ class RepeaterControlTest extends WP_UnitTestCase {
 		);
 	}
 
-	// A meta-backed Repeater must keep a single scalar type: `register_meta()` does not
-	// accept a `string`/`array` union, and its value is resolved from post meta rather than
-	// from the block markup, so the schema-validation widening must not apply here.
+	// A meta Repeater must keep a single scalar type, `register_meta()` does not accept a union.
 	public function test_meta_backed_repeater_keeps_scalar_type() {
 		$this->add_test_block( array(
 			'controls' => array(
