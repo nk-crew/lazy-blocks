@@ -13,7 +13,7 @@ import {
 	TIMEOUTS,
 	WP_ADMIN_USER,
 } from './config.js';
-import { createURL, isCurrentURL, pressKeyWithModifier } from './helpers.js';
+import { createURL, isCurrentURL } from './helpers.js';
 
 /**
  * Creates a test user with the specified role.
@@ -92,28 +92,27 @@ export async function loginUser(
 		throw new Error('Page context is invalid, cannot perform login');
 	}
 
-	// Navigate to login page if not already there
+	// Navigate to login page if not already there. `goto` resolves on the
+	// navigation it started, so there is nothing extra to wait for.
 	if (!(await isCurrentURL(page, 'wp-login.php'))) {
-		const waitForLoginPageNavigation = page.waitForNavigation();
 		await page.goto(createURL('wp-login.php'));
-		await waitForLoginPageNavigation;
 	}
 
-	// Focus and clear username field, then type
-	await page.focus(SELECTORS.LOGIN_USERNAME);
-	await pressKeyWithModifier(page, 'primary', 'a');
-	await page.type(SELECTORS.LOGIN_USERNAME, username);
+	// `fill` clears the field before typing, which is what the select-all
+	// dance around `type` was for.
+	await page.fill(SELECTORS.LOGIN_USERNAME, username);
+	await page.fill(SELECTORS.LOGIN_PASSWORD, password);
 
-	// Focus and clear password field, then type
-	await page.focus(SELECTORS.LOGIN_PASSWORD);
-	await pressKeyWithModifier(page, 'primary', 'a');
-	await page.type(SELECTORS.LOGIN_PASSWORD, password);
+	await page.click(SELECTORS.LOGIN_SUBMIT);
 
-	// Submit login and wait for navigation (Gutenberg pattern)
-	await Promise.all([
-		page.click(SELECTORS.LOGIN_SUBMIT),
-		page.waitForNavigation({ waitUntil: 'networkidle0' }),
-	]);
+	// Not `waitForNavigation`: it has to be listening before the navigation it
+	// waits for begins, and the click above may well have finished first — in
+	// which case it waits for the *next* navigation, which never comes.
+	// `waitForURL` looks at where the page already is, so it cannot miss.
+	// A failed login stays on wp-login.php and fails here, as it should.
+	await page.waitForURL((url) => !url.pathname.endsWith('/wp-login.php'), {
+		timeout: TIMEOUTS.LONG,
+	});
 }
 
 /**
@@ -136,7 +135,7 @@ export async function logoutUser(page) {
 		await Promise.all([
 			page.hover(SELECTORS.ADMIN_BAR_USER_MENU),
 			page.waitForSelector(SELECTORS.ADMIN_BAR_LOGOUT, {
-				visible: true,
+				state: 'visible',
 				timeout: TIMEOUTS.SHORT,
 			}),
 		]);
@@ -157,7 +156,7 @@ export async function logoutUser(page) {
 
 	// Wait for login page to confirm logout
 	await page.waitForSelector(SELECTORS.LOGIN_FORM, {
-		visible: true,
+		state: 'visible',
 		timeout: TIMEOUTS.MEDIUM,
 	});
 }
@@ -194,7 +193,11 @@ export async function deleteTestUser(requestUtils, userId, reassign = true) {
  */
 export async function getCurrentUser(page) {
 	try {
-		const cookies = await page.cookies();
+		// `page.cookies()` is Puppeteer's; in Playwright cookies belong to the
+		// context. The old call threw, the catch below swallowed it, and this
+		// function always answered "nobody is logged in" — so both callers
+		// below logged in again every single time.
+		const cookies = await page.context().cookies();
 		const loginCookie = cookies.find((cookie) =>
 			cookie.name?.startsWith(COOKIE_PATTERNS.LOGGED_IN)
 		);
