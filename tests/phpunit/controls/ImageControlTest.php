@@ -85,6 +85,19 @@ class ImageControlTest extends WP_UnitTestCase {
 		);
 	}
 
+	// Removing the image in the editor stores an empty string (`onChange( '' )`), which must
+	// still pass the widened schema instead of being dropped.
+	public function test_empty_string_value() {
+		$this->register_image_block();
+
+		$this->assertEquals(
+			'<div class="wp-block-lazyblock-test">' .
+				'is array: 0' .
+			'</div>',
+			do_blocks( '<!-- wp:lazyblock/test {"my_image":""} /-->' )
+		);
+	}
+
 	// An Image value authored in the block markup as a raw JSON object must survive
 	// `WP_Block_Type::prepare_attributes_for_render()` and reach the render callback.
 	public function test_raw_object_value() {

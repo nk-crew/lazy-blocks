@@ -88,6 +88,19 @@ class GalleryControlTest extends WP_UnitTestCase {
 		);
 	}
 
+	// Removing every image in the editor stores an encoded empty array (`onChange( [] )`), which
+	// must still pass the widened schema instead of being dropped.
+	public function test_empty_array_value() {
+		$this->register_gallery_block();
+
+		$this->assertEquals(
+			'<div class="wp-block-lazyblock-test">' .
+				'is array: 1' .
+			'</div>',
+			do_blocks( '<!-- wp:lazyblock/test {"my_gallery":"%5B%5D"} /-->' )
+		);
+	}
+
 	// A Gallery value authored in the block markup as a raw JSON array must survive
 	// `WP_Block_Type::prepare_attributes_for_render()` and reach the render callback.
 	public function test_raw_array_value() {
