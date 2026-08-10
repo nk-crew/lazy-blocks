@@ -5,6 +5,7 @@ export async function createBlock({
 	description,
 	code,
 	codeSingleOutput,
+	controls,
 }) {
 	const block = await requestUtils.rest({
 		path: '/wp/v2/lazyblocks',
@@ -30,6 +31,7 @@ export async function createBlock({
 				description: description || '',
 				code_single_output: codeSingleOutput ? 'true' : 'false',
 				code_frontend_html: code || '',
+				...(controls ? { controls } : {}),
 			},
 		},
 	});

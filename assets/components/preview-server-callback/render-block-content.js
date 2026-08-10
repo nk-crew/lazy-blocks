@@ -10,6 +10,7 @@ import {
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 /**
  * External dependencies.
@@ -172,6 +173,23 @@ export default function RenderBlockContent({
 
 		const options = {
 			replace(domNode) {
+				// Allow 3rd-party code to replace custom components in the block markup.
+				const customNode = applyFilters(
+					'lzb.editor.PreviewServerCallback.replaceNode',
+					null,
+					domNode,
+					{
+						props,
+						parserOptions: options,
+						domToReact,
+						prepareAttributes,
+					}
+				);
+
+				if (customNode) {
+					return customNode;
+				}
+
 				// Replace the `innerblocks` component to proper output.
 				if (
 					domNode.name === 'InnerBlocks' ||
