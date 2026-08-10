@@ -13,6 +13,7 @@ import { useThrottle } from '@wordpress/compose';
 import { useEntityProp } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useRef, useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
 /**
  * WordPress dependencies.
  */
@@ -314,6 +315,13 @@ export default function BlockEdit(props) {
 		attsForRender[attr] = attributes[attr];
 	});
 
+	// Allow 3rd-party code to add attributes, which are not registered as controls.
+	const filteredAttsForRender = applyFilters(
+		'lzb.editor.BlockEdit.attributesForRender',
+		attsForRender,
+		{ attributes, meta, lazyBlockData, props }
+	);
+
 	// show code preview
 	let showPreview = true;
 
@@ -419,7 +427,7 @@ export default function BlockEdit(props) {
 				<PreviewServerCallback
 					block={lazyBlockData.slug}
 					clientId={clientId}
-					attributes={attsForRender}
+					attributes={filteredAttsForRender}
 					context={context}
 					withBlockProps
 				/>
@@ -471,7 +479,7 @@ export default function BlockEdit(props) {
 						<PreviewServerCallback
 							block={lazyBlockData.slug}
 							clientId={clientId}
-							attributes={attsForRender}
+							attributes={filteredAttsForRender}
 							context={context}
 						/>
 					</div>
