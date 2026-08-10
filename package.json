@@ -67,7 +67,7 @@
 		"@babel/preset-env": "^7.24.0",
 		"@babel/register": "^7.23.7",
 		"@biomejs/biome": "2.5.7",
-		"@nk-crew/plugin-toolkit": "^0.5.0",
+		"@nk-crew/plugin-toolkit": "^0.5.1",
 		"@playwright/test": "^1.45.3",
 		"@wordpress/e2e-test-utils-playwright": "^1.4.0",
 		"@wordpress/env": "^10.4.0",
