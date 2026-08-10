@@ -483,23 +483,38 @@
 		}
 	}
 
+	// The columns count comes from the `gallery` control, which either reads it
+	// from the control settings or measures the available width.
 	.lzb-gutenberg-gallery-item {
-		width: calc(12.5% - 10px);
+		width: calc(100% / var(--lzb-gallery-columns, 4) - 10px);
 		margin: 5px;
+		border-radius: 6px;
 
-		// width
-		@media (max-width: 1000px) {
-			width: calc(14.22% - 10px);
+		img {
+			border-radius: 6px;
 		}
-		@media (max-width: 900px) {
-			width: calc(16.66% - 10px);
-		}
-		@media (max-width: 800px) {
-			width: calc(25% - 10px);
+	}
+
+	// "+N" counter which replaces the images hidden from the preview.
+	.lzb-gutenberg-gallery-item-more {
+		background-color: #ececec;
+
+		> span {
+			position: absolute;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 2px;
+			overflow: hidden;
+			color: #959595;
+			font-size: 13px;
+			font-weight: 500;
+			line-height: 1;
 		}
 
-		.lzb-inspector-controls & {
-			width: calc(25% - 10px);
+		.lzb-inspector-controls & > span {
+			font-size: 11px;
 		}
 	}
 
