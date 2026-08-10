@@ -3,6 +3,11 @@
  * WordPress dependencies
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
+import {
+	insertLazyBlock,
+	openBlockBuilder,
+	saveBlockBuilder,
+} from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
@@ -30,21 +35,7 @@ test.describe('editor block with Base control', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		await page.locator(`#post-${blockID} .row-title`).click();
-
-		await page.waitForTimeout(500);
-
-		const closeModal = await page
-			.locator('.components-modal__header')
-			.getByRole('button', { name: 'Close' });
-
-		await page.waitForTimeout(500);
-
-		if (await closeModal.isVisible()) {
-			await closeModal.click();
-		}
+		await openBlockBuilder({ page, editor, admin, blockID });
 
 		// Generate Text control
 		await createControl({
@@ -83,9 +74,7 @@ test.describe('editor block with Base control', () => {
 		await editor.canvas.getByRole('option', { name: 'PHP' }).click();
 
 		// Publish post.
-		await page.locator('role=button[name="Save"i]').click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await saveBlockBuilder({ page });
 
 		return blockID;
 	}
@@ -119,7 +108,9 @@ test.describe('editor block with Base control', () => {
 
 		await admin.createNewPost();
 
-		await editor.insertBlock({
+		await insertLazyBlock({
+			page,
+			editor,
 			name: 'lazyblock/test-base-block',
 		});
 

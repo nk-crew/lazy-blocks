@@ -3,6 +3,11 @@
  * WordPress dependencies
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
+import {
+	insertLazyBlock,
+	openBlockBuilder,
+	saveBlockBuilder,
+} from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
@@ -35,24 +40,7 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 			codeSingleOutput: true,
 		});
 
-		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		await page
-			.getByRole('link', { name: 'Test Checkbox Meta Block' })
-			.first()
-			.click();
-
-		await page.waitForTimeout(500);
-
-		const closeModal = await page
-			.locator('.components-modal__header')
-			.getByRole('button', { name: 'Close' });
-
-		await page.waitForTimeout(500);
-
-		if (await closeModal.isVisible()) {
-			await closeModal.click();
-		}
+		await openBlockBuilder({ page, editor, admin, blockID });
 
 		// Create Checkbox control with "Allow Multiple" and choices.
 		// Note: We cannot pass options to createControl here because the
@@ -91,7 +79,6 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 				}),
 			});
 		await saveInMetaPanel.scrollIntoViewIfNeeded();
-		await page.waitForTimeout(300);
 		await saveInMetaPanel.locator('input[type="checkbox"]').first().check();
 
 		// Set output method to PHP.
@@ -101,9 +88,7 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 		await editor.canvas.getByRole('option', { name: 'PHP' }).click();
 
 		// Publish / save the block.
-		await page.locator('role=button[name="Save"i]').click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await saveBlockBuilder({ page });
 
 		return blockID;
 	}
@@ -125,7 +110,9 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 		// Create a new post and insert the block.
 		await admin.createNewPost();
 
-		await editor.insertBlock({
+		await insertLazyBlock({
+			page,
+			editor,
 			name: 'lazyblock/test-checkbox-meta-block',
 		});
 
