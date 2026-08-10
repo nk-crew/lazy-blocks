@@ -75,6 +75,18 @@ class LazyBlocks_Control_Repeater extends LazyBlocks_Control {
 			return $attribute_data;
 		}
 
+		// The editor serializes the value with `encodeURI( JSON.stringify( value ) )`, but the
+		// value may also be authored in the block markup as a raw JSON array. Both forms are
+		// handled by `filter_control_value()`, so both have to pass the schema validation in
+		// `WP_Block_Type::prepare_attributes_for_render()` — otherwise the array is dropped and
+		// replaced with the empty default, and the block renders empty on the front end.
+		//
+		// Skipped for meta controls: their value comes from post meta, not from the block
+		// markup, and `register_meta()` accepts a single scalar type, not a union.
+		if ( ! isset( $attribute_data['source'] ) || 'meta' !== $attribute_data['source'] ) {
+			$attribute_data['type'] = array( 'string', 'array' );
+		}
+
 		$attribute_data['default'] = rawurlencode( wp_json_encode( array() ) );
 
 		return $attribute_data;
