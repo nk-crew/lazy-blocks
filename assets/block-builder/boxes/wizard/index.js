@@ -9,7 +9,8 @@ import { useDispatch, useSelect, select as wpSelect } from '@wordpress/data';
 /**
  * WordPress dependencies.
  */
-import { useState } from '@wordpress/element';
+import { useMemo, useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 /**
  * External dependencies.
@@ -27,15 +28,24 @@ import { templates } from './templates';
 const { is_pro: isPro } = window.lazyblocksBlockBuilderData;
 
 export default function Wizard({ onClose }) {
+	// Filtered here and not at the module level, because the scripts adding
+	// their own templates may be loaded after this one.
+	const wizardTemplates = useMemo(
+		() => applyFilters('lzb.constructor.wizard.templates', templates),
+		[]
+	);
+
 	const [step, setStep] = useState(1);
 	const [template, setTemplate] = useState('basic');
-	const [icon, setIcon] = useState(templates.basic.blockIcon);
-	const [title, setTitle] = useState(templates.basic.title);
+	const [icon, setIcon] = useState(wizardTemplates.basic.blockIcon);
+	const [title, setTitle] = useState(wizardTemplates.basic.title);
 	const [slug, setSlug] = useState('basic-block');
 	const [category, setCategory] = useState('text');
 	const [styles, setStyles] = useState([]);
-	const [keywords, setKeywords] = useState(templates.basic.keywords);
-	const [description, setDescription] = useState(templates.basic.description);
+	const [keywords, setKeywords] = useState(wizardTemplates.basic.keywords);
+	const [description, setDescription] = useState(
+		wizardTemplates.basic.description
+	);
 	const { updateBlockData, addControl } = useDispatch(
 		'lazy-blocks/block-data'
 	);
@@ -150,16 +160,16 @@ export default function Wizard({ onClose }) {
 			code_single_output: true,
 		};
 
-		const finalStyles = templates[template].style.replace(
+		const finalStyles = wizardTemplates[template].style.replace(
 			/__BLOCK_CLASSNAME__/g,
 			`.wp-block-lazyblock-${slug}`
 		);
 
 		if (isPro) {
-			newData.code_frontend_html = templates[template].template;
+			newData.code_frontend_html = wizardTemplates[template].template;
 			newData.style_block = finalStyles;
 		} else {
-			newData.code_frontend_html = `${templates[template].template}
+			newData.code_frontend_html = `${wizardTemplates[template].template}
 
 {{!
 	These inline styles created for example only.
@@ -171,7 +181,7 @@ ${finalStyles}
 </style>`;
 		}
 
-		await processControls(templates[template].controls);
+		await processControls(wizardTemplates[template].controls);
 
 		updateBlockData(newData);
 		onClose();
@@ -208,7 +218,7 @@ ${finalStyles}
 
 			{step === 1 && (
 				<div className="lzb-block-builder-wizard-step-templates">
-					{Object.keys(templates).map((k) => (
+					{Object.keys(wizardTemplates).map((k) => (
 						<Button
 							key={k}
 							onClick={(e) => {
@@ -216,13 +226,15 @@ ${finalStyles}
 
 								setTemplate(k);
 
-								setIcon(templates[k].blockIcon);
-								setCategory(templates[k].category);
-								setTitle(`${templates[k].title} Block`);
-								setKeywords(templates[k].keywords);
-								setDescription(templates[k].description);
-								generateSlug(`${templates[k].title} Block`);
-								setStyles(templates[k].styles || []);
+								setIcon(wizardTemplates[k].blockIcon);
+								setCategory(wizardTemplates[k].category);
+								setTitle(`${wizardTemplates[k].title} Block`);
+								setKeywords(wizardTemplates[k].keywords);
+								setDescription(wizardTemplates[k].description);
+								generateSlug(
+									`${wizardTemplates[k].title} Block`
+								);
+								setStyles(wizardTemplates[k].styles || []);
 							}}
 							className={classnames(
 								'lzb-block-builder-wizard-template',
@@ -230,8 +242,8 @@ ${finalStyles}
 									'lzb-block-builder-wizard-template-active'
 							)}
 						>
-							{templates[k].icon}
-							<span>{templates[k].title}</span>
+							{wizardTemplates[k].icon}
+							<span>{wizardTemplates[k].title}</span>
 						</Button>
 					))}
 				</div>
