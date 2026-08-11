@@ -65,6 +65,12 @@ class ExportPermissionTest extends WP_UnitTestCase {
 
 		// Reset current user
 		wp_set_current_user( 0 );
+
+		// From teardown, not from inside the tests: cleanup placed after an
+		// assertion is skipped the moment that assertion fails, and a leaked
+		// `lazyblocks_export_nonce` would make `maybe_export_json()` fire in
+		// whichever unrelated test touches it next.
+		$this->clear_export_request();
 	}
 
 	/**
@@ -109,7 +115,6 @@ class ExportPermissionTest extends WP_UnitTestCase {
 	 * @return string Output produced by the export path; empty when refused.
 	 */
 	private function request_export( $block_id ) {
-		$_GET['post_type']               = 'lazyblocks';
 		$_GET['lazyblocks_export_block'] = (string) $block_id;
 		$_GET['lazyblocks_export_nonce'] = wp_create_nonce( 'lzb-export-blocks-nonce' );
 
@@ -121,18 +126,31 @@ class ExportPermissionTest extends WP_UnitTestCase {
 			'The test must reach the capability check, not stop at the nonce gate'
 		);
 
-		ob_start();
-		lazyblocks()->tools()->maybe_export_json();
+		// Keep an *allowed* export from die()ing mid-suite: with the terminator
+		// suppressed, export_json() returns after echoing, so the admin test
+		// receives JSON and a capability regression fails an assertion instead
+		// of killing the PHPUnit process.
+		add_filter( 'lzb/export_json/die', '__return_false' );
 
-		return ob_get_clean();
+		ob_start();
+
+		try {
+			lazyblocks()->tools()->maybe_export_json();
+		} finally {
+			// The buffer must close on the exception path too, or it swallows
+			// all later output, PHPUnit's own reporting included.
+			$output = ob_get_clean();
+			remove_filter( 'lzb/export_json/die', '__return_false' );
+		}
+
+		return $output;
 	}
 
 	/**
-	 * Clears the request state `request_export()` sets.
+	 * Clears the request state the export tests set.
 	 */
 	private function clear_export_request() {
 		unset(
-			$_GET['post_type'],
 			$_GET['lazyblocks_export_block'],
 			$_GET['lazyblocks_export_nonce']
 		);
@@ -144,15 +162,35 @@ class ExportPermissionTest extends WP_UnitTestCase {
 	public function test_admin_can_export_blocks() {
 		wp_set_current_user( $this->admin_user );
 
-		// Verify admin has the required capability
+		// Precondition, so a role-configuration problem reads as itself rather
+		// than as an export failure.
 		$this->assertTrue(
 			current_user_can( 'edit_lazyblocks' ),
 			'Administrator should have edit_lazyblocks capability'
 		);
 
-		// Test with valid nonce (admins can generate valid nonces)
-		$valid_nonce = wp_create_nonce( 'lzb-export-blocks-nonce' );
-		$this->assertNotEmpty( $valid_nonce, 'Admin should be able to create export nonce' );
+		// The suite's positive control. Every other test asserts the export
+		// produced nothing -- and nothing is also what a broken harness
+		// produces, so without this test a renamed query parameter or an early
+		// return would turn the whole file green while it asserts nothing.
+		$output = $this->request_export( $this->test_block_id );
+
+		$decoded = json_decode( $output, true );
+
+		$this->assertIsArray(
+			$decoded,
+			'An administrator with a valid nonce must receive export JSON'
+		);
+		$this->assertCount(
+			1,
+			$decoded,
+			'The export must contain exactly the requested block'
+		);
+		$this->assertSame(
+			$this->test_block_id,
+			$decoded[0]['id'],
+			'The export must contain the block the request named'
+		);
 	}
 
 	/**
@@ -184,8 +222,6 @@ class ExportPermissionTest extends WP_UnitTestCase {
 			$output,
 			'A contributor holding a valid nonce must receive no export output'
 		);
-
-		$this->clear_export_request();
 	}
 
 	/**
@@ -205,19 +241,15 @@ class ExportPermissionTest extends WP_UnitTestCase {
 	public function test_export_without_a_valid_nonce_is_refused() {
 		wp_set_current_user( $this->contributor_user );
 
-		$_GET['post_type']               = 'lazyblocks';
 		$_GET['lazyblocks_export_block'] = (string) $this->test_block_id;
 		$_GET['lazyblocks_export_nonce'] = 'invalid_nonce_contributor';
 
 		// `wp_die()` is swapped for a thrower by the test case, so this is the
-		// observable form of "Export permission denied".
+		// observable form of "Export permission denied". `tearDown()` clears
+		// the request state.
 		$this->expectException( WPDieException::class );
 
-		try {
-			lazyblocks()->tools()->maybe_export_json();
-		} finally {
-			$this->clear_export_request();
-		}
+		lazyblocks()->tools()->maybe_export_json();
 	}
 
 	/**
@@ -240,35 +272,6 @@ class ExportPermissionTest extends WP_UnitTestCase {
 				$output,
 				"User with role '{$role_name}' must receive no export output"
 			);
-
-			$this->clear_export_request();
 		}
-	}
-
-	/**
-	 * Test that the old vulnerable capability check would have failed.
-	 * This confirms our fix is working by showing what the old code would have done.
-	 */
-	public function test_old_vulnerable_capability_would_have_failed() {
-		wp_set_current_user( $this->contributor_user );
-
-		// The old vulnerability: contributors have 'read_lazyblock' capability
-		$this->assertTrue(
-			current_user_can( 'read_lazyblock' ),
-			'Contributor has read_lazyblock capability (old vulnerable check)'
-		);
-
-		// But they don't have the new required capability
-		$this->assertFalse(
-			current_user_can( 'edit_lazyblocks' ),
-			'Contributor lacks edit_lazyblocks capability (new secure check)'
-		);
-
-		// Demonstrate that using the old check would have been vulnerable
-		$would_be_vulnerable = current_user_can( 'read_lazyblock', $this->test_block_id );
-		$is_now_secure = current_user_can( 'edit_lazyblocks' );
-
-		$this->assertTrue( $would_be_vulnerable, 'Old check would have allowed access' );
-		$this->assertFalse( $is_now_secure, 'New check properly blocks access' );
 	}
 }

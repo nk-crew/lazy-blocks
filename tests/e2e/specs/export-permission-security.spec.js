@@ -170,11 +170,12 @@ test.describe('Export Permission Security', () => {
 			);
 
 			// A fake nonce, and deliberately so: a contributor cannot obtain a
-			// real one. Both places that mint `lzb-export-blocks-nonce` -- the
-			// export row action and the Tools screen -- sit behind
-			// `edit_lazyblocks`, the very capability a contributor lacks, and
-			// WordPress nonces are bound to the user, so one scraped as admin
-			// would not verify here either.
+			// real one. Both places that mint `lzb-export-blocks-nonce` are out
+			// of a contributor's reach -- the export row action renders on the
+			// blocks list table, gated by `edit_lazyblocks`, and the Tools
+			// screen is registered under `manage_options` -- and WordPress
+			// nonces are bound to the user, so one scraped as admin would not
+			// verify here either.
 			//
 			// So this asserts the outer gate: a contributor driving the export
 			// URL by hand is refused. It does NOT reach

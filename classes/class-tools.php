@@ -504,24 +504,41 @@ class LazyBlocks_Tools {
 		// so under PHPUnit it returns null however the test sets `$_GET` -- which
 		// left the capability check below unreachable from a test, and is why
 		// ExportPermissionTest had to re-implement that check rather than call
-		// this method. The nonce is verified by this point, so the request is
-		// already trusted here.
+		// this method.
 		//
-		// `absint` in place of FILTER_SANITIZE_NUMBER_INT: both reduce the value
-		// to its digits, and `export_json()` casts every id with `(int)` anyway.
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		$block_id = isset( $_GET['lazyblocks_export_block'] )
-			? absint( wp_unslash( $_GET['lazyblocks_export_block'] ) )
+		// Malformed input is rejected, not coerced, matching what the old
+		// FILTER_SANITIZE_NUMBER_INT calls did. An array where a scalar is
+		// expected (`?lazyblocks_export_block[]=999`) must not collapse into a
+		// real block id -- `absint()` would turn it into 1 -- and a nested
+		// array element is dropped rather than counted. The plain `(int)` cast
+		// keeps a negative id negative so it matches no post, as before.
+		//
+		// The sanitization is the `is_scalar()` rejection plus the `(int)`
+		// casts; the sniffs cannot see through the foreach, and the nonce for
+		// this request was verified above.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
+		$block_id = isset( $_GET['lazyblocks_export_block'] ) && is_scalar( $_GET['lazyblocks_export_block'] )
+			? (int) wp_unslash( $_GET['lazyblocks_export_block'] )
 			: null;
 
-		$block_ids = isset( $_GET['lazyblocks_export_blocks'] ) && is_array( $_GET['lazyblocks_export_blocks'] )
-			? array_map( 'absint', wp_unslash( $_GET['lazyblocks_export_blocks'] ) )
-			: array();
+		$block_ids = array();
+		if ( isset( $_GET['lazyblocks_export_blocks'] ) && is_array( $_GET['lazyblocks_export_blocks'] ) ) {
+			foreach ( wp_unslash( $_GET['lazyblocks_export_blocks'] ) as $id ) {
+				if ( is_scalar( $id ) ) {
+					$block_ids[] = (int) $id;
+				}
+			}
+		}
 
-		$template_ids = isset( $_GET['lazyblocks_export_templates'] ) && is_array( $_GET['lazyblocks_export_templates'] )
-			? array_map( 'absint', wp_unslash( $_GET['lazyblocks_export_templates'] ) )
-			: array();
-		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+		$template_ids = array();
+		if ( isset( $_GET['lazyblocks_export_templates'] ) && is_array( $_GET['lazyblocks_export_templates'] ) ) {
+			foreach ( wp_unslash( $_GET['lazyblocks_export_templates'] ) as $id ) {
+				if ( is_scalar( $id ) ) {
+					$template_ids[] = (int) $id;
+				}
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
 
 		// Security: Only administrators with edit_lazyblocks capability can export.
 		// This prevents contributors from bypassing UI restrictions via direct URL access.
@@ -571,7 +588,12 @@ class LazyBlocks_Tools {
 		header( 'Content-type: application/json; charset=utf-8' );
 		echo wp_json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 
-		die();
+		// Filterable so PHPUnit can survive the call: a test that reaches this
+		// die() takes the whole runner with it, reporting a crashed process
+		// instead of the failed assertion. Production always terminates.
+		if ( apply_filters( 'lzb/export_json/die', true ) ) {
+			die();
+		}
 	}
 
 	/**
