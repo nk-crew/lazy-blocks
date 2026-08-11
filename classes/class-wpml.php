@@ -90,6 +90,12 @@ class LazyBlocks_WPML {
 				$translated_controls = $this->get_translated_controls_data( $block['controls'] );
 			}
 
+			/**
+			 * Allow adding block attributes, which are not registered as controls.
+			 * Each item is a WPML config node, see `get_translated_controls_data()`.
+			 */
+			$translated_controls = apply_filters( 'lzb/wpml/translated_attributes', $translated_controls, $block );
+
 			if ( ! empty( $translated_controls ) ) {
 				$config['wpml-config']['gutenberg-blocks']['gutenberg-block'][] = array(
 					'value' => '',
