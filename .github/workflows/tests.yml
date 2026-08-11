@@ -8,6 +8,9 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # Cancels all previous workflow runs for pull requests that have not completed.
 concurrency:
   # The concurrency group contains the workflow name and the branch name for pull requests
@@ -16,67 +19,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  compute-previous-wordpress-version:
-    name: Compute previous WordPress version
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    outputs:
-      previous-wordpress-version: ${{ steps.get-previous-wordpress-version.outputs.previous-wordpress-version }}
-
-    steps:
-      - name: Get previous WordPress version
-        id: get-previous-wordpress-version
-        run: |
-          curl \
-            -H "Accept: application/json" \
-            -o versions.json \
-            "http://api.wordpress.org/core/stable-check/1.0/"
-          LATEST_WP_VERSION=$(jq --raw-output 'with_entries(select(.value=="latest"))|keys[]' versions.json)
-          IFS='.' read LATEST_WP_MAJOR LATEST_WP_MINOR LATEST_WP_PATCH <<< "${LATEST_WP_VERSION}"
-          if [[ ${LATEST_WP_MINOR} == "0" ]]; then
-            PREVIOUS_WP_SERIES="$((LATEST_WP_MAJOR - 1)).9"
-          else
-            PREVIOUS_WP_SERIES="${LATEST_WP_MAJOR}.$((LATEST_WP_MINOR - 1))"
-          fi
-          PREVIOUS_WP_VERSION=$(jq --raw-output --arg series "${PREVIOUS_WP_SERIES}" 'with_entries(select(.key|startswith($series)))|keys[-1]' versions.json)
-          echo "previous-wordpress-version=${PREVIOUS_WP_VERSION}" >> $GITHUB_OUTPUT
-          rm versions.json
-
   test-php:
-    name: PHP ${{ matrix.php }}${{ matrix.wordpress != '' && format( ' (WP {0}) ', matrix.wordpress ) || '' }} on ubuntu-latest
-    needs: compute-previous-wordpress-version
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    name: PHP ${{ matrix.php }}${{ matrix.wordpress == 'previous' && ' (previous WP)' || '' }}
+    # 2 vCPU, not 4: PHPUnit is single-threaded and the rest of the job waits on
+    # Docker and the network. Blacksmith bills per vCPU and meters the free tier
+    # in 2 vCPU minutes, so a 4 vCPU runner costs exactly double for no gain.
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 20
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
     strategy:
       fail-fast: true
       matrix:
-        php:
-          - '8.3'
-          - '8.4'
-        wordpress: [''] # Latest WordPress version.
-        include:
-          # Test with the previous WP version.
-          - php: '8.3'
-            wordpress: 'previous major version'
-          - php: '8.4'
-            wordpress: 'previous major version'
+        # Corners only. Adjacent PHP minors run the same code paths through the
+        # same suite, so the third and fourth legs were re-proving the first two;
+        # the static compatibility guarantee across the whole supported range
+        # comes from the PHPCompatibility sniffs in the phpcs job, not from here.
+        #
+        # A push to master re-tests a tree the pull request already validated, so
+        # it drops to a single leg whose only job is to catch a bad squash.
+        include: ${{ fromJSON(github.event_name == 'push'
+          && '[{"php":"8.4","wordpress":"latest"}]'
+          || '[{"php":"8.3","wordpress":"latest"},{"php":"8.4","wordpress":"latest"},{"php":"8.3","wordpress":"previous"}]') }}
 
     env:
       WP_ENV_PHP_VERSION: ${{ matrix.php }}
-      WP_ENV_CORE: ${{ matrix.wordpress == '' && 'WordPress/WordPress' || format( 'https://wordpress.org/wordpress-{0}.zip', needs.compute-previous-wordpress-version.outputs.previous-wordpress-version ) }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js and install dependencies
-        uses: ./.github/setup-node
-
       ##
-      # This allows Composer dependencies to be installed using a single step.
-      #
-      # Since the tests are currently run within the Docker containers where the PHP version varies,
-      # the same PHP version needs to be configured for the action runner machine so that the correct
-      # dependency versions are installed and cached.
+      # Before the Node setup, because `npm ci` triggers the `postinstall` script
+      # and that runs `composer install`. With this step after it, the PHP
+      # dependencies were resolved against whatever PHP the runner image ships
+      # rather than against matrix.php, so the matrix quietly tested one
+      # dependency set on every leg.
       ##
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -89,6 +65,9 @@ jobs:
       - name: Override PHP version in composer.json
         run: composer config platform.php ${{ matrix.php }}
 
+      - name: Setup Node.js and install dependencies
+        uses: ./.github/setup-node
+
       # Since Composer dependencies are installed using `composer update` and no lock file is in version control,
       # passing a custom cache suffix ensures that the cache is flushed at least once per week.
       - name: Install Composer dependencies
@@ -96,40 +75,39 @@ jobs:
         with:
           custom-cache-suffix: $(/bin/date -u --date='last Mon' "+%F")
 
-      - name: Install SVN
-        run: sudo apt-get update && sudo apt-get install -y subversion
+      # Only the `previous` legs need to resolve a version; the others let
+      # wp-env track WordPress trunk. Replaces a dedicated job that spent a whole
+      # runner on one curl and made the entire matrix wait on it.
+      - name: Resolve WordPress version
+        shell: bash
+        run: |
+          if [ "${{ matrix.wordpress }}" != 'previous' ]; then
+            echo "WP_ENV_CORE=WordPress/WordPress" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          curl --fail --silent --show-error --location \
+            -H "Accept: application/json" \
+            -o versions.json \
+            "https://api.wordpress.org/core/stable-check/1.0/"
+          LATEST_WP_VERSION=$(jq --raw-output 'with_entries(select(.value=="latest"))|keys[]' versions.json)
+          IFS='.' read LATEST_WP_MAJOR LATEST_WP_MINOR LATEST_WP_PATCH <<< "${LATEST_WP_VERSION}"
+          if [[ ${LATEST_WP_MINOR} == "0" ]]; then
+            PREVIOUS_WP_SERIES="$((LATEST_WP_MAJOR - 1)).9"
+          else
+            PREVIOUS_WP_SERIES="${LATEST_WP_MAJOR}.$((LATEST_WP_MINOR - 1))"
+          fi
+          PREVIOUS_WP_VERSION=$(jq --raw-output --arg series "${PREVIOUS_WP_SERIES}" 'with_entries(select(.key|startswith($series)))|keys[-1]' versions.json)
+          rm versions.json
+
+          echo "Testing against WordPress ${PREVIOUS_WP_VERSION}."
+          echo "WP_ENV_CORE=https://wordpress.org/wordpress-${PREVIOUS_WP_VERSION}.zip" >> "$GITHUB_ENV"
 
       - name: Npm build
         run: npm run build
 
-      - name: Docker debug information
-        run: |
-          docker -v
-          docker compose version
-
-      - name: General debug information
-        run: |
-          npm --version
-          node --version
-          curl --version
-          git --version
-          svn --version
-          locale -a
-
       - name: Start Docker environment
         run: npm run wp-env start
-
-      - name: Log running Docker containers
-        run: docker ps -a
-
-      - name: Docker container debug information
-        run: |
-          npm run wp-env run tests-mysql mysql -- --version
-          npm run wp-env run tests-wordpress php -- --version
-          npm run wp-env run tests-wordpress php -m
-          npm run wp-env run tests-wordpress php -i
-          npm run wp-env run tests-wordpress /var/www/html/wp-content/plugins/lazy-blocks/vendor/bin/phpunit -- --version
-          npm run wp-env run tests-wordpress locale -a
 
       - name: Running unit tests
         run: |
@@ -156,11 +134,30 @@ jobs:
           fi
           echo "$num_tests tests passed."
 
+      # Was three unconditional steps printing docker, php and locale dumps on
+      # every green run. Nobody reads those; on a red run they are worth having.
+      - name: Debug environment on failure
+        if: ${{ failure() }}
+        run: |
+          docker -v || true
+          docker compose version || true
+          npm --version || true
+          node --version || true
+          docker ps -a || true
+          npm run wp-env run tests-mysql mysql -- --version || true
+          npm run wp-env run tests-wordpress php -- --version || true
+          npm run wp-env run tests-wordpress php -m || true
+          npm run wp-env run tests-wordpress php -i || true
+          npm run wp-env run tests-wordpress /var/www/html/wp-content/plugins/lazy-blocks/vendor/bin/phpunit -- --version || true
+          npm run wp-env run tests-wordpress locale -a || true
+
+  # Static checks are deterministic: a green pull request cannot go red on the
+  # squashed commit, only on a genuinely different tree. Skipped on push.
   lint:
     name: Lint JS + CSS
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 20
-    if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
+    if: ${{ github.event_name != 'push' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -176,9 +173,9 @@ jobs:
 
   phpcs:
     name: PHP coding standards
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 20
-    if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
+    if: ${{ github.event_name != 'push' }}
 
     steps:
       - name: Checkout repository

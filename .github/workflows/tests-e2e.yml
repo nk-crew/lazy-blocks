@@ -8,6 +8,9 @@ on:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # Cancels all previous workflow runs for pull requests that have not completed.
 concurrency:
   # The concurrency group contains the workflow name and the branch name for pull requests
@@ -18,7 +21,14 @@ concurrency:
 jobs:
   playwright:
     name: Playwright
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    # 2 vCPU, not 4. `workers: 1` does not make this job single-threaded -- the
+    # browser and the wp-env stack use the other cores, and measuring the switch
+    # showed `playwright test` getting 40-70% slower. It still wins: Blacksmith
+    # bills per vCPU and meters the free tier in 2 vCPU minutes, so halving the
+    # rate more than covers the extra wall time. Move back to 4 vCPU if the
+    # slower feedback on a pull request stops being worth the saving.
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 30
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
 
     steps:
@@ -27,12 +37,24 @@ jobs:
       - name: Setup Node.js and install dependencies
         uses: ./.github/setup-node
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
       - name: Npm build
         run: npm run build
 
+      # Chromium only. The shared preset gates its webkit and firefox projects
+      # behind `@webkit` and `@firefox` tags and no spec carries either, so the
+      # other two browsers were downloaded on every run and never launched. Tag a
+      # spec and add the browser back here if that changes.
       - name: Install Playwright dependencies
         run: |
-          npx playwright install chromium firefox webkit --with-deps
+          npx playwright install --with-deps chromium
 
       - name: Install WordPress and start the server
         run: |
@@ -41,3 +63,11 @@ jobs:
       - name: Run the tests
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e
+
+      - name: Archive debug artifacts (screenshots, traces)
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() && !cancelled() }}
+        with:
+          name: failures-artifacts
+          path: artifacts/test-results
+          if-no-files-found: ignore
