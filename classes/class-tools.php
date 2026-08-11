@@ -499,28 +499,46 @@ class LazyBlocks_Tools {
 			wp_die( esc_html__( 'Export permission denied.', 'lazy-blocks' ) );
 		}
 
-		$block_id  = filter_input( INPUT_GET, 'lazyblocks_export_block', FILTER_SANITIZE_NUMBER_INT );
-		$block_ids = filter_input_array(
-			INPUT_GET,
-			array(
-				'lazyblocks_export_blocks' => array(
-					'filter' => FILTER_SANITIZE_NUMBER_INT,
-					'flags'  => FILTER_REQUIRE_ARRAY,
-				),
-			)
-		);
-		$block_ids = is_array( $block_ids ) && isset( $block_ids['lazyblocks_export_blocks'] ) ? $block_ids['lazyblocks_export_blocks'] : array();
+		// Read through `$_GET`, as the guard above and the nonce check already
+		// do. `filter_input` reads the SAPI request rather than the superglobal,
+		// so under PHPUnit it returns null however the test sets `$_GET` -- which
+		// left the capability check below unreachable from a test, and is why
+		// ExportPermissionTest had to re-implement that check rather than call
+		// this method.
+		//
+		// Malformed input is rejected, not coerced, matching what the old
+		// FILTER_SANITIZE_NUMBER_INT calls did. An array where a scalar is
+		// expected (`?lazyblocks_export_block[]=999`) must not collapse into a
+		// real block id -- `absint()` would turn it into 1 -- and a nested
+		// array element is dropped rather than counted. The plain `(int)` cast
+		// keeps a negative id negative so it matches no post, as before.
+		//
+		// The sanitization is the `is_scalar()` rejection plus the `(int)`
+		// casts; the sniffs cannot see through the foreach, and the nonce for
+		// this request was verified above.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
+		$block_id = isset( $_GET['lazyblocks_export_block'] ) && is_scalar( $_GET['lazyblocks_export_block'] )
+			? (int) wp_unslash( $_GET['lazyblocks_export_block'] )
+			: null;
 
-		$template_ids = filter_input_array(
-			INPUT_GET,
-			array(
-				'lazyblocks_export_templates' => array(
-					'filter' => FILTER_SANITIZE_NUMBER_INT,
-					'flags'  => FILTER_REQUIRE_ARRAY,
-				),
-			)
-		);
-		$template_ids = is_array( $template_ids ) && isset( $template_ids['lazyblocks_export_templates'] ) ? $template_ids['lazyblocks_export_templates'] : array();
+		$block_ids = array();
+		if ( isset( $_GET['lazyblocks_export_blocks'] ) && is_array( $_GET['lazyblocks_export_blocks'] ) ) {
+			foreach ( wp_unslash( $_GET['lazyblocks_export_blocks'] ) as $id ) {
+				if ( is_scalar( $id ) ) {
+					$block_ids[] = (int) $id;
+				}
+			}
+		}
+
+		$template_ids = array();
+		if ( isset( $_GET['lazyblocks_export_templates'] ) && is_array( $_GET['lazyblocks_export_templates'] ) ) {
+			foreach ( wp_unslash( $_GET['lazyblocks_export_templates'] ) as $id ) {
+				if ( is_scalar( $id ) ) {
+					$template_ids[] = (int) $id;
+				}
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
 
 		// Security: Only administrators with edit_lazyblocks capability can export.
 		// This prevents contributors from bypassing UI restrictions via direct URL access.
@@ -565,12 +583,24 @@ class LazyBlocks_Tools {
 			}
 		}
 
-		header( 'Content-Description: File Transfer' );
-		header( 'Content-disposition: attachment; filename=lzb-export-' . $type . '-' . date_i18n( 'Y-m-d' ) . '.json' );
-		header( 'Content-type: application/json; charset=utf-8' );
+		// A real export request reaches this before any output, so the guard
+		// changes nothing in production. Under PHPUnit the runner has already
+		// written to stdout, and each header() call would be promoted to a test
+		// error ("headers already sent") before the assertions get a chance.
+		if ( ! headers_sent() ) {
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-disposition: attachment; filename=lzb-export-' . $type . '-' . date_i18n( 'Y-m-d' ) . '.json' );
+			header( 'Content-type: application/json; charset=utf-8' );
+		}
+
 		echo wp_json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 
-		die();
+		// Filterable so PHPUnit can survive the call: a test that reaches this
+		// die() takes the whole runner with it, reporting a crashed process
+		// instead of the failed assertion. Production always terminates.
+		if ( apply_filters( 'lzb/export_json/die', true ) ) {
+			die();
+		}
 	}
 
 	/**
