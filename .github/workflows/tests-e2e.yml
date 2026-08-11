@@ -21,8 +21,12 @@ concurrency:
 jobs:
   playwright:
     name: Playwright
-    # 2 vCPU, not 4: the suite runs with `workers: 1`, so three of the four cores
-    # were idle for the whole run while Blacksmith billed for them.
+    # 2 vCPU, not 4. `workers: 1` does not make this job single-threaded -- the
+    # browser and the wp-env stack use the other cores, and measuring the switch
+    # showed `playwright test` getting 40-70% slower. It still wins: Blacksmith
+    # bills per vCPU and meters the free tier in 2 vCPU minutes, so halving the
+    # rate more than covers the extra wall time. Move back to 4 vCPU if the
+    # slower feedback on a pull request stops being worth the saving.
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
