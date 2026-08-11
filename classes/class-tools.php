@@ -583,9 +583,16 @@ class LazyBlocks_Tools {
 			}
 		}
 
-		header( 'Content-Description: File Transfer' );
-		header( 'Content-disposition: attachment; filename=lzb-export-' . $type . '-' . date_i18n( 'Y-m-d' ) . '.json' );
-		header( 'Content-type: application/json; charset=utf-8' );
+		// A real export request reaches this before any output, so the guard
+		// changes nothing in production. Under PHPUnit the runner has already
+		// written to stdout, and each header() call would be promoted to a test
+		// error ("headers already sent") before the assertions get a chance.
+		if ( ! headers_sent() ) {
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-disposition: attachment; filename=lzb-export-' . $type . '-' . date_i18n( 'Y-m-d' ) . '.json' );
+			header( 'Content-type: application/json; charset=utf-8' );
+		}
+
 		echo wp_json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 
 		// Filterable so PHPUnit can survive the call: a test that reaches this
