@@ -499,28 +499,29 @@ class LazyBlocks_Tools {
 			wp_die( esc_html__( 'Export permission denied.', 'lazy-blocks' ) );
 		}
 
-		$block_id  = filter_input( INPUT_GET, 'lazyblocks_export_block', FILTER_SANITIZE_NUMBER_INT );
-		$block_ids = filter_input_array(
-			INPUT_GET,
-			array(
-				'lazyblocks_export_blocks' => array(
-					'filter' => FILTER_SANITIZE_NUMBER_INT,
-					'flags'  => FILTER_REQUIRE_ARRAY,
-				),
-			)
-		);
-		$block_ids = is_array( $block_ids ) && isset( $block_ids['lazyblocks_export_blocks'] ) ? $block_ids['lazyblocks_export_blocks'] : array();
+		// Read through `$_GET`, as the guard above and the nonce check already
+		// do. `filter_input` reads the SAPI request rather than the superglobal,
+		// so under PHPUnit it returns null however the test sets `$_GET` -- which
+		// left the capability check below unreachable from a test, and is why
+		// ExportPermissionTest had to re-implement that check rather than call
+		// this method. The nonce is verified by this point, so the request is
+		// already trusted here.
+		//
+		// `absint` in place of FILTER_SANITIZE_NUMBER_INT: both reduce the value
+		// to its digits, and `export_json()` casts every id with `(int)` anyway.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		$block_id = isset( $_GET['lazyblocks_export_block'] )
+			? absint( wp_unslash( $_GET['lazyblocks_export_block'] ) )
+			: null;
 
-		$template_ids = filter_input_array(
-			INPUT_GET,
-			array(
-				'lazyblocks_export_templates' => array(
-					'filter' => FILTER_SANITIZE_NUMBER_INT,
-					'flags'  => FILTER_REQUIRE_ARRAY,
-				),
-			)
-		);
-		$template_ids = is_array( $template_ids ) && isset( $template_ids['lazyblocks_export_templates'] ) ? $template_ids['lazyblocks_export_templates'] : array();
+		$block_ids = isset( $_GET['lazyblocks_export_blocks'] ) && is_array( $_GET['lazyblocks_export_blocks'] )
+			? array_map( 'absint', wp_unslash( $_GET['lazyblocks_export_blocks'] ) )
+			: array();
+
+		$template_ids = isset( $_GET['lazyblocks_export_templates'] ) && is_array( $_GET['lazyblocks_export_templates'] )
+			? array_map( 'absint', wp_unslash( $_GET['lazyblocks_export_templates'] ) )
+			: array();
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		// Security: Only administrators with edit_lazyblocks capability can export.
 		// This prevents contributors from bypassing UI restrictions via direct URL access.

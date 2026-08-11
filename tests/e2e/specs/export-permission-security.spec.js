@@ -169,7 +169,19 @@ test.describe('Export Permission Security', () => {
 				testUser.password
 			);
 
-			// Generate a fake nonce (contributors can't get valid export nonces)
+			// A fake nonce, and deliberately so: a contributor cannot obtain a
+			// real one. Both places that mint `lzb-export-blocks-nonce` -- the
+			// export row action and the Tools screen -- sit behind
+			// `edit_lazyblocks`, the very capability a contributor lacks, and
+			// WordPress nonces are bound to the user, so one scraped as admin
+			// would not verify here either.
+			//
+			// So this asserts the outer gate: a contributor driving the export
+			// URL by hand is refused. It does NOT reach
+			// `current_user_can( 'edit_lazyblocks' )` in `maybe_export_json()`,
+			// because the nonce check `wp_die()`s first. That capability check
+			// is covered by ExportPermissionTest::test_contributor_cannot_export_blocks,
+			// which can mint a nonce as the contributor and get past the gate.
 			const fakeNonce = 'invalid_nonce_contributor';
 
 			// Test the vulnerability - attempt to access export URL directly
