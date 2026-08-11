@@ -165,9 +165,9 @@ jobs:
       - name: Setup Node.js and install dependencies
         uses: ./.github/setup-node
 
-      - name: Npm build
-        run: npm run build
-
+      # No `npm run build` here. `lint:js` is `biome check`, and the shared
+      # Biome config excludes `**/build`; `lint:css` globs the `assets` sources
+      # directly. Neither reads a single file the build produces.
       - name: Running the lint
         run: npm run lint
 

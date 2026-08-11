@@ -7,7 +7,6 @@
  */
 
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
-import { TIMEOUTS } from '../utils/config';
 import { createBlock } from '../utils/create-block';
 import { createURL } from '../utils/helpers';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
@@ -15,15 +14,18 @@ import {
 	createTestUserWithDefaults,
 	deleteTestUser,
 	logoutUser,
-	switchUserToAdmin,
 	switchUserToContributor,
 } from '../utils/user-management';
 
 test.describe('Export Permission Security', () => {
 	let sharedBlockId = null;
 
-	test.beforeAll(async ({ requestUtils }) => {
-		// Create a shared test block for most tests (faster than UI creation)
+	// Per test, not `beforeAll`. `afterEach` runs `removeAllBlocks`, which keeps
+	// only a block titled `Example Block` -- so this one was deleted after the
+	// first test and the later tests read an id whose post no longer existed.
+	// They still passed, because a missing block denies access just as a
+	// permission check would, which is exactly the kind of green nobody wants.
+	test.beforeEach(async ({ requestUtils }) => {
 		sharedBlockId = await createBlock({
 			requestUtils,
 			title: 'Shared Security Test Block',
@@ -41,111 +43,41 @@ test.describe('Export Permission Security', () => {
 	test('Admin can create and export blocks', async ({
 		admin,
 		page,
-		editor,
+		requestUtils,
 	}) => {
-		// Create a new lazy block as admin
-		await admin.createNewPost({
-			postType: 'lazyblocks',
-			title: '',
-			status: 'publish',
+		// Built over REST rather than through the wizard. The wizard path this
+		// used to duplicate -- Continue, Title, Continue, Finish, double
+		// Publish, read post_ID -- is block-builder-create-block.spec.js's whole
+		// subject, and running it a second time here proved nothing extra. What
+		// is unique to this file is the export row action below.
+		const postID = await createBlock({
+			requestUtils,
+			title: 'Admin Test Block',
+			slug: 'admin-test-block',
+			code: 'Admin export test block',
+			codeSingleOutput: true,
 		});
 
-		// Navigate through the block creation wizard
-		await editor.canvas.getByRole('button', { name: 'Continue' }).click();
-		await editor.canvas
-			.getByLabel('Title', { exact: true })
-			.fill('Admin Test Block');
-		await editor.canvas.getByRole('button', { name: 'Continue' }).click();
-		await editor.canvas.getByRole('button', { name: 'Finish' }).click();
-
-		// Publish the block
-		await page.locator('role=button[name="Publish"i]').click();
-		await page
-			.locator('role=region[name="Editor publish"]')
-			.locator('role=button[name="Publish"i]')
-			.click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
-
-		// Get the block ID
-		let postID = await page.locator('input[name="post_ID"]').inputValue();
-		postID = typeof postID === 'string' ? parseInt(postID, 10) : null;
-
-		// Check for this block in the lazyblocks posts list admin
 		await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-		// Verify page loaded correctly
-		const pageTitle = await page.title();
-		expect(pageTitle).toContain('Blocks');
 
 		await expect(page.locator(`#post-${postID}`)).toBeVisible();
 
-		// Verify admin has export capabilities
-		const hasEditCapability = await page.evaluate(async () => {
-			// Admin should have edit_lazyblocks capability (the fix)
-			if (typeof wp !== 'undefined' && wp.data) {
-				try {
-					const canEdit = wp.data
-						.select('core')
-						.canUser('create', 'posts', 'lazyblocks');
-					return canEdit !== false;
-				} catch (_e) {
-					return true; // Assume admin has capability
-				}
-			}
-			return true;
-		});
-		expect(hasEditCapability).toBe(true);
-
-		// Verify export link exists for admin with nonce
+		// The export row action carries a nonce. Asserted unconditionally: this
+		// used to be wrapped in `if ( count > 0 )`, so if the action ever stopped
+		// rendering the test would report success having checked nothing -- and
+		// the export link is the entire subject of this file.
+		//
+		// `class-blocks.php` renders the action for every listed block, so
+		// exactly one is expected. WordPress positions row actions off-screen
+		// rather than hiding them, so Playwright still counts them visible.
 		const exportLink = page.locator(
 			`a[href*="lazyblocks_export_block=${postID}"]`
 		);
-		const exportLinkCount = await exportLink.count();
-		if (exportLinkCount > 0) {
-			await expect(exportLink.first()).toBeVisible();
-			const exportHref = await exportLink.first().getAttribute('href');
-			expect(exportHref).toContain(`lazyblocks_export_block=${postID}`);
-			// Verify nonce is included in the export link
-			expect(exportHref).toContain('lazyblocks_export_nonce=');
-		}
-	});
+		await expect(exportLink).toHaveCount(1);
 
-	test('Permission verification - edit_lazyblocks required', async ({
-		page,
-		admin,
-	}) => {
-		// Quick navigation to admin area to verify permission fix
-		await admin.visitAdminPage('/');
-
-		// Test that the permission check is correctly implemented
-		const permissionCheckResult = await page.evaluate(() => {
-			// The vulnerability fix: changed from 'read_lazyblock' to 'edit_lazyblocks'
-			const result = {
-				isAdmin: false,
-				hasRequiredCapability: false,
-				securityNote:
-					'Export permission requires edit_lazyblocks capability',
-			};
-
-			try {
-				// Check if we're in admin context
-				if (typeof window.ajaxurl !== 'undefined') {
-					result.isAdmin = true;
-					// Admin users should have the required 'edit_lazyblocks' capability
-					result.hasRequiredCapability = true;
-				}
-			} catch (_e) {
-				// Error checking permissions
-			}
-
-			return result;
-		});
-
-		// Verify the permission check results
-		expect(permissionCheckResult.isAdmin).toBe(true);
-		expect(permissionCheckResult.hasRequiredCapability).toBe(true);
-		expect(permissionCheckResult.securityNote).toContain('edit_lazyblocks');
+		const exportHref = await exportLink.getAttribute('href');
+		expect(exportHref).toContain(`lazyblocks_export_block=${postID}`);
+		expect(exportHref).toContain('lazyblocks_export_nonce=');
 	});
 
 	test('Unauthenticated users cannot export blocks', async ({ page }) => {
@@ -180,10 +112,11 @@ test.describe('Export Permission Security', () => {
 
 		try {
 			// Attempt to access the export URL without authentication
+			// No `networkidle` wait: `exportListener` above fires during this
+			// navigation, redirect chain included, so the outcome is already
+			// settled by the time `goto` resolves. The sibling contributor test
+			// does the same `goto` without one and is not flaky.
 			const response = await page.goto(exportUrl);
-			await page.waitForLoadState('networkidle', {
-				timeout: TIMEOUTS.LONG,
-			});
 			page.off('response', exportListener);
 
 			// Check 1: Verify no file download was triggered
@@ -309,13 +242,11 @@ test.describe('Export Permission Security', () => {
 				throw error;
 			}
 		} finally {
-			// Cleanup: Switch back to admin (only if page is still valid)
-			try {
-				await switchUserToAdmin(page);
-			} catch (_error) {
-				// Skip user switching if page is closed - cleanup can continue
-			}
-
+			// No switch back to admin. `page` is test-scoped, Playwright closes
+			// it at teardown, and the next test opens a fresh context already
+			// authenticated from `storageState` -- so the login round trip only
+			// ever cost time.
+			//
 			// Clean up test user (always delete - uses REST API, doesn't need page)
 			if (testUser) {
 				await deleteTestUser(requestUtils, testUser.id);

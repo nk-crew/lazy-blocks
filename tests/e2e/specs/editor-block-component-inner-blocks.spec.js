@@ -6,15 +6,12 @@ import { createBlock } from '../utils/create-block';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block component <InnerBlocks />', () => {
-	test.afterEach(async ({ requestUtils }) => {
-		await removeAllBlocks({ requestUtils });
-	});
-
-	test('should render block template correctly', async ({
-		editor,
-		admin,
-		requestUtils,
-	}) => {
+	// One block for the file. All three tests created a byte-identical one and
+	// none of them mutates it, so the only thing per-test creation bought was
+	// three extra REST round trips. The teardown stays -- leaving a
+	// `lazyblock/test` registration behind would follow the worker into the next
+	// spec file.
+	test.beforeAll(async ({ requestUtils }) => {
 		await createBlock({
 			requestUtils,
 			title: 'Block with InnerBlocks',
@@ -22,7 +19,16 @@ test.describe('editor block component <InnerBlocks />', () => {
 			code: '<p>Hello:</p><InnerBlocks /><p>there.</p>',
 			codeSingleOutput: true,
 		});
+	});
 
+	test.afterAll(async ({ requestUtils }) => {
+		await removeAllBlocks({ requestUtils });
+	});
+
+	test('should render block template correctly', async ({
+		editor,
+		admin,
+	}) => {
 		await admin.createNewPost();
 
 		await editor.insertBlock({
@@ -37,16 +43,7 @@ test.describe('editor block component <InnerBlocks />', () => {
 		page,
 		editor,
 		admin,
-		requestUtils,
 	}) => {
-		await createBlock({
-			requestUtils,
-			title: 'Block with InnerBlocks',
-			slug: 'test',
-			code: '<p>Hello:</p><InnerBlocks /><p>there.</p>',
-			codeSingleOutput: true,
-		});
-
 		await admin.createNewPost();
 
 		await editor.insertBlock({
@@ -72,16 +69,7 @@ test.describe('editor block component <InnerBlocks />', () => {
 	test('nested inner blocks should keep hidden appender if parent block is selected', async ({
 		editor,
 		admin,
-		requestUtils,
 	}) => {
-		await createBlock({
-			requestUtils,
-			title: 'Block with InnerBlocks',
-			slug: 'test',
-			code: '<p>Hello:</p><InnerBlocks /><p>there.</p>',
-			codeSingleOutput: true,
-		});
-
 		await admin.createNewPost();
 
 		await editor.insertBlock({

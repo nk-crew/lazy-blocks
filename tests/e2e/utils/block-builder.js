@@ -18,14 +18,16 @@ import { expect } from '@wordpress/e2e-test-utils-playwright';
  * @param {number} options.blockID ID of the block post to open.
  */
 export async function openBlockBuilder({ page, editor, admin, blockID }) {
-	await admin.visitAdminPage('edit.php?post_type=lazyblocks');
-
-	await page.locator(`#post-${blockID} .row-title`).click();
-
-	// `click()` returns once the click is dispatched, not once the navigation it
-	// starts has finished. Settle on the editor before running anything in the
-	// page, or it runs against a context that is about to be destroyed.
-	await page.waitForURL(/post\.php/);
+	// Straight to the editor. This used to load the block list and click the row
+	// title, which cost a full list-table render -- plus the `page.content()`
+	// serialisation `visitAdminPage` runs to scan for PHP errors -- just to
+	// reach a URL that `blockID` already determines. It also raced the list
+	// render, so the click could fire before the row was there.
+	//
+	// That the block appears in the list and its title links here is still
+	// asserted directly by editor-block-base-controls, editor-block-repeater-
+	// control and block-builder-create-block.
+	await admin.visitAdminPage('post.php', `post=${blockID}&action=edit`);
 
 	// The builder lives inside the editor canvas iframe and is mounted by the
 	// `lzb-block-builder/main` block, which the plugin inserts itself. Waiting
