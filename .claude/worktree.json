@@ -1,0 +1,14 @@
+{
+  "bootstrap": "npx --yes --package=@nk-crew/plugin-toolkit nk-worktree-setup --no-env",
+  "servers": [
+    {
+      "name": "dev",
+      "command": "npm run dev"
+    }
+  ],
+  "checks": [
+    "npm run lint",
+    "npm run test:unit:php",
+    "npm run test:e2e"
+  ]
+}
