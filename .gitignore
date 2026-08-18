@@ -60,3 +60,7 @@ node_modules/
 # system files
 .DS_Store
 Thumbs.db
+
+# Per-checkout worktrees and dev launch config (see .claude/worktree.json)
+.claude/worktrees/
+.claude/launch.json
