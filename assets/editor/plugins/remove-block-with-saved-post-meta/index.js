@@ -164,7 +164,6 @@ function RemoveBlockWithSavedMeta() {
 					label={currentMeta.label}
 					checked={currentMeta.checked}
 					onChange={(value) => handleMetaToggle(index, value)}
-					__nextHasNoMarginBottom
 				/>
 			))}
 			<div className="lzb-gutenberg-remove-post-meta-modal-buttons">

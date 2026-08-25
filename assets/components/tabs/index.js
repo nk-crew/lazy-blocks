@@ -10,7 +10,7 @@ import { BaseControl, TabPanel } from '@wordpress/components';
 
 export default function Tabs({ tabs, children }) {
 	return (
-		<BaseControl __nextHasNoMarginBottom>
+		<BaseControl>
 			<TabPanel tabs={tabs} className="lazyblocks-component-tabs">
 				{children}
 			</TabPanel>

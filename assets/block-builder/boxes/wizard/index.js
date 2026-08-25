@@ -280,8 +280,6 @@ ${finalStyles}
 								setTitle(val);
 								generateSlug(val);
 							}}
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
 						/>
 						<span>{slug ? `lazyblock/${slug}` : ''}</span>
 					</div>
@@ -302,7 +300,6 @@ ${finalStyles}
 						label={__('Description', 'lazy-blocks')}
 						value={description}
 						onChange={(value) => setDescription(value)}
-						__nextHasNoMarginBottom
 					/>
 				</div>
 			)}

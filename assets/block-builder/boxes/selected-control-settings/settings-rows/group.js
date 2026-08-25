@@ -15,7 +15,6 @@ export default function GroupRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-group"
 				label={__('Group', 'lazy-blocks')}
-				__nextHasNoMarginBottom
 			>
 				<SelectControl
 					id="lazyblocks-settings-row-group"
@@ -32,8 +31,6 @@ export default function GroupRow(props) {
 							group: value,
 						})
 					}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		</PanelBody>

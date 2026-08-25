@@ -39,7 +39,6 @@ export default function PlacementRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-row-placement"
 				label={__('Placement', 'lazy-blocks')}
-				__nextHasNoMarginBottom
 			>
 				<div />
 				<div

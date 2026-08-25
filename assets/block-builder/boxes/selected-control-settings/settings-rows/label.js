@@ -57,8 +57,6 @@ export default function LabelRow(props) {
 				onBlur={allowNameUpdate ? generateUniqueName : () => {}}
 				// eslint-disable-next-line jsx-a11y/no-autofocus
 				autoFocus
-				__next40pxDefaultSize
-				__nextHasNoMarginBottom
 			/>
 		</PanelBody>
 	);

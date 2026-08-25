@@ -118,7 +118,7 @@ export default function Templates() {
 		return (
 			<>
 				<div className="lzb-export-select-items">
-					<BaseControl __nextHasNoMarginBottom>
+					<BaseControl>
 						<ToggleControl
 							label={__('Select all', 'lazy-blocks')}
 							checked={
@@ -146,7 +146,6 @@ export default function Templates() {
 									setDisabledTemplates(newDisabled);
 								}
 							}}
-							__nextHasNoMarginBottom
 						/>
 						{data[type].map((item) => {
 							const isSelected =
@@ -222,7 +221,6 @@ export default function Templates() {
 											setDisabledTemplates(newDisabled);
 										}
 									}}
-									__nextHasNoMarginBottom
 								/>
 							);
 						})}
@@ -237,7 +235,6 @@ export default function Templates() {
 								readOnly
 								value={getPHPStringCode(type)}
 								__next40pxDefaultSize
-								__nextHasNoMarginBottom
 							/>
 						</div>
 						<div className="lzb-export-buttons">

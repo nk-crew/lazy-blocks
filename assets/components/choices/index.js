@@ -71,8 +71,6 @@ const SortableItem = (props) => {
 						}
 						// eslint-disable-next-line jsx-a11y/no-autofocus
 						autoFocus={focusInput && i === 0}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 				);
 			})}
@@ -239,7 +237,7 @@ export default function Choices(props) {
 	}
 
 	return (
-		<BaseControl id={id} label={label} help={help} __nextHasNoMarginBottom>
+		<BaseControl id={id} label={label} help={help}>
 			<div className="lzb-block-builder-controls-item-settings-choices">
 				{items.length ? (
 					<div className="lzb-block-builder-controls-item-settings-choices-items">

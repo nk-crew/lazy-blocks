@@ -34,15 +34,12 @@ export default function WidthRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-row-width"
 				label={__('Width', 'lazy-blocks')}
-				__nextHasNoMarginBottom
 			>
 				<div />
 				<ToggleGroupControl
 					value={data.width || '100'}
 					onChange={(value) => updateData({ width: value })}
 					isBlock
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 				>
 					{Object.keys(widths).map((w) => (
 						<ToggleGroupControlOption

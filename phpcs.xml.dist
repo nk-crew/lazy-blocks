@@ -53,7 +53,7 @@
 	-->
 
 	<!-- Include sniffs for PHP cross-version compatibility. -->
-	<config name="testVersion" value="7.2-"/>
+	<config name="testVersion" value="8.0-"/>
 	<rule ref="PHPCompatibilityWP">
 		<include-pattern>*\.php$</include-pattern>
 	</rule>

@@ -419,7 +419,6 @@ export default function CustomCodeSettings(props) {
 										'Unified Block Code',
 										'lazy-blocks'
 									)}
-									__nextHasNoMarginBottom
 								>
 									<ToggleControl
 										id="lazyblocks-settings-code-single-output"
@@ -430,7 +429,6 @@ export default function CustomCodeSettings(props) {
 												code_single_output: value,
 											})
 										}
-										__nextHasNoMarginBottom
 									/>
 									<br />
 								</BaseControl>
@@ -440,7 +438,6 @@ export default function CustomCodeSettings(props) {
 										'With Editor Style',
 										'lazy-blocks'
 									)}
-									__nextHasNoMarginBottom
 								>
 									<ToggleControl
 										id="lazyblocks-settings-style-single-output"
@@ -452,7 +449,6 @@ export default function CustomCodeSettings(props) {
 											});
 											setWithEditorStyle(value);
 										}}
-										__nextHasNoMarginBottom
 									/>
 									<br />
 								</BaseControl>
@@ -461,7 +457,6 @@ export default function CustomCodeSettings(props) {
 						<BaseControl
 							id="lazyblocks-settings-output-in-editor"
 							label={__('Code Output in Editor', 'lazy-blocks')}
-							__nextHasNoMarginBottom
 						>
 							<SelectControl
 								id="lazyblocks-settings-output-in-editor"
@@ -496,8 +491,6 @@ export default function CustomCodeSettings(props) {
 								onChange={(value) =>
 									updateData({ code_show_preview: value })
 								}
-								__next40pxDefaultSize
-								__nextHasNoMarginBottom
 							/>
 						</BaseControl>
 					</>,
@@ -611,7 +604,7 @@ export default function CustomCodeSettings(props) {
 	const settingsOutputCode = applyFilters(
 		`lzb.constructor.code-settings.output-code`,
 		data.code_output_method !== 'template' ? (
-			<BaseControl __nextHasNoMarginBottom>
+			<BaseControl>
 				<div
 					className={classnames(
 						'lzb-block-builder-output-code-wrapper',

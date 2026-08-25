@@ -17,11 +17,7 @@ import { __ } from '@wordpress/i18n';
 
 export default function BlockSlug(props) {
 	return (
-		<BaseControl
-			id={props.label}
-			label={props.label || ''}
-			__nextHasNoMarginBottom
-		>
+		<BaseControl id={props.label} label={props.label || ''}>
 			<div className="lazyblocks-component-block-slug">
 				<Dropdown
 					className="lazyblocks-component-block-slug-prefix-dropdown"
@@ -66,8 +62,6 @@ export default function BlockSlug(props) {
 						...props,
 						...{ label: '' },
 					}}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
 				/>
 			</div>
 		</BaseControl>

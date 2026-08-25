@@ -2021,7 +2021,9 @@ class LazyBlocks_Blocks {
 			}
 
 			// Escape "$" to prevent it's replacement with preg_replace.
-			$content = str_replace( '$', '\$', $content );
+			// $content is null when the render is called without inner blocks content
+			// and the wrapper above is disabled by a filter (null is deprecated since PHP 8.1).
+			$content = str_replace( '$', '\$', (string) $content );
 
 			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
 		}

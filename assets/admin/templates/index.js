@@ -182,8 +182,6 @@ function UpdateEditor() {
 						onChange={(value) => {
 							updateMeta('_lzb_template_post_types', value);
 						}}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 				</div>
 			</PanelRow>
@@ -196,8 +194,6 @@ function UpdateEditor() {
 						onChange={(value) => {
 							updateMeta('_lzb_template_lock', value);
 						}}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 				</div>
 			</PanelRow>
