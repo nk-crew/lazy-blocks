@@ -130,7 +130,6 @@ function AdditionalAttributes(props) {
 								insert_from_url: value ? 'true' : 'false',
 							})
 						}
-						__nextHasNoMarginBottom
 					/>
 				</BaseControl>
 			</PanelBody>
@@ -153,8 +152,6 @@ function AdditionalAttributes(props) {
 					})}
 					value={data.preview_size || 'medium'}
 					onChange={(value) => updateData({ preview_size: value })}
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
 				/>
 			</PanelBody>
 		</>

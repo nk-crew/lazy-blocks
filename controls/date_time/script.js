@@ -269,8 +269,6 @@ addFilter(
 					}}
 					className="lzb-date-time-picker-mode-control"
 					isBlock
-					__nextHasNoMarginBottom
-					__next40pxDefaultSize
 				>
 					<ToggleGroupControlOption
 						value="date"

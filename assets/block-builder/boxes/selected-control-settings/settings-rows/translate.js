@@ -13,7 +13,6 @@ export default function WPMLRow(props) {
 			<BaseControl
 				id="lazyblocks-settings-row-wpml"
 				label={__('WPML Translation', 'lazy-blocks')}
-				__nextHasNoMarginBottom
 			>
 				<ToggleControl
 					id="lazyblocks-settings-row-wpml"
@@ -22,7 +21,6 @@ export default function WPMLRow(props) {
 					onChange={(value) =>
 						updateData({ translate: value ? 'true' : 'false' })
 					}
-					__nextHasNoMarginBottom
 				/>
 			</BaseControl>
 		</PanelBody>

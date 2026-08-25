@@ -31,8 +31,6 @@ export default function NameRow(props) {
 				label={__('Name', 'lazy-blocks')}
 				value={name}
 				onChange={(value) => updateData({ name: value })}
-				__next40pxDefaultSize
-				__nextHasNoMarginBottom
 			/>
 			{!isNameValid ? (
 				<Notice

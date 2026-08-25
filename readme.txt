@@ -4,7 +4,7 @@
 * Tags: gutenberg, blocks, custom, meta, fields
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 6.2
-* Tested up to: 7.0
+* Tested up to: 7.1
 * Requires PHP: 8.0
 * Stable tag: 4.3.1
 * License: GPLv2 or later

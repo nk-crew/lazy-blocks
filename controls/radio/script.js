@@ -89,7 +89,6 @@ addFilter(
 									allow_null: value ? 'true' : 'false',
 								})
 							}
-							__nextHasNoMarginBottom
 						/>
 					</BaseControl>
 				</PanelBody>

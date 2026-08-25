@@ -29,8 +29,6 @@ addFilter('lzb.editor.control.email.render', 'lzb.editor', (render, props) => {
 				placeholder={props.data.placeholder}
 				value={props.getValue()}
 				onChange={props.onChange}
-				__next40pxDefaultSize
-				__nextHasNoMarginBottom
 			/>
 		</BaseControl>
 	);
@@ -76,8 +74,6 @@ addFilter(
 						label={__('Placeholder', 'lazy-blocks')}
 						value={data.placeholder}
 						onChange={(value) => updateData({ placeholder: value })}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 				<PanelBody>
@@ -98,8 +94,6 @@ addFilter(
 						onChange={(value) =>
 							updateData({ characters_limit: `${value}` })
 						}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</>

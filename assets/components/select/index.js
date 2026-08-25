@@ -6,7 +6,6 @@ import './editor.scss';
 import {
 	closestCenter,
 	DndContext,
-	PointerSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
@@ -21,6 +20,7 @@ import AsyncSelect from 'react-select/async';
  * External dependencies
  */
 import CreatableSelect from 'react-select/creatable';
+import CustomPointerSensor from '../../utils/dnd-kit-custom-pointer-sensor';
 import StyleProvider from './style-provider';
 
 export default function Select(props) {
@@ -39,7 +39,7 @@ export default function Select(props) {
 	// Set activation distance to prevent conflict with remove button.
 	const activationConstraint = { distance: 4 };
 	const sensors = useSensors(
-		useSensor(PointerSensor, { activationConstraint })
+		useSensor(CustomPointerSensor, { activationConstraint })
 	);
 
 	// Tags.

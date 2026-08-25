@@ -101,7 +101,6 @@ function AdditionalAttributes(props) {
 					'Images which do not fit the grid are replaced with a counter. Leave the columns empty to fit the control width.',
 					'lazy-blocks'
 				)}
-				__nextHasNoMarginBottom
 			>
 				<div className="lzb-block-builder-controls-item-settings-grid">
 					<TextControl
@@ -114,8 +113,6 @@ function AdditionalAttributes(props) {
 						onChange={(value) =>
 							updateData({ preview_columns: value })
 						}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 					<span aria-hidden="true">×</span>
 					<TextControl
@@ -128,8 +125,6 @@ function AdditionalAttributes(props) {
 						onChange={(value) =>
 							updateData({ preview_rows: value })
 						}
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
 					/>
 				</div>
 			</BaseControl>

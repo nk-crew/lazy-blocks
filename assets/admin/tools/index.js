@@ -6,7 +6,7 @@ import './index.scss';
 /**
  * WordPress dependencies.
  */
-import { render } from '@wordpress/element';
+import { createRoot } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,5 +14,7 @@ import { render } from '@wordpress/element';
 import Tools from './tools';
 
 window.addEventListener('load', () => {
-	render(<Tools />, document.querySelector('.lazyblocks-tools-page'));
+	createRoot(document.querySelector('.lazyblocks-tools-page')).render(
+		<Tools />
+	);
 });
