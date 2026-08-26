@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.4.0 - Aug 26, 2026 =
+
+* added WordPress 7.1 compatibility
+* added filters for extending how a block renders in the editor preview
+* improved the Gallery control in the block builder, which now previews its images in a grid
+* improved Gallery control loading speed on galleries with many images, fetching image data in one request instead of one per image
+* fixed dragging values in a multi-select control inside the editor canvas
+* fixed Image, File and Gallery values not being read when written as raw JSON in block markup
+* fixed Repeater values not being read when written as a raw array in block markup
+* **Pro:**
+* added a Rich Text control that edits inline the way a core block does, and rebuilt the wizard presets on it
+* fixed the update notice still offering a version already installed
+
 = 4.3.1 - Jun 11, 2026 =
 
 * improved performance by caching prepared `get_blocks()` results within a single request
