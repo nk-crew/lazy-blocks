@@ -42,7 +42,11 @@ if ( is_multisite() ) {
 
 if (
 	in_array( plugin_basename( __FILE__ ), $lzb_active_plugins, true ) &&
-	in_array( 'lazy-blocks-pro/lazy-blocks-pro.php', $lzb_active_plugins, true )
+	in_array( 'lazy-blocks-pro/lazy-blocks-pro.php', $lzb_active_plugins, true ) &&
+	// `active_plugins` goes on naming a plugin whose directory was removed by hand
+	// and WordPress simply skips it, so stepping aside for one of those would leave
+	// the site with neither plugin.
+	file_exists( WP_PLUGIN_DIR . '/lazy-blocks-pro/lazy-blocks-pro.php' )
 ) {
 	unset( $lzb_active_plugins );
 	return;

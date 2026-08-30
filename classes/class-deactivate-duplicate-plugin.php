@@ -27,8 +27,11 @@ class LazyBlocks_Deactivate_Duplicate_Plugin {
 	 * First version of the free plugin that steps aside on its own when the Pro plugin
 	 * is active. Older ones declare the core class a second time instead, so they cannot
 	 * stay active next to it.
+	 *
+	 * `version_compare()` ranks a pre-release below the release it precedes, so the
+	 * `-alpha` suffix is what lets a beta or an RC of that version through.
 	 */
-	const FREE_PLUGIN_MIN_VERSION = '4.4.1';
+	const FREE_PLUGIN_MIN_VERSION = '4.4.1-alpha';
 
 	/**
 	 * LazyBlocks_Deactivate_Duplicate_Plugin constructor.
@@ -66,11 +69,19 @@ class LazyBlocks_Deactivate_Duplicate_Plugin {
 			return;
 		}
 
+		$free_plugin_file = WP_PLUGIN_DIR . '/' . self::FREE_PLUGIN;
+
+		// `active_plugins` keeps naming a plugin whose directory was removed by hand,
+		// and `get_plugin_data()` reads the file without checking that it is there.
+		if ( ! file_exists( $free_plugin_file ) ) {
+			return;
+		}
+
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$free_plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/' . self::FREE_PLUGIN, false, false );
+		$free_plugin_data = get_plugin_data( $free_plugin_file, false, false );
 
 		if (
 			empty( $free_plugin_data['Version'] ) ||
