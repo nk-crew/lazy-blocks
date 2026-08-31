@@ -104,10 +104,7 @@
          "Deprecated": [
             ""
          ],
-         "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks.": [
-            ""
-         ],
-         "Lazy Blocks and Lazy Blocks Pro should not be active at the same time. We've automatically deactivated Lazy Blocks Pro.": [
+         "This version of Lazy Blocks is too old to run next to Lazy Blocks Pro. We've automatically deactivated Lazy Blocks.": [
             ""
          ],
          "Hook %1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.": [
@@ -916,10 +913,23 @@
          "Clear the gallery": [
             ""
          ],
-         "Medium": [
+         "%d more image": [
+            "",
+            "%d more images"
+         ],
+         "Preview Grid": [
             ""
          ],
-         "Preview Size": [
+         "Images which do not fit the grid are replaced with a counter. Leave the columns empty to fit the control width.": [
+            ""
+         ],
+         "Columns": [
+            ""
+         ],
+         "Auto": [
+            ""
+         ],
+         "Rows": [
             ""
          ],
          "image": [
@@ -928,10 +938,16 @@
          "Remove Image": [
             ""
          ],
+         "Medium": [
+            ""
+         ],
          "Allow insert from URL": [
             ""
          ],
          "Will be added option that allow you to use custom URL to insert image": [
+            ""
+         ],
+         "Preview Size": [
             ""
          ],
          "The Inner Blocks control deprecated since v3.4.0, you should migrate to the <InnerBlocks /> component as this control will be removed in future plugin updates.": [
