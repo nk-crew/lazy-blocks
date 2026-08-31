@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.4.1 - Aug 31, 2026 =
+
+* changed Lazy Blocks to stay active next to Lazy Blocks Pro instead of being deactivated
+
 = 4.4.0 - Aug 26, 2026 =
 
 * added WordPress 7.1 compatibility

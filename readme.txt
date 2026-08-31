@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.1
 * Requires PHP: 8.0
-* Stable tag: 4.4.0
+* Stable tag: 4.4.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,10 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.4.1 - Aug 31, 2026 =
+
+* changed Lazy Blocks to stay active next to Lazy Blocks Pro instead of being deactivated
 
 = 4.4.0 - Aug 26, 2026 =
 
