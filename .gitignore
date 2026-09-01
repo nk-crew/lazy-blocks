@@ -33,14 +33,14 @@ build/*.hot-update.js.map
 build/Release
 
 # Composer directories
-vendor
+/vendor
 
 # Custom PHPCS configs
 .phpcs.xml
 phpcs.xml
 
 # Dependency directories
-node_modules/
+node_modules
 
 # Optional npm cache directory
 .npm
@@ -64,3 +64,5 @@ Thumbs.db
 # Per-checkout worktrees and dev launch config (see .claude/worktree.json)
 .claude/worktrees/
 .claude/launch.json
+
+.specs/
