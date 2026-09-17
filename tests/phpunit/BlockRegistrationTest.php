@@ -139,12 +139,14 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 		lazyblocks()->blocks()->remove_block( $second_block_slug );
 	}
 
-	public function test_get_blocks_filter_runs_on_repeated_calls() {
-		$block_slug = 'lazyblock/request-cache-filter';
+	public function test_get_blocks_filter_runs_once_per_request_until_blocks_change() {
+		$block_slug   = 'lazyblock/request-cache-filter';
 		$filter_count = 0;
 
 		$count_filter = function( $blocks ) use ( &$filter_count ) {
 			$filter_count++;
+
+			$blocks[] = array( 'slug' => 'lazyblock/added-by-filter' );
 
 			return $blocks;
 		};
@@ -155,16 +157,79 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 			'slug' => $block_slug,
 		) );
 
+		$counts = array();
+
 		lazyblocks()->blocks()->get_blocks();
 		lazyblocks()->blocks()->get_blocks();
+		$counts['repeated call']   = $filter_count;
+		$added_by_filter           = lazyblocks()->blocks()->get_block( 'lazyblock/added-by-filter' );
+
+		lazyblocks()->blocks()->get_blocks( true );
+		$counts['other arguments'] = $filter_count;
+
+		lazyblocks()->add_block( array(
+			'slug' => 'lazyblock/request-cache-filter-2',
+		) );
+		lazyblocks()->blocks()->get_blocks();
+		$counts['add_block']       = $filter_count;
+
+		lazyblocks()->blocks()->remove_block( 'lazyblock/request-cache-filter-2' );
+		lazyblocks()->blocks()->get_blocks();
+		$counts['remove_block']    = $filter_count;
+
+		lazyblocks()->blocks()->get_blocks( false, true );
+		$counts['no_cache']        = $filter_count;
+
+		lazyblocks()->blocks()->get_blocks();
+		lazyblocks()->blocks()->clear_blocks_cache();
+		lazyblocks()->blocks()->get_blocks();
+		$counts['clear_cache']     = $filter_count;
 
 		remove_filter( 'lzb/get_blocks', $count_filter );
 		lazyblocks()->blocks()->remove_block( $block_slug );
 
-		$this->assertEquals(
-			2,
-			$filter_count
+		$this->assertNotNull( $added_by_filter );
+		$this->assertSame(
+			array(
+				'repeated call'   => 1,
+				'other arguments' => 2,
+				'add_block'       => 3,
+				'remove_block'    => 4,
+				'no_cache'        => 5,
+				'clear_cache'     => 7,
+			),
+			$counts
 		);
+	}
+
+	public function test_get_blocks_filter_callback_can_add_a_block() {
+		$added         = false;
+		$nested_lookup = null;
+
+		$add_from_filter = function( $blocks ) use ( &$added, &$nested_lookup ) {
+			if ( ! $added ) {
+				$added = true;
+				lazyblocks()->add_block( array(
+					'slug' => 'lazyblock/added-inside-filter',
+				) );
+				$nested_lookup = lazyblocks()->blocks()->get_block( 'lazyblock/added-inside-filter' );
+			}
+
+			return $blocks;
+		};
+
+		// register_block() already filled the cache on init.
+		lazyblocks()->blocks()->clear_blocks_cache();
+		add_filter( 'lzb/get_blocks', $add_from_filter );
+
+		lazyblocks()->blocks()->get_blocks();
+		$block = lazyblocks()->blocks()->get_block( 'lazyblock/added-inside-filter' );
+
+		remove_filter( 'lzb/get_blocks', $add_from_filter );
+		lazyblocks()->blocks()->remove_block( 'lazyblock/added-inside-filter' );
+
+		$this->assertNotNull( $nested_lookup );
+		$this->assertNotNull( $block );
 	}
 
 	public function test_get_blocks_no_cache_clears_prepared_request_cache() {
