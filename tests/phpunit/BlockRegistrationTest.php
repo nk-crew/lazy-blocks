@@ -139,12 +139,14 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 		lazyblocks()->blocks()->remove_block( $second_block_slug );
 	}
 
-	public function test_get_blocks_filter_runs_on_repeated_calls() {
-		$block_slug = 'lazyblock/request-cache-filter';
+	public function test_get_blocks_filter_runs_once_per_request_until_blocks_change() {
+		$block_slug   = 'lazyblock/request-cache-filter';
 		$filter_count = 0;
 
 		$count_filter = function( $blocks ) use ( &$filter_count ) {
 			$filter_count++;
+
+			$blocks[] = array( 'slug' => 'lazyblock/added-by-filter' );
 
 			return $blocks;
 		};
@@ -157,14 +159,32 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 
 		lazyblocks()->blocks()->get_blocks();
 		lazyblocks()->blocks()->get_blocks();
+		$this->assertEquals( 1, $filter_count );
+		$this->assertNotNull( lazyblocks()->blocks()->get_block( 'lazyblock/added-by-filter' ) );
+
+		// Another argument pair is its own entry.
+		lazyblocks()->blocks()->get_blocks( true );
+		$this->assertEquals( 2, $filter_count );
+
+		lazyblocks()->add_block( array(
+			'slug' => 'lazyblock/request-cache-filter-2',
+		) );
+		lazyblocks()->blocks()->get_blocks();
+		$this->assertEquals( 3, $filter_count );
+
+		lazyblocks()->blocks()->remove_block( 'lazyblock/request-cache-filter-2' );
+		lazyblocks()->blocks()->get_blocks();
+		$this->assertEquals( 4, $filter_count );
+
+		lazyblocks()->blocks()->get_blocks( false, true );
+		$this->assertEquals( 5, $filter_count );
+
+		lazyblocks()->blocks()->clear_blocks_cache();
+		lazyblocks()->blocks()->get_blocks();
+		$this->assertEquals( 6, $filter_count );
 
 		remove_filter( 'lzb/get_blocks', $count_filter );
 		lazyblocks()->blocks()->remove_block( $block_slug );
-
-		$this->assertEquals(
-			2,
-			$filter_count
-		);
 	}
 
 	public function test_get_blocks_no_cache_clears_prepared_request_cache() {

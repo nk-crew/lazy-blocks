@@ -1179,6 +1179,9 @@ class LazyBlocks_Blocks {
 	/**
 	 * Get all blocks array.
 	 *
+	 * The `lzb/get_blocks` filter runs once per request for each ($db_only, $keep_duplicates)
+	 * pair. add_block(), remove_block(), $no_cache and clear_blocks_cache() make it run again.
+	 *
 	 * @param bool $db_only - get blocks from database only.
 	 * @param bool $no_cache - get blocks without cache.
 	 * @param bool $keep_duplicates - get blocks with same slugs.
@@ -1193,7 +1196,7 @@ class LazyBlocks_Blocks {
 		$result_cache_key = $this->get_blocks_result_cache_key( $db_only, $keep_duplicates );
 
 		if ( ! $no_cache && isset( $this->blocks_result_cache[ $result_cache_key ] ) ) {
-			return apply_filters( 'lzb/get_blocks', $this->blocks_result_cache[ $result_cache_key ] );
+			return $this->blocks_result_cache[ $result_cache_key ];
 		}
 
 		// fetch blocks.
@@ -1269,11 +1272,13 @@ class LazyBlocks_Blocks {
 			$result = $unique_result;
 		}
 
+		$result = apply_filters( 'lzb/get_blocks', $result );
+
 		if ( ! $no_cache ) {
 			$this->blocks_result_cache[ $result_cache_key ] = $result;
 		}
 
-		return apply_filters( 'lzb/get_blocks', $result );
+		return $result;
 	}
 
 	/**
