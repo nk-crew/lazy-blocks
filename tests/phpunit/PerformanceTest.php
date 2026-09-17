@@ -16,8 +16,8 @@ class PerformanceTest extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
-	// get_blocks() re-runs the lzb/get_blocks sanitizer over every block and control string,
-	// so a page must not fetch the blocks list once per rendered block.
+	// The lzb/get_blocks sanitizer runs wp_kses_post over every block and control string,
+	// so rendering a page must not run it again per rendered block.
 	public function test_render_fetches_blocks_at_most_once() {
 		lazyblocks()->add_block( array(
 			'slug'     => 'lazyblock/perf',
@@ -51,6 +51,6 @@ class PerformanceTest extends WP_UnitTestCase {
 		remove_filter( 'lzb/get_blocks', $counter );
 
 		$this->assertSame( 10, substr_count( $html, '<p>lazy</p>' ) );
-		$this->assertLessThanOrEqual( 1, $count, 'get_blocks() ran once per rendered block' );
+		$this->assertLessThanOrEqual( 1, $count, 'lzb/get_blocks ran once per rendered block' );
 	}
 }
