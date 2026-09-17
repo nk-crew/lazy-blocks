@@ -954,6 +954,13 @@ class LazyBlocks_Blocks {
 	private $blocks_result_cache = array();
 
 	/**
+	 * Bumped every time $blocks_result_cache is cleared.
+	 *
+	 * @var int
+	 */
+	private $blocks_result_cache_generation = 0;
+
+	/**
 	 * Add block.
 	 *
 	 * @param array $data - block data.
@@ -1274,14 +1281,13 @@ class LazyBlocks_Blocks {
 			$result = $unique_result;
 		}
 
-		if ( ! $no_cache ) {
-			$this->blocks_result_cache[ $result_cache_key ] = $result;
-		}
+		$generation = $this->blocks_result_cache_generation;
 
 		$result = apply_filters( 'lzb/get_blocks', $result );
 
-		// A callback that adds or removes blocks clears the cache; that must survive this call.
-		if ( ! $no_cache && isset( $this->blocks_result_cache[ $result_cache_key ] ) ) {
+		// A callback that adds or removes blocks clears the cache, and what it stored after
+		// that is fresher than this list.
+		if ( ! $no_cache && $generation === $this->blocks_result_cache_generation ) {
 			$this->blocks_result_cache[ $result_cache_key ] = $result;
 		}
 
@@ -1305,6 +1311,7 @@ class LazyBlocks_Blocks {
 	 */
 	private function clear_blocks_result_cache() {
 		$this->blocks_result_cache = array();
+		++$this->blocks_result_cache_generation;
 	}
 
 	/**

@@ -203,19 +203,23 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 	}
 
 	public function test_get_blocks_filter_callback_can_add_a_block() {
-		$added = false;
+		$added         = false;
+		$nested_lookup = null;
 
-		$add_from_filter = function( $blocks ) use ( &$added ) {
+		$add_from_filter = function( $blocks ) use ( &$added, &$nested_lookup ) {
 			if ( ! $added ) {
 				$added = true;
 				lazyblocks()->add_block( array(
 					'slug' => 'lazyblock/added-inside-filter',
 				) );
+				$nested_lookup = lazyblocks()->blocks()->get_block( 'lazyblock/added-inside-filter' );
 			}
 
 			return $blocks;
 		};
 
+		// register_block() already filled the cache on init.
+		lazyblocks()->blocks()->clear_blocks_cache();
 		add_filter( 'lzb/get_blocks', $add_from_filter );
 
 		lazyblocks()->blocks()->get_blocks();
@@ -224,6 +228,7 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 		remove_filter( 'lzb/get_blocks', $add_from_filter );
 		lazyblocks()->blocks()->remove_block( 'lazyblock/added-inside-filter' );
 
+		$this->assertNotNull( $nested_lookup );
 		$this->assertNotNull( $block );
 	}
 
