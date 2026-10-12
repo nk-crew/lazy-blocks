@@ -96,6 +96,9 @@ class LazyBlocks_WPML {
 			 */
 			$translated_controls = apply_filters( 'lzb/wpml/translated_attributes', $translated_controls, $block );
 
+			// A block with no translatable control is declared too, with translate="0".
+			// Otherwise WPML sees an unconfigured block and offers all its attributes
+			// for translation (select values, colors, block IDs).
 			if ( ! empty( $translated_controls ) ) {
 				$config['wpml-config']['gutenberg-blocks']['gutenberg-block'][] = array(
 					'value' => '',
@@ -104,6 +107,14 @@ class LazyBlocks_WPML {
 						'translate' => '1',
 					),
 					'key'   => $translated_controls,
+				);
+			} else {
+				$config['wpml-config']['gutenberg-blocks']['gutenberg-block'][] = array(
+					'value' => '',
+					'attr'  => array(
+						'type'      => $block['slug'],
+						'translate' => '0',
+					),
 				);
 			}
 		}
