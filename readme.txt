@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.1
 * Requires PHP: 8.0
-* Stable tag: 4.4.1
+* Stable tag: 4.4.2
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,14 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.4.2 - Oct 12, 2026 =
+
+* improved page and editor loading speed on sites with many blocks
+* fixed WPML offering block settings such as select values, colors and block IDs for translation when no control of the block is marked **Translate**
+* **Pro:**
+* improved page loading speed on sites with a few dozen blocks or more, which could take several seconds since Pro 4.1
+* fixed a failed plugin update on the Plugins screen holding back the other updates queued after it until the page was reloaded
 
 = 4.4.1 - Aug 31, 2026 =
 

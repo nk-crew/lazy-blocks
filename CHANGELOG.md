@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.4.2 - Oct 12, 2026 =
+
+* improved page and editor loading speed on sites with many blocks
+* fixed WPML offering block settings such as select values, colors and block IDs for translation when no control of the block is marked **Translate**
+* **Pro:**
+* improved page loading speed on sites with a few dozen blocks or more, which could take several seconds since Pro 4.1
+* fixed a failed plugin update on the Plugins screen holding back the other updates queued after it until the page was reloaded
+
 = 4.4.1 - Aug 31, 2026 =
 
 * changed Lazy Blocks to stay active next to Lazy Blocks Pro instead of being deactivated
