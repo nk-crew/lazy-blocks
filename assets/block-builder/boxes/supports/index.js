@@ -3,7 +3,7 @@
  * WordPress dependencies.
  */
 
-import { BaseControl, ToggleControl } from '@wordpress/components';
+import { BaseControl, Notice, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -68,6 +68,28 @@ function updateObjectSupports(
 	}
 }
 
+// Supports that core applies to the block wrapper element.
+const STYLE_SUPPORT_KEYS = [
+	'supports_color',
+	'supports_typography',
+	'supports_spacing',
+	'supports_dimensions',
+	'supports_border',
+	'supports_background',
+	'supports_shadow',
+	'supports_filter',
+	'supports_position',
+];
+
+// Same marker test as the PHP renderer in classes/class-blocks.php.
+function hasUseBlockProps(code) {
+	return /<\w+[^>]*\s+useBlockProps[^>]*>/.test(code || '');
+}
+
+function isSupportEnabled(value) {
+	return !!value && value !== 'false';
+}
+
 export default function SupportsSettings(props) {
 	const { data, updateData } = props;
 
@@ -77,6 +99,11 @@ export default function SupportsSettings(props) {
 		supports_spacing: supportsSpacing,
 		supports_dimensions: supportsDimensions,
 		supports_shadow: supportsShadow,
+		supports_border: supportsBorder,
+		supports_background: supportsBackground,
+		supports_filter: supportsFilter,
+		supports_position: supportsPosition,
+		supports_interactivity: supportsInteractivity,
 		supports_layout: supportsLayout,
 		supports_align: supportsAlign,
 		supports_anchor: supportsAnchor,
@@ -110,7 +137,11 @@ export default function SupportsSettings(props) {
 
 	const spacingOptions = ['margin', 'padding', 'blockGap'];
 
-	const dimensionsOptions = ['aspectRatio', 'minHeight'];
+	const dimensionsOptions = ['aspectRatio', 'minHeight', 'width', 'height'];
+
+	const borderOptions = ['color', 'radius', 'style', 'width'];
+
+	const backgroundOptions = ['backgroundImage', 'backgroundSize'];
 
 	const typographyOptions = [
 		'fontSize',
@@ -123,10 +154,42 @@ export default function SupportsSettings(props) {
 		'letterSpacing',
 		'textTransform',
 		'writingMode',
+		'textColumns',
+		'textShadow',
 	];
+
+	const codeOutputMethod = data.code_output_method || 'html';
+	const showWrapperHint =
+		codeOutputMethod !== 'template' &&
+		!!data.code_frontend_html &&
+		!hasUseBlockProps(data.code_frontend_html) &&
+		STYLE_SUPPORT_KEYS.some((key) => isSupportEnabled(data[key]));
 
 	return (
 		<>
+			{showWrapperHint ? (
+				<BaseControl>
+					<Notice
+						status="info"
+						isDismissible={false}
+						className="lzb-block-builder-notice"
+					>
+						<p>
+							{__(
+								'Style supports are applied to the block wrapper. Your frontend code has no element with the useBlockProps attribute, so the styles go to an extra <div> wrapper. Add useBlockProps to your root element to style it directly.',
+								'lazy-blocks'
+							)}{' '}
+							<a
+								href="https://www.lazyblocks.com/docs/blocks-code/use-block-props/"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{__('Read More', 'lazy-blocks')}
+							</a>
+						</p>
+					</Notice>
+				</BaseControl>
+			) : null}
 			<ToggleControl
 				label={__('Color', 'lazy-blocks')}
 				help={__(
@@ -310,6 +373,88 @@ export default function SupportsSettings(props) {
 					</BaseControl>
 				)}
 			<ToggleControl
+				label={__('Border', 'lazy-blocks')}
+				help={__(
+					'Additional fields to manage block border.',
+					'lazy-blocks'
+				)}
+				checked={isSupportEnabled(supportsBorder)}
+				onChange={(value) => {
+					if (value) {
+						const defaultValue = {};
+						borderOptions.forEach((option) => {
+							defaultValue[option] = true;
+						});
+						updateData({ supports_border: defaultValue });
+					} else {
+						updateData({ supports_border: false });
+					}
+				}}
+			/>
+			{isSupportEnabled(supportsBorder) &&
+				typeof supportsBorder === 'object' && (
+					<BaseControl>
+						<Select
+							isMulti
+							placeholder={__(
+								'Select border options',
+								'lazy-blocks'
+							)}
+							options={createSelectOptions(borderOptions)}
+							value={objectToSelectValues(supportsBorder)}
+							onChange={(value) =>
+								updateObjectSupports(
+									borderOptions,
+									value,
+									updateData,
+									'supports_border'
+								)
+							}
+						/>
+					</BaseControl>
+				)}
+			<ToggleControl
+				label={__('Background', 'lazy-blocks')}
+				help={__(
+					'Additional fields to manage block background image.',
+					'lazy-blocks'
+				)}
+				checked={isSupportEnabled(supportsBackground)}
+				onChange={(value) => {
+					if (value) {
+						const defaultValue = {};
+						backgroundOptions.forEach((option) => {
+							defaultValue[option] = true;
+						});
+						updateData({ supports_background: defaultValue });
+					} else {
+						updateData({ supports_background: false });
+					}
+				}}
+			/>
+			{isSupportEnabled(supportsBackground) &&
+				typeof supportsBackground === 'object' && (
+					<BaseControl>
+						<Select
+							isMulti
+							placeholder={__(
+								'Select background options',
+								'lazy-blocks'
+							)}
+							options={createSelectOptions(backgroundOptions)}
+							value={objectToSelectValues(supportsBackground)}
+							onChange={(value) =>
+								updateObjectSupports(
+									backgroundOptions,
+									value,
+									updateData,
+									'supports_background'
+								)
+							}
+						/>
+					</BaseControl>
+				)}
+			<ToggleControl
 				label={__('Shadow', 'lazy-blocks')}
 				help={__(
 					'Additional fields to manage block shadow.',
@@ -317,6 +462,32 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsShadow}
 				onChange={(value) => updateData({ supports_shadow: value })}
+			/>
+			<ToggleControl
+				label={__('Duotone', 'lazy-blocks')}
+				help={__(
+					'Additional field to apply a duotone filter to the block.',
+					'lazy-blocks'
+				)}
+				checked={isSupportEnabled(supportsFilter)}
+				onChange={(value) =>
+					updateData({
+						supports_filter: value ? { duotone: true } : false,
+					})
+				}
+			/>
+			<ToggleControl
+				label={__('Sticky Position', 'lazy-blocks')}
+				help={__(
+					'Additional field to make the block sticky.',
+					'lazy-blocks'
+				)}
+				checked={isSupportEnabled(supportsPosition)}
+				onChange={(value) =>
+					updateData({
+						supports_position: value ? { sticky: true } : false,
+					})
+				}
 			/>
 			<ToggleControl
 				label={__('Layout', 'lazy-blocks')}
@@ -450,6 +621,17 @@ export default function SupportsSettings(props) {
 				)}
 				checked={supportsLock}
 				onChange={(value) => updateData({ supports_lock: value })}
+			/>
+			<ToggleControl
+				label={__('Interactivity', 'lazy-blocks')}
+				help={__(
+					'Process Interactivity API directives in the block output.',
+					'lazy-blocks'
+				)}
+				checked={!!supportsInteractivity}
+				onChange={(value) =>
+					updateData({ supports_interactivity: value })
+				}
 			/>
 		</>
 	);
