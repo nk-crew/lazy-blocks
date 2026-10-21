@@ -7,6 +7,7 @@ import { createBlock } from '@wordpress/blocks';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 import { doAction } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 import { registerPlugin } from '@wordpress/plugins';
 
 export default function UpdateEditor() {
@@ -55,6 +56,7 @@ export default function UpdateEditor() {
 	const { editPost } = editorDispatch;
 	const switchEditorMode =
 		editorDispatch.switchEditorMode || editPostDispatch.switchEditorMode;
+	const { createErrorNotice, removeNotice } = useDispatch('core/notices');
 
 	/**
 	 * Force change gutenberg edit mode to Visual.
@@ -146,6 +148,7 @@ export default function UpdateEditor() {
 	 */
 	const wasSavingPost = useRef(false);
 	const wasAutosavingPost = useRef(false);
+	const lastSaveRequest = useRef(0);
 	useEffect(() => {
 		const shouldUpdate =
 			wasSavingPost.current &&
@@ -157,6 +160,9 @@ export default function UpdateEditor() {
 		wasAutosavingPost.current = isAutosavingPost;
 
 		if (shouldUpdate) {
+			lastSaveRequest.current += 1;
+			const saveRequest = lastSaveRequest.current;
+
 			apiFetch({
 				path: '/lazy-blocks/v1/update-block-data/',
 				method: 'POST',
@@ -164,10 +170,26 @@ export default function UpdateEditor() {
 					data: blockData,
 					post_id: postId,
 				},
-			}).catch((response) => {
-				// eslint-disable-next-line
-				console.log(response);
-			});
+			})
+				.then(() => {
+					// An older request must not hide the error of a newer one.
+					if (saveRequest === lastSaveRequest.current) {
+						removeNotice('lzb-update-block-data');
+					}
+				})
+				.catch((response) => {
+					createErrorNotice(
+						response?.message ||
+							__(
+								'Block settings could not be saved.',
+								'lazy-blocks'
+							),
+						{
+							id: 'lzb-update-block-data',
+							isDismissible: true,
+						}
+					);
+				});
 		}
 
 		doAction('lzb.constructor.post-change', {
@@ -177,7 +199,14 @@ export default function UpdateEditor() {
 			blockData,
 			postId,
 		});
-	}, [isSavingPost, isAutosavingPost, postId, blockData]);
+	}, [
+		isSavingPost,
+		isAutosavingPost,
+		postId,
+		blockData,
+		createErrorNotice,
+		removeNotice,
+	]);
 
 	return null;
 }
