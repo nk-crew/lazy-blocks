@@ -1837,13 +1837,21 @@ class LazyBlocks_Blocks {
 				'api_version'     => 3,
 				'attributes'      => $attributes,
 				'supports'        => $block['supports'],
-				'render_callback' => function ( $render_attributes, $render_content = null ) {
+				'render_callback' => function ( $render_attributes, $render_content = null, $block_instance = null ) {
 					// Usually this context is used to properly preload content in the Pro plugin.
 					$render_location = is_admin() ? 'editor' : 'frontend';
 
-					// We should run our function in this way because Gutenberg
-					// has a 3rd parameter in the `render_callback` which conflicts with ours.
-					return $this->render_callback( $render_attributes, null, $render_content, $render_location );
+					// Pass only the keys the block declares in `uses_context`: core's render_block_context
+					// filter (Query Loop, Comment Template) adds keys to every inner block regardless.
+					// Blocks without them keep getting null, as before.
+					$context = null;
+
+					if ( $block_instance instanceof WP_Block && ! empty( $block_instance->block_type->uses_context ) ) {
+						$context = array_intersect_key( $block_instance->context, array_flip( $block_instance->block_type->uses_context ) );
+						$context = empty( $context ) ? null : $context;
+					}
+
+					return $this->render_callback( $render_attributes, $context, $render_content, $render_location );
 				},
 				'example'         => array(),
 				'styles'          => $block['styles'],
@@ -2032,6 +2040,10 @@ class LazyBlocks_Blocks {
 			return null;
 		}
 
+		// Rendered inner blocks are swapped in after the useBlockProps parsing, so the parser only
+		// walks the template output. Inner content with its own marker keeps the old order.
+		$inner_blocks_html = array();
+
 		// Replace the <InnerBlocks /> with the block content.
 		if ( 'frontend' === $render_location ) {
 			// Add inner-blocks wrapper with class lazyblock-inner-blocks.
@@ -2040,16 +2052,7 @@ class LazyBlocks_Blocks {
 			$allow_inner_blocks_wrapper = apply_filters( $block['slug'] . '/allow_inner_blocks_wrapper', $allow_inner_blocks_wrapper, $attributes, $context );
 
 			if ( $allow_inner_blocks_wrapper ) {
-				// Check for a class/className attribute provided in the template to become the InnerBlocks wrapper class.
-				$matches = array();
-
-				if ( preg_match( '/<InnerBlocks(?:[^<]+?)(?:class|className)=(?:["\']\W+\s*(?:\w+)\()?["\']([^\'"]+)[\'"]/', $result, $matches ) ) {
-					$class = isset( $matches[1] ) ? $matches[1] : 'lazyblock-inner-blocks';
-				} else {
-					$class = 'lazyblock-inner-blocks';
-				}
-
-				$content = '<div class="' . $class . '">' . $content . '</div>';
+				$content = '<div class="' . $this->get_inner_blocks_class( $result ) . '">' . $content . '</div>';
 			}
 
 			// Escape "$" to prevent it's replacement with preg_replace.
@@ -2057,7 +2060,23 @@ class LazyBlocks_Blocks {
 			// and the wrapper above is disabled by a filter (null is deprecated since PHP 8.1).
 			$content = str_replace( '$', '\$', (string) $content );
 
-			$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
+			if ( false === stripos( $content, 'useblockprops' ) ) {
+				$inner_blocks_placeholder = 'lzb-inner-blocks-' . bin2hex( random_bytes( 6 ) ) . '-';
+				$result                   = preg_replace_callback(
+					'/<InnerBlocks([\S\s]*?)\/>/',
+					function ( $matches ) use ( $content, $inner_blocks_placeholder, &$inner_blocks_html ) {
+						$key = $inner_blocks_placeholder . count( $inner_blocks_html );
+
+						// The same replacement as below, including what $n references in $content resolve to.
+						$inner_blocks_html[ $key ] = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $matches[0] );
+
+						return $key;
+					},
+					$result
+				);
+			} else {
+				$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
+			}
 		}
 
 		// DEPRECATED filter to remove wrapper from block frontend code.
@@ -2092,48 +2111,131 @@ class LazyBlocks_Blocks {
 			);
 		}
 
-		$has_block_props = preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result );
-
 		// If user didn't add useBlockProps, add our wrapper with useBlockProps attribute to parse it later.
-		if ( $allow_wrapper && ! $has_block_props ) {
+		$is_own_wrapper = $allow_wrapper && ! $this->has_block_props_marker( $result );
+		if ( $is_own_wrapper ) {
 			$result = '<div useBlockProps>' . $result . '</div>';
 		}
 
 		// Parse any useBlockProps (whether added by user or by us) on frontend only.
-		if ( 'frontend' === $render_location && preg_match( '/<(\w+)([^>]*)\s+useBlockProps([^>]*)>/', $result, $matches ) ) {
-			$tag_name     = isset( $matches[1] ) ? $matches[1] : 'div';
-			$before_attrs = isset( $matches[2] ) ? $matches[2] : '';
-			$after_attrs  = isset( $matches[3] ) ? $matches[3] : '';
+		if ( 'frontend' === $render_location ) {
+			$result = $this->apply_block_props_marker( $result, $attributes, $is_own_wrapper );
+		}
 
-			// Combine all attributes.
-			$combined_attrs = $before_attrs . ' ' . $after_attrs;
+		if ( ! empty( $inner_blocks_html ) ) {
+			$result = strtr( $result, $inner_blocks_html );
+		}
 
-			// Extract attributes.
+		// add filter for block output.
+		$result = apply_filters( 'lzb/block_render/output', $result, $attributes, $render_location, $block, $context, $content );
+		// phpcs:ignore
+		$result = apply_filters( $block['slug'] . '/' . $render_location . '_output', $result, $attributes, $block, $context, $content );
+		// phpcs:ignore
+		$result = apply_filters( $block['slug'] . '/output', $result, $attributes, $render_location, $block, $context, $content );
+
+		return $result;
+	}
+
+	/**
+	 * Get the wrapper class for the inner blocks from the `class` or `className`
+	 * attribute of the <InnerBlocks /> tag in the block output.
+	 *
+	 * @param string $html - block output.
+	 *
+	 * @return string Escaped class.
+	 */
+	public function get_inner_blocks_class( $html ) {
+		$processor = new WP_HTML_Tag_Processor( (string) $html );
+
+		// Uppercase: before WP 6.7 the processor matched the tag name only against an uppercase query.
+		if ( $processor->next_tag( 'INNERBLOCKS' ) ) {
+			foreach ( $processor->get_attribute_names_with_prefix( '' ) as $name ) {
+				if ( 'class' !== $name && 'classname' !== $name ) {
+					continue;
+				}
+
+				$class = $processor->get_attribute( $name );
+
+				if ( is_string( $class ) && '' !== $class ) {
+					// A call expression like `{ fn('x') }` gives `x`, as 4.4.2 did.
+					if ( preg_match( '/^\W+\s*\w+\(["\']([^\'"]+)["\']/', $class, $matches ) ) {
+						$class = $matches[1];
+					}
+
+					return esc_attr( $class );
+				}
+			}
+		}
+
+		return 'lazyblock-inner-blocks';
+	}
+
+	/**
+	 * Check if the block output has a tag with the `useBlockProps` attribute.
+	 *
+	 * @param string $html - block output.
+	 *
+	 * @return bool
+	 */
+	public function has_block_props_marker( $html ) {
+		if ( false === stripos( (string) $html, 'useblockprops' ) ) {
+			return false;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( (string) $html );
+
+		while ( $processor->next_tag() ) {
+			if ( null !== $processor->get_attribute( 'useblockprops' ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Replace every tag with the `useBlockProps` attribute by the same tag with
+	 * the block wrapper attributes merged into its own attributes.
+	 *
+	 * @param string $html - block output.
+	 * @param array  $attributes - block attributes.
+	 * @param bool   $first_only - stop after the first marked tag, for the wrapper this class adds around a template without markers.
+	 *
+	 * @return string
+	 */
+	public function apply_block_props_marker( $html, $attributes, $first_only = false ) {
+		if ( false === stripos( (string) $html, 'useblockprops' ) ) {
+			return $html;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( (string) $html );
+		$token     = 'lzb' . bin2hex( random_bytes( 6 ) );
+		$wrappers  = array();
+
+		while ( $processor->next_tag() ) {
+			if ( null === $processor->get_attribute( 'useblockprops' ) ) {
+				continue;
+			}
+
+			// Order is class, id, then the rest as in the source, the order 4.x printed them in.
 			$array_atts = array(
 				'class' => '',
 			);
+			$names      = $processor->get_attribute_names_with_prefix( '' );
 
-			// Extract class attribute if exists.
-			$class_matches = array();
-			if ( preg_match( '/class=["\'](.*?)["\']/', $combined_attrs, $class_matches ) ) {
-				$array_atts['class'] = $class_matches[1];
+			if ( in_array( 'id', $names, true ) ) {
+				$array_atts['id'] = '';
 			}
 
-			// Extract id attribute if exists.
-			$id_matches = array();
-			if ( preg_match( '/id=["\'](.*?)["\']/', $combined_attrs, $id_matches ) ) {
-				$array_atts['id'] = $id_matches[1];
-			}
-
-			// Extract other attributes like data-* attributes.
-			$attr_matches = array();
-			if ( preg_match_all( '/(\w+(?:-\w+)*)=["\'](.*?)["\']/', $combined_attrs, $attr_matches, PREG_SET_ORDER ) ) {
-				foreach ( $attr_matches as $attr_match ) {
-					// Skip class and id as we've already handled them.
-					if ( 'class' !== $attr_match[1] && 'id' !== $attr_match[1] ) {
-						$array_atts[ $attr_match[1] ] = $attr_match[2];
-					}
+			foreach ( $names as $name ) {
+				if ( 'useblockprops' === $name ) {
+					continue;
 				}
+
+				$value = $processor->get_attribute( $name );
+
+				// A boolean attribute (no value) is printed as name="".
+				$array_atts[ $name ] = true === $value ? '' : $value;
 			}
 
 			// Add block unique class.
@@ -2164,25 +2266,32 @@ class LazyBlocks_Blocks {
 				$array_atts['id'] = esc_attr( $attributes['anchor'] );
 			}
 
-			// Get block wrapper attributes.
-			$html_atts = get_block_wrapper_attributes( $array_atts );
+			// The tag processor can edit attributes but not rewrite a whole tag, so strip
+			// the tag down to a sentinel attribute and swap the whole tag below.
+			foreach ( $names as $name ) {
+				$processor->remove_attribute( $name );
+			}
+			$processor->set_attribute( 'data-lzb-block-props', $token . '-' . count( $wrappers ) );
 
-			// Replace the original tag with useBlockProps with the new one.
-			$result = preg_replace(
-				'/<' . $tag_name . '[^>]*\s+useBlockProps[^>]*>/',
-				'<' . $tag_name . ' ' . $html_atts . '>',
-				$result
-			);
+			$wrappers[] = $array_atts;
+
+			if ( $first_only ) {
+				break;
+			}
 		}
 
-		// add filter for block output.
-		$result = apply_filters( 'lzb/block_render/output', $result, $attributes, $render_location, $block, $context, $content );
-		// phpcs:ignore
-		$result = apply_filters( $block['slug'] . '/' . $render_location . '_output', $result, $attributes, $block, $context, $content );
-		// phpcs:ignore
-		$result = apply_filters( $block['slug'] . '/output', $result, $attributes, $render_location, $block, $context, $content );
+		if ( empty( $wrappers ) ) {
+			return $html;
+		}
 
-		return $result;
+		return preg_replace_callback(
+			// Before WP 6.3 remove_attribute() leaves duplicate attributes, so skip quoted values to find the tag end.
+			'/<([^\s\/>]+)\s+data-lzb-block-props="' . preg_quote( $token, '/' ) . '-(\d+)"(?:[^>"\']|"[^"]*"|\'[^\']*\')*>/',
+			function ( $matches ) use ( $wrappers ) {
+				return '<' . $matches[1] . ' ' . get_block_wrapper_attributes( $wrappers[ (int) $matches[2] ] ) . '>';
+			},
+			$processor->get_updated_html()
+		);
 	}
 
 	/**
