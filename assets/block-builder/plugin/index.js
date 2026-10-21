@@ -29,7 +29,10 @@ export default function UpdateEditor() {
 
 		const { getSelectedBlock, getBlocks } = select('core/block-editor');
 
-		const { getEditorMode } = select('core/edit-post');
+		// core/editor has getEditorMode since WP 6.5, core/edit-post keeps a deprecated copy.
+		const { getEditorMode } = select('core/editor').getEditorMode
+			? select('core/editor')
+			: select('core/edit-post');
 
 		const { getBlockData } = select('lazy-blocks/block-data');
 
@@ -47,15 +50,18 @@ export default function UpdateEditor() {
 
 	const { selectBlock, insertBlocks, resetBlocks } =
 		useDispatch('core/block-editor');
-	const { editPost } = useDispatch('core/editor');
-	const { switchEditorMode } = useDispatch('core/edit-post');
+	const editorDispatch = useDispatch('core/editor');
+	const editPostDispatch = useDispatch('core/edit-post');
+	const { editPost } = editorDispatch;
+	const switchEditorMode =
+		editorDispatch.switchEditorMode || editPostDispatch.switchEditorMode;
 
 	/**
 	 * Force change gutenberg edit mode to Visual.
 	 */
 	useEffect(() => {
 		if (editorSettings.richEditingEnabled && editorMode === 'text') {
-			switchEditorMode();
+			switchEditorMode('visual');
 		}
 	}, [editorSettings, editorMode, switchEditorMode]);
 

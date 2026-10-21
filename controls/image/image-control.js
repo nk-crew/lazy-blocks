@@ -3,6 +3,7 @@
  * WordPress dependencies.
  */
 
+import { isBlobURL } from '@wordpress/blob';
 import { MediaPlaceholder } from '@wordpress/block-editor';
 import {
 	BaseControl,
@@ -95,6 +96,11 @@ function ImageControl(props) {
 							name: __('image', 'lazy-blocks'),
 						}}
 						onSelect={(image) => {
+							// Uploads report a temporary blob URL first, keep the placeholder until the attachment arrives.
+							if (isBlobURL(image?.url)) {
+								return;
+							}
+
 							onChange(image);
 						}}
 						onSelectURL={
@@ -121,6 +127,10 @@ function ImageControl(props) {
 									allowedTypes: ALLOWED_MEDIA_TYPES,
 									filesList: files,
 									onFileChange: (image) => {
+										if (isBlobURL(image[0]?.url)) {
+											return;
+										}
+
 										onChange(image[0]);
 									},
 									onError: (message) => {

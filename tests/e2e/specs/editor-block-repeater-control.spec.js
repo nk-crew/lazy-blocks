@@ -86,6 +86,51 @@ test.describe('editor block with Repeater control', () => {
 		await expect(page.locator(`#post-${blockID}`)).toBeVisible();
 	});
 
+	test('toggles a row from the keyboard', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		await manuallyAddRepeaterBlock(page, editor, admin, requestUtils);
+
+		await admin.createNewPost();
+
+		await insertLazyBlock({
+			page,
+			editor,
+			name: 'lazyblock/test-repeater-block',
+		});
+
+		await page.getByRole('button', { name: '+ Add Row' }).click();
+		await page.getByRole('button', { name: '+ Add Row' }).click();
+
+		const rows = page.locator('.lzb-gutenberg-repeater-btn');
+		await expect(rows).toHaveCount(2);
+
+		// A new row opens itself, so the second row is the open one.
+		await expect(rows.nth(1)).toHaveClass(
+			/lzb-gutenberg-repeater-btn-active/
+		);
+
+		await rows.nth(0).focus();
+		await page.keyboard.press('Enter');
+
+		await expect(rows.nth(0)).toHaveClass(
+			/lzb-gutenberg-repeater-btn-active/
+		);
+		await expect(rows.nth(1)).not.toHaveClass(
+			/lzb-gutenberg-repeater-btn-active/
+		);
+
+		await page.keyboard.press('Space');
+
+		await expect(rows.nth(0)).not.toHaveClass(
+			/lzb-gutenberg-repeater-btn-active/
+		);
+		await expect(page.getByLabel('Text control nested in')).toHaveCount(0);
+	});
+
 	test('should render Repeater block correctly', async ({
 		page,
 		editor,

@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright
+    name: Playwright${{ matrix.wordpress == 'trunk' && ' (WordPress trunk)' || '' }}
     # 2 vCPU, not 4. `workers: 1` does not make this job single-threaded -- the
     # browser and the wp-env stack use the other cores, and measuring the switch
     # showed `playwright test` getting 40-70% slower. It still wins: Blacksmith
@@ -30,6 +30,14 @@ jobs:
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # `latest` runs the WordPress version from .wp-env.json. `trunk` runs
+        # WordPress/WordPress, which tracks core trunk and carries the next beta.
+        wordpress: ['latest', 'trunk']
+    env:
+      WP_ENV_CORE: ${{ matrix.wordpress == 'trunk' && 'WordPress/WordPress' || '' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -68,6 +76,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ failure() && !cancelled() }}
         with:
-          name: failures-artifacts
+          name: failures-artifacts${{ matrix.wordpress == 'trunk' && '-wp-trunk' || '' }}
           path: artifacts/test-results
           if-no-files-found: ignore

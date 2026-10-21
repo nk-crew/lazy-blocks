@@ -60,7 +60,15 @@ const RepeaterItem = (props) => {
 					props.active ? ' lzb-gutenberg-repeater-btn-active' : ''
 				}`}
 				onClick={props.onToggle}
-				onKeyDown={() => {}}
+				onKeyDown={(e) => {
+					// Keys pressed on the nested drag/duplicate/remove buttons are theirs.
+					if (
+						e.target === e.currentTarget &&
+						(e.key === 'Enter' || e.key === ' ')
+					) {
+						props.onToggle(e);
+					}
+				}}
 				role="button"
 				tabIndex={0}
 			>
