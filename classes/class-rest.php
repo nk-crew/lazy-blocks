@@ -158,7 +158,15 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|true
 	 */
 	public function update_block_data_permission( $request ) {
-		return $this->get_block_data_permission( $request );
+		$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+		$post    = 0 < $post_id ? get_post( $post_id ) : null;
+
+		// Block data is stored only on block builder posts.
+		if ( ! $post || 'lazyblocks' !== $post->post_type || ! current_user_can( 'edit_post', $post->ID ) ) {
+			return $this->error( 'lazy_block_data_cannot_update', esc_html__( 'Sorry, you are not allowed to update this block data.', 'lazy-blocks' ), true );
+		}
+
+		return true;
 	}
 
 	/**
@@ -182,10 +190,8 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|true
 	 */
 	public function block_builder_preview_permission( $request ) {
-		$base_permission = $this->get_block_data_permission( $request );
-
-		if ( is_wp_error( $base_permission ) || true !== $base_permission ) {
-			return $base_permission;
+		if ( ! current_user_can( 'edit_lazyblocks' ) ) {
+			return $this->error( 'lazy_block_cannot_preview', esc_html__( 'Sorry, you are not allowed to preview blocks in the block builder.', 'lazy-blocks' ), true );
 		}
 
 		// Check if the block uses PHP output method and requires unfiltered_html capability.
@@ -380,7 +386,13 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		try {
 			$block_result = lazyblocks()->blocks()->render_callback( $attributes, null, null, $context, $block_data );
 		} catch ( Throwable $e ) {
-			return $this->error( 'lazy_block_render_failed', $e->getMessage() . PHP_EOL . PHP_EOL . $e->getTraceAsString() );
+			$message = $e->getMessage();
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$message .= PHP_EOL . PHP_EOL . $e->getTraceAsString();
+			}
+
+			return $this->error( 'lazy_block_render_failed', $message );
 		}
 
 		if ( isset( $block_result ) && null !== $block_result ) {
@@ -417,7 +429,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 */
 	public function error( $code, $response, $true_error = false ) {
 		if ( $true_error ) {
-			return new WP_Error( $code, $response, array( 'status' => 401 ) );
+			return new WP_Error( $code, $response, array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return new WP_REST_Response(
