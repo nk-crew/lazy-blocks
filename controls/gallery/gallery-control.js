@@ -2,6 +2,7 @@
  * WordPress dependencies.
  */
 
+import { isBlobURL } from '@wordpress/blob';
 import { MediaPlaceholder, MediaUpload } from '@wordpress/block-editor';
 import { Button, DropZone, Tooltip, withNotices } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
@@ -213,6 +214,11 @@ function GalleryControl(props) {
 						name: __('images', 'lazy-blocks'),
 					}}
 					onSelect={(images) => {
+						// Uploads report temporary blob URLs first, keep the placeholder until the attachments arrive.
+						if (images.some((image) => isBlobURL(image?.url))) {
+							return;
+						}
+
 						onChange(images);
 					}}
 					notices={noticeUI}
@@ -247,6 +253,14 @@ function GalleryControl(props) {
 										allowedTypes: ALLOWED_MEDIA_TYPES,
 										filesList: files,
 										onFileChange: (images) => {
+											if (
+												images.some((image) =>
+													isBlobURL(image?.url)
+												)
+											) {
+												return;
+											}
+
 											onChange(
 												currentImages.concat(images)
 											);

@@ -155,6 +155,7 @@ class LazyBlocks_Control {
 				}
 
 				foreach ( (array) $this->get_script_depends() as $script ) {
+					self::add_vendor_dependency( $script );
 					wp_enqueue_script( $script );
 				}
 			},
@@ -181,6 +182,33 @@ class LazyBlocks_Control {
 			},
 			11
 		);
+	}
+
+	/**
+	 * Make a control script of this plugin depend on the shared controls vendor chunk.
+	 * Webpack moves libraries used by several controls (dnd-kit, array-move) into
+	 * build/controls-vendor.js, and every build/control-* script waits for it to load.
+	 *
+	 * @param string $handle script handle.
+	 */
+	private static function add_vendor_dependency( $handle ) {
+		if ( 0 !== strpos( $handle, 'lazyblocks-control-' ) ) {
+			return;
+		}
+
+		$script = wp_scripts()->query( $handle, 'registered' );
+
+		if ( ! $script ) {
+			return;
+		}
+
+		if ( ! wp_script_is( 'lazyblocks-controls-vendor', 'registered' ) ) {
+			LazyBlocks_Assets::register_script( 'lazyblocks-controls-vendor', 'build/controls-vendor' );
+		}
+
+		if ( ! in_array( 'lazyblocks-controls-vendor', $script->deps, true ) ) {
+			$script->deps[] = 'lazyblocks-controls-vendor';
+		}
 	}
 
 	/**

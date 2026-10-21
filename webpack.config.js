@@ -70,6 +70,31 @@ const newConfig = {
 
 		// Display minimum info in terminal.
 		stats: 'minimal',
+
+		optimization: {
+			...defaultConfig.optimization,
+			splitChunks: {
+				...defaultConfig.optimization.splitChunks,
+				cacheGroups: {
+					...defaultConfig.optimization.splitChunks.cacheGroups,
+					// All control scripts load together in the editor, so libraries
+					// several of them use (dnd-kit, array-move, classnames) ship once in this chunk.
+					// PHP adds it as a dependency of every control script.
+					controlsVendor: {
+						name: 'controls-vendor',
+						// JS only: styles stay in each control's own CSS file.
+						test: (module) =>
+							module.type.startsWith('javascript') &&
+							/[\\/]node_modules[\\/]/.test(
+								module.resource || ''
+							),
+						chunks: (chunk) => /^control-/.test(chunk.name),
+						minChunks: 2,
+						enforce: true,
+					},
+				},
+			},
+		},
 	},
 	plugins: [
 		...defaultConfig.plugins,

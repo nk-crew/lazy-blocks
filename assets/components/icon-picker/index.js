@@ -1,21 +1,21 @@
-/* eslint-disable max-classes-per-file */
 /**
  * Styles.
  */
 import './editor.scss';
-import 'react-virtualized/styles.css';
 
+import apiFetch from '@wordpress/api-fetch';
 import {
 	BaseControl,
 	Button,
 	Dropdown,
 	G,
 	Path,
+	Spinner,
 	SVG,
 	TextControl,
 	Tooltip,
 } from '@wordpress/components';
-import { Fragment, useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * WordPress dependencies.
@@ -25,17 +25,60 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import classnames from 'classnames/dedupe';
-import {
-	AutoSizer,
-	CellMeasurer,
-	CellMeasurerCache,
-	List,
-} from 'react-virtualized';
 
-const { icons } =
-	window.lazyblocksBlockBuilderData || window.lazyblocksGutenberg;
+// Icons are rendered in batches while the list scrolls, rendering all ~900 SVGs at once lags.
+const ICONS_BATCH = 60;
 
-// we need this lazy loading component to prevent a huge lags while first loading SVG icons
+// The icons list is localized only on the block builder screen, other screens
+// fetch it once per page when a picker opens.
+let fetchedIcons = null;
+let iconsRequest = null;
+
+function fetchIcons() {
+	if (!iconsRequest) {
+		iconsRequest = apiFetch({ path: '/lazy-blocks/v1/get-icons/' }).then(
+			(resp) => {
+				fetchedIcons = resp?.response || {};
+				return fetchedIcons;
+			},
+			(err) => {
+				// Let the next open retry.
+				iconsRequest = null;
+				throw err;
+			}
+		);
+	}
+
+	return iconsRequest;
+}
+
+function useIcons() {
+	const [state, setState] = useState(() => {
+		const icons = window.lazyblocksBlockBuilderData?.icons || fetchedIcons;
+
+		return icons ? { icons } : { isLoading: true };
+	});
+
+	useEffect(() => {
+		if (!state.isLoading) {
+			return undefined;
+		}
+
+		let isMounted = true;
+
+		fetchIcons().then(
+			(icons) => isMounted && setState({ icons }),
+			() => isMounted && setState({ hasError: true })
+		);
+
+		return () => {
+			isMounted = false;
+		};
+	}, [state.isLoading]);
+
+	return state;
+}
+
 function Icon({ svg, onClick, active }) {
 	return (
 		<IconPicker.Preview
@@ -51,10 +94,206 @@ function Icon({ svg, onClick, active }) {
 
 const hiddenIconCategories = {};
 
-const cellMCache = new CellMeasurerCache({
-	defaultHeight: 65,
-	fixedWidth: true,
-});
+function CategoryToggle({ categoryName, showCategory, onToggle }) {
+	return (
+		// Used PanelBody https://github.com/WordPress/gutenberg/blob/master/packages/components/src/panel/body.js.
+		<div
+			className={classnames(
+				'components-panel__body lazyblocks-component-icon-picker-list-panel-toggle',
+				showCategory ? 'is-opened' : ''
+			)}
+		>
+			<h2 className="components-panel__body-title">
+				<Button
+					className="components-panel__body-toggle"
+					onClick={onToggle}
+					aria-expanded={showCategory}
+				>
+					{/*
+						Firefox + NVDA don't announce aria-expanded because the browser
+						repaints the whole element, so this wrapping span hides that.
+					*/}
+					<span aria-hidden="true">
+						{showCategory ? (
+							<SVG
+								className="components-panel__arrow"
+								width="24px"
+								height="24px"
+								viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<G>
+									<Path fill="none" d="M0,0h24v24H0V0z" />
+								</G>
+								<G>
+									<Path d="M12,8l-6,6l1.41,1.41L12,10.83l4.59,4.58L18,14L12,8z" />
+								</G>
+							</SVG>
+						) : (
+							<SVG
+								className="components-panel__arrow"
+								width="24px"
+								height="24px"
+								viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<G>
+									<Path fill="none" d="M0,0h24v24H0V0z" />
+								</G>
+								<G>
+									<Path d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z" />
+								</G>
+							</SVG>
+						)}
+					</span>
+					{categoryName.charAt(0).toUpperCase() +
+						categoryName.slice(1)}
+				</Button>
+			</h2>
+		</div>
+	);
+}
+
+function IconPickerList({
+	value,
+	onChange,
+	search,
+	setSearch,
+	hiddenCategories,
+	setHiddenCategories,
+}) {
+	const [limit, setLimit] = useState(ICONS_BATCH);
+	const scrollRef = useRef();
+
+	const { icons = {}, isLoading, hasError } = useIcons();
+	const searchString = search.toLowerCase();
+	const categories = [];
+	let rendered = 0;
+	let hasMore = false;
+
+	Object.keys(icons).some((categoryName) => {
+		const iconNames = Object.keys(icons[categoryName]).filter(
+			(iconName) => !searchString || iconName.indexOf(searchString) > -1
+		);
+
+		if (!iconNames.length) {
+			return false;
+		}
+
+		if (rendered >= limit) {
+			hasMore = true;
+			return true;
+		}
+
+		const showCategory =
+			typeof hiddenCategories[categoryName] !== 'undefined'
+				? hiddenCategories[categoryName]
+				: true;
+		let visibleNames = [];
+
+		if (showCategory) {
+			visibleNames = iconNames.slice(0, limit - rendered);
+			rendered += visibleNames.length;
+			hasMore = hasMore || visibleNames.length < iconNames.length;
+		}
+
+		categories.push({ categoryName, showCategory, visibleNames });
+
+		return false;
+	});
+
+	function maybeLoadMore() {
+		const el = scrollRef.current;
+
+		if (
+			hasMore &&
+			el &&
+			el.scrollTop + el.clientHeight >= el.scrollHeight - 200
+		) {
+			setLimit(limit + ICONS_BATCH);
+		}
+	}
+
+	// Load the next batch when the rendered icons do not fill the popover.
+	useEffect(() => {
+		maybeLoadMore();
+	});
+
+	return (
+		<>
+			<div className="lazyblocks-component-icon-picker-sizer" />
+			<div
+				className="lazyblocks-component-icon-picker"
+				ref={scrollRef}
+				onScroll={maybeLoadMore}
+			>
+				<div className="lazyblocks-component-icon-picker-list-wrap">
+					<TextControl
+						label={__('Search Icon', 'lazy-blocks')}
+						value={search}
+						onChange={(searchVal) => {
+							setSearch(searchVal);
+							setLimit(ICONS_BATCH);
+						}}
+						placeholder={__('Type to Search…', 'lazy-blocks')}
+						autoComplete="off"
+					/>
+					{categories.map(
+						({ categoryName, showCategory, visibleNames }) => (
+							<div key={categoryName}>
+								<CategoryToggle
+									categoryName={categoryName}
+									showCategory={showCategory}
+									onToggle={() => {
+										setHiddenCategories({
+											...hiddenCategories,
+											[categoryName]: !showCategory,
+										});
+									}}
+								/>
+								{visibleNames.length ? (
+									<div className="lazyblocks-component-icon-picker-list">
+										{visibleNames.map((iconName) => {
+											const icon =
+												icons[categoryName][iconName];
+
+											return (
+												<Tooltip
+													key={iconName}
+													text={iconName}
+												>
+													{/* We need this <div> just because Tooltip don't work without it */}
+													<div>
+														<Icon
+															active={
+																icon === value
+															}
+															svg={icon}
+															onClick={() => {
+																onChange(icon);
+															}}
+														/>
+													</div>
+												</Tooltip>
+											);
+										})}
+									</div>
+								) : null}
+							</div>
+						)
+					)}
+					{isLoading ? <Spinner /> : null}
+					{hasError
+						? __('Could not load icons.', 'lazy-blocks')
+						: null}
+					{!isLoading && !hasError && !categories.length
+						? __('No icons found.', 'lazy-blocks')
+						: null}
+				</div>
+			</div>
+		</>
+	);
+}
 
 /**
  * Dropdown
@@ -70,229 +309,22 @@ function IconPickerDropdown(props) {
 	const [hiddenCategories, setHiddenCategories] =
 		useState(hiddenIconCategories);
 
-	useEffect(() => {
-		if (cellMCache) {
-			cellMCache.clearAll();
-		}
-	}, [props]);
-
-	function getDropdownContent() {
-		const rows = [
-			{
-				key: 'form',
-				render: (
-					<Fragment key="form">
-						<TextControl
-							label={__('Search Icon', 'lazy-blocks')}
-							value={search}
-							onChange={(searchVal) => setSearch(searchVal)}
-							placeholder={__('Type to Search…', 'lazy-blocks')}
-							autoComplete="off"
-						/>
-					</Fragment>
-				),
-			},
-		];
-
-		Object.keys(icons).forEach((categoryName) => {
-			const categoryIcons = icons[categoryName];
-			const showCategory =
-				typeof hiddenCategories[categoryName] !== 'undefined'
-					? hiddenCategories[categoryName]
-					: true;
-			const searchString = search.toLowerCase();
-
-			// prepare all icons.
-			const allIcons = Object.keys(categoryIcons)
-				.filter((iconName) => {
-					if (
-						!searchString ||
-						(searchString &&
-							iconName.indexOf(searchString.toLowerCase()) > -1)
-					) {
-						return true;
-					}
-
-					return false;
-				})
-				.map((iconName) => {
-					const icon = categoryIcons[iconName];
-
-					return (
-						<Tooltip key={categoryName + iconName} text={iconName}>
-							{/* We need this <div> just because Tooltip don't work without it */}
-							<div>
-								<Icon
-									active={icon === value}
-									svg={icon}
-									onClick={() => {
-										onChange(icon);
-									}}
-								/>
-							</div>
-						</Tooltip>
-					);
-				});
-
-			if (!allIcons.length) {
-				return;
-			}
-
-			// prepare icons category toggle title.
-			rows.push({
-				key: `title-${categoryName}`,
-				render: (
-					// Used PanelBody https://github.com/WordPress/gutenberg/blob/master/packages/components/src/panel/body.js.
-					<div
-						className={classnames(
-							'components-panel__body lazyblocks-component-icon-picker-list-panel-toggle',
-							showCategory ? 'is-opened' : ''
-						)}
-					>
-						<h2 className="components-panel__body-title">
-							<Button
-								className="components-panel__body-toggle"
-								onClick={() => {
-									setHiddenCategories({
-										...hiddenCategories,
-										[categoryName]: !showCategory,
-									});
-								}}
-								aria-expanded={showCategory}
-							>
-								{/*
-                    Firefox + NVDA don't announce aria-expanded because the browser
-                    repaints the whole element, so this wrapping span hides that.
-                */}
-								<span aria-hidden="true">
-									{showCategory ? (
-										<SVG
-											className="components-panel__arrow"
-											width="24px"
-											height="24px"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg"
-										>
-											<G>
-												<Path
-													fill="none"
-													d="M0,0h24v24H0V0z"
-												/>
-											</G>
-											<G>
-												<Path d="M12,8l-6,6l1.41,1.41L12,10.83l4.59,4.58L18,14L12,8z" />
-											</G>
-										</SVG>
-									) : (
-										<SVG
-											className="components-panel__arrow"
-											width="24px"
-											height="24px"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg"
-										>
-											<G>
-												<Path
-													fill="none"
-													d="M0,0h24v24H0V0z"
-												/>
-											</G>
-											<G>
-												<Path d="M7.41,8.59L12,13.17l4.59-4.58L18,10l-6,6l-6-6L7.41,8.59z" />
-											</G>
-										</SVG>
-									)}
-								</span>
-								{categoryName.charAt(0).toUpperCase() +
-									categoryName.slice(1)}
-							</Button>
-						</h2>
-					</div>
-				),
-			});
-
-			if (!showCategory) {
-				return;
-			}
-
-			let currentIcons = [];
-
-			allIcons.forEach((icon, i) => {
-				currentIcons.push(icon);
-
-				if (currentIcons.length === 3 || allIcons.length === i + 1) {
-					rows.push({
-						key: 'icons',
-						render: (
-							<div className="lazyblocks-component-icon-picker-list">
-								{currentIcons}
-							</div>
-						),
-					});
-
-					currentIcons = [];
-				}
-			});
-		});
-
-		// No icons.
-		if (rows.length === 1) {
-			rows.push({
-				key: 'icons',
-				render: __('No icons found.', 'lazy-blocks'),
-			});
-		}
-
-		const result = (
-			<AutoSizer>
-				{({ width, height }) => (
-					<List
-						className="lazyblocks-component-icon-picker-list-wrap"
-						width={width}
-						height={height}
-						rowCount={rows.length}
-						rowHeight={cellMCache.rowHeight}
-						// eslint-disable-next-line react/no-unstable-nested-components
-						rowRenderer={(data) => {
-							const { index, style, parent, key } = data;
-
-							return (
-								<CellMeasurer
-									cache={cellMCache}
-									columnIndex={0}
-									key={key}
-									rowIndex={index}
-									parent={parent}
-								>
-									{() => (
-										<div style={style}>
-											{rows[index].render || ''}
-										</div>
-									)}
-								</CellMeasurer>
-							);
-						}}
-					/>
-				)}
-			</AutoSizer>
-		);
-
-		return (
-			<>
-				<div className="lazyblocks-component-icon-picker-sizer" />
-				<div className="lazyblocks-component-icon-picker">{result}</div>
-			</>
-		);
-	}
-
 	const dropdown = (
 		<Dropdown
 			className={className}
 			contentClassName="lazyblocks-component-icon-picker-content"
 			renderToggle={renderToggle}
 			focusOnMount={false}
-			// eslint-disable-next-line react/jsx-no-bind
-			renderContent={getDropdownContent}
+			renderContent={() => (
+				<IconPickerList
+					value={value}
+					onChange={onChange}
+					search={search}
+					setSearch={setSearch}
+					hiddenCategories={hiddenCategories}
+					setHiddenCategories={setHiddenCategories}
+				/>
+			)}
 		/>
 	);
 
@@ -356,7 +388,12 @@ IconPicker.Preview = (props) => {
 					: ''
 			)}
 			onClick={onClick}
-			onKeyPress={() => {}}
+			onKeyDown={(e) => {
+				if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+					e.preventDefault();
+					onClick(e);
+				}
+			}}
 			role="button"
 			tabIndex={0}
 		>

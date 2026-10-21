@@ -98,26 +98,6 @@ class LazyBlocks_Admin {
 	 * Enqueue admin styles and scripts.
 	 */
 	public function admin_enqueue_scripts() {
-		global $wp_locale;
-
-		wp_enqueue_script( 'date_i18n', lazyblocks()->plugin_url() . 'vendors/date_i18n/date_i18n.js', array(), '1.0.0', true );
-
-		$month_names       = array_map( array( &$wp_locale, 'get_month' ), range( 1, 12 ) );
-		$month_names_short = array_map( array( &$wp_locale, 'get_month_abbrev' ), $month_names );
-		$day_names         = array_map( array( &$wp_locale, 'get_weekday' ), range( 0, 6 ) );
-		$day_names_short   = array_map( array( &$wp_locale, 'get_weekday_abbrev' ), $day_names );
-
-		wp_localize_script(
-			'date_i18n',
-			'DATE_I18N',
-			array(
-				'month_names'       => $month_names,
-				'month_names_short' => $month_names_short,
-				'day_names'         => $day_names,
-				'day_names_short'   => $day_names_short,
-			)
-		);
-
 		LazyBlocks_Assets::enqueue_style( 'lazyblocks-admin', 'build/admin-style' );
 		wp_style_add_data( 'lazyblocks-admin', 'rtl', 'replace' );
 	}
