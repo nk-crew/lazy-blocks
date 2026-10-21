@@ -142,6 +142,7 @@ export default function UpdateEditor() {
 	 */
 	const wasSavingPost = useRef(false);
 	const wasAutosavingPost = useRef(false);
+	const lastSaveRequest = useRef(0);
 	useEffect(() => {
 		const shouldUpdate =
 			wasSavingPost.current &&
@@ -153,6 +154,9 @@ export default function UpdateEditor() {
 		wasAutosavingPost.current = isAutosavingPost;
 
 		if (shouldUpdate) {
+			lastSaveRequest.current += 1;
+			const saveRequest = lastSaveRequest.current;
+
 			apiFetch({
 				path: '/lazy-blocks/v1/update-block-data/',
 				method: 'POST',
@@ -162,7 +166,10 @@ export default function UpdateEditor() {
 				},
 			})
 				.then(() => {
-					removeNotice('lzb-update-block-data');
+					// An older request must not hide the error of a newer one.
+					if (saveRequest === lastSaveRequest.current) {
+						removeNotice('lzb-update-block-data');
+					}
 				})
 				.catch((response) => {
 					createErrorNotice(
