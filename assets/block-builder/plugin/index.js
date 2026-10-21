@@ -50,7 +50,7 @@ export default function UpdateEditor() {
 		useDispatch('core/block-editor');
 	const { editPost } = useDispatch('core/editor');
 	const { switchEditorMode } = useDispatch('core/edit-post');
-	const { createErrorNotice } = useDispatch('core/notices');
+	const { createErrorNotice, removeNotice } = useDispatch('core/notices');
 
 	/**
 	 * Force change gutenberg edit mode to Visual.
@@ -160,16 +160,23 @@ export default function UpdateEditor() {
 					data: blockData,
 					post_id: postId,
 				},
-			}).catch((response) => {
-				createErrorNotice(
-					response?.message ||
-						__('Block settings could not be saved.', 'lazy-blocks'),
-					{
-						id: 'lzb-update-block-data',
-						isDismissible: true,
-					}
-				);
-			});
+			})
+				.then(() => {
+					removeNotice('lzb-update-block-data');
+				})
+				.catch((response) => {
+					createErrorNotice(
+						response?.message ||
+							__(
+								'Block settings could not be saved.',
+								'lazy-blocks'
+							),
+						{
+							id: 'lzb-update-block-data',
+							isDismissible: true,
+						}
+					);
+				});
 		}
 
 		doAction('lzb.constructor.post-change', {
@@ -179,7 +186,14 @@ export default function UpdateEditor() {
 			blockData,
 			postId,
 		});
-	}, [isSavingPost, isAutosavingPost, postId, blockData, createErrorNotice]);
+	}, [
+		isSavingPost,
+		isAutosavingPost,
+		postId,
+		blockData,
+		createErrorNotice,
+		removeNotice,
+	]);
 
 	return null;
 }

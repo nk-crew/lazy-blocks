@@ -74,6 +74,8 @@ class RestPermissionTest extends WP_UnitTestCase {
 			WP_Block_Supports::$block_to_render = null;
 		}
 
+		unset( $_GET['lazyblocks_activate_complete'], $_GET['lazyblocks_activation_type'], $_GET['lazyblocks_block_id'], $_GET['lazyblocks_duplicate_complete'] );
+
 		remove_all_filters( 'wp_redirect' );
 		remove_all_filters( 'lzb/block_render/callback' );
 
@@ -117,6 +119,35 @@ class RestPermissionTest extends WP_UnitTestCase {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Run an admin notice handler of a fresh tools instance and return the printed notices.
+	 *
+	 * @param string $handler Handler method name.
+	 *
+	 * @return string
+	 */
+	private function render_notices( $handler ) {
+		$tools = new LazyBlocks_Tools();
+		$tools->$handler();
+
+		ob_start();
+		$tools->admin_notices();
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Editor granted edit_lazyblocks, who still cannot edit a block of another author.
+	 *
+	 * @return int User id.
+	 */
+	private function create_block_editor_without_post_cap() {
+		$user_id = self::factory()->user->create( array( 'role' => 'editor' ) );
+		get_userdata( $user_id )->add_cap( 'edit_lazyblocks' );
+
+		return $user_id;
 	}
 
 	/**
@@ -313,5 +344,112 @@ class RestPermissionTest extends WP_UnitTestCase {
 
 		$this->assertStringContainsString( 'lazyblocks_duplicate_complete=', $location );
 		$this->assertSame( 2, count( get_posts( array( 'post_type' => 'lazyblocks', 'post_status' => 'any' ) ) ) );
+	}
+
+	public function test_update_block_data_builds_empty_slug_from_title() {
+		wp_set_current_user( $this->admin_user );
+		wp_update_post(
+			array(
+				'ID'         => $this->block_id,
+				'post_title' => 'My Fancy Block',
+			)
+		);
+		// The REST request carries no global post, so the slug must come from the saved post.
+		$GLOBALS['post'] = null;
+
+		$response = $this->post(
+			'update-block-data',
+			array(
+				'post_id' => $this->block_id,
+				'data'    => array( 'slug' => '' ),
+			)
+		);
+
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertSame( 'myfancyblock', get_post_meta( $this->block_id, 'lazyblocks_slug', true ) );
+	}
+
+	public function test_activate_notice_hides_title_from_user_who_cannot_edit() {
+		$subscriber = self::factory()->user->create( array( 'role' => 'subscriber' ) );
+		$private_id = self::factory()->post->create(
+			array(
+				'post_status' => 'private',
+				'post_title'  => 'Secret private title',
+				'post_author' => $this->admin_user,
+			)
+		);
+		wp_set_current_user( $subscriber );
+
+		$_GET['lazyblocks_activate_complete'] = '1';
+		$_GET['lazyblocks_activation_type']   = 'activate';
+		$_GET['lazyblocks_block_id']          = (string) $private_id;
+
+		$output = $this->render_notices( 'maybe_activate_block' );
+
+		$this->assertStringContainsString( 'Activated 1 block', $output );
+		$this->assertStringNotContainsString( 'Secret private title', $output );
+	}
+
+	public function test_duplicate_notice_hides_title_from_user_who_cannot_edit() {
+		$subscriber = self::factory()->user->create( array( 'role' => 'subscriber' ) );
+		$draft_id   = self::factory()->post->create(
+			array(
+				'post_type'   => 'lazyblocks',
+				'post_status' => 'draft',
+				'post_title'  => 'Secret draft block',
+				'post_author' => $this->admin_user,
+			)
+		);
+		wp_set_current_user( $subscriber );
+
+		$_GET['lazyblocks_duplicate_complete'] = (string) $draft_id;
+
+		$this->assertSame( '', trim( $this->render_notices( 'maybe_duplicate_block' ) ) );
+	}
+
+	public function test_duplicate_notice_shows_title_to_block_editor() {
+		wp_update_post(
+			array(
+				'ID'         => $this->block_id,
+				'post_title' => 'Visible block',
+			)
+		);
+		wp_set_current_user( $this->admin_user );
+
+		$_GET['lazyblocks_duplicate_complete'] = (string) $this->block_id;
+
+		$this->assertStringContainsString( 'Visible block', $this->render_notices( 'maybe_duplicate_block' ) );
+	}
+
+	public function test_activate_refuses_user_without_edit_post_on_block() {
+		wp_set_current_user( $this->create_block_editor_without_post_cap() );
+
+		$this->assertTrue( current_user_can( 'edit_lazyblocks' ) );
+		$this->assertFalse( current_user_can( 'edit_post', $this->block_id ) );
+
+		$location = $this->catch_redirect(
+			function () {
+				lazyblocks()->tools()->deactivate( array( $this->block_id ) );
+			}
+		);
+
+		$this->assertNull( $location );
+		$this->assertSame( 'publish', get_post_status( $this->block_id ) );
+	}
+
+	public function test_duplicate_refuses_user_without_edit_post_on_block() {
+		wp_set_current_user( $this->create_block_editor_without_post_cap() );
+		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
+
+		$location = $this->catch_redirect(
+			function () {
+				lazyblocks()->tools()->duplicate_block( $this->block_id );
+			}
+		);
+
+		unset( $_GET['lazyblocks_duplicate_block_nonce'] );
+
+		$this->assertNull( $location );
+		$this->assertSame( 1, count( get_posts( array( 'post_type' => 'lazyblocks', 'post_status' => 'any' ) ) ) );
 	}
 }

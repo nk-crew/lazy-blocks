@@ -293,9 +293,7 @@ class LazyBlocks_Tools {
 		$post_ids = array_values(
 			array_filter(
 				array_map( 'intval', (array) $post_ids ),
-				function ( $post_id ) {
-					return 'lazyblocks' === get_post_type( $post_id ) && current_user_can( 'edit_post', $post_id );
-				}
+				array( $this, 'can_edit_block' )
 			)
 		);
 		$count    = count( $post_ids );
@@ -319,6 +317,17 @@ class LazyBlocks_Tools {
 	}
 
 	/**
+	 * Whether the post is a block the current user can edit.
+	 *
+	 * @param int $post_id post id.
+	 *
+	 * @return bool
+	 */
+	private function can_edit_block( $post_id ) {
+		return 'lazyblocks' === get_post_type( $post_id ) && current_user_can( 'edit_post', $post_id );
+	}
+
+	/**
 	 * Deactivate blocks.
 	 *
 	 * @param array $post_ids post ids.
@@ -331,15 +340,16 @@ class LazyBlocks_Tools {
 	 * Activate block.
 	 */
 	public function maybe_activate_block() {
-		$blocks_activated  = filter_input( INPUT_GET, 'lazyblocks_activate_complete', FILTER_SANITIZE_NUMBER_INT );
+		$blocks_activated  = isset( $_GET['lazyblocks_activate_complete'] ) ? absint( $_GET['lazyblocks_activate_complete'] ) : 0;
 		$activation_type   = isset( $_GET['lazyblocks_activation_type'] ) ? sanitize_text_field( wp_unslash( $_GET['lazyblocks_activation_type'] ) ) : false;
-		$block_id_complete = filter_input( INPUT_GET, 'lazyblocks_block_id', FILTER_SANITIZE_NUMBER_INT );
+		$block_id_complete = isset( $_GET['lazyblocks_block_id'] ) ? absint( $_GET['lazyblocks_block_id'] ) : 0;
 
 		// Add notice for success activate.
 		if ( $blocks_activated ) {
 			$message = '';
 
-			if ( $block_id_complete ) {
+			// The id comes from the URL, so show the title only of a block the user can edit.
+			if ( $block_id_complete && $this->can_edit_block( $block_id_complete ) ) {
 				$block_title = get_the_title( $block_id_complete );
 
 				// translators: %s - block title.
@@ -731,7 +741,7 @@ class LazyBlocks_Tools {
 	 */
 	public function maybe_duplicate_block() {
 		$block_id          = filter_input( INPUT_GET, 'lazyblocks_duplicate_block', FILTER_SANITIZE_NUMBER_INT );
-		$block_id_complete = filter_input( INPUT_GET, 'lazyblocks_duplicate_complete', FILTER_SANITIZE_NUMBER_INT );
+		$block_id_complete = isset( $_GET['lazyblocks_duplicate_complete'] ) ? absint( $_GET['lazyblocks_duplicate_complete'] ) : 0;
 
 		// Duplicate block.
 		if ( isset( $block_id ) && current_user_can( 'edit_lazyblocks' ) ) {
@@ -739,10 +749,10 @@ class LazyBlocks_Tools {
 		}
 
 		// Add notice for success duplicate.
-		if ( isset( $block_id_complete ) && $block_id_complete ) {
+		if ( $block_id_complete && $this->can_edit_block( $block_id_complete ) ) {
 			$post = get_post( $block_id_complete );
 
-			if ( isset( $post ) && $post ) {
+			if ( $post ) {
 				// translators: %s - post title.
 				$text = sprintf( esc_html__( 'Added new block \'%s\'.', 'lazy-blocks' ), $post->post_title );
 				$this->add_notice( $text, 'success' );
@@ -772,7 +782,7 @@ class LazyBlocks_Tools {
 		$current_user    = wp_get_current_user();
 		$new_post_author = $current_user->ID;
 
-		if ( ! $post || 'lazyblocks' !== $post->post_type || ! current_user_can( 'edit_post', $post->ID ) ) {
+		if ( ! $post || ! $this->can_edit_block( $post->ID ) ) {
 			return;
 		}
 
