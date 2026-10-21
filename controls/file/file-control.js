@@ -2,6 +2,7 @@
  * WordPress dependencies.
  */
 
+import { isBlobURL } from '@wordpress/blob';
 import { MediaPlaceholder } from '@wordpress/block-editor';
 import { Button, DropZone, withNotices } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
@@ -56,6 +57,11 @@ function FileControl(props) {
 						name: __('file', 'lazy-blocks'),
 					}}
 					onSelect={(file) => {
+						// Uploads report a temporary blob URL first, keep the placeholder until the attachment arrives.
+						if (isBlobURL(file?.url)) {
+							return;
+						}
+
 						onChange(file);
 					}}
 					notices={noticeUI}
@@ -77,6 +83,10 @@ function FileControl(props) {
 								allowedTypes: ALLOWED_MEDIA_TYPES,
 								filesList: files,
 								onFileChange: (file) => {
+									if (isBlobURL(file[0]?.url)) {
+										return;
+									}
+
 									onChange(file[0]);
 								},
 								onError: (message) => {

@@ -29,6 +29,8 @@ jobs:
     # slower feedback on a pull request stops being worth the saving.
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
+    # A WordPress trunk breakage should be visible without blocking pull requests.
+    continue-on-error: ${{ matrix.wordpress == 'trunk' }}
     if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
     strategy:
       fail-fast: false

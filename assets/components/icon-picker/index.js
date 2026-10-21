@@ -3,12 +3,14 @@
  */
 import './editor.scss';
 
+import apiFetch from '@wordpress/api-fetch';
 import {
 	BaseControl,
 	Button,
 	Dropdown,
 	G,
 	Path,
+	Spinner,
 	SVG,
 	TextControl,
 	Tooltip,
@@ -27,13 +29,54 @@ import classnames from 'classnames/dedupe';
 // Icons are rendered in batches while the list scrolls, rendering all ~900 SVGs at once lags.
 const ICONS_BATCH = 60;
 
-// The icons list is localized only on the block builder screen.
-function getIcons() {
-	return (
-		window.lazyblocksBlockBuilderData?.icons ||
-		window.lazyblocksGutenberg?.icons ||
-		{}
-	);
+// The icons list is localized only on the block builder screen, other screens
+// fetch it once per page when a picker opens.
+let fetchedIcons = null;
+let iconsRequest = null;
+
+function fetchIcons() {
+	if (!iconsRequest) {
+		iconsRequest = apiFetch({ path: '/lazy-blocks/v1/get-icons/' }).then(
+			(resp) => {
+				fetchedIcons = resp?.response || {};
+				return fetchedIcons;
+			},
+			(err) => {
+				// Let the next open retry.
+				iconsRequest = null;
+				throw err;
+			}
+		);
+	}
+
+	return iconsRequest;
+}
+
+function useIcons() {
+	const [state, setState] = useState(() => {
+		const icons = window.lazyblocksBlockBuilderData?.icons || fetchedIcons;
+
+		return icons ? { icons } : { isLoading: true };
+	});
+
+	useEffect(() => {
+		if (!state.isLoading) {
+			return undefined;
+		}
+
+		let isMounted = true;
+
+		fetchIcons().then(
+			(icons) => isMounted && setState({ icons }),
+			() => isMounted && setState({ hasError: true })
+		);
+
+		return () => {
+			isMounted = false;
+		};
+	}, [state.isLoading]);
+
+	return state;
 }
 
 function Icon({ svg, onClick, active }) {
@@ -122,7 +165,7 @@ function IconPickerList({
 	const [limit, setLimit] = useState(ICONS_BATCH);
 	const scrollRef = useRef();
 
-	const icons = getIcons();
+	const { icons = {}, isLoading, hasError } = useIcons();
 	const searchString = search.toLowerCase();
 	const categories = [];
 	let rendered = 0;
@@ -239,7 +282,11 @@ function IconPickerList({
 							</div>
 						)
 					)}
-					{!categories.length
+					{isLoading ? <Spinner /> : null}
+					{hasError
+						? __('Could not load icons.', 'lazy-blocks')
+						: null}
+					{!isLoading && !hasError && !categories.length
 						? __('No icons found.', 'lazy-blocks')
 						: null}
 				</div>
