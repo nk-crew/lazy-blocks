@@ -45,4 +45,24 @@ class IconsRestTest extends WP_UnitTestCase {
 		$this->assertSame( lazyblocks()->icons()->get_all(), $data['response'] );
 		$this->assertStringContainsString( '<svg', $data['response']['action']['accessibility'] );
 	}
+
+	/**
+	 * A role that edits only pages gets the list too.
+	 */
+	public function test_get_icons_returns_list_for_pages_only_role() {
+		add_role(
+			'lzb_pages_only',
+			'Pages only',
+			array(
+				'read'       => true,
+				'edit_pages' => true,
+			)
+		);
+		$user_id = self::factory()->user->create( array( 'role' => 'lzb_pages_only' ) );
+
+		$this->assertFalse( user_can( $user_id, 'edit_posts' ) );
+		$this->assertSame( 200, $this->request_icons( $user_id )->get_status() );
+
+		remove_role( 'lzb_pages_only' );
+	}
 }

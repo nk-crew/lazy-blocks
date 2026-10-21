@@ -191,11 +191,18 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response|true
 	 */
 	public function get_icons_permission() {
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			return $this->error( 'lazy_block_icons_cannot_read', esc_html__( 'Sorry, you are not allowed to read icons as this user.', 'lazy-blocks' ), true );
+		if ( current_user_can( 'edit_posts' ) ) {
+			return true;
 		}
 
-		return true;
+		// The picker can render in the editor of any post type, such as pages.
+		foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
+			if ( current_user_can( $post_type->cap->edit_posts ) ) {
+				return true;
+			}
+		}
+
+		return $this->error( 'lazy_block_icons_cannot_read', esc_html__( 'Sorry, you are not allowed to read icons as this user.', 'lazy-blocks' ), true );
 	}
 
 	/**
