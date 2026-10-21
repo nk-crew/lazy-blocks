@@ -19,6 +19,8 @@ class AbilitiesTest extends WP_UnitTestCase {
 
 		$admin_role = get_role( 'administrator' );
 		$admin_role->add_cap( 'edit_lazyblocks' );
+		$admin_role->add_cap( 'edit_lazyblock' );
+		$admin_role->add_cap( 'publish_lazyblocks' );
 
 		$this->admin_user  = self::factory()->user->create( array( 'role' => 'administrator' ) );
 		$this->editor_user = self::factory()->user->create( array( 'role' => 'editor' ) );
@@ -68,7 +70,7 @@ class AbilitiesTest extends WP_UnitTestCase {
 		}
 
 		$this->assertTrue( wp_get_ability( 'lazy-blocks/get-block' )->get_meta_item( 'annotations' )['readonly'] );
-		$this->assertFalse( wp_get_ability( 'lazy-blocks/update-block' )->get_meta_item( 'annotations' )['destructive'] );
+		$this->assertTrue( wp_get_ability( 'lazy-blocks/update-block' )->get_meta_item( 'annotations' )['destructive'] );
 	}
 
 	public function test_user_without_edit_lazyblocks_is_refused() {
@@ -186,7 +188,173 @@ class AbilitiesTest extends WP_UnitTestCase {
 
 		$created = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Slug From Title' ) );
 
-		$this->assertSame( 'slugfromtitle', $created['data']['slug'] );
+		$this->assertSame( 'slug-from-title', $created['data']['slug'] );
+	}
+
+	public function test_create_without_publish_capability_is_refused() {
+		$user = self::factory()->user->create_and_get( array( 'role' => 'editor' ) );
+		$user->add_cap( 'edit_lazyblocks' );
+		wp_set_current_user( $user->ID );
+
+		$count_before = (int) wp_count_posts( 'lazyblocks' )->publish;
+
+		$result = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Unpublished Block' ) );
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'ability_invalid_permissions', $result->get_error_code() );
+		wp_cache_flush();
+		$this->assertSame( $count_before, (int) wp_count_posts( 'lazyblocks' )->publish );
+	}
+
+	public function test_update_without_edit_post_capability_is_refused() {
+		$user = self::factory()->user->create_and_get( array( 'role' => 'editor' ) );
+		$user->add_cap( 'edit_lazyblocks' );
+		wp_set_current_user( $user->ID );
+
+		$result = $this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $this->block_id,
+				'data' => array( 'description' => 'Changed' ),
+			)
+		);
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'ability_invalid_permissions', $result->get_error_code() );
+		$this->assertSame( 'Existing description', get_post_meta( $this->block_id, 'lazyblocks_description', true ) );
+	}
+
+	public function test_create_with_taken_slug_is_refused() {
+		wp_set_current_user( $this->admin_user );
+
+		lazyblocks()->add_block(
+			array(
+				'title' => 'PHP Block',
+				'slug'  => 'lazyblock/php-block',
+			)
+		);
+		register_block_type( 'lazyblock/registered-block' );
+
+		$count_before = (int) wp_count_posts( 'lazyblocks' )->publish;
+
+		foreach ( array( 'existing-block', 'php-block', 'registered-block' ) as $slug ) {
+			$result = $this->run_ability(
+				'lazy-blocks/create-block',
+				array(
+					'title' => 'Duplicate',
+					'data'  => array( 'slug' => $slug ),
+				)
+			);
+
+			$this->assertWPError( $result, $slug );
+			$this->assertSame( 'lazy_blocks_slug_taken', $result->get_error_code(), $slug );
+			$this->assertSame( 400, $result->get_error_data()['status'], $slug );
+		}
+
+		// A slug taken through the title is refused as well.
+		$result = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Existing Block' ) );
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_slug_taken', $result->get_error_code() );
+
+		lazyblocks()->blocks()->remove_block( 'lazyblock/php-block' );
+		unregister_block_type( 'lazyblock/registered-block' );
+
+		wp_cache_flush();
+		$this->assertSame( $count_before, (int) wp_count_posts( 'lazyblocks' )->publish );
+	}
+
+	public function test_update_to_taken_slug_is_refused() {
+		wp_set_current_user( $this->admin_user );
+
+		$other = $this->run_ability(
+			'lazy-blocks/create-block',
+			array(
+				'title' => 'Other Block',
+				'data'  => array( 'slug' => 'other-block' ),
+			)
+		);
+		$this->assertNotWPError( $other );
+
+		$result = $this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $other['id'],
+				'data' => array( 'slug' => 'existing-block' ),
+			)
+		);
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_slug_taken', $result->get_error_code() );
+		$this->assertSame( 'other-block', get_post_meta( $other['id'], 'lazyblocks_slug', true ) );
+
+		// Keeping its own slug is not a conflict.
+		$result = $this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $this->block_id,
+				'data' => array( 'slug' => 'existing-block' ),
+			)
+		);
+		$this->assertNotWPError( $result );
+	}
+
+	public function test_slug_the_editor_cannot_register_is_refused() {
+		wp_set_current_user( $this->admin_user );
+
+		$count_before = (int) wp_count_posts( 'lazyblocks' )->publish;
+
+		$cases = array(
+			array(
+				'title' => 'Numeric Slug',
+				'data'  => array( 'slug' => '1-block' ),
+			),
+			array( 'title' => '123' ),
+			array( 'title' => '!!!' ),
+		);
+
+		foreach ( $cases as $input ) {
+			$result = $this->run_ability( 'lazy-blocks/create-block', $input );
+
+			$this->assertWPError( $result, $input['title'] );
+			$this->assertSame( 'lazy_blocks_invalid_slug', $result->get_error_code(), $input['title'] );
+			$this->assertSame( 400, $result->get_error_data()['status'], $input['title'] );
+		}
+
+		wp_cache_flush();
+		$this->assertSame( $count_before, (int) wp_count_posts( 'lazyblocks' )->publish );
+
+		$result = $this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $this->block_id,
+				'data' => array( 'slug' => '9lives' ),
+			)
+		);
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_invalid_slug', $result->get_error_code() );
+		$this->assertSame( 'existing-block', get_post_meta( $this->block_id, 'lazyblocks_slug', true ) );
+	}
+
+	public function test_boolean_like_strings_keep_schema_types() {
+		wp_set_current_user( $this->admin_user );
+
+		$created = $this->run_ability(
+			'lazy-blocks/create-block',
+			array(
+				'title' => 'True',
+				'data'  => array( 'description' => 'false' ),
+			)
+		);
+
+		$this->assertNotWPError( $created );
+		$this->assertSame( 'true', $created['data']['slug'] );
+		$this->assertSame( 'false', $created['data']['description'] );
+
+		$block = $this->run_ability( 'lazy-blocks/get-block', array( 'id' => $created['id'] ) );
+
+		$this->assertNotWPError( $block );
+		$this->assertSame( 'true', $block['data']['slug'] );
+		$this->assertSame( 'false', $block['data']['description'] );
 	}
 
 	public function test_update_changes_only_given_field() {

@@ -93,7 +93,7 @@ class LazyBlocks_Abilities {
 				),
 				'execute_callback'    => array( $this, 'list_blocks' ),
 				'permission_callback' => array( $this, 'permission' ),
-				'meta'                => $this->get_meta( true, true ),
+				'meta'                => $this->get_meta( true, false, true ),
 			)
 		);
 
@@ -118,7 +118,7 @@ class LazyBlocks_Abilities {
 				'output_schema'       => $block_schema,
 				'execute_callback'    => array( $this, 'get_block' ),
 				'permission_callback' => array( $this, 'permission' ),
-				'meta'                => $this->get_meta( true, true ),
+				'meta'                => $this->get_meta( true, false, true ),
 			)
 		);
 
@@ -143,8 +143,8 @@ class LazyBlocks_Abilities {
 				),
 				'output_schema'       => $block_schema,
 				'execute_callback'    => array( $this, 'create_block' ),
-				'permission_callback' => array( $this, 'permission' ),
-				'meta'                => $this->get_meta( false, false ),
+				'permission_callback' => array( $this, 'create_permission' ),
+				'meta'                => $this->get_meta( false, false, false ),
 			)
 		);
 
@@ -152,7 +152,7 @@ class LazyBlocks_Abilities {
 			'lazy-blocks/update-block',
 			array(
 				'label'               => __( 'Update Lazy Block', 'lazy-blocks' ),
-				'description'         => __( 'Updates the title or builder data of a Lazy Blocks block. Only the given data keys change.', 'lazy-blocks' ),
+				'description'         => __( 'Updates the title or builder data of a Lazy Blocks block. Only the given top-level data keys change, and each given key is replaced whole: a given controls or supports object replaces the stored one instead of merging into it.', 'lazy-blocks' ),
 				'category'            => self::CATEGORY,
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -174,8 +174,8 @@ class LazyBlocks_Abilities {
 				),
 				'output_schema'       => $block_schema,
 				'execute_callback'    => array( $this, 'update_block' ),
-				'permission_callback' => array( $this, 'permission' ),
-				'meta'                => $this->get_meta( false, true ),
+				'permission_callback' => array( $this, 'update_permission' ),
+				'meta'                => $this->get_meta( false, true, true ),
 			)
 		);
 	}
@@ -184,15 +184,16 @@ class LazyBlocks_Abilities {
 	 * Ability meta.
 	 *
 	 * @param bool $is_readonly Whether the ability only reads.
+	 * @param bool $destructive Whether the ability may overwrite existing data.
 	 * @param bool $idempotent  Whether repeated calls have no additional effect.
 	 *
 	 * @return array
 	 */
-	private function get_meta( $is_readonly, $idempotent ) {
+	private function get_meta( $is_readonly, $destructive, $idempotent ) {
 		return array(
 			'annotations'  => array(
 				'readonly'    => $is_readonly,
-				'destructive' => false,
+				'destructive' => $destructive,
 				'idempotent'  => $idempotent,
 			),
 			'show_in_rest' => true,
@@ -265,6 +266,33 @@ class LazyBlocks_Abilities {
 	}
 
 	/**
+	 * Permission callback for create-block, which publishes the new block.
+	 *
+	 * @return bool
+	 */
+	public function create_permission() {
+		return $this->permission() && current_user_can( get_post_type_object( 'lazyblocks' )->cap->publish_posts );
+	}
+
+	/**
+	 * Permission callback for update-block.
+	 *
+	 * @param array $input Ability input.
+	 *
+	 * @return bool
+	 */
+	public function update_permission( $input ) {
+		if ( ! $this->permission() ) {
+			return false;
+		}
+
+		$post = $this->get_block_post( $input['id'] );
+
+		// A missing block is reported as not found by the execute callback.
+		return is_wp_error( $post ) || current_user_can( 'edit_post', $post->ID );
+	}
+
+	/**
 	 * List blocks.
 	 *
 	 * @return array
@@ -320,11 +348,13 @@ class LazyBlocks_Abilities {
 	 */
 	public function create_block( $input ) {
 		$data = isset( $input['data'] ) ? $input['data'] : array();
+		$slug = $this->resolve_slug( isset( $data['slug'] ) ? $data['slug'] : '', $input['title'], 0 );
 
-		// save_meta_boxes() derives a missing slug from the global post title, which is not set here.
-		if ( empty( $data['slug'] ) ) {
-			$data['slug'] = $input['title'];
+		if ( is_wp_error( $slug ) ) {
+			return $slug;
 		}
+
+		$data['slug'] = $slug;
 
 		$post_id = wp_insert_post(
 			array(
@@ -358,6 +388,17 @@ class LazyBlocks_Abilities {
 			return $post;
 		}
 
+		if ( isset( $input['data']['slug'] ) ) {
+			$title = isset( $input['title'] ) ? $input['title'] : $post->post_title;
+			$slug  = $this->resolve_slug( $input['data']['slug'], $title, $post->ID );
+
+			if ( is_wp_error( $slug ) ) {
+				return $slug;
+			}
+
+			$input['data']['slug'] = $slug;
+		}
+
 		if ( isset( $input['title'] ) ) {
 			$result = wp_update_post(
 				array(
@@ -380,6 +421,82 @@ class LazyBlocks_Abilities {
 		}
 
 		return $this->prepare_block( get_post( $post->ID ) );
+	}
+
+	/**
+	 * Resolve the slug a block will be saved with, and refuse one the editor cannot register
+	 * or another block already uses.
+	 *
+	 * @param string $slug    Requested slug. Empty derives it from the title, as the builder does.
+	 * @param string $title   Block title.
+	 * @param int    $post_id ID of the block being saved, 0 for a new one.
+	 *
+	 * @return string|WP_Error
+	 */
+	private function resolve_slug( $slug, $title, $post_id ) {
+		$blocks = lazyblocks()->blocks();
+
+		if ( '' === $slug ) {
+			$slug = sanitize_title( $title );
+		}
+
+		$slug = $blocks->sanitize_slug( $slug );
+
+		// The same pattern the builder validates (assets/utils/block-slug isValidSlug).
+		$name = false === strpos( $slug, '/' ) ? 'lazyblock/' . $slug : $slug;
+
+		if ( ! preg_match( '/^[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*$/', $name ) ) {
+			return new WP_Error(
+				'lazy_blocks_invalid_slug',
+				__( 'Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter.', 'lazy-blocks' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		if ( $post_id && get_post_meta( $post_id, self::META_PREFIX . 'slug', true ) === $slug ) {
+			return $slug;
+		}
+
+		$taken = (bool) get_posts(
+			array(
+				'post_type'      => 'lazyblocks',
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'post__not_in'   => array( $post_id ),
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'     => array(
+					array(
+						'key'   => self::META_PREFIX . 'slug',
+						'value' => $slug,
+					),
+				),
+			)
+		);
+
+		if ( ! $taken ) {
+			foreach ( $blocks->get_blocks() as $block ) {
+				if ( isset( $block['slug'] ) && $name === $block['slug'] && ( empty( $block['id'] ) || (int) $block['id'] !== $post_id ) ) {
+					$taken = true;
+					break;
+				}
+			}
+		}
+
+		// A block being saved is registered under its stored slug, so a registered new name belongs to another block.
+		if ( ! $taken ) {
+			$taken = WP_Block_Type_Registry::get_instance()->is_registered( $name );
+		}
+
+		if ( $taken ) {
+			return new WP_Error(
+				'lazy_blocks_slug_taken',
+				__( 'Another block already uses this slug.', 'lazy-blocks' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		return $slug;
 	}
 
 	/**
@@ -445,11 +562,21 @@ class LazyBlocks_Abilities {
 	 * @return array
 	 */
 	private function prepare_block( $post ) {
+		$data   = $this->get_data( $post->ID );
+		$schema = $this->get_block_schema();
+
+		// get_meta_value() turns any stored 'true'/'false' into a boolean, also for text fields.
+		foreach ( $schema['properties']['data']['properties'] as $key => $property ) {
+			if ( 'string' === $property['type'] && isset( $data[ $key ] ) && is_bool( $data[ $key ] ) ) {
+				$data[ $key ] = $data[ $key ] ? 'true' : 'false';
+			}
+		}
+
 		return array(
 			'id'     => $post->ID,
 			'title'  => $post->post_title,
 			'status' => $post->post_status,
-			'data'   => $this->get_data( $post->ID ),
+			'data'   => $data,
 		);
 	}
 }
