@@ -881,7 +881,7 @@ class LazyBlocks_Blocks {
 
 				// generate slug from title.
 				if ( ! $new_meta_value ) {
-					$new_meta_value = get_the_title();
+					$new_meta_value = get_the_title( $post_id );
 					$new_meta_value = $this->sanitize_slug( $new_meta_value );
 				}
 
