@@ -289,7 +289,16 @@ class LazyBlocks_Tools {
 	 * @param string $type action type.
 	 */
 	public function activate( $post_ids, $type = 'activate' ) {
-		$count = count( $post_ids );
+		// Bulk actions pass any requested ids, so keep only blocks the user can edit.
+		$post_ids = array_values(
+			array_filter(
+				array_map( 'intval', (array) $post_ids ),
+				function ( $post_id ) {
+					return 'lazyblocks' === get_post_type( $post_id ) && current_user_can( 'edit_post', $post_id );
+				}
+			)
+		);
+		$count    = count( $post_ids );
 
 		if ( 0 === $count ) {
 			return;
@@ -762,6 +771,10 @@ class LazyBlocks_Tools {
 		$post            = get_post( $block_id );
 		$current_user    = wp_get_current_user();
 		$new_post_author = $current_user->ID;
+
+		if ( ! $post || 'lazyblocks' !== $post->post_type || ! current_user_can( 'edit_post', $post->ID ) ) {
+			return;
+		}
 
 		if ( isset( $post ) && $post ) {
 			$post_name    = $post->post_name;

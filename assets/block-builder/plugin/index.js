@@ -7,6 +7,7 @@ import { createBlock } from '@wordpress/blocks';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 import { doAction } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 import { registerPlugin } from '@wordpress/plugins';
 
 export default function UpdateEditor() {
@@ -49,6 +50,7 @@ export default function UpdateEditor() {
 		useDispatch('core/block-editor');
 	const { editPost } = useDispatch('core/editor');
 	const { switchEditorMode } = useDispatch('core/edit-post');
+	const { createErrorNotice } = useDispatch('core/notices');
 
 	/**
 	 * Force change gutenberg edit mode to Visual.
@@ -159,8 +161,14 @@ export default function UpdateEditor() {
 					post_id: postId,
 				},
 			}).catch((response) => {
-				// eslint-disable-next-line
-				console.log(response);
+				createErrorNotice(
+					response?.message ||
+						__('Block settings could not be saved.', 'lazy-blocks'),
+					{
+						id: 'lzb-update-block-data',
+						isDismissible: true,
+					}
+				);
 			});
 		}
 
@@ -171,7 +179,7 @@ export default function UpdateEditor() {
 			blockData,
 			postId,
 		});
-	}, [isSavingPost, isAutosavingPost, postId, blockData]);
+	}, [isSavingPost, isAutosavingPost, postId, blockData, createErrorNotice]);
 
 	return null;
 }
