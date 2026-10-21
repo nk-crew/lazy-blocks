@@ -643,6 +643,11 @@ class LazyBlocks_Blocks {
 		'lazyblocks_supports_spacing'                => 'false',
 		'lazyblocks_supports_dimensions'             => 'false',
 		'lazyblocks_supports_shadow'                 => 'false',
+		'lazyblocks_supports_border'                 => 'false',
+		'lazyblocks_supports_background'             => 'false',
+		'lazyblocks_supports_filter'                 => 'false',
+		'lazyblocks_supports_position'               => 'false',
+		'lazyblocks_supports_interactivity'          => 'false',
 		'lazyblocks_supports_layout'                 => 'false',
 		'lazyblocks_supports_align'                  => array( 'wide', 'full' ),
 		'lazyblocks_supports_anchor'                 => 'false',
@@ -1109,6 +1114,11 @@ class LazyBlocks_Blocks {
 			'shadow'          => $get_meta_value( 'lazyblocks_supports_shadow' ),
 			'spacing'         => $get_meta_value( 'lazyblocks_supports_spacing' ),
 			'dimensions'      => $get_meta_value( 'lazyblocks_supports_dimensions' ),
+			'border'          => $get_meta_value( 'lazyblocks_supports_border' ),
+			'background'      => $get_meta_value( 'lazyblocks_supports_background' ),
+			'filter'          => $get_meta_value( 'lazyblocks_supports_filter' ),
+			'position'        => $get_meta_value( 'lazyblocks_supports_position' ),
+			'interactivity'   => $get_meta_value( 'lazyblocks_supports_interactivity' ),
 			'typography'      => ( function () use ( $get_meta_value ) {
 				$typography = $get_meta_value( 'lazyblocks_supports_typography' );
 
@@ -1145,6 +1155,9 @@ class LazyBlocks_Blocks {
 				'attributes' => $get_meta_value( 'lazyblocks_supports_ghostkit_attributes' ) || false,
 			),
 		);
+
+		// Core reads border support only from this experimental key. `border` stays for export/import round trips.
+		$supports['__experimentalBorder'] = $supports['border'];
 
 		return apply_filters(
 			'lzb/block_data',
