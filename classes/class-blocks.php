@@ -2099,13 +2099,14 @@ class LazyBlocks_Blocks {
 		}
 
 		// If user didn't add useBlockProps, add our wrapper with useBlockProps attribute to parse it later.
-		if ( $allow_wrapper && ! $this->has_block_props_marker( $result ) ) {
+		$is_own_wrapper = $allow_wrapper && ! $this->has_block_props_marker( $result );
+		if ( $is_own_wrapper ) {
 			$result = '<div useBlockProps>' . $result . '</div>';
 		}
 
 		// Parse any useBlockProps (whether added by user or by us) on frontend only.
 		if ( 'frontend' === $render_location ) {
-			$result = $this->apply_block_props_marker( $result, $attributes );
+			$result = $this->apply_block_props_marker( $result, $attributes, $is_own_wrapper );
 		}
 
 		if ( ! empty( $inner_blocks_html ) ) {
@@ -2185,10 +2186,11 @@ class LazyBlocks_Blocks {
 	 *
 	 * @param string $html - block output.
 	 * @param array  $attributes - block attributes.
+	 * @param bool   $first_only - stop after the first marked tag, for the wrapper this class adds around a template without markers.
 	 *
 	 * @return string
 	 */
-	public function apply_block_props_marker( $html, $attributes ) {
+	public function apply_block_props_marker( $html, $attributes, $first_only = false ) {
 		if ( false === stripos( (string) $html, 'useblockprops' ) ) {
 			return $html;
 		}
@@ -2259,6 +2261,10 @@ class LazyBlocks_Blocks {
 			$processor->set_attribute( 'data-lzb-block-props', $token . '-' . count( $wrappers ) );
 
 			$wrappers[] = $array_atts;
+
+			if ( $first_only ) {
+				break;
+			}
 		}
 
 		if ( empty( $wrappers ) ) {
