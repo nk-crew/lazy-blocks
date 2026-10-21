@@ -105,7 +105,7 @@ class BlockWrapperParsingTest extends WP_UnitTestCase {
 			'inner blocks template attr'    => array( '<InnerBlocks template="[[&quot;core/paragraph&quot;]]" templateLock="all" />', '', $inner, '<div class="wp-block-lazyblock-test"><div class="lazyblock-inner-blocks"><p>In</p></div></div>' ),
 			'inner blocks in marked tag'    => array( '<div useBlockProps class="w"><InnerBlocks className="in" /></div>', '', $inner, '<div class="w wp-block-lazyblock-test"><div class="in"><p>In</p></div></div>' ),
 			'inner blocks then class'       => array( '<InnerBlocks /><p class="after">x</p>', '', $inner, '<div class="wp-block-lazyblock-test"><div class="lazyblock-inner-blocks"><p>In</p></div><p class="after">x</p></div>' ),
-			'inner blocks call expression'  => array( '<InnerBlocks className="{ cls(\'x\') }" />', '', $inner, '<div class="wp-block-lazyblock-test"><div class="{ cls(&#039;x&#039;) }"><p>In</p></div></div>' ), // Changed: the raw value is used, as the editor does. 4.4.2 gave <div class="wp-block-lazyblock-test"><div class="x"><p>In</p></div></div>
+			'inner blocks call expression'  => array( '<InnerBlocks className="{ cls(\'x\') }" />', '', $inner, '<div class="wp-block-lazyblock-test"><div class="x"><p>In</p></div></div>' ),
 			'inner blocks data-className'   => array( '<InnerBlocks data-className="x" />', '', $inner, '<div class="wp-block-lazyblock-test"><div class="lazyblock-inner-blocks"><p>In</p></div></div>' ), // Fixed: 4.4.2 gave <div class="wp-block-lazyblock-test"><div class="x"><p>In</p></div></div>
 		);
 	}

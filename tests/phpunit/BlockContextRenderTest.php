@@ -212,4 +212,69 @@ class BlockContextRenderTest extends WP_UnitTestCase {
 			do_blocks( '<!-- wp:lazyblock/test /-->' )
 		);
 	}
+
+	/**
+	 * Render the test block inside a Query Loop, whose post template adds postId and
+	 * postType to the context of every inner block.
+	 */
+	private function render_in_query_loop( $block_attrs = '' ) {
+		$post_id = self::factory()->post->create();
+
+		$output = do_blocks(
+			'<!-- wp:query {"queryId":1,"query":{"perPage":1,"postType":"post","inherit":false}} --><div class="wp-block-query">' .
+				'<!-- wp:post-template -->' .
+					'<!-- wp:lazyblock/test ' . $block_attrs . ' /-->' .
+				'<!-- /wp:post-template -->' .
+			'</div><!-- /wp:query -->'
+		);
+
+		return array( $post_id, $output );
+	}
+
+	private function add_post_id_control_block( $code ) {
+		$this->add_test_block(
+			$code,
+			array(
+				'control-2' => array(
+					'type' => 'text',
+					'name' => 'postId',
+				),
+			)
+		);
+	}
+
+	public function test_query_loop_context_is_not_passed_without_uses_context() {
+		$this->add_post_id_control_block(
+			array(
+				'frontend_html' => '<p>{{postId}}|{{postType}}</p>',
+			)
+		);
+
+		list( , $output ) = $this->render_in_query_loop( '{"postId":"ctl"}' );
+
+		$this->assertStringContainsString( '<div class="wp-block-lazyblock-test"><p>ctl|</p></div>', $output );
+	}
+
+	public function test_query_loop_context_is_null_in_php_without_uses_context() {
+		$this->add_test_block( $this->php_code() );
+
+		list( , $output ) = $this->render_in_query_loop( '{"text-control":"val"}' );
+
+		$this->assertStringContainsString( '<div class="wp-block-lazyblock-test"><p>val|null</p></div>', $output );
+	}
+
+	public function test_query_loop_context_is_limited_to_uses_context() {
+		add_filter(
+			'lzb/register_block_type_data',
+			function ( $data ) {
+				$data['uses_context'] = array( 'postId' );
+				return $data;
+			}
+		);
+		$this->add_test_block( $this->php_code() );
+
+		list( $post_id, $output ) = $this->render_in_query_loop( '{"text-control":"val"}' );
+
+		$this->assertStringContainsString( '<div class="wp-block-lazyblock-test"><p>val|{&quot;postId&quot;:' . $post_id . '}</p></div>', $output );
+	}
 }
