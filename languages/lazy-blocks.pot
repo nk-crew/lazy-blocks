@@ -2,23 +2,24 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 4.4.2\n"
+"Project-Id-Version: Lazy Blocks 4.5.0\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-12T16:01:53+00:00\n"
+"POT-Creation-Date: 2026-10-22T05:18:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
 
 #. Plugin Name of the plugin
 #: lazy-blocks.php
-#: classes/class-admin.php:252
-#: classes/class-blocks.php:227
-#: classes/class-blocks.php:1596
+#: classes/class-abilities.php:54
+#: classes/class-admin.php:232
+#: classes/class-blocks.php:334
+#: classes/class-blocks.php:1716
 msgid "Lazy Blocks"
 msgstr ""
 
@@ -38,6 +39,81 @@ msgstr ""
 msgid "Lazy Blocks Team"
 msgstr ""
 
+#: classes/class-abilities.php:55
+msgid "Abilities that read and manage blocks made in the Lazy Blocks builder."
+msgstr ""
+
+#: classes/class-abilities.php:69
+msgid "List Lazy Blocks"
+msgstr ""
+
+#: classes/class-abilities.php:70
+msgid "Returns the blocks made in the Lazy Blocks builder with their ID, title, status and slug."
+msgstr ""
+
+#: classes/class-abilities.php:103
+msgid "Get Lazy Block"
+msgstr ""
+
+#: classes/class-abilities.php:104
+msgid "Returns one Lazy Blocks block with all its builder data: controls, code, supports, styles and condition."
+msgstr ""
+
+#: classes/class-abilities.php:111
+#: classes/class-abilities.php:162
+msgid "Block post ID."
+msgstr ""
+
+#: classes/class-abilities.php:128
+msgid "Create Lazy Block"
+msgstr ""
+
+#: classes/class-abilities.php:129
+msgid "Creates and publishes a new Lazy Blocks block. Data keys not given take the builder defaults."
+msgstr ""
+
+#: classes/class-abilities.php:136
+msgid "Block title."
+msgstr ""
+
+#: classes/class-abilities.php:154
+msgid "Update Lazy Block"
+msgstr ""
+
+#: classes/class-abilities.php:155
+msgid "Updates the title or builder data of a Lazy Blocks block. Only the given top-level data keys change, and each given key is replaced whole: a given controls or supports object replaces the stored one instead of merging into it."
+msgstr ""
+
+#: classes/class-abilities.php:167
+msgid "New block title."
+msgstr ""
+
+#. translators: %s: comma-separated list of data keys.
+#: classes/class-abilities.php:225
+#, php-format
+msgid "Block builder data. Keys: %s."
+msgstr ""
+
+#: classes/class-abilities.php:234
+msgid "Comma-separated keywords."
+msgstr ""
+
+#: classes/class-abilities.php:239
+msgid "Controls keyed by control ID."
+msgstr ""
+
+#: classes/class-abilities.php:451
+msgid "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter."
+msgstr ""
+
+#: classes/class-abilities.php:494
+msgid "Another block already uses this slug."
+msgstr ""
+
+#: classes/class-abilities.php:515
+msgid "Block not found."
+msgstr ""
+
 #: classes/class-admin.php:43
 #: classes/class-admin.php:44
 msgid "Documentation"
@@ -48,109 +124,109 @@ msgstr ""
 msgid "Go Pro"
 msgstr ""
 
-#: classes/class-admin.php:286
+#: classes/class-admin.php:266
 msgid "and"
 msgstr ""
 
-#: classes/class-blocks.php:149
-#: classes/class-blocks.php:167
+#: classes/class-blocks.php:256
+#: classes/class-blocks.php:274
 msgid "Inactive"
 msgstr ""
 
-#: classes/class-blocks.php:176
+#: classes/class-blocks.php:283
 msgid "Active"
 msgstr ""
 
-#: classes/class-blocks.php:228
-#: classes/class-blocks.php:229
+#: classes/class-blocks.php:335
+#: classes/class-blocks.php:336
 msgid "Blocks"
 msgstr ""
 
-#: classes/class-blocks.php:230
+#: classes/class-blocks.php:337
 #: assets/components/document-tabs/index.js:62
 #: assets/components/document-tabs/index.js:64
 msgid "Block"
 msgstr ""
 
-#: classes/class-blocks.php:231
+#: classes/class-blocks.php:338
 msgid "Add Block"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:435
+#: classes/class-blocks.php:542
 #, php-format
 msgid "Duplicate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:438
+#: classes/class-blocks.php:545
 #: assets/block-builder/boxes/controls/control.js:211
 msgid "Duplicate"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:450
+#: classes/class-blocks.php:557
 #, php-format
 msgid "Export “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:453
-#: classes/class-blocks.php:488
+#: classes/class-blocks.php:560
+#: classes/class-blocks.php:595
 msgid "Export"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:465
+#: classes/class-blocks.php:572
 #, php-format
 msgid "Deactivate “%1$s”"
 msgstr ""
 
 #. translators: %1$ - post title.
-#: classes/class-blocks.php:465
+#: classes/class-blocks.php:572
 #, php-format
 msgid "Activate “%1$s”"
 msgstr ""
 
-#: classes/class-blocks.php:469
-#: classes/class-blocks.php:492
+#: classes/class-blocks.php:576
+#: classes/class-blocks.php:599
 msgid "Deactivate"
 msgstr ""
 
-#: classes/class-blocks.php:469
-#: classes/class-blocks.php:490
+#: classes/class-blocks.php:576
+#: classes/class-blocks.php:597
 msgid "Activate"
 msgstr ""
 
-#: classes/class-blocks.php:532
+#: classes/class-blocks.php:639
 #: assets/block-builder/boxes/general/index.js:173
 msgid "Icon"
 msgstr ""
 
-#: classes/class-blocks.php:534
+#: classes/class-blocks.php:641
 #: assets/block-builder/boxes/general/index.js:42
 msgid "Slug"
 msgstr ""
 
-#: classes/class-blocks.php:535
+#: classes/class-blocks.php:642
 #: assets/block-builder/boxes/general/index.js:90
 msgid "Category"
 msgstr ""
 
-#: classes/class-blocks.php:536
+#: classes/class-blocks.php:643
 #: assets/block-builder/boxes/general/index.js:207
 #: assets/block-builder/boxes/wizard/index.js:300
 msgid "Description"
 msgstr ""
 
-#: classes/class-blocks.php:1506
+#: classes/class-blocks.php:1626
 msgid "Lazy Blocks cache has been cleared."
 msgstr ""
 
-#: classes/class-blocks.php:1526
+#: classes/class-blocks.php:1646
 msgid "Clear Cache"
 msgstr ""
 
-#: classes/class-blocks.php:2005
-#: classes/class-rest.php:198
+#: classes/class-blocks.php:2132
+#: classes/class-rest.php:235
 msgid "Not allowed to execute PHP code."
 msgstr ""
 
@@ -173,7 +249,7 @@ msgid "Advanced"
 msgstr ""
 
 #: classes/class-controls.php:45
-#: assets/block-builder/boxes/supports/index.js:322
+#: assets/block-builder/boxes/supports/index.js:493
 msgid "Layout"
 msgstr ""
 
@@ -199,29 +275,41 @@ msgstr ""
 msgid "Example block that helps you to get started with Lazy Blocks plugin"
 msgstr ""
 
-#: classes/class-rest.php:119
+#: classes/class-rest.php:130
 msgid "Sorry, you are not allowed to read Gutenberg blocks of this post."
 msgstr ""
 
-#: classes/class-rest.php:122
+#: classes/class-rest.php:133
 msgid "Sorry, you are not allowed to read Gutenberg blocks as this user."
 msgstr ""
 
-#: classes/class-rest.php:144
+#: classes/class-rest.php:155
 msgid "Sorry, you are not allowed to read Gutenberg blocks data."
 msgstr ""
 
-#: classes/class-rest.php:147
-#: classes/class-rest.php:171
+#: classes/class-rest.php:158
+#: classes/class-rest.php:190
 msgid "Sorry, you are not allowed to read Gutenberg blocks data as this user."
 msgstr ""
 
-#: classes/class-rest.php:243
+#: classes/class-rest.php:177
+msgid "Sorry, you are not allowed to update this block data."
+msgstr ""
+
+#: classes/class-rest.php:213
+msgid "Sorry, you are not allowed to read icons as this user."
+msgstr ""
+
+#: classes/class-rest.php:225
+msgid "Sorry, you are not allowed to preview blocks in the block builder."
+msgstr ""
+
+#: classes/class-rest.php:280
 msgid "Invalid block."
 msgstr ""
 
-#: classes/class-rest.php:251
-#: classes/class-rest.php:389
+#: classes/class-rest.php:288
+#: classes/class-rest.php:441
 msgid "Render callback is not specified."
 msgstr ""
 
@@ -258,19 +346,19 @@ msgid "Export / Import"
 msgstr ""
 
 #. translators: %s - block title.
-#: classes/class-tools.php:337
+#: classes/class-tools.php:356
 #, php-format
 msgid "Block \"%s\" activated successfully."
 msgstr ""
 
 #. translators: %s - block title.
-#: classes/class-tools.php:337
+#: classes/class-tools.php:356
 #, php-format
 msgid "Block \"%s\" deactivated successfully."
 msgstr ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:340
+#: classes/class-tools.php:359
 #, php-format
 msgid "Activated %s block"
 msgid_plural "Activated %s blocks"
@@ -278,31 +366,31 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:340
+#: classes/class-tools.php:359
 #, php-format
 msgid "Deactivated %s block"
 msgid_plural "Deactivated %s blocks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-tools.php:379
+#: classes/class-tools.php:398
 msgid "No file selected"
 msgstr ""
 
-#: classes/class-tools.php:389
+#: classes/class-tools.php:408
 msgid "Error uploading file. Please try again"
 msgstr ""
 
-#: classes/class-tools.php:395
+#: classes/class-tools.php:414
 msgid "Incorrect file type"
 msgstr ""
 
-#: classes/class-tools.php:406
+#: classes/class-tools.php:425
 msgid "Import file empty"
 msgstr ""
 
 #. translators: %s - number of blocks.
-#: classes/class-tools.php:445
+#: classes/class-tools.php:464
 #, php-format
 msgid "Imported %s block"
 msgid_plural "Imported %s blocks"
@@ -310,30 +398,30 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s - number of templates.
-#: classes/class-tools.php:465
+#: classes/class-tools.php:484
 #, php-format
 msgid "Imported %s template"
 msgid_plural "Imported %s templates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-tools.php:499
+#: classes/class-tools.php:518
 msgid "Export permission denied."
 msgstr ""
 
 #. translators: %s - post type.
-#: classes/class-tools.php:692
+#: classes/class-tools.php:711
 #, php-format
 msgid "Template for these post types '%s' already exists."
 msgstr ""
 
 #. translators: %s - post title.
-#: classes/class-tools.php:738
+#: classes/class-tools.php:757
 #, php-format
 msgid "Added new block '%s'."
 msgstr ""
 
-#: classes/class-tools.php:769
+#: classes/class-tools.php:792
 msgid "(Copy)"
 msgstr ""
 
@@ -776,7 +864,7 @@ msgid "Type"
 msgstr ""
 
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:224
-#: assets/components/icon-picker/index.js:89
+#: assets/components/icon-picker/index.js:238
 msgid "Type to Search…"
 msgstr ""
 
@@ -813,6 +901,7 @@ msgid "To see these settings in your block, you have to install Ghost Kit plugin
 msgstr ""
 
 #: assets/block-builder/boxes/supports-ghost-kit/index.js:65
+#: assets/block-builder/boxes/supports/index.js:187
 #: controls/inner_blocks/script.js:75
 msgid "Read More"
 msgstr ""
@@ -885,127 +974,179 @@ msgstr ""
 msgid "Insert custom HTML attributes with custom content."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:131
+#: assets/block-builder/boxes/supports/index.js:178
+msgid "Style supports are applied to the block wrapper. Your frontend code has no element with the useBlockProps attribute, so the styles go to an extra <div> wrapper. Add useBlockProps to your root element to style it directly."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:194
 #: controls/color/script.js:131
 msgid "Color"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:132
+#: assets/block-builder/boxes/supports/index.js:195
 msgid "Additional fields to manage colors in the block."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:159
+#: assets/block-builder/boxes/supports/index.js:222
 msgid "Select color options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:177
+#: assets/block-builder/boxes/supports/index.js:240
 msgid "Typography"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:178
+#: assets/block-builder/boxes/supports/index.js:241
 msgid "Additional fields to manage block typography."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:205
+#: assets/block-builder/boxes/supports/index.js:268
 msgid "Select typography options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:223
+#: assets/block-builder/boxes/supports/index.js:286
 msgid "Spacing"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:224
+#: assets/block-builder/boxes/supports/index.js:287
 msgid "Additional fields to manage block spacings."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:250
+#: assets/block-builder/boxes/supports/index.js:313
 msgid "Select spacing options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:268
+#: assets/block-builder/boxes/supports/index.js:331
 msgid "Dimensions"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:269
+#: assets/block-builder/boxes/supports/index.js:332
 msgid "Additional fields to manage block dimensions."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:295
+#: assets/block-builder/boxes/supports/index.js:358
 msgid "Select dimensions options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:313
-msgid "Shadow"
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:314
-msgid "Additional fields to manage block shadow."
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:323
-msgid "Additional fields to manage block layout."
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:353
-msgid "Select layout options"
-msgstr ""
-
-#: assets/block-builder/boxes/supports/index.js:372
-msgid "Align"
+#: assets/block-builder/boxes/supports/index.js:376
+msgid "Border"
 msgstr ""
 
 #: assets/block-builder/boxes/supports/index.js:377
+msgid "Additional fields to manage block border."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:399
+msgid "Select border options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:417
+msgid "Background"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:418
+msgid "Additional fields to manage block background image."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:440
+msgid "Select background options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:458
+msgid "Shadow"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:459
+msgid "Additional fields to manage block shadow."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:467
+msgid "Duotone"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:468
+msgid "Additional field to apply a duotone filter to the block."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:480
+msgid "Sticky Position"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:481
+msgid "Additional field to make the block sticky."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:494
+msgid "Additional fields to manage block layout."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:524
+msgid "Select layout options"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:543
+msgid "Align"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:548
 msgid "Select align options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:404
+#: assets/block-builder/boxes/supports/index.js:575
 msgid "Anchor"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:405
+#: assets/block-builder/boxes/supports/index.js:576
 msgid "Additional field to add block ID attribute."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:413
+#: assets/block-builder/boxes/supports/index.js:584
 msgid "Class Name"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:414
+#: assets/block-builder/boxes/supports/index.js:585
 msgid "Additional field to add custom class name."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:422
+#: assets/block-builder/boxes/supports/index.js:593
 #: controls/checkbox/script.js:169
 #: controls/select/script.js:121
 msgid "Multiple"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:423
+#: assets/block-builder/boxes/supports/index.js:594
 msgid "Allow use block multiple times on the page."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:431
+#: assets/block-builder/boxes/supports/index.js:602
 msgid "Inserter"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:432
+#: assets/block-builder/boxes/supports/index.js:603
 msgid "Show block in blocks inserter."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:437
+#: assets/block-builder/boxes/supports/index.js:608
 msgid "Reusable"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:438
+#: assets/block-builder/boxes/supports/index.js:609
 msgid "Allow converting block into reusable block."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:446
+#: assets/block-builder/boxes/supports/index.js:617
 msgid "Lock"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:447
+#: assets/block-builder/boxes/supports/index.js:618
 msgid "Allow block locking/unlocking by a user."
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:626
+msgid "Interactivity"
+msgstr ""
+
+#: assets/block-builder/boxes/supports/index.js:627
+msgid "Process Interactivity API directives in the block output."
 msgstr ""
 
 #: assets/block-builder/boxes/title/index.js:73
@@ -1056,6 +1197,10 @@ msgstr ""
 msgid "Alert"
 msgstr ""
 
+#: assets/block-builder/plugin/index.js:183
+msgid "Block settings could not be saved."
+msgstr ""
+
 #: assets/components/block-slug/index.js:54
 #: assets/components/pro-notice/index.js:33
 msgid "Upgrade Now"
@@ -1081,15 +1226,19 @@ msgstr ""
 msgid "Control"
 msgstr ""
 
-#: assets/components/icon-picker/index.js:86
+#: assets/components/icon-picker/index.js:232
 msgid "Search Icon"
 msgstr ""
 
-#: assets/components/icon-picker/index.js:242
+#: assets/components/icon-picker/index.js:287
+msgid "Could not load icons."
+msgstr ""
+
+#: assets/components/icon-picker/index.js:290
 msgid "No icons found."
 msgstr ""
 
-#: assets/components/icon-picker/index.js:316
+#: assets/components/icon-picker/index.js:348
 msgid "Icon Picker"
 msgstr ""
 
@@ -1323,11 +1472,11 @@ msgstr ""
 msgid "Maximum number of characters allowed. Leave blank to no limit."
 msgstr ""
 
-#: controls/file/file-control.js:56
+#: controls/file/file-control.js:57
 msgid "file"
 msgstr ""
 
-#: controls/file/file-control.js:112
+#: controls/file/file-control.js:122
 msgid "Remove File"
 msgstr ""
 
@@ -1339,24 +1488,24 @@ msgstr ""
 msgid "If nothing selected, all file types will be allowed to use."
 msgstr ""
 
-#: controls/gallery/gallery-control.js:213
+#: controls/gallery/gallery-control.js:214
 msgid "images"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:264
+#: controls/gallery/gallery-control.js:278
 msgid "Gallery actions"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:275
+#: controls/gallery/gallery-control.js:289
 msgid "Edit Gallery"
 msgstr ""
 
-#: controls/gallery/gallery-control.js:278
+#: controls/gallery/gallery-control.js:292
 msgid "Clear the gallery"
 msgstr ""
 
 #. translators: %d: number of images which are not displayed in the preview.
-#: controls/gallery/gallery-control.js:345
+#: controls/gallery/gallery-control.js:359
 #, js-format
 msgid "%d more image"
 msgid_plural "%d more images"
@@ -1383,11 +1532,11 @@ msgstr ""
 msgid "Rows"
 msgstr ""
 
-#: controls/image/image-control.js:95
+#: controls/image/image-control.js:96
 msgid "image"
 msgstr ""
 
-#: controls/image/image-control.js:142
+#: controls/image/image-control.js:152
 msgid "Remove Image"
 msgstr ""
 
@@ -1436,21 +1585,21 @@ msgstr ""
 msgid "Allows you to reset selected option value to null"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:199
+#: controls/repeater/repeater-control.js:207
 #: controls/repeater/script.js:286
 msgid "Row {{#}}"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:334
+#: controls/repeater/repeater-control.js:342
 msgid "Repeater actions"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:354
+#: controls/repeater/repeater-control.js:362
 #: controls/repeater/script.js:298
 msgid "+ Add Row"
 msgstr ""
 
-#: controls/repeater/repeater-control.js:359
+#: controls/repeater/repeater-control.js:367
 msgid "Toggle all rows"
 msgstr ""
 

@@ -5,8 +5,8 @@
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 6.2
 * Tested up to: 7.1
-* Requires PHP: 8.0
-* Stable tag: 4.4.2
+* Requires PHP: 8.3
+* Stable tag: 4.5.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,27 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.5.0 - Oct 22, 2026 =
+
+* requires PHP version 8.3 or higher
+* security fix: only users who can edit Lazy Blocks can save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
+* added border, background, duotone, sticky position, interactivity, text columns, text shadow (WordPress 7.2), width and height supports to the block builder, all off by default
+* added a block builder notice when style supports are enabled and the frontend output has no `useBlockProps` wrapper
+* added abilities for AI agents on WordPress 6.9+ to list, read, create and update blocks: `lazy-blocks/list-blocks`, `lazy-blocks/get-block`, `lazy-blocks/create-block`, `lazy-blocks/update-block`
+* added block context to PHP output on the frontend, so a block that uses context such as `postId` and `postType` receives it in `$context`
+* added an editor notice when saving block data in the block builder fails
+* improved post editor loading speed: the icon list loads only when an icon picker opens, and control scripts are a third smaller
+* removed the unused `date_i18n` script that loaded on every admin screen; code that enqueued this handle needs to load its own copy
+* fixed the `useBlockProps` wrapper and InnerBlocks output losing unquoted classes, boolean attributes, Interactivity API directives, JSON values and custom element names
+* fixed block icons losing circle, line and polygon shapes and stroke attributes
+* fixed Repeater rows not opening with the Enter and Space keys
+* fixed Image, File and Gallery controls picking up the temporary preview of a file while its upload is still in progress
+* **Pro:**
+* security fix: Collections, the Posts and Users controls and license activation now check user permissions, and user emails and names are hidden from users who cannot list users
+* security fix: custom CSS is sanitized as CSS and can no longer close the element it is printed in
+* added a "Where is my license key?" link next to the license key field
+* fixed a malformed saved collection breaking the editor for every user
 
 = 4.4.2 - Oct 12, 2026 =
 
