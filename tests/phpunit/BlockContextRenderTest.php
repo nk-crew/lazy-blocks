@@ -9,6 +9,14 @@
 class BlockContextRenderTest extends WP_UnitTestCase {
 	const SLUG = 'lazyblock/test';
 
+	public function set_up() {
+		parent::set_up();
+
+		// These tests pin the free plugin's render. An extension such as Pro may replace the
+		// render callback through this filter; the base class restores every hook afterwards.
+		remove_all_filters( 'lzb/register_block_type_data' );
+	}
+
 	public function tear_down() {
 		$registry = WP_Block_Type_Registry::get_instance();
 		if ( $registry->is_registered( self::SLUG ) ) {
