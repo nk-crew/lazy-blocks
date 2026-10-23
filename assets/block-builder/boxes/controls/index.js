@@ -10,7 +10,7 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
-import { Button, TabPanel } from '@wordpress/components';
+import { TabPanel } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
 import { useEffect, useRef } from '@wordpress/element';
 /**
@@ -25,6 +25,7 @@ import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 /**
  * Internal dependencies.
  */
+import AddControl, { ControlsEmptyState } from './add-control';
 import Control from './control';
 import DeselectActiveControlOnClickOutside from './deselect-active-on-click-outside';
 
@@ -122,6 +123,10 @@ export default function ControlsSettings(props) {
 			});
 		});
 
+		if (!childOf && !items.length) {
+			return <ControlsEmptyState placement={placement} />;
+		}
+
 		return (
 			<>
 				<DndContext
@@ -157,33 +162,16 @@ export default function ControlsSettings(props) {
 						</SortableContext>
 					</div>
 				</DndContext>
-				<Button
+				<AddControl
+					placement={placement || 'content'}
+					childOf={childOf}
 					label={
 						childOf
-							? __('Add Child Control', 'lazy-blocks')
-							: __('Add Control', 'lazy-blocks')
+							? __('Add child control', 'lazy-blocks')
+							: __('Add control', 'lazy-blocks')
 					}
-					showTooltip
-					className="lzb-block-builder-controls-item-appender"
-					onClick={() => {
-						addControl({
-							placement: placement || 'content',
-							child_of: childOf,
-						});
-					}}
-					__next40pxDefaultSize
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-						width="24"
-						height="24"
-						aria-hidden="true"
-						focusable="false"
-					>
-						<path d="M11 12.5V17.5H12.5V12.5H17.5V11H12.5V6H11V11H6V12.5H11Z"></path>
-					</svg>
-				</Button>
+					variant={childOf ? 'tertiary' : 'secondary'}
+				/>
 			</>
 		);
 	}

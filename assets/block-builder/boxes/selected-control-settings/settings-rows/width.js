@@ -7,8 +7,6 @@ import {
 	__experimentalToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption,
-	BaseControl,
-	PanelBody,
 	ToggleGroupControl as StableToggleGroupControl,
 	ToggleGroupControlOption as StableToggleGroupControlOption,
 } from '@wordpress/components';
@@ -30,26 +28,16 @@ export default function WidthRow(props) {
 	};
 
 	return (
-		<PanelBody>
-			<BaseControl
-				id="lazyblocks-settings-row-width"
-				label={__('Width', 'lazy-blocks')}
-			>
-				<div />
-				<ToggleGroupControl
-					value={data.width || '100'}
-					onChange={(value) => updateData({ width: value })}
-					isBlock
-				>
-					{Object.keys(widths).map((w) => (
-						<ToggleGroupControlOption
-							key={w}
-							value={w}
-							label={widths[w]}
-						/>
-					))}
-				</ToggleGroupControl>
-			</BaseControl>
-		</PanelBody>
+		<ToggleGroupControl
+			label={__('Width', 'lazy-blocks')}
+			value={data.width || '100'}
+			onChange={(value) => updateData({ width: value })}
+			isBlock
+			__nextHasNoMarginBottom
+		>
+			{Object.keys(widths).map((w) => (
+				<ToggleGroupControlOption key={w} value={w} label={widths[w]} />
+			))}
+		</ToggleGroupControl>
 	);
 }

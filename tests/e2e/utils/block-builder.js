@@ -32,7 +32,9 @@ export async function openBlockBuilder({ page, editor, admin, blockID }) {
 	// The builder lives inside the editor canvas iframe and is mounted by the
 	// `lzb-block-builder/main` block, which the plugin inserts itself. Waiting
 	// for it also means the editor stores are up, ready for `setPreferences`.
-	await expect(editor.canvas.getByLabel('Add Control')).toBeVisible();
+	await expect(
+		editor.canvas.locator('.lzb-block-builder-controls')
+	).toBeVisible();
 
 	await editor.setPreferences('core/edit-post', {
 		welcomeGuide: false,

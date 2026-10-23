@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { applyFilters } from '@wordpress/hooks';
-import ProNotice from '../../../../components/pro-notice';
+
 /**
  * Internal dependencies.
  */
@@ -21,8 +21,26 @@ import TranslateRow from './translate';
 import TypeRow from './type';
 import WidthRow from './width';
 
-export default function settingsRows(props) {
-	const { data, id } = props;
+// Rows of the Layout and Behavior groups. Any other row, including rows added
+// through the filter, goes to the Settings group.
+const LAYOUT_ROWS = ['placement', 'width', 'group'];
+const BEHAVIOR_ROWS = [
+	'required',
+	'hide_if_not_selected',
+	'translate',
+	'save_in_meta',
+];
+
+/**
+ * Settings rows of a control, split into the Settings, Layout and Behavior
+ * groups.
+ *
+ * @param {Object} props Row props: data, id, updateData.
+ *
+ * @return {Object} Rows per group as [key, Component] pairs, and the type row.
+ */
+export default function getSettingsRows(props) {
+	const { data } = props;
 
 	const controlTypeData = getControlTypeData(data.type);
 
@@ -42,14 +60,19 @@ export default function settingsRows(props) {
 			hide_if_not_selected: HideIfNotSelectedRow,
 			translate: TranslateRow,
 			save_in_meta: SaveInMetaRow,
-			pro_notice: ProNotice,
 		},
 		props,
 		controlTypeData
 	);
 
-	return Object.keys(rows).map((i) => {
-		const Row = rows[i];
+	const result = {
+		type: null,
+		settings: [],
+		layout: [],
+		behavior: [],
+	};
+
+	Object.keys(rows).forEach((i) => {
 		let allow = true;
 
 		// check restrictions.
@@ -83,16 +106,21 @@ export default function settingsRows(props) {
 		}
 
 		// don't show.
-		if (!allow) {
-			return null;
+		if (!allow || !rows[i]) {
+			return;
 		}
 
-		return (
-			<Row
-				key={`settings-row-${id}-${i}`}
-				controlTypeData={controlTypeData}
-				{...props}
-			/>
-		);
+		// The control header shows the default type row.
+		if (i === 'type' && rows[i] === TypeRow) {
+			result.type = rows[i];
+		} else if (LAYOUT_ROWS.includes(i)) {
+			result.layout.push([i, rows[i]]);
+		} else if (BEHAVIOR_ROWS.includes(i)) {
+			result.behavior.push([i, rows[i]]);
+		} else {
+			result.settings.push([i, rows[i]]);
+		}
 	});
+
+	return result;
 }

@@ -2,13 +2,25 @@
  * WordPress dependencies.
  */
 
-import { BaseControl, Button, PanelBody } from '@wordpress/components';
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption,
+	ToggleGroupControl as StableToggleGroupControl,
+	ToggleGroupControlOption as StableToggleGroupControlOption,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies.
  */
 import getControlTypeData from '../../../../utils/get-control-type-data';
+
+const ToggleGroupControl =
+	StableToggleGroupControl || __experimentalToggleGroupControl;
+const ToggleGroupControlOption =
+	StableToggleGroupControlOption || __experimentalToggleGroupControlOption;
 
 export default function PlacementRow(props) {
 	const { updateData, data } = props;
@@ -31,73 +43,48 @@ export default function PlacementRow(props) {
 		return null;
 	}
 
-	const isContent = placement === 'content' || placement === 'both';
-	const isInspector = placement === 'inspector' || placement === 'both';
+	const allowContent = placementRestrictions.includes('content');
+	const allowInspector = placementRestrictions.includes('inspector');
+
+	// The current placement stays listed even when a restriction excludes it.
+	const options = [
+		{
+			value: 'content',
+			label: __('Content', 'lazy-blocks'),
+			allow: allowContent,
+		},
+		{
+			value: 'inspector',
+			label: __('Inspector', 'lazy-blocks'),
+			allow: allowInspector,
+		},
+		{
+			value: 'both',
+			label: __('Both', 'lazy-blocks'),
+			allow: allowContent && allowInspector,
+		},
+		{
+			value: 'nowhere',
+			label: __('Hidden', 'lazy-blocks'),
+			allow: true,
+		},
+	].filter((option) => option.allow || option.value === placement);
 
 	return (
-		<PanelBody>
-			<BaseControl
-				id="lazyblocks-settings-row-placement"
-				label={__('Placement', 'lazy-blocks')}
-			>
-				<div />
-				<div
-					role="group"
-					aria-label={__('Placement options', 'lazy-blocks')}
-					className="components-button-group"
-				>
-					<Button
-						variant={isContent ? 'primary' : ''}
-						isPressed={isContent}
-						disabled={
-							!isContent &&
-							placementRestrictions.indexOf('content') === -1
-						}
-						onClick={() => {
-							let newPlacement = 'content';
-
-							if (placement === 'both') {
-								newPlacement = 'inspector';
-							} else if (placement === 'content') {
-								newPlacement = 'nowhere';
-							} else if (placement === 'inspector') {
-								newPlacement = 'both';
-							}
-
-							updateData({
-								placement: newPlacement,
-							});
-						}}
-					>
-						{__('Content', 'lazy-blocks')}
-					</Button>
-					<Button
-						variant={isInspector ? 'primary' : ''}
-						isPressed={isInspector}
-						disabled={
-							!isInspector &&
-							placementRestrictions.indexOf('inspector') === -1
-						}
-						onClick={() => {
-							let newPlacement = 'inspector';
-
-							if (placement === 'both') {
-								newPlacement = 'content';
-							} else if (placement === 'inspector') {
-								newPlacement = 'nowhere';
-							} else if (placement === 'content') {
-								newPlacement = 'both';
-							}
-
-							updateData({
-								placement: newPlacement,
-							});
-						}}
-					>
-						{__('Inspector', 'lazy-blocks')}
-					</Button>
-				</div>
-			</BaseControl>
-		</PanelBody>
+		<ToggleGroupControl
+			label={__('Placement', 'lazy-blocks')}
+			value={placement}
+			onChange={(value) => updateData({ placement: value })}
+			isBlock
+			__nextHasNoMarginBottom
+		>
+			{options.map((option) => (
+				<ToggleGroupControlOption
+					key={option.value}
+					value={option.value}
+					label={option.label}
+				/>
+			))}
+		</ToggleGroupControl>
 	);
 }

@@ -33,3 +33,24 @@
 		margin-left: 1.3em;
 	}
 }
+
+.lazyblocks-component-pro-notice-line {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	padding: 16px;
+	border-top: 1px solid #e0e0e0;
+
+	p {
+		flex: 1;
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.5;
+		color: #757575;
+	}
+
+	.components-button {
+		flex-shrink: 0;
+		margin-top: -2px;
+	}
+}

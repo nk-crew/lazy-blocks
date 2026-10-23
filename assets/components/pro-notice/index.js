@@ -3,66 +3,59 @@
  */
 import './editor.scss';
 
-import { BaseControl, PanelBody } from '@wordpress/components';
 /**
  * WordPress dependencies.
  */
+import { Button, ExternalLink, Path, SVG } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 const { lazyblocksBlockBuilderData } = window;
 
+const closeIcon = (
+	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<Path d="M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z" />
+	</SVG>
+);
+
+/**
+ * One line about Lazy Blocks Pro. Dismissing it is stored in the user
+ * preferences, so it stays hidden on every block.
+ */
 export default function ProNotice() {
-	if (lazyblocksBlockBuilderData.is_pro) {
+	const isDismissed = useSelect(
+		(select) =>
+			!!select('core/preferences').get(
+				'lazy-blocks',
+				'proNoticeDismissed'
+			),
+		[]
+	);
+	const { set: setPreference } = useDispatch('core/preferences');
+
+	if (lazyblocksBlockBuilderData.is_pro || isDismissed) {
 		return null;
 	}
 
 	return (
-		<PanelBody>
-			<BaseControl
-				id="lazyblocks-pro-notice"
-				label={__('Lazy Blocks Pro', 'lazy-blocks')}
-				className="lazyblocks-component-pro-notice"
-			>
-				<div>
-					<a
-						className="lazyblocks-component-pro-notice-btn"
-						target="_blank"
-						rel="noreferrer"
-						href={lazyblocksBlockBuilderData.pro_url}
-					>
-						{__('Upgrade Now', 'lazy-blocks')}
-					</a>
-					<ul className="ul-square">
-						<li>
-							{__(
-								'Custom block collections and slug namespaces',
-								'lazy-blocks'
-							)}
-						</li>
-						<li>
-							{__('Controls Conditional Logic', 'lazy-blocks')}
-						</li>
-						<li>{__('Panels and Dividers', 'lazy-blocks')}</li>
-						<li>
-							{__(
-								'Posts, Taxonomy, User Controls',
-								'lazy-blocks'
-							)}
-						</li>
-						<li>{__('Blocks Preloading', 'lazy-blocks')}</li>
-						<li>{__('SEO Enhancements', 'lazy-blocks')}</li>
-						<li>
-							<a
-								target="_blank"
-								rel="noreferrer"
-								href={lazyblocksBlockBuilderData.pro_url}
-							>
-								{__('And much more…', 'lazy-blocks')}
-							</a>
-						</li>
-					</ul>
-				</div>
-			</BaseControl>
-		</PanelBody>
+		<div className="lazyblocks-component-pro-notice-line">
+			<p>
+				{__(
+					'Lazy Blocks Pro adds conditional logic, panels, and post, taxonomy and user controls.',
+					'lazy-blocks'
+				)}{' '}
+				<ExternalLink href={lazyblocksBlockBuilderData.pro_url}>
+					{__('Learn more', 'lazy-blocks')}
+				</ExternalLink>
+			</p>
+			<Button
+				size="small"
+				icon={closeIcon}
+				label={__('Dismiss', 'lazy-blocks')}
+				onClick={() =>
+					setPreference('lazy-blocks', 'proNoticeDismissed', true)
+				}
+			/>
+		</div>
 	);
 }

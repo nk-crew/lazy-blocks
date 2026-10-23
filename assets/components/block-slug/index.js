@@ -17,7 +17,11 @@ import { __ } from '@wordpress/i18n';
 
 export default function BlockSlug(props) {
 	return (
-		<BaseControl id={props.label} label={props.label || ''}>
+		<BaseControl
+			id={props.label}
+			label={props.label || ''}
+			hideLabelFromVision={props.hideLabelFromVision}
+		>
 			<div className="lazyblocks-component-block-slug">
 				<Dropdown
 					className="lazyblocks-component-block-slug-prefix-dropdown"
@@ -60,7 +64,7 @@ export default function BlockSlug(props) {
 				<TextControl
 					{...{
 						...props,
-						...{ label: '' },
+						...{ label: '', 'aria-label': props.label },
 					}}
 				/>
 			</div>
