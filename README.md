@@ -34,7 +34,7 @@ Lazy Blocks is a WordPress plugin that helps you create custom blocks for the Gu
 ### Prerequisites
 
 - PHP >= 8.3
-- Node.js >= 18.0
+- Node.js >= 22.0
 - Composer >= 2.0
 
 ### Getting Started

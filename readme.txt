@@ -4,7 +4,7 @@
 * Tags: gutenberg, blocks, custom, meta, fields
 * Donate link: https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=donate
 * Requires at least: 6.2
-* Tested up to: 7.1
+* Tested up to: 7.2
 * Requires PHP: 8.3
 * Stable tag: 4.5.0
 * License: GPLv2 or later
@@ -143,6 +143,10 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 * requires PHP version 8.3 or higher
 * security fix: only users who can edit Lazy Blocks can save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
+* redesigned the block builder sidebar: the Add control button opens a popover with search and keyboard navigation, the new control is selected with its label field focused, and an empty controls list offers quick Text, Image and Repeater buttons
+* redesigned the block builder control settings, now grouped into Settings, Layout and Behavior
+* redesigned the block builder Block tab: a block card shows the icon, title and description and edits the slug in place, and Supports are listed in a panel that shows only the ones in use
+* improved the block builder controls list: one actions menu per control, double-click to rename, and arrow keys to move the selection
 * added border, background, duotone, sticky position, interactivity, text columns, text shadow (WordPress 7.2), width and height supports to the block builder, all off by default
 * added a block builder notice when style supports are enabled and the frontend output has no `useBlockProps` wrapper
 * added abilities for AI agents on WordPress 6.9+ to list, read, create and update blocks: `lazy-blocks/list-blocks`, `lazy-blocks/get-block`, `lazy-blocks/create-block`, `lazy-blocks/update-block`
@@ -152,12 +156,15 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 * removed the unused `date_i18n` script that loaded on every admin screen; code that enqueued this handle needs to load its own copy
 * fixed the `useBlockProps` wrapper and InnerBlocks output losing unquoted classes, boolean attributes, Interactivity API directives, JSON values and custom element names
 * fixed block icons losing circle, line and polygon shapes and stroke attributes
+* fixed InnerBlocks content not keeping `\1`, `$1` and backslashes as written
+* fixed block builder tabs wrapping their icon and label onto two lines on WordPress 7.2
 * fixed Repeater rows not opening with the Enter and Space keys
 * fixed Image, File and Gallery controls picking up the temporary preview of a file while its upload is still in progress
 * **Pro:**
 * security fix: Collections, the Posts and Users controls and license activation now check user permissions, and user emails and names are hidden from users who cannot list users
 * security fix: custom CSS is sanitized as CSS and can no longer close the element it is printed in
 * added a "Where is my license key?" link next to the license key field
+* added editing of a custom slug namespace inside the new block card
 * fixed a malformed saved collection breaking the editor for every user
 
 = 4.4.2 - Oct 12, 2026 =

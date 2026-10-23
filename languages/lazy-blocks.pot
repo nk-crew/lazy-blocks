@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-22T05:18:42+00:00\n"
+"POT-Creation-Date: 2026-10-23T15:53:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -159,7 +159,7 @@ msgid "Duplicate “%1$s”"
 msgstr ""
 
 #: classes/class-blocks.php:545
-#: assets/block-builder/boxes/controls/control.js:211
+#: assets/block-builder/boxes/controls/control.js:314
 msgid "Duplicate"
 msgstr ""
 
@@ -197,22 +197,22 @@ msgid "Activate"
 msgstr ""
 
 #: classes/class-blocks.php:639
-#: assets/block-builder/boxes/general/index.js:173
 msgid "Icon"
 msgstr ""
 
 #: classes/class-blocks.php:641
-#: assets/block-builder/boxes/general/index.js:42
+#: assets/block-builder/boxes/general/index.js:50
+#: assets/block-builder/boxes/general/index.js:320
 msgid "Slug"
 msgstr ""
 
 #: classes/class-blocks.php:642
-#: assets/block-builder/boxes/general/index.js:90
+#: assets/block-builder/boxes/general/index.js:98
 msgid "Category"
 msgstr ""
 
 #: classes/class-blocks.php:643
-#: assets/block-builder/boxes/general/index.js:207
+#: assets/block-builder/boxes/general/index.js:358
 #: assets/block-builder/boxes/wizard/index.js:300
 msgid "Description"
 msgstr ""
@@ -236,7 +236,7 @@ msgid "Basic"
 msgstr ""
 
 #: classes/class-controls.php:42
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:72
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:53
 msgid "Content"
 msgstr ""
 
@@ -249,7 +249,9 @@ msgid "Advanced"
 msgstr ""
 
 #: classes/class-controls.php:45
-#: assets/block-builder/boxes/supports/index.js:493
+#: assets/block-builder/boxes/selected-control-settings/index.js:197
+#: assets/block-builder/boxes/supports/index.js:614
+#: assets/block-builder/boxes/supports/index.js:619
 msgid "Layout"
 msgstr ""
 
@@ -574,14 +576,15 @@ msgid "Style Variations"
 msgstr ""
 
 #: assets/block-builder/block/edit.js:84
+#: assets/block-builder/boxes/supports/index.js:226
 msgid "Supports"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:90
+#: assets/block-builder/block/edit.js:92
 msgid "Supports Ghost Kit"
 msgstr ""
 
-#: assets/block-builder/block/edit.js:96
+#: assets/block-builder/block/edit.js:98
 msgid "Condition"
 msgstr ""
 
@@ -638,10 +641,6 @@ msgstr ""
 
 #: assets/block-builder/boxes/code/index.js:425
 #: assets/block-builder/boxes/code/index.js:444
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:19
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:19
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:39
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:19
 #: controls/checkbox/script.js:177
 #: controls/color/script.js:92
 #: controls/color/script.js:109
@@ -675,7 +674,8 @@ msgid "Visible only when Not Selected"
 msgstr ""
 
 #: assets/block-builder/boxes/code/index.js:486
-#: assets/block-builder/boxes/controls/index.js:271
+#: assets/block-builder/boxes/controls/index.js:259
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:68
 msgid "Hidden"
 msgstr ""
 
@@ -711,70 +711,173 @@ msgstr ""
 msgid "Loading…"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:195
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:53
+#: assets/block-builder/boxes/controls/add-control.js:73
+#: assets/block-builder/boxes/controls/index.js:171
+msgid "Add control"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:122
+msgid "No content controls yet"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:123
+msgid "Content controls appear inside the block in the editor."
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:129
+msgid "No inspector controls yet"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:130
+msgid "Inspector controls appear in the block settings sidebar."
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:135
+msgid "No hidden controls"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:136
+msgid "Hidden controls store a value without showing a field."
+msgstr ""
+
+#: assets/block-builder/boxes/controls/add-control.js:177
+msgid "Browse all"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/control.js:217
+msgid "Control label"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/control.js:273
+#: assets/block-builder/boxes/selected-control-settings/index.js:118
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:55
 msgid "(no label)"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:216
+#: assets/block-builder/boxes/controls/control.js:295
+msgid "Control actions"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/control.js:307
 msgid "(copy)"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:250
-msgid "Remove"
+#: assets/block-builder/boxes/controls/control.js:326
+#: assets/block-builder/boxes/selected-control-settings/index.js:78
+msgid "Copy name"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:256
+#: assets/block-builder/boxes/controls/control.js:339
 msgid "Do you really want to remove control?"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:292
-#: assets/components/copied/index.js:14
-msgid "Copied!"
+#: assets/block-builder/boxes/controls/control.js:349
+msgid "Remove"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/control.js:293
-msgid "Copy Name"
+#: assets/block-builder/boxes/controls/index.js:170
+msgid "Add child control"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:163
-msgid "Add Child Control"
-msgstr ""
-
-#: assets/block-builder/boxes/controls/index.js:164
-msgid "Add Control"
-msgstr ""
-
-#: assets/block-builder/boxes/controls/index.js:220
+#: assets/block-builder/boxes/controls/index.js:208
 msgid "Content Controls"
 msgstr ""
 
-#: assets/block-builder/boxes/controls/index.js:251
+#: assets/block-builder/boxes/controls/index.js:239
 msgid "Inspector Controls"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:52
+#: assets/block-builder/boxes/controls/type-picker.js:104
+msgid "Most used"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/type-picker.js:186
+msgid "Search control types"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/type-picker.js:187
+msgid "Search"
+msgstr ""
+
+#: assets/block-builder/boxes/controls/type-picker.js:234
+msgid "No control types found."
+msgstr ""
+
+#: assets/block-builder/boxes/general/index.js:60
+#: assets/block-builder/boxes/general/index.js:276
 msgid "Block slug must include only lowercase alphanumeric characters or dashes, and start with a letter. Example: lazyblock/my-custom-block"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:95
+#: assets/block-builder/boxes/general/index.js:103
 msgid "Select category"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:110
+#: assets/block-builder/boxes/general/index.js:118
 msgid "Keywords"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:111
+#: assets/block-builder/boxes/general/index.js:119
 msgid "Make it easier to discover a block with keyword aliases"
 msgstr ""
 
-#: assets/block-builder/boxes/general/index.js:120
+#: assets/block-builder/boxes/general/index.js:128
 msgid "Type keyword and push Enter"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/index.js:43
-msgid "Select control to see settings."
+#: assets/block-builder/boxes/general/index.js:197
+msgid "Change icon"
+msgstr ""
+
+#: assets/block-builder/boxes/general/index.js:245
+msgid "(no title)"
+msgstr ""
+
+#: assets/block-builder/boxes/general/index.js:287
+msgid "Done"
+msgstr ""
+
+#: assets/block-builder/boxes/general/index.js:299
+msgid "Edit slug"
+msgstr ""
+
+#: assets/block-builder/boxes/general/index.js:374
+msgid "General"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:52
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:13
+msgid "Required"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:53
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:13
+msgid "Hide until the block is selected"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:54
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:13
+msgid "Translate with WPML"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:55
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:20
+msgid "Save in post meta"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:77
+msgid "Copied"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:167
+msgid "Select a control in the list to edit its settings."
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:190
+msgid "Settings"
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/index.js:205
+msgid "Behavior"
 msgstr ""
 
 #: assets/block-builder/boxes/selected-control-settings/settings-rows/default.js:26
@@ -785,7 +888,7 @@ msgstr ""
 msgid "Appears when inserting a new block"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/group.js:17
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/group.js:16
 msgid "Group"
 msgstr ""
 
@@ -797,11 +900,7 @@ msgstr ""
 msgid "Instructions under control"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/hide-if-not-selected.js:15
-msgid "Hide if block is not selected"
-msgstr ""
-
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:45
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:47
 #: assets/block-builder/boxes/style-variations/index.js:35
 #: assets/components/choices/index.js:156
 #: controls/checkbox/script.js:211
@@ -810,7 +909,7 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:46
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/label.js:48
 msgid "This is the name which will appear on the block edit control"
 msgstr ""
 
@@ -823,68 +922,63 @@ msgstr ""
 msgid "Control name must include only alphanumeric characters, dashes or underscores. Example: my-control-name"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:41
-msgid "Placement"
-msgstr ""
-
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:46
-msgid "Placement options"
-msgstr ""
-
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:97
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:58
 msgid "Inspector"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:15
-msgid "Required"
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:63
+msgid "Both"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:23
-msgid "Save in Meta"
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/placement.js:75
+msgid "Placement"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:34
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/required.js:14
+msgid "The post cannot be saved while this field is empty."
+msgstr ""
+
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:25
 msgid "How to use?"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:48
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:36
 msgid "Meta custom name (optional)"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:54
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/save-in-meta.js:42
 msgid "Unique metabox name"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/translate.js:15
-msgid "WPML Translation"
+#. translators: 1: control type, 2: parent repeater label.
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:49
+#, js-format
+msgid "%1$s in %2$s"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:176
-msgid "Type"
+#. translators: %s: control type.
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:70
+#, js-format
+msgid "Change type: %s"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/type.js:224
-#: assets/components/icon-picker/index.js:238
-msgid "Type to Search…"
-msgstr ""
-
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:26
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:24
 msgid "25%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:27
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:25
 msgid "50%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:28
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:26
 msgid "75%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:29
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:27
 msgid "100%"
 msgstr ""
 
-#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:36
+#: assets/block-builder/boxes/selected-control-settings/settings-rows/width.js:32
 msgid "Width"
 msgstr ""
 
@@ -901,7 +995,7 @@ msgid "To see these settings in your block, you have to install Ghost Kit plugin
 msgstr ""
 
 #: assets/block-builder/boxes/supports-ghost-kit/index.js:65
-#: assets/block-builder/boxes/supports/index.js:187
+#: assets/block-builder/boxes/supports/index.js:246
 #: controls/inner_blocks/script.js:75
 msgid "Read More"
 msgstr ""
@@ -974,178 +1068,195 @@ msgstr ""
 msgid "Insert custom HTML attributes with custom content."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:178
+#: assets/block-builder/boxes/supports/index.js:237
 msgid "Style supports are applied to the block wrapper. Your frontend code has no element with the useBlockProps attribute, so the styles go to an extra <div> wrapper. Add useBlockProps to your root element to style it directly."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:194
+#: assets/block-builder/boxes/supports/index.js:253
+#: assets/block-builder/boxes/supports/index.js:258
 #: controls/color/script.js:131
 msgid "Color"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:195
+#: assets/block-builder/boxes/supports/index.js:259
 msgid "Additional fields to manage colors in the block."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:222
+#: assets/block-builder/boxes/supports/index.js:286
 msgid "Select color options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:240
+#: assets/block-builder/boxes/supports/index.js:305
+#: assets/block-builder/boxes/supports/index.js:310
 msgid "Typography"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:241
+#: assets/block-builder/boxes/supports/index.js:311
 msgid "Additional fields to manage block typography."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:268
+#: assets/block-builder/boxes/supports/index.js:342
 msgid "Select typography options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:286
+#: assets/block-builder/boxes/supports/index.js:361
+#: assets/block-builder/boxes/supports/index.js:366
 msgid "Spacing"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:287
+#: assets/block-builder/boxes/supports/index.js:367
 msgid "Additional fields to manage block spacings."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:313
+#: assets/block-builder/boxes/supports/index.js:393
 msgid "Select spacing options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:331
+#: assets/block-builder/boxes/supports/index.js:412
+#: assets/block-builder/boxes/supports/index.js:417
 msgid "Dimensions"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:332
+#: assets/block-builder/boxes/supports/index.js:418
 msgid "Additional fields to manage block dimensions."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:358
+#: assets/block-builder/boxes/supports/index.js:448
 msgid "Select dimensions options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:376
+#: assets/block-builder/boxes/supports/index.js:467
+#: assets/block-builder/boxes/supports/index.js:472
 msgid "Border"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:377
+#: assets/block-builder/boxes/supports/index.js:473
 msgid "Additional fields to manage block border."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:399
+#: assets/block-builder/boxes/supports/index.js:495
 msgid "Select border options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:417
+#: assets/block-builder/boxes/supports/index.js:514
+#: assets/block-builder/boxes/supports/index.js:519
 msgid "Background"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:418
+#: assets/block-builder/boxes/supports/index.js:520
 msgid "Additional fields to manage block background image."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:440
+#: assets/block-builder/boxes/supports/index.js:542
 msgid "Select background options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:458
+#: assets/block-builder/boxes/supports/index.js:561
+#: assets/block-builder/boxes/supports/index.js:566
 msgid "Shadow"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:459
+#: assets/block-builder/boxes/supports/index.js:567
 msgid "Additional fields to manage block shadow."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:467
+#: assets/block-builder/boxes/supports/index.js:576
+#: assets/block-builder/boxes/supports/index.js:581
 msgid "Duotone"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:468
+#: assets/block-builder/boxes/supports/index.js:582
 msgid "Additional field to apply a duotone filter to the block."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:480
+#: assets/block-builder/boxes/supports/index.js:595
+#: assets/block-builder/boxes/supports/index.js:600
 msgid "Sticky Position"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:481
+#: assets/block-builder/boxes/supports/index.js:601
 msgid "Additional field to make the block sticky."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:494
+#: assets/block-builder/boxes/supports/index.js:620
 msgid "Additional fields to manage block layout."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:524
+#: assets/block-builder/boxes/supports/index.js:650
 msgid "Select layout options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:543
+#: assets/block-builder/boxes/supports/index.js:669
+#: assets/block-builder/boxes/supports/index.js:675
 msgid "Align"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:548
+#: assets/block-builder/boxes/supports/index.js:680
 msgid "Select align options"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:575
+#: assets/block-builder/boxes/supports/index.js:708
+#: assets/block-builder/boxes/supports/index.js:713
 msgid "Anchor"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:576
+#: assets/block-builder/boxes/supports/index.js:714
 msgid "Additional field to add block ID attribute."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:584
+#: assets/block-builder/boxes/supports/index.js:723
+#: assets/block-builder/boxes/supports/index.js:728
 msgid "Class Name"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:585
+#: assets/block-builder/boxes/supports/index.js:729
 msgid "Additional field to add custom class name."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:593
+#: assets/block-builder/boxes/supports/index.js:740
+#: assets/block-builder/boxes/supports/index.js:745
 #: controls/checkbox/script.js:169
 #: controls/select/script.js:121
 msgid "Multiple"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:594
+#: assets/block-builder/boxes/supports/index.js:746
 msgid "Allow use block multiple times on the page."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:602
+#: assets/block-builder/boxes/supports/index.js:757
+#: assets/block-builder/boxes/supports/index.js:762
 msgid "Inserter"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:603
+#: assets/block-builder/boxes/supports/index.js:763
 msgid "Show block in blocks inserter."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:608
+#: assets/block-builder/boxes/supports/index.js:771
+#: assets/block-builder/boxes/supports/index.js:776
 msgid "Reusable"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:609
+#: assets/block-builder/boxes/supports/index.js:777
 msgid "Allow converting block into reusable block."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:617
+#: assets/block-builder/boxes/supports/index.js:788
+#: assets/block-builder/boxes/supports/index.js:793
 msgid "Lock"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:618
+#: assets/block-builder/boxes/supports/index.js:794
 msgid "Allow block locking/unlocking by a user."
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:626
+#: assets/block-builder/boxes/supports/index.js:803
+#: assets/block-builder/boxes/supports/index.js:808
 msgid "Interactivity"
 msgstr ""
 
-#: assets/block-builder/boxes/supports/index.js:627
+#: assets/block-builder/boxes/supports/index.js:809
 msgid "Process Interactivity API directives in the block output."
 msgstr ""
 
@@ -1201,8 +1312,7 @@ msgstr ""
 msgid "Block settings could not be saved."
 msgstr ""
 
-#: assets/components/block-slug/index.js:54
-#: assets/components/pro-notice/index.js:33
+#: assets/components/block-slug/index.js:58
 msgid "Upgrade Now"
 msgstr ""
 
@@ -1221,6 +1331,10 @@ msgstr ""
 msgid "+ Add Choice"
 msgstr ""
 
+#: assets/components/copied/index.js:14
+msgid "Copied!"
+msgstr ""
+
 #: assets/components/document-tabs/index.js:76
 #: assets/components/document-tabs/index.js:78
 msgid "Control"
@@ -1228,6 +1342,10 @@ msgstr ""
 
 #: assets/components/icon-picker/index.js:232
 msgid "Search Icon"
+msgstr ""
+
+#: assets/components/icon-picker/index.js:238
+msgid "Type to Search…"
 msgstr ""
 
 #: assets/components/icon-picker/index.js:287
@@ -1254,36 +1372,16 @@ msgstr ""
 msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
 msgstr ""
 
-#: assets/components/pro-notice/index.js:23
-msgid "Lazy Blocks Pro"
-msgstr ""
-
-#: assets/components/pro-notice/index.js:37
-msgid "Custom block collections and slug namespaces"
-msgstr ""
-
 #: assets/components/pro-notice/index.js:43
-msgid "Controls Conditional Logic"
+msgid "Lazy Blocks Pro adds conditional logic, panels, and post, taxonomy and user controls."
 msgstr ""
 
-#: assets/components/pro-notice/index.js:45
-msgid "Panels and Dividers"
+#: assets/components/pro-notice/index.js:48
+msgid "Learn more"
 msgstr ""
 
-#: assets/components/pro-notice/index.js:47
-msgid "Posts, Taxonomy, User Controls"
-msgstr ""
-
-#: assets/components/pro-notice/index.js:52
-msgid "Blocks Preloading"
-msgstr ""
-
-#: assets/components/pro-notice/index.js:53
-msgid "SEO Enhancements"
-msgstr ""
-
-#: assets/components/pro-notice/index.js:60
-msgid "And much more…"
+#: assets/components/pro-notice/index.js:54
+msgid "Dismiss"
 msgstr ""
 
 #: assets/components/render-controls/index.js:349
