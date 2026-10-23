@@ -36,6 +36,12 @@
 				display: none;
 			}
 
+			// WordPress 7.2 wraps the tab title in this span.
+			> .components-tab-panel__tabs-item-label {
+				display: flex;
+				align-items: center;
+			}
+
 			svg {
 				display: block;
 				width: auto;
