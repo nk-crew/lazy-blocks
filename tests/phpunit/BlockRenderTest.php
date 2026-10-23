@@ -102,6 +102,31 @@ class BlockRenderTest extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_block_render_inner_blocks_keeps_replacement_references() {
+		$this->add_test_block( array(
+			'controls' => array(
+				'control-1' => array(
+					'type' => 'inner_blocks',
+					'name' => 'inner-content',
+					'placement' => 'content',
+				),
+			),
+			'code' => array(
+				'frontend_html' => '<InnerBlocks />',
+			),
+		) );
+
+		// Backslash references, dollar references and a double backslash, as an author typed them.
+		$inner = '<p>a\1 b$1 c\\\\ d${1}</p>';
+
+		$this->assertEquals(
+			'<div class="wp-block-lazyblock-test"><div class="lazyblock-inner-blocks">' . $inner . '</div></div>',
+			$this->normalize_block_html(
+				do_blocks( '<!-- wp:lazyblock/test --><!-- wp:paragraph -->' . $inner . '<!-- /wp:paragraph --><!-- /wp:lazyblock/test -->' )
+			)
+		);
+	}
+
 	public function test_block_render_inner_blocks_component() {
 		$this->add_test_block( array(
 			'controls' => array(
