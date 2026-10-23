@@ -141,6 +141,7 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 = 4.5.0 - Oct 22, 2026 =
 
+* added WordPress 7.2 compatibility
 * requires PHP version 8.3 or higher
 * security fix: only users who can edit Lazy Blocks can save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
 * redesigned the block builder sidebar: the Add control button opens a popover with search and keyboard navigation, the new control is selected with its label field focused, and an empty controls list offers quick Text, Image and Repeater buttons
