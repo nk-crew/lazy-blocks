@@ -5,6 +5,10 @@ import { Button, SearchControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+/**
+ * External dependencies.
+ */
+import { chunk } from 'lodash';
 
 /**
  * Internal dependencies.
@@ -178,8 +182,9 @@ export default function ControlTypePicker({ data, current, onPick }) {
 	}
 
 	return (
-		<div className="lzb-control-type-picker">
+		<div className="lzb-control-type-picker block-editor-inserter__quick-inserter has-search">
 			<SearchControl
+				className="block-editor-inserter__search"
 				value={search}
 				onChange={setSearch}
 				onKeyDown={onSearchKeyDown}
@@ -189,7 +194,7 @@ export default function ControlTypePicker({ data, current, onPick }) {
 			/>
 			<div
 				ref={listRef}
-				className="lzb-control-type-picker__list"
+				className="lzb-control-type-picker__list block-editor-inserter__quick-inserter-results"
 				onKeyDown={onListKeyDown}
 			>
 				{groups.map((group) => (
@@ -205,26 +210,39 @@ export default function ControlTypePicker({ data, current, onPick }) {
 						>
 							{group.title}
 						</div>
-						<div className="lzb-control-type-picker__grid">
-							{group.types.map((type) => (
-								<Button
-									key={type.name}
-									className="lzb-control-type-picker__item"
-									onClick={() => onPick(type.name)}
-									disabled={type.isDisabled}
-									isPressed={current === type.name}
-								>
-									{/* eslint-disable-next-line react/no-danger */}
-									<span
-										className="lzb-control-type-picker__item-icon"
-										dangerouslySetInnerHTML={{
-											__html: type.icon,
-										}}
-									/>
-									<span className="lzb-control-type-picker__item-label">
-										{type.label}
-									</span>
-								</Button>
+						{/* Rows of three, the markup and classes of the block inserter list. */}
+						<div className="block-editor-block-types-list">
+							{chunk(group.types, 3).map((row) => (
+								<div key={row[0].name} role="presentation">
+									{row.map((type) => (
+										<div
+											key={type.name}
+											className="block-editor-block-types-list__list-item"
+										>
+											<Button
+												className="lzb-control-type-picker__item block-editor-block-types-list__item"
+												onClick={() =>
+													onPick(type.name)
+												}
+												disabled={type.isDisabled}
+												isPressed={
+													current === type.name
+												}
+											>
+												{/* eslint-disable-next-line react/no-danger */}
+												<span
+													className="lzb-control-type-picker__item-icon block-editor-block-types-list__item-icon"
+													dangerouslySetInnerHTML={{
+														__html: type.icon,
+													}}
+												/>
+												<span className="block-editor-block-types-list__item-title">
+													{type.label}
+												</span>
+											</Button>
+										</div>
+									))}
+								</div>
 							))}
 						</div>
 					</div>

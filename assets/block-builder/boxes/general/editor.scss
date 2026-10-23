@@ -87,12 +87,56 @@
 			min-width: 0;
 		}
 
-		> .components-button {
-			margin-top: 8px;
-		}
-
 		.components-notice {
 			margin: 8px 0 0;
+		}
+
+		// Same font, size and text position as the slug in read mode.
+		.lazyblocks-component-block-slug {
+			.lazyblocks-component-block-slug-prefix,
+			input.components-text-control__input {
+				height: 24px;
+				min-height: 24px;
+				font-family: Consolas, Monaco, monospace;
+				font-size: 12px;
+				line-height: 20px;
+			}
+
+			.lazyblocks-component-block-slug-prefix {
+				padding: 2px 14px 2px 6px;
+				border-color: #949494;
+
+				> span {
+					right: 4px;
+				}
+			}
+
+			input.components-text-control__input {
+				padding: 2px 6px 2px 0;
+			}
+		}
+	}
+}
+
+// block icon picker, as wide as the inspector color popovers (260px with the
+// 8px padding of the popover).
+.lzb-block-builder-block-icon-picker.lazyblocks-component-icon-picker-content > .components-popover__content {
+	.lazyblocks-component-icon-picker-sizer {
+		width: 244px;
+		min-width: 0;
+		height: min(100vh, 420px);
+	}
+
+	.lazyblocks-component-icon-picker-list-wrap {
+		padding: 8px;
+	}
+
+	.lazyblocks-component-icon-picker-list {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 8px;
+
+		.lazyblocks-component-icon-picker-button {
+			height: 48px;
 		}
 	}
 }

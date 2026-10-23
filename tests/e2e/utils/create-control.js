@@ -10,8 +10,7 @@ export async function createControl({
 	placement = 'inspector',
 	isChild = false,
 }) {
-	// Open the type picker. An empty list shows "Browse all" instead of the
-	// "Add control" button.
+	// Open the type picker.
 	if (isChild) {
 		await editor.canvas
 			.getByRole('button', { name: 'Add child control' })
@@ -19,7 +18,7 @@ export async function createControl({
 			.click();
 	} else {
 		await editor.canvas
-			.getByRole('button', { name: /^(Add control|Browse all)$/ })
+			.getByRole('button', { name: 'Add control', exact: true })
 			.first()
 			.click();
 	}

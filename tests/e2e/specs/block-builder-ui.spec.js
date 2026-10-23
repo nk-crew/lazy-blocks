@@ -38,23 +38,21 @@ test.describe('block builder interface', () => {
 
 		await openBlockBuilder({ page, editor, admin, blockID });
 
-		// An empty list offers the common types.
+		// An empty list shows only the add button.
 		const emptyState = editor.canvas.locator(
 			'.lzb-block-builder-controls-empty'
 		);
-		await expect(emptyState).toContainText('No inspector controls yet');
-		await expect(
-			emptyState.getByRole('button', { name: 'Text', exact: true })
-		).toBeVisible();
-		await expect(
-			emptyState.getByRole('button', { name: 'Image', exact: true })
-		).toBeVisible();
-		await expect(
-			emptyState.getByRole('button', { name: 'Repeater', exact: true })
-		).toBeVisible();
+		await expect(emptyState).toHaveText('');
+		await emptyState
+			.getByRole('button', { name: 'Add control', exact: true })
+			.click();
 
-		// Search and pick with Enter.
-		await emptyState.getByRole('button', { name: 'Browse all' }).click();
+		// The picker reuses the block inserter layout.
+		await expect(
+			page.locator(
+				'.lzb-control-type-picker.block-editor-inserter__quick-inserter'
+			)
+		).toBeVisible();
 		const search = page.getByRole('searchbox', {
 			name: 'Search control types',
 		});
@@ -77,8 +75,8 @@ test.describe('block builder interface', () => {
 		// Typing a label renames the new control.
 		await page.keyboard.type('Photos');
 		await expect(
-			page.locator('.lzb-block-builder-control-card-name code')
-		).toHaveText('{{photos}}');
+			editor.canvas.locator('.lzb-block-builder-controls-item-name')
+		).toHaveText('photos');
 
 		// Arrow keys move across the tiles, Enter picks one.
 		await editor.canvas
@@ -123,10 +121,13 @@ test.describe('block builder interface', () => {
 
 	test('groups the control settings and labels the toggles', async ({
 		page,
+		context,
 		editor,
 		admin,
 		requestUtils,
 	}) => {
+		await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
 		const blockID = await createBlock({
 			requestUtils,
 			title: 'Test Control Inspector Block',
@@ -147,7 +148,7 @@ test.describe('block builder interface', () => {
 		await openBlockBuilder({ page, editor, admin, blockID });
 
 		await editor.canvas
-			.getByRole('tab', { name: 'Content Controls' })
+			.getByRole('radio', { name: 'Content Controls' })
 			.click();
 		await editor.canvas
 			.locator('.lzb-block-builder-controls-item-label', {
@@ -159,13 +160,23 @@ test.describe('block builder interface', () => {
 			'.lzb-block-builder-controls-item-settings'
 		);
 
-		// Header: label, type and the template variable.
+		// Header: label and type.
 		const header = sidebar.locator('.lzb-block-builder-control-card');
 		await expect(header.getByRole('heading')).toHaveText('Title');
-		await expect(header.locator('code')).toHaveText('{{title}}');
+		await expect(header.locator('code')).toHaveCount(0);
+
+		// The name in the list copies itself and shows a check for a second.
+		const copyName = editor.canvas.getByRole('button', {
+			name: 'Copy name title',
+		});
+		await copyName.click();
 		await expect(
-			header.getByRole('button', { name: 'Copy name' })
+			editor.canvas.getByRole('button', { name: 'Copied' })
 		).toBeVisible();
+		expect(
+			await page.evaluate(() => window.navigator.clipboard.readText())
+		).toBe('title');
+		await expect(copyName).toBeVisible({ timeout: 3000 });
 
 		// Three groups instead of a panel per setting.
 		await expect(
@@ -241,6 +252,16 @@ test.describe('block builder interface', () => {
 		await supports
 			.getByRole('button', { name: 'Supports options' })
 			.click();
+
+		// The menu lists the supports A-Z.
+		const menuLabels = await page
+			.getByRole('menuitemcheckbox')
+			.allTextContents();
+		expect(menuLabels.length).toBeGreaterThan(1);
+		expect(menuLabels).toEqual(
+			[...menuLabels].sort((a, b) => a.localeCompare(b))
+		);
+
 		await page.getByRole('menuitemcheckbox', { name: 'Anchor' }).click();
 		await page.keyboard.press('Escape');
 
@@ -254,6 +275,17 @@ test.describe('block builder interface', () => {
 
 		expect((await getBlockData(page)).supports_anchor).toBe(false);
 		await expect(supports.getByRole('checkbox')).toHaveCount(0);
+
+		// Ghost Kit supports work the same way.
+		const ghostKit = page.locator('.lzb-block-builder-supports-ghost-kit');
+		await expect(ghostKit.getByRole('checkbox')).toHaveCount(0);
+		await ghostKit
+			.getByRole('button', { name: 'Supports Ghost Kit options' })
+			.click();
+		await page.getByRole('menuitemcheckbox', { name: 'Effects' }).click();
+		await page.keyboard.press('Escape');
+		await ghostKit.getByRole('checkbox', { name: 'Effects' }).check();
+		expect((await getBlockData(page)).supports_ghostkit_effects).toBe(true);
 	});
 
 	test('edits the slug in the block card', async ({

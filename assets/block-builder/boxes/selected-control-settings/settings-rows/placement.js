@@ -76,6 +76,7 @@ export default function PlacementRow(props) {
 			value={placement}
 			onChange={(value) => updateData({ placement: value })}
 			isBlock
+			isAdaptiveWidth
 			__nextHasNoMarginBottom
 		>
 			{options.map((option) => (

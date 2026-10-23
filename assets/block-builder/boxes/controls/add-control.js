@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies.
  */
-import getControlTypeData from '../../../utils/get-control-type-data';
 import { getNewControlData, markNewControl } from './control-types';
 import ControlTypePicker from './type-picker';
 
@@ -17,8 +16,6 @@ export const plusIcon = (
 		<Path d="M11 12.5V17.5H12.5V12.5H17.5V11H12.5V6H11V11H6V12.5H11Z" />
 	</SVG>
 );
-
-const QUICK_TYPES = ['text', 'image', 'repeater'];
 
 /**
  * Returns a function that adds a control of a type, selects it and moves the
@@ -58,41 +55,36 @@ export function useAddControl() {
 }
 
 /**
- * "Add control" button with the control type picker.
+ * "Add control" button with the control type picker, a black "+" like the
+ * block appender of the editor.
  *
  * @param {Object} props
  * @param {string} props.placement Placement of the new control.
  * @param {string} props.childOf   Parent repeater id for child controls.
- * @param {string} props.label     Button text.
- * @param {string} props.variant   Button variant.
- * @param {Object} props.icon      Button icon.
+ * @param {string} props.label     Button label.
  */
 export default function AddControl({
 	placement = 'content',
 	childOf = '',
 	label = __('Add control', 'lazy-blocks'),
-	variant = 'secondary',
-	icon = plusIcon,
 }) {
 	const addControl = useAddControl();
 
 	return (
 		<Dropdown
 			className="lzb-block-builder-controls-add"
-			contentClassName="lzb-control-type-picker-popover"
+			contentClassName="lzb-control-type-picker-popover block-editor-inserter__popover is-quick"
 			popoverProps={{ placement: 'bottom-start' }}
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button
 					className="lzb-block-builder-controls-item-appender"
-					variant={variant}
-					size="compact"
-					icon={icon}
+					icon={plusIcon}
+					label={label}
+					showTooltip
 					onClick={onToggle}
 					aria-expanded={isOpen}
 					aria-haspopup="true"
-				>
-					{label}
-				</Button>
+				/>
 			)}
 			renderContent={({ onClose }) => (
 				<ControlTypePicker
@@ -111,74 +103,15 @@ export default function AddControl({
 }
 
 /**
- * Placeholder of an empty controls list with the most common types.
+ * Placeholder of an empty controls list.
  *
  * @param {Object} props
  * @param {string} props.placement Placement of the list.
  */
 export function ControlsEmptyState({ placement }) {
-	const addControl = useAddControl();
-
-	let title = __('No content controls yet', 'lazy-blocks');
-	let description = __(
-		'Content controls appear inside the block in the editor.',
-		'lazy-blocks'
-	);
-
-	if (placement === 'inspector') {
-		title = __('No inspector controls yet', 'lazy-blocks');
-		description = __(
-			'Inspector controls appear in the block settings sidebar.',
-			'lazy-blocks'
-		);
-	} else if (placement === 'nowhere') {
-		title = __('No hidden controls', 'lazy-blocks');
-		description = __(
-			'Hidden controls store a value without showing a field.',
-			'lazy-blocks'
-		);
-	}
-
 	return (
 		<div className="lzb-block-builder-controls-empty">
-			<p className="lzb-block-builder-controls-empty-title">{title}</p>
-			<p className="lzb-block-builder-controls-empty-description">
-				{description}
-			</p>
-			<div className="lzb-block-builder-controls-empty-actions">
-				{QUICK_TYPES.map((type) => {
-					const controlTypeData = getControlTypeData(type);
-
-					if (!controlTypeData || controlTypeData.name !== type) {
-						return null;
-					}
-
-					return (
-						<Button
-							key={type}
-							variant="secondary"
-							size="compact"
-							icon={
-								<span
-									// eslint-disable-next-line react/no-danger
-									dangerouslySetInnerHTML={{
-										__html: controlTypeData.icon,
-									}}
-								/>
-							}
-							onClick={() => addControl(type, { placement })}
-						>
-							{controlTypeData.label}
-						</Button>
-					);
-				})}
-				<AddControl
-					placement={placement}
-					label={__('Browse all', 'lazy-blocks')}
-					variant="tertiary"
-					icon={null}
-				/>
-			</div>
+			<AddControl placement={placement} />
 		</div>
 	);
 }

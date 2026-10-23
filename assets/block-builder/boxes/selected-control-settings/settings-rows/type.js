@@ -55,7 +55,7 @@ export default function TypeRow(props) {
 	return (
 		<Dropdown
 			className="lzb-block-builder-control-type"
-			contentClassName="lzb-control-type-picker-popover"
+			contentClassName="lzb-control-type-picker-popover block-editor-inserter__popover is-quick"
 			popoverProps={{ placement: 'left-start', offset: 36 }}
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button

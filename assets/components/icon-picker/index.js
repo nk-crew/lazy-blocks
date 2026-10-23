@@ -303,7 +303,8 @@ function IconPickerList({
  * @return {JSX} - component render.
  */
 function IconPickerDropdown(props) {
-	const { onChange, value, label, className, renderToggle } = props;
+	const { onChange, value, label, className, renderToggle, popoverProps } =
+		props;
 
 	const [search, setSearch] = useState('');
 	const [hiddenCategories, setHiddenCategories] =
@@ -314,6 +315,7 @@ function IconPickerDropdown(props) {
 			className={className}
 			contentClassName="lazyblocks-component-icon-picker-content"
 			renderToggle={renderToggle}
+			popoverProps={popoverProps}
 			focusOnMount={false}
 			renderContent={() => (
 				<IconPickerList

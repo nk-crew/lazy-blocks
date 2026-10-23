@@ -13,10 +13,11 @@ import {
 	Path,
 	SVG,
 } from '@wordpress/components';
+import { useCopyToClipboard } from '@wordpress/compose';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 /**
  * External dependencies.
  */
@@ -36,6 +37,69 @@ const moreIcon = (
 		<Path d="M13 19h-2v-2h2v2zm0-6h-2v-2h2v2zm0-6h-2V5h2v2z" />
 	</SVG>
 );
+
+const copyIcon = (
+	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<Path
+			fillRule="evenodd"
+			clipRule="evenodd"
+			d="M5 4.5h11a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 1 .5-.5ZM3 5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm17 3v10.75c0 .69-.56 1.25-1.25 1.25H6v1.5h12.75a2.75 2.75 0 0 0 2.75-2.75V8H20Z"
+		/>
+	</SVG>
+);
+
+const checkIcon = (
+	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<Path d="M16.7 7.1l-6.3 8.5-3.3-2.5-.9 1.2 4.5 3.4L17.9 8z" />
+	</SVG>
+);
+
+/**
+ * Control name that copies itself on click. The copy icon shows on hover and
+ * turns into a check for a second after the copy.
+ *
+ * @param {Object} props
+ * @param {string} props.name Control name.
+ */
+function CopyName({ name }) {
+	const [copied, setCopied] = useState(false);
+	const timeout = useRef();
+
+	const ref = useCopyToClipboard(name, () => {
+		setCopied(true);
+		clearTimeout(timeout.current);
+		timeout.current = setTimeout(() => setCopied(false), 1000);
+	});
+
+	useEffect(() => () => clearTimeout(timeout.current), []);
+
+	return (
+		<button
+			ref={ref}
+			type="button"
+			className={classnames(
+				'lzb-block-builder-controls-item-name',
+				copied ? 'is-copied' : ''
+			)}
+			aria-label={
+				copied
+					? __('Copied', 'lazy-blocks')
+					: // translators: %s: control name.
+						sprintf(__('Copy name %s', 'lazy-blocks'), name)
+			}
+		>
+			<span className="lzb-block-builder-controls-item-name-text">
+				{name}
+			</span>
+			<span
+				className="lzb-block-builder-controls-item-name-icon"
+				aria-hidden="true"
+			>
+				{copied ? checkIcon : copyIcon}
+			</span>
+		</button>
+	);
+}
 
 /**
  * Moves the focus to the label of the previous or next control in the list
@@ -282,13 +346,11 @@ export default function Control(props) {
 					) : (
 						<>&nbsp;</>
 					)}
-					{controlName ? (
-						<span className="lzb-block-builder-controls-item-name">
-							{controlName}
-						</span>
-					) : null}
 				</div>
 			)}
+			{controlName && !isRenaming ? (
+				<CopyName name={controlName} />
+			) : null}
 			<div className="lzb-block-builder-controls-item-buttons">
 				<DropdownMenu
 					icon={moreIcon}
