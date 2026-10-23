@@ -1,3 +1,5 @@
+import { expect } from '@wordpress/e2e-test-utils-playwright';
+
 export async function createControl({
 	editor,
 	page,
@@ -8,27 +10,29 @@ export async function createControl({
 	placement = 'inspector',
 	isChild = false,
 }) {
-	// Create and select control.
+	// Open the type picker. An empty list shows "Browse all" instead of the
+	// "Add control" button.
 	if (isChild) {
 		await editor.canvas
-			.locator('.lzb-block-builder-controls-item-appender')
+			.getByRole('button', { name: 'Add child control' })
 			.first()
 			.click();
 	} else {
-		await editor.canvas.getByLabel('Add Control').click();
+		await editor.canvas
+			.getByRole('button', { name: /^(Add control|Browse all)$/ })
+			.first()
+			.click();
 	}
 
-	await editor.canvas.getByText('(no label)').click();
-
-	// Select type.
-	await page.getByLabel('Type').click();
-
-	await page.getByPlaceholder('Type to Search…').fill(type);
-
+	// Pick the type. The new control is selected with its label focused.
+	await page
+		.getByRole('searchbox', { name: 'Search control types' })
+		.fill(type);
 	await page.getByRole('button', { name: type, exact: true }).click();
 
-	// Set label
-	await page.getByPlaceholder('(no label)').fill(label);
+	// Set label.
+	await expect(page.locator('#lazyblocks-settings-row-label')).toBeFocused();
+	await page.locator('#lazyblocks-settings-row-label').fill(label);
 
 	// Set options
 	if (options && Array.isArray(options)) {
@@ -50,15 +54,8 @@ export async function createControl({
 
 	// Set placement
 	if (placement === 'content') {
-		await page
-			.getByRole('button', { name: 'Content', exact: true })
-			.click();
-		await page
-			.getByRole('button', { name: 'Inspector', exact: true })
-			.click();
+		await page.getByRole('radio', { name: 'Content', exact: true }).click();
 	} else if (placement === 'both') {
-		await page
-			.getByRole('button', { name: 'Content', exact: true })
-			.click();
+		await page.getByRole('radio', { name: 'Both', exact: true }).click();
 	}
 }

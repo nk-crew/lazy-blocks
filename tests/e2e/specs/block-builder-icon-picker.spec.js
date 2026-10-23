@@ -26,11 +26,7 @@ test.describe('block builder icon picker', () => {
 
 		await openBlockBuilder({ page, editor, admin, blockID });
 
-		await page
-			.locator(
-				'.lazyblocks-component-icon-picker-wrapper .lazyblocks-component-icon-picker-button.hover'
-			)
-			.click();
+		await page.getByRole('button', { name: 'Change icon' }).click();
 
 		const popover = page.locator('.lazyblocks-component-icon-picker');
 		const icons = popover.locator(

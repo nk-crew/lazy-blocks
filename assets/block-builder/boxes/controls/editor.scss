@@ -110,7 +110,17 @@ $items_gap: 8px;
 	.lzb-block-builder-controls-item-label {
 		display: block;
 		flex: 1;
+		min-width: 0;
+		overflow: hidden;
 		font-weight: 500;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		border-radius: 2px;
+
+		&:focus-visible {
+			outline: 2px solid var(--wp-admin-theme-color);
+			outline-offset: 2px;
+		}
 
 		.lzb-block-builder-controls-item-label-no {
 			opacity: 0.3;
@@ -120,33 +130,32 @@ $items_gap: 8px;
 		}
 	}
 
+	.lzb-block-builder-controls-item-name {
+		margin-left: 8px;
+		font-family: $editor-html-font;
+		font-size: 12px;
+		font-weight: 400;
+		color: #757575;
+	}
+
+	.lzb-block-builder-controls-item-rename {
+		flex: 1;
+		min-width: 0;
+		min-height: 24px;
+		padding: 0 6px;
+		margin: -2px 8px -2px -6px;
+		font-size: inherit;
+		font-weight: 500;
+	}
+
 	.lzb-block-builder-controls-item-buttons {
 		display: flex;
 		flex-wrap: nowrap;
-		bottom: 20px;
-		gap: 0.3rem;
+		margin: -6px -8px -6px 0;
 		opacity: 0;
 
-		button {
-			display: inline-flex;
-			align-items: center;
-			padding: 0;
-			margin-right: 5px;
-			height: 1rem;
-			font-size: 0.8em;
+		.components-button {
 			color: #1e1e1e;
-			cursor: pointer;
-			background: none;
-			border: none;
-
-			&:hover {
-				opacity: 1;
-			}
-
-			svg {
-				width: 1.5em;
-				height: 1.5em;
-			}
 		}
 	}
 
@@ -157,26 +166,141 @@ $items_gap: 8px;
 }
 
 .lzb-block-builder-controls-item:hover,
-.lzb-block-builder-controls-item:focus,
+.lzb-block-builder-controls-item:focus-within,
 .lzb-block-builder-controls-item-selected {
 	> .lzb-block-builder-controls-item-buttons {
 		opacity: 1;
 	}
 }
 
-.components-button.lzb-block-builder-controls-item-appender {
-	background-color: #1e1e1e;
-	color: #fff;
-	height: 24px;
+.lzb-block-builder-controls-add {
+	display: block;
 	margin-top: 12px;
-	min-width: 24px;
-	padding: 0;
 
-	&:focus,
-	&:hover {
-		background: var(--wp-admin-theme-color);
-		color: #fff;
+	.lzb-block-builder-controls-item-childs & {
+		margin-top: 4px;
 	}
+}
+
+// empty controls list.
+.lzb-block-builder-controls-empty {
+	padding: 32px 24px;
+	text-align: center;
+	border: 1px dashed #ccc;
+	border-radius: 2px;
+
+	p {
+		margin: 0;
+	}
+
+	.lzb-block-builder-controls-empty-title {
+		font-size: 13px;
+		font-weight: 600;
+		color: #1e1e1e;
+	}
+
+	.lzb-block-builder-controls-empty-description {
+		margin-top: 4px;
+		font-size: 13px;
+		color: #757575;
+	}
+
+	.lzb-block-builder-controls-empty-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: center;
+		justify-content: center;
+		margin-top: 16px;
+
+		.lzb-block-builder-controls-add {
+			margin-top: 0;
+		}
+
+		.components-button span {
+			display: inline-flex;
+		}
+
+		span svg {
+			width: 20px;
+			height: 20px;
+			fill: none;
+		}
+	}
+}
+
+// control type picker, shown in a popover.
+.lzb-control-type-picker {
+	width: 320px;
+
+	.components-search-control {
+		padding: 16px 16px 8px;
+	}
+}
+
+.lzb-control-type-picker__list {
+	max-height: 320px;
+	padding: 0 8px 8px;
+	overflow-y: auto;
+}
+
+.lzb-control-type-picker__group-title {
+	padding: 16px 8px 8px;
+	font-size: 11px;
+	font-weight: 500;
+	color: #757575;
+	text-transform: uppercase;
+}
+
+.lzb-control-type-picker__grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.components-button.lzb-control-type-picker__item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	align-items: center;
+	justify-content: flex-start;
+	height: auto;
+	min-height: 72px;
+	padding: 12px 4px;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #1e1e1e;
+	text-align: center;
+	border-radius: 2px;
+
+	&:hover:not(:disabled) {
+		color: var(--wp-admin-theme-color);
+	}
+
+	&.is-pressed,
+	&.is-pressed:hover:not(:disabled) {
+		color: var(--wp-admin-theme-color);
+		background: rgba(var(--wp-admin-theme-color--rgb), 0.04);
+	}
+
+	&:disabled {
+		opacity: 0.4;
+	}
+
+	.lzb-control-type-picker__item-icon {
+		display: flex;
+
+		svg {
+			width: 24px;
+			height: 24px;
+			fill: none;
+		}
+	}
+}
+
+.lzb-control-type-picker__empty {
+	padding: 8px 8px 16px;
+	margin: 0;
+	color: #757575;
 }
 
 // repeater child items.

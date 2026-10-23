@@ -70,16 +70,13 @@ test.describe('editor block with Checkbox (allow multiple) + save in meta', () =
 		await page.getByPlaceholder('Label').nth(3).fill('Option C');
 		await page.getByPlaceholder('Value').nth(2).fill('option_c');
 
-		// Enable "Save in Meta" - locate the BaseControl wrapper containing the toggle.
-		const saveInMetaPanel = page
-			.locator('.components-base-control')
-			.filter({
-				has: page.locator('.components-base-control__label', {
-					hasText: 'Save in Meta',
-				}),
-			});
-		await saveInMetaPanel.scrollIntoViewIfNeeded();
-		await saveInMetaPanel.locator('input[type="checkbox"]').first().check();
+		// Enable "Save in post meta" from the Behavior panel menu.
+		await page.getByRole('button', { name: 'Behavior options' }).click();
+		await page
+			.getByRole('menuitemcheckbox', { name: /Save in post meta/ })
+			.click();
+		await page.keyboard.press('Escape');
+		await page.getByRole('checkbox', { name: 'Save in post meta' }).check();
 
 		// Set output method to PHP.
 		await editor.canvas

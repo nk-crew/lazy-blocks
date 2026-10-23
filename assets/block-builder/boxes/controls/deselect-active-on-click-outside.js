@@ -54,12 +54,8 @@ export default function DeselectActiveControlOnClickOutside() {
 				return;
 			}
 
-			// click on add control button.
-			if (
-				e.target.classList.contains(
-					'lzb-block-builder-controls-item-appender'
-				)
-			) {
+			// click on add control button, the target can be its icon.
+			if (e.target.closest('.lzb-block-builder-controls-add')) {
 				return;
 			}
 
