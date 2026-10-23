@@ -14,9 +14,10 @@ import slugify from 'slugify';
  * Internal dependencies.
  */
 import getControlTypeData from '../../../../utils/get-control-type-data';
+import { getLabelUpdate } from '../../controls/control-types';
 
 export default function LabelRow(props) {
-	const { updateData, data } = props;
+	const { updateData, data, id } = props;
 
 	function generateUniqueName() {
 		const { label = '', name = '' } = data;
@@ -42,6 +43,7 @@ export default function LabelRow(props) {
 	return (
 		<PanelBody>
 			<TextControl
+				id="lazyblocks-settings-row-label"
 				label={__('Label', 'lazy-blocks')}
 				help={__(
 					'This is the name which will appear on the block edit control',
@@ -53,7 +55,9 @@ export default function LabelRow(props) {
 					__('(no label)', 'lazy-blocks')
 				}
 				value={label}
-				onChange={(value) => updateData({ label: value })}
+				onChange={(value) =>
+					updateData(getLabelUpdate(id, data, value))
+				}
 				onBlur={allowNameUpdate ? generateUniqueName : () => {}}
 				// eslint-disable-next-line jsx-a11y/no-autofocus
 				autoFocus

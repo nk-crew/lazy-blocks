@@ -3,9 +3,7 @@
  */
 
 import {
-	BaseControl,
-	Button,
-	PanelBody,
+	ExternalLink,
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
@@ -17,32 +15,22 @@ export default function SaveInMetaRow(props) {
 	const { updateData, data } = props;
 
 	return (
-		<PanelBody>
-			<BaseControl
-				id="lazyblocks-settings-row-save-in-meta"
-				label={__('Save in Meta', 'lazy-blocks')}
+		<>
+			<ToggleControl
+				label={__('Save in post meta', 'lazy-blocks')}
 				help={
-					<Button
-						id="lazyblocks-settings-row-save-in-meta"
-						size="small"
-						variant="secondary"
+					<ExternalLink
 						href={`https://www.lazyblocks.com/docs/examples/display-custom-fields-meta/?utm_source=plugin&utm_medium=block-builder&utm_campaign=how_to_use_meta&utm_content=${pluginVersion}`}
-						target="_blank"
-						rel="noopener noreferrer"
-						style={{ marginTop: '10px' }}
 					>
 						{__('How to use?', 'lazy-blocks')}
-					</Button>
+					</ExternalLink>
 				}
-			>
-				<ToggleControl
-					label={__('Yes', 'lazy-blocks')}
-					checked={data.save_in_meta === 'true'}
-					onChange={(value) =>
-						updateData({ save_in_meta: value ? 'true' : 'false' })
-					}
-				/>
-			</BaseControl>
+				checked={data.save_in_meta === 'true'}
+				onChange={(value) =>
+					updateData({ save_in_meta: value ? 'true' : 'false' })
+				}
+				__nextHasNoMarginBottom
+			/>
 			{data.save_in_meta === 'true' ? (
 				<TextControl
 					label={__('Meta custom name (optional)', 'lazy-blocks')}
@@ -53,10 +41,9 @@ export default function SaveInMetaRow(props) {
 					placeholder={
 						data.name || __('Unique metabox name', 'lazy-blocks')
 					}
+					__nextHasNoMarginBottom
 				/>
-			) : (
-				''
-			)}
-		</PanelBody>
+			) : null}
+		</>
 	);
 }
