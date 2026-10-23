@@ -144,10 +144,10 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 * added WordPress 7.2 compatibility
 * requires PHP version 8.3 or higher
 * security fix: only users who can edit Lazy Blocks can save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
-* redesigned the block builder sidebar: the Add control button opens a popover with search and keyboard navigation, the new control is selected with its label field focused, and an empty controls list offers quick Text, Image and Repeater buttons
+* redesigned the block builder sidebar: the Add control button opens a picker laid out like the block inserter, with search and keyboard navigation, and the new control is selected with its label field focused
 * redesigned the block builder control settings, now grouped into Settings, Layout and Behavior
-* redesigned the block builder Block tab: a block card shows the icon, title and description and edits the slug in place, and Supports are listed in a panel that shows only the ones in use
-* improved the block builder controls list: one actions menu per control, double-click to rename, and arrow keys to move the selection
+* redesigned the block builder Block tab: a block card shows the icon, title and description and edits the slug in place, and Supports and Ghost Kit supports are listed in panels that show only the ones in use
+* improved the block builder controls list: one actions menu per control, double-click to rename, arrow keys to move the selection, and a copy button next to each control name
 * added border, background, duotone, sticky position, interactivity, text columns, text shadow (WordPress 7.2), width and height supports to the block builder, all off by default
 * added a block builder notice when style supports are enabled and the frontend output has no `useBlockProps` wrapper
 * added abilities for AI agents on WordPress 6.9+ to list, read, create and update blocks: `lazy-blocks/list-blocks`, `lazy-blocks/get-block`, `lazy-blocks/create-block`, `lazy-blocks/update-block`
