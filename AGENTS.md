@@ -28,6 +28,11 @@ WordPress plugin: visual block builder for Gutenberg; blocks stored as CPT; PHP 
 - Run linters/tests relevant to your change (`npm run lint:*`, `composer`/PHPUnit/E2E per task)—see `package.json`.
 - Do not commit secrets, production credentials, or destructive DB/env operations unless the user explicitly asks.
 
+## Tests
+
+- Lazy Blocks Pro's CI runs these E2E specs with Pro active (`CORE=true`, this repo as its `core-plugin` submodule). A test that asserts what free shows without Pro must skip itself when `process.env.CORE` is set.
+- A locator must still find the same element when Pro adds controls, panels or options.
+
 ## Commands
 
 Scripts are defined in `package.json` (e.g. `npm run build`, `npm run dev`, `npm run test:e2e`). Use those names; do not invent scripts.

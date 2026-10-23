@@ -4,11 +4,17 @@
 import './editor.scss';
 
 import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption,
 	BaseControl,
 	Button,
 	Dropdown,
 	Notice,
 	SelectControl,
+	ToggleGroupControl as StableToggleGroupControl,
+	ToggleGroupControlOption as StableToggleGroupControlOption,
 	TabPanel,
 	ToggleControl,
 } from '@wordpress/components';
@@ -27,6 +33,11 @@ import { getSlugWithNamespaceDash } from '../../../utils/block-slug';
  * Internal dependencies.
  */
 import CodeEditor from './component-react-ace';
+
+const ToggleGroupControl =
+	StableToggleGroupControl || __experimentalToggleGroupControl;
+const ToggleGroupControlOption =
+	StableToggleGroupControlOption || __experimentalToggleGroupControlOption;
 
 const {
 	plugin_version: pluginVersion,
@@ -256,42 +267,35 @@ export default function CustomCodeSettings(props) {
 	const tabs = [
 		{
 			name: 'frontend',
-			title: addIconToFilename(
-				unifiedCode
-					? `block.${data.code_output_method}`
-					: `frontend.${data.code_output_method}`
-			),
-			className: 'lazyblocks-control-tabs-tab',
+			label: unifiedCode
+				? `block.${data.code_output_method}`
+				: `frontend.${data.code_output_method}`,
 		},
 	];
 
 	if (!unifiedCode) {
 		tabs.push({
 			name: 'editor',
-			title: addIconToFilename(`editor.${data.code_output_method}`),
-			className: 'lazyblocks-control-tabs-tab',
+			label: `editor.${data.code_output_method}`,
 		});
 	}
 
 	// Styles.
 	tabs.push({
 		name: 'block-style',
-		title: addIconToFilename('block.css'),
-		className: 'lazyblocks-control-tabs-tab',
+		label: 'block.css',
 	});
 	if (withEditorStyle) {
 		tabs.push({
 			name: 'editor-style',
-			title: addIconToFilename('editor.css'),
-			className: 'lazyblocks-control-tabs-tab',
+			label: 'editor.css',
 		});
 	}
 
 	// Scripts.
 	tabs.push({
 		name: 'view-script',
-		title: addIconToFilename('view.js'),
-		className: 'lazyblocks-control-tabs-tab',
+		label: 'view.js',
 	});
 
 	const settingsFilterData = { props, tab, setTab };
@@ -756,14 +760,27 @@ export default function CustomCodeSettings(props) {
 		);
 	} else if (data.code_output_method !== 'template') {
 		codeTabs = (
-			<TabPanel
-				className="lazyblocks-control-tabs"
-				activeClass="is-active"
-				tabs={tabs}
-				onSelect={(value) => setTab(value)}
+			<ToggleGroupControl
+				className="lazyblocks-control-tabs-toggle"
+				label={__('Code', 'lazy-blocks')}
+				hideLabelFromVision
+				isBlock
+				isAdaptiveWidth
+				value={tab}
+				onChange={(value) => setTab(value)}
+				__nextHasNoMarginBottom
+				__next40pxDefaultSize
 			>
-				{() => null}
-			</TabPanel>
+				{tabs.map((item) => (
+					<ToggleGroupControlOption
+						key={item.name}
+						value={item.name}
+						label={addIconToFilename(item.label)}
+						aria-label={item.label}
+						className="lazyblocks-control-tabs-tab"
+					/>
+				))}
+			</ToggleGroupControl>
 		);
 	}
 

@@ -10,17 +10,20 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
-import { TabPanel } from '@wordpress/components';
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption,
+	ToggleGroupControl as StableToggleGroupControl,
+	ToggleGroupControlOption as StableToggleGroupControlOption,
+} from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-/**
- * External dependencies.
- */
-import classnames from 'classnames/dedupe';
 import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 /**
  * Internal dependencies.
@@ -28,6 +31,11 @@ import CustomPointerSensor from '../../../utils/dnd-kit-custom-pointer-sensor';
 import AddControl, { ControlsEmptyState } from './add-control';
 import Control from './control';
 import DeselectActiveControlOnClickOutside from './deselect-active-on-click-outside';
+
+const ToggleGroupControl =
+	StableToggleGroupControl || __experimentalToggleGroupControl;
+const ToggleGroupControlOption =
+	StableToggleGroupControlOption || __experimentalToggleGroupControlOption;
 
 let initialActiveTab = '';
 
@@ -39,8 +47,9 @@ export default function ControlsSettings(props) {
 
 	useEffect(() => {
 		// fix first loading focus on code editor
+		// Focusing an option of the toggle group selects it, so focus the checked one.
 		const $tabsButton = controlsRef.current?.querySelector(
-			'.lazyblocks-control-tabs button'
+			'.lazyblocks-control-tabs-tab[aria-checked="true"]'
 		);
 
 		if ($tabsButton) {
@@ -170,7 +179,6 @@ export default function ControlsSettings(props) {
 							? __('Add child control', 'lazy-blocks')
 							: __('Add control', 'lazy-blocks')
 					}
-					variant={childOf ? 'tertiary' : 'secondary'}
 				/>
 			</>
 		);
@@ -181,65 +189,59 @@ export default function ControlsSettings(props) {
 	const placementTabs = [
 		{
 			name: 'content',
-			title: (
-				<>
-					<svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
+			label: __('Content Controls', 'lazy-blocks'),
+			icon: (
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z"
+						stroke="currentColor"
+						strokeWidth="1.5"
 						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z"
-							stroke="currentColor"
-							strokeWidth="1.5"
-							fill="none"
-						/>
-						<rect
-							x="7"
-							y="7"
-							width="8"
-							height="10"
-							rx="0.5"
-							fill="currentColor"
-						/>
-					</svg>
-					{__('Content Controls', 'lazy-blocks')}
-				</>
+					/>
+					<rect
+						x="7"
+						y="7"
+						width="8"
+						height="10"
+						rx="0.5"
+						fill="currentColor"
+					/>
+				</svg>
 			),
-			className: 'lazyblocks-control-tabs-tab',
 		},
 		{
 			name: 'inspector',
-			title: (
-				<>
-					<svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
+			label: __('Inspector Controls', 'lazy-blocks'),
+			icon: (
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z"
+						stroke="currentColor"
+						strokeWidth="1.5"
 						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M6 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H6C5.30964 19.25 4.75 18.6904 4.75 18V6C4.75 5.30964 5.30964 4.75 6 4.75Z"
-							stroke="currentColor"
-							strokeWidth="1.5"
-							fill="none"
-						/>
-						<rect
-							x="13"
-							y="7"
-							width="4"
-							height="10"
-							rx="0.5"
-							fill="currentColor"
-						/>
-					</svg>
-					{__('Inspector Controls', 'lazy-blocks')}
-				</>
+					/>
+					<rect
+						x="13"
+						y="7"
+						width="4"
+						height="10"
+						rx="0.5"
+						fill="currentColor"
+					/>
+				</svg>
 			),
-			className: 'lazyblocks-control-tabs-tab',
 		},
 	];
 
@@ -256,11 +258,8 @@ export default function ControlsSettings(props) {
 
 	placementTabs.push({
 		name: 'nowhere',
-		title: __('Hidden', 'lazy-blocks'),
-		className: classnames(
-			'lazyblocks-control-tabs-tab',
-			!thereIsHidden ? 'lazyblocks-control-tabs-tab-hidden' : ''
-		),
+		label: __('Hidden', 'lazy-blocks'),
+		isHidden: !thereIsHidden,
 	});
 
 	// set initial active tab.
@@ -296,17 +295,44 @@ export default function ControlsSettings(props) {
 		}
 	}
 
+	const [activeTab, setActiveTab] = useState(initialActiveTab);
+
 	return (
 		<div ref={controlsRef} className="lzb-block-builder-controls">
 			<DeselectActiveControlOnClickOutside />
-			<TabPanel
-				className="lazyblocks-control-tabs"
-				activeClass="is-active"
-				initialTabName={initialActiveTab}
-				tabs={placementTabs}
+			<ToggleGroupControl
+				className="lazyblocks-control-tabs-toggle"
+				label={__('Controls placement', 'lazy-blocks')}
+				hideLabelFromVision
+				isBlock
+				isAdaptiveWidth
+				value={activeTab}
+				onChange={(value) => setActiveTab(value)}
+				__nextHasNoMarginBottom
+				__next40pxDefaultSize
 			>
-				{(tab) => printControls('', tab.name)}
-			</TabPanel>
+				{placementTabs
+					.filter((item) => !item.isHidden || item.name === activeTab)
+					.map((item) => (
+						<ToggleGroupControlOption
+							key={item.name}
+							value={item.name}
+							label={
+								item.icon ? (
+									<>
+										{item.icon}
+										{item.label}
+									</>
+								) : (
+									item.label
+								)
+							}
+							aria-label={item.label}
+							className="lazyblocks-control-tabs-tab"
+						/>
+					))}
+			</ToggleGroupControl>
+			{printControls('', activeTab)}
 		</div>
 	);
 }

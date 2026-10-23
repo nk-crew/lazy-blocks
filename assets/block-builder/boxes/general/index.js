@@ -191,6 +191,13 @@ export const IconSettingsControl = ({ value, onChange }) => {
 			className="lazyblocks-component-icon-picker-wrapper"
 			value={value}
 			onChange={onChange}
+			// Same placement as the color and typography popovers of the block inspector.
+			popoverProps={{
+				placement: 'left-start',
+				offset: 36,
+				shift: true,
+				className: 'lzb-block-builder-block-icon-picker',
+			}}
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button
 					className="lzb-block-builder-block-card-icon"

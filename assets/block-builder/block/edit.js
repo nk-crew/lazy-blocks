@@ -92,6 +92,8 @@ export default function BlockBuilder() {
 			title: __('Supports Ghost Kit', 'lazy-blocks'),
 			component: SupportsGhostKitSettings,
 			initialOpen: false,
+			// SupportsGhostKitSettings renders its own ToolsPanel.
+			hasPanelBody: false,
 		},
 		{
 			name: 'condition',
