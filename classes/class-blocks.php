@@ -2161,27 +2161,32 @@ class LazyBlocks_Blocks {
 				$content = '<div class="' . $this->get_inner_blocks_class( $result ) . '">' . $content . '</div>';
 			}
 
-			// Escape "$" to prevent it's replacement with preg_replace.
 			// $content is null when the render is called without inner blocks content
 			// and the wrapper above is disabled by a filter (null is deprecated since PHP 8.1).
-			$content = str_replace( '$', '\$', (string) $content );
+			$content = (string) $content;
 
+			// Callbacks insert $content verbatim, a preg_replace replacement would expand "$1" and "\1" in it.
 			if ( false === stripos( $content, 'useblockprops' ) ) {
 				$inner_blocks_placeholder = 'lzb-inner-blocks-' . bin2hex( random_bytes( 6 ) ) . '-';
 				$result                   = preg_replace_callback(
 					'/<InnerBlocks([\S\s]*?)\/>/',
-					function ( $matches ) use ( $content, $inner_blocks_placeholder, &$inner_blocks_html ) {
+					function () use ( $content, $inner_blocks_placeholder, &$inner_blocks_html ) {
 						$key = $inner_blocks_placeholder . count( $inner_blocks_html );
 
-						// The same replacement as below, including what $n references in $content resolve to.
-						$inner_blocks_html[ $key ] = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $matches[0] );
+						$inner_blocks_html[ $key ] = $content;
 
 						return $key;
 					},
 					$result
 				);
 			} else {
-				$result = preg_replace( '/<InnerBlocks([\S\s]*?)\/>/', $content, $result );
+				$result = preg_replace_callback(
+					'/<InnerBlocks([\S\s]*?)\/>/',
+					function () use ( $content ) {
+						return $content;
+					},
+					$result
+				);
 			}
 		}
 
