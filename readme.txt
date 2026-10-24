@@ -139,33 +139,30 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 
 ## Changelog
 
-= 4.5.0 - Oct 22, 2026 =
+= 4.5.0 - Oct 24, 2026 =
 
 * added WordPress 7.2 compatibility
 * requires PHP version 8.3 or higher
-* security fix: only users who can edit Lazy Blocks can save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
-* redesigned the block builder sidebar: the Add control button opens a picker laid out like the block inserter, with search and keyboard navigation, and the new control is selected with its label field focused
-* redesigned the block builder control settings, now grouped into Settings, Layout and Behavior
-* redesigned the block builder Block tab: a block card shows the icon, title and description and edits the slug in place, and Supports and Ghost Kit supports are listed in panels that show only the ones in use
-* improved the block builder controls list: one actions menu per control, double-click to rename, arrow keys to move the selection, and a copy button next to each control name
+* redesigned the block builder: a block card with the icon, title, description and an editable slug, a control picker laid out like the block inserter, and control settings grouped into Settings, Layout and Behavior
+* improved the block builder controls list: one actions menu per control, double-click to rename, arrow keys to move the selection, and a button to copy the control name
 * added border, background, duotone, sticky position, interactivity, text columns, text shadow (WordPress 7.2), width and height supports to the block builder, all off by default
-* added a block builder notice when style supports are enabled and the frontend output has no `useBlockProps` wrapper
+* added a block builder notice when style supports are enabled but the frontend output has no `useBlockProps` wrapper
 * added abilities for AI agents on WordPress 6.9+ to list, read, create and update blocks: `lazy-blocks/list-blocks`, `lazy-blocks/get-block`, `lazy-blocks/create-block`, `lazy-blocks/update-block`
-* added block context to PHP output on the frontend, so a block that uses context such as `postId` and `postType` receives it in `$context`
+* added block context to PHP output, so a block that uses context such as `postId` and `postType` receives it in `$context`
 * added an editor notice when saving block data in the block builder fails
-* improved post editor loading speed: the icon list loads only when an icon picker opens, and control scripts are a third smaller
-* removed the unused `date_i18n` script that loaded on every admin screen; code that enqueued this handle needs to load its own copy
+* improved post editor loading: the icon list loads only when an icon picker opens, and control scripts are a third smaller
+* removed the `date_i18n` script that loaded on every admin screen; code that enqueued this handle needs to load its own copy
+* security fix: users who cannot edit Lazy Blocks could save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
 * fixed the `useBlockProps` wrapper and InnerBlocks output losing unquoted classes, boolean attributes, Interactivity API directives, JSON values and custom element names
 * fixed block icons losing circle, line and polygon shapes and stroke attributes
 * fixed InnerBlocks content not keeping `\1`, `$1` and backslashes as written
-* fixed block builder tabs wrapping their icon and label onto two lines on WordPress 7.2
 * fixed Repeater rows not opening with the Enter and Space keys
-* fixed Image, File and Gallery controls picking up the temporary preview of a file while its upload is still in progress
+* fixed Image, File and Gallery controls picking up a file's temporary preview while it is still uploading
 * **Pro:**
-* security fix: Collections, the Posts and Users controls and license activation now check user permissions, and user emails and names are hidden from users who cannot list users
-* security fix: custom CSS is sanitized as CSS and can no longer close the element it is printed in
+* added editing of a custom slug namespace in the block card
 * added a "Where is my license key?" link next to the license key field
-* added editing of a custom slug namespace inside the new block card
+* security fix: Collections, the Posts and Users controls and license activation did not check user permissions, and showed user emails and names to users who cannot list users
+* security fix: custom CSS could close the tag it is printed in
 * fixed a malformed saved collection breaking the editor for every user
 
 = 4.4.2 - Oct 12, 2026 =
