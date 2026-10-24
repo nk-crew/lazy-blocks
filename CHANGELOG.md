@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.5.0 - Oct 24, 2026 =
+
+* added WordPress 7.2 compatibility
+* requires PHP version 8.3 or higher
+* redesigned the block builder: a block card with the icon, title, description and an editable slug, a control picker laid out like the block inserter, and control settings grouped into Settings, Layout and Behavior
+* improved the block builder controls list: one actions menu per control, double-click to rename, arrow keys to move the selection, and a button to copy the control name
+* added border, background, duotone, sticky position, interactivity, text columns, text shadow (WordPress 7.2), width and height supports to the block builder, all off by default
+* added a block builder notice when style supports are enabled but the frontend output has no `useBlockProps` wrapper
+* added abilities for AI agents on WordPress 6.9+ to list, read, create and update blocks: `lazy-blocks/list-blocks`, `lazy-blocks/get-block`, `lazy-blocks/create-block`, `lazy-blocks/update-block`
+* added block context to PHP output, so a block that uses context such as `postId` and `postType` receives it in `$context`
+* added an editor notice when saving block data in the block builder fails
+* improved post editor loading: the icon list loads only when an icon picker opens, and control scripts are a third smaller
+* removed the `date_i18n` script that loaded on every admin screen; code that enqueued this handle needs to load its own copy
+* security fix: users who cannot edit Lazy Blocks could save block data, preview blocks in the block builder, and activate, deactivate or duplicate blocks
+* fixed the `useBlockProps` wrapper and InnerBlocks output losing unquoted classes, boolean attributes, Interactivity API directives, JSON values and custom element names
+* fixed block icons losing circle, line and polygon shapes and stroke attributes
+* fixed InnerBlocks content not keeping `\1`, `$1` and backslashes as written
+* fixed Repeater rows not opening with the Enter and Space keys
+* fixed Image, File and Gallery controls picking up a file's temporary preview while it is still uploading
+* **Pro:**
+* added editing of a custom slug namespace in the block card
+* added a "Where is my license key?" link next to the license key field
+* security fix: Collections, the Posts and Users controls and license activation did not check user permissions, and showed user emails and names to users who cannot list users
+* security fix: custom CSS could close the tag it is printed in
+* fixed a malformed saved collection breaking the editor for every user
+
 = 4.4.2 - Oct 12, 2026 =
 
 * improved page and editor loading speed on sites with many blocks
