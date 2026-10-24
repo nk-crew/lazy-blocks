@@ -229,13 +229,15 @@ export default function ControlTypePicker({ data, current, onPick }) {
 													current === type.name
 												}
 											>
-												{/* eslint-disable-next-line react/no-danger */}
-												<span
-													className="lzb-control-type-picker__item-icon block-editor-block-types-list__item-icon"
-													dangerouslySetInnerHTML={{
-														__html: type.icon,
-													}}
-												/>
+												<span className="lzb-control-type-picker__item-icon block-editor-block-types-list__item-icon">
+													{/* eslint-disable-next-line react/no-danger */}
+													<span
+														className="block-editor-block-icon"
+														dangerouslySetInnerHTML={{
+															__html: type.icon,
+														}}
+													/>
+												</span>
 												<span className="block-editor-block-types-list__item-title">
 													{type.label}
 												</span>
