@@ -320,4 +320,65 @@ test.describe('block builder interface', () => {
 		await expect(card.locator('code')).toHaveText('lazyblock/renamed-card');
 		expect((await getBlockData(page)).slug).toBe('renamed-card');
 	});
+
+	test('types into style variations and removes them', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		const blockID = await createBlock({
+			requestUtils,
+			title: 'Test Style Variations Block',
+			slug: 'test-style-variations-block',
+			code: '<p>Styles</p>',
+		});
+
+		await openBlockBuilder({ page, editor, admin, blockID });
+
+		await page
+			.getByRole('button', { name: 'Style Variations', exact: true })
+			.click();
+		const addButton = page.getByRole('button', {
+			name: '+ Add Style Variation',
+		});
+		const rows = page.locator(
+			'.lzb-block-builder-controls-item-settings-choices-item'
+		);
+
+		// Type key by key: every keystroke must reach the input, not only the store.
+		await addButton.click();
+		await rows.nth(0).getByPlaceholder('Name').pressSequentially('outline');
+		await rows
+			.nth(0)
+			.getByPlaceholder('Label')
+			.pressSequentially('Outline');
+		await addButton.click();
+		await rows.nth(1).getByPlaceholder('Name').pressSequentially('solid');
+
+		await expect(rows.nth(0).getByPlaceholder('Name')).toHaveValue(
+			'outline'
+		);
+		await expect(rows.nth(0).getByPlaceholder('Label')).toHaveValue(
+			'Outline'
+		);
+		await expect(rows.nth(1).getByPlaceholder('Name')).toHaveValue('solid');
+		expect((await getBlockData(page)).styles).toEqual([
+			{ name: 'outline', label: 'Outline' },
+			{ name: 'solid', label: '' },
+		]);
+
+		await rows
+			.nth(0)
+			.locator(
+				'.lzb-block-builder-controls-item-settings-choices-item-remove'
+			)
+			.click();
+
+		await expect(rows).toHaveCount(1);
+		await expect(rows.nth(0).getByPlaceholder('Name')).toHaveValue('solid');
+		expect((await getBlockData(page)).styles).toEqual([
+			{ name: 'solid', label: '' },
+		]);
+	});
 });
