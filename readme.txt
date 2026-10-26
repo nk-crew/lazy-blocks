@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.2
 * Requires PHP: 8.3
-* Stable tag: 4.5.0
+* Stable tag: 4.5.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,10 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.5.1 - Oct 26, 2026 =
+
+* fixed style variations in the block builder ignoring typing in the Name and Label fields and staying in the list after removal
 
 = 4.5.0 - Oct 24, 2026 =
 
