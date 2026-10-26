@@ -181,19 +181,16 @@ export default function Choices(props) {
 	}
 
 	function removeChoice(i) {
-		value.splice(i, 1);
-
-		onChange(value);
+		onChange(value.filter((_, index) => index !== i));
 	}
 
 	function updateChoice(i, newData) {
 		if (value[i]) {
-			value[i] = {
-				...value[i],
-				...newData,
-			};
-
-			onChange(value);
+			onChange(
+				value.map((choice, index) =>
+					index === i ? { ...choice, ...newData } : choice
+				)
+			);
 		}
 	}
 
