@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.5.1 - Oct 26, 2026 =
+
+* fixed style variations in the block builder ignoring typing in the Name and Label fields and staying in the list after removal
+
 = 4.5.0 - Oct 24, 2026 =
 
 * added WordPress 7.2 compatibility
