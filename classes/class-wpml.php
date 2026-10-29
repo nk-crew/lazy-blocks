@@ -38,12 +38,16 @@ class LazyBlocks_WPML {
 					$translate_inner_controls = $this->get_translated_controls_data( $controls, $control_key );
 
 					if ( ! empty( $translate_inner_controls ) ) {
+						$repeater_attributes = array( 'name' => $control['name'] );
+
+						// Nested repeater arrays are already decoded with their parent.
+						if ( '' === $child_of ) {
+							$repeater_attributes['encoding'] = 'json';
+						}
+
 						$translated_data[] = array(
 							'value' => '',
-							'attr'  => array(
-								'name'     => $control['name'],
-								'encoding' => 'json',
-							),
+							'attr'  => $repeater_attributes,
 							'key'   => array(
 								'value' => '',
 								'attr'  => array(
