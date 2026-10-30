@@ -69,7 +69,7 @@
 		"@nk-crew/plugin-toolkit": "^0.6.0",
 		"@playwright/test": "^1.45.3",
 		"@wordpress/e2e-test-utils-playwright": "^1.4.0",
-		"@wordpress/env": "^11.13.0",
+		"@wordpress/env": "^12.0.0",
 		"@wordpress/scripts": "^34.1.0",
 		"@wordpress/stylelint-config": "^23.29.0",
 		"concurrently": "^8.2.0",
