@@ -7,8 +7,6 @@
     }
   ],
   "checks": [
-    "npm run lint",
-    "npm run test:unit:php",
-    "npm run test:e2e"
+    "npm run ci:local"
   ]
 }

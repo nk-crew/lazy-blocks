@@ -20,6 +20,7 @@
 		"env:destroy": "nk-wp-env destroy",
 		"env:ports": "nk-env-ports",
 		"test": "npm-run-all lint test:unit:php test:e2e",
+		"ci:local": "npm-run-all build lint test:unit:php lint:php test:e2e",
 		"test:e2e": "playwright test --config tests/e2e/playwright.config.js",
 		"test:e2e:ui": "playwright test --config tests/e2e/playwright.config.js --ui",
 		"test:e2e:install-playwright": "npx playwright install",

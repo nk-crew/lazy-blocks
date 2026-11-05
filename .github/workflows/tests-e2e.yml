@@ -1,22 +1,12 @@
 name: End-to-End Tests
 
 on:
-  pull_request:
-  push:
-    branches:
-      - master
+  workflow_call:
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
 permissions:
   contents: read
-
-# Cancels all previous workflow runs for pull requests that have not completed.
-concurrency:
-  # The concurrency group contains the workflow name and the branch name for pull requests
-  # or the commit hash for any other events.
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
-  cancel-in-progress: true
 
 jobs:
   playwright:
@@ -25,13 +15,13 @@ jobs:
     # browser and the wp-env stack use the other cores, and measuring the switch
     # showed `playwright test` getting 40-70% slower. It still wins: Blacksmith
     # bills per vCPU and meters the free tier in 2 vCPU minutes, so halving the
-    # rate more than covers the extra wall time. Move back to 4 vCPU if the
-    # slower feedback on a pull request stops being worth the saving.
+    # rate more than covers the extra wall time. Move back to 4 vCPU if a slower
+    # release stops being worth the saving.
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
-    # A WordPress trunk breakage should be visible without blocking pull requests.
+    # A WordPress trunk breakage should be visible without blocking a release.
     continue-on-error: ${{ matrix.wordpress == 'trunk' }}
-    if: ${{ github.repository == 'nk-crew/lazy-blocks' || github.event_name == 'pull_request' }}
+    if: ${{ github.repository == 'nk-crew/lazy-blocks' }}
     strategy:
       fail-fast: false
       matrix:
