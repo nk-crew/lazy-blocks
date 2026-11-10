@@ -13,7 +13,10 @@ const config = defineConfig(
 			new URL('./config/global-setup.js', `file:${__filename}`).href
 		),
 		timeout: 100_000,
-		reporters: ['./config/flaky-tests-reporter.js'],
+		reporters: [
+			'./config/flaky-tests-reporter.js',
+			...(process.env.PLAYWRIGHT_JSON_OUTPUT_FILE ? ['json'] : []),
+		],
 	})
 );
 
