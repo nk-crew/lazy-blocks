@@ -61,13 +61,18 @@ jobs:
           npm run wp-env start
 
       - name: Run the tests
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_FILE: artifacts/playwright.json
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e
 
       - name: Archive debug artifacts (screenshots, traces)
         uses: actions/upload-artifact@v4
-        if: ${{ failure() && !cancelled() }}
+        if: ${{ always() && !cancelled() }}
         with:
           name: failures-artifacts${{ matrix.wordpress == 'trunk' && '-wp-trunk' || '' }}
-          path: artifacts/test-results
+          path: |
+            artifacts/test-results
+            artifacts/playwright.json
+            flaky-tests
           if-no-files-found: ignore

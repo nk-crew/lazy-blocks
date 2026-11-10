@@ -97,13 +97,18 @@ jobs:
       - name: Npm build
         run: npm run build
 
-      - name: Start Docker environment
-        run: npm run wp-env start
-
       - name: Running unit tests
         run: |
           set -o pipefail
-          npm run test:unit:php | tee phpunit.log
+          mkdir -p artifacts
+          npm run test:unit:php -- --log-junit=/var/www/html/wp-content/plugins/lazy-blocks/artifacts/phpunit.xml | tee phpunit.log
+
+      - name: Archive PHPUnit timing report
+        if: ${{ always() && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-${{ matrix.php }}-${{ matrix.wordpress }}
+          path: artifacts/phpunit.xml
 
       # Verifies that PHPUnit actually runs in the first place. We want visibility
       # into issues which can cause it to fail silently, so we check the output
