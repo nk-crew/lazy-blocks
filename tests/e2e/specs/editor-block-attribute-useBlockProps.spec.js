@@ -186,4 +186,35 @@ test.describe('editor block attribute useBlockProps', () => {
 		);
 		await expect(frontendBlock).toHaveCSS('color', 'rgb(0, 0, 255)');
 	});
+
+	test('should keep colons and semicolons inside custom style values', async ({
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		await createBlock({
+			requestUtils,
+			title: 'Block without useBlockProps',
+			slug: 'test',
+			code: `<figure useBlockProps style="background-image: url('https://example.com/a.png'); font-family: 'a;b', serif;">Hello There</figure>`,
+			codeSingleOutput: true,
+		});
+
+		await admin.createNewPost();
+
+		await editor.insertBlock({
+			name: 'lazyblock/test',
+		});
+
+		const editorBlock = editor.canvas
+			.locator('figure.wp-block-lazyblock-test')
+			.filter({ hasText: 'Hello There' });
+
+		await expect(editorBlock).toBeVisible();
+		await expect(editorBlock).toHaveCSS(
+			'background-image',
+			'url("https://example.com/a.png")'
+		);
+		await expect(editorBlock).toHaveCSS('font-family', '"a;b", serif');
+	});
 });
