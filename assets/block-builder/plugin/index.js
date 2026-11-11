@@ -143,7 +143,7 @@ export default function UpdateEditor() {
 		clearTimeout(editorRefreshTimeout.current);
 		editorRefreshTimeout.current = setTimeout(() => {
 			if (defaultBlockData.current !== JSON.stringify(blockData)) {
-				editPost({ edited: new Date() });
+				editPost({ edited: new Date() }, { undoIgnore: true });
 			}
 		}, 150);
 	}, [isSavingPost, isAutosavingPost, blockData, editPost]);

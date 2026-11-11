@@ -113,7 +113,7 @@ test.describe('block builder unsaved changes', () => {
 		).toBeEnabled();
 	});
 
-	test('undoing the first change leaves nothing else to undo', async ({
+	test('a block data change stays unsaved through undo', async ({
 		page,
 		editor,
 		admin,
@@ -134,7 +134,7 @@ test.describe('block builder unsaved changes', () => {
 				.updateBlockData({ description: 'Changed' })
 		);
 		await expect
-			.poll(async () => (await getEditorState(page)).undo)
+			.poll(async () => (await getEditorState(page)).dirty)
 			.toBe(true);
 
 		await page.evaluate(() =>
@@ -142,7 +142,7 @@ test.describe('block builder unsaved changes', () => {
 		);
 
 		expect(await getEditorState(page)).toEqual({
-			dirty: false,
+			dirty: true,
 			undo: false,
 		});
 	});
