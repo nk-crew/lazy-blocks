@@ -71,6 +71,16 @@ test.describe('block builder unsaved changes', () => {
 				dirty: false,
 				undo: false,
 			});
+			const builderBlockSelected = await page.evaluate(() => {
+				const blockEditor = window.wp.data.select('core/block-editor');
+				const blocks = blockEditor.getBlocks();
+				return (
+					blocks.length === 1 &&
+					blockEditor.getSelectedBlockClientId() ===
+						blocks[0].clientId
+				);
+			});
+			expect(builderBlockSelected).toBe(true);
 		});
 	}
 
@@ -101,5 +111,78 @@ test.describe('block builder unsaved changes', () => {
 		await expect(
 			page.getByRole('button', { name: 'Save', exact: true })
 		).toBeEnabled();
+	});
+
+	test('undoing the first change leaves nothing else to undo', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		const blockID = await createBlock({
+			requestUtils,
+			title: 'Test Undo Block',
+			slug: 'test-undo-block',
+			code: '<p>Undo</p>',
+		});
+
+		await openBlockBuilder({ page, editor, admin, blockID });
+
+		await page.evaluate(() =>
+			window.wp.data
+				.dispatch('lazy-blocks/block-data')
+				.updateBlockData({ description: 'Changed' })
+		);
+		await expect
+			.poll(async () => (await getEditorState(page)).undo)
+			.toBe(true);
+
+		await page.evaluate(() =>
+			window.wp.data.dispatch('core/editor').undo()
+		);
+
+		expect(await getEditorState(page)).toEqual({
+			dirty: false,
+			undo: false,
+		});
+	});
+
+	test('a removed builder block comes back selected', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		const blockID = await createBlock({
+			requestUtils,
+			title: 'Test Restore Block',
+			slug: 'test-restore-block',
+			code: '<p>Restore</p>',
+		});
+
+		await openBlockBuilder({ page, editor, admin, blockID });
+
+		const removedClientId = await page.evaluate(() => {
+			const blockEditor = window.wp.data.select('core/block-editor');
+			const [block] = blockEditor.getBlocks();
+			window.wp.data
+				.dispatch('core/block-editor')
+				.removeBlock(block.clientId);
+			return block.clientId;
+		});
+
+		await expect
+			.poll(() =>
+				page.evaluate(() => {
+					const selected = window.wp.data
+						.select('core/block-editor')
+						.getSelectedBlock();
+					return selected && [selected.name, selected.clientId];
+				})
+			)
+			.toEqual([
+				'lzb-block-builder/main',
+				expect.not.stringMatching(`^${removedClientId}$`),
+			]);
 	});
 });

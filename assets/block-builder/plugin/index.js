@@ -18,13 +18,17 @@ export default function UpdateEditor() {
 		editorSettings,
 		editorMode,
 		blocks,
+		editorBlocks,
 		postId,
+		postType,
 		blockData,
 	} = useSelect((select) => {
 		const {
 			isSavingPost: checkIsSavingPost,
 			isAutosavingPost: checkIsAutosavingPost,
 			getCurrentPostId,
+			getCurrentPostType,
+			getEditorBlocks,
 			getEditorSettings,
 		} = select('core/editor');
 
@@ -44,16 +48,15 @@ export default function UpdateEditor() {
 			editorSettings: getEditorSettings(),
 			editorMode: getEditorMode(),
 			blocks: getBlocks(),
+			editorBlocks: getEditorBlocks(),
 			postId: getCurrentPostId(),
+			postType: getCurrentPostType(),
 			blockData: getBlockData(),
 		};
 	}, []);
 
-	const {
-		selectBlock,
-		resetBlocks,
-		__unstableMarkNextChangeAsNotPersistent,
-	} = useDispatch('core/block-editor');
+	const { selectBlock } = useDispatch('core/block-editor');
+	const { editEntityRecord } = useDispatch('core');
 	const editorDispatch = useDispatch('core/editor');
 	const editPostDispatch = useDispatch('core/edit-post');
 	const { editPost } = editorDispatch;
@@ -73,22 +76,28 @@ export default function UpdateEditor() {
 	/**
 	 * Add default block to post if doesn't exist.
 	 */
+	const wasMainBlockSelected = useRef(false);
 	useEffect(() => {
 		const isValidList =
-			blocks.length === 1 &&
-			blocks[0] &&
-			blocks[0].name === 'lzb-block-builder/main';
+			editorBlocks.length === 1 &&
+			editorBlocks[0] &&
+			editorBlocks[0].name === 'lzb-block-builder/main';
 
 		if (!isValidList) {
-			__unstableMarkNextChangeAsNotPersistent();
-			resetBlocks([createBlock('lzb-block-builder/main')]);
+			wasMainBlockSelected.current = false;
+			editEntityRecord(
+				'postType',
+				postType,
+				postId,
+				{ blocks: [createBlock('lzb-block-builder/main')] },
+				{ undoIgnore: true }
+			);
 		}
-	}, [blocks, resetBlocks, __unstableMarkNextChangeAsNotPersistent]);
+	}, [editorBlocks, postType, postId, editEntityRecord]);
 
 	/**
 	 * Always select block.
 	 */
-	const wasMainBlockSelected = useRef(false);
 	useEffect(() => {
 		// if selected block, do nothing.
 		if (selectedBlock && selectedBlock.name === 'lzb-block-builder/main') {
