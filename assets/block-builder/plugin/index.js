@@ -49,8 +49,11 @@ export default function UpdateEditor() {
 		};
 	}, []);
 
-	const { selectBlock, insertBlocks, resetBlocks } =
-		useDispatch('core/block-editor');
+	const {
+		selectBlock,
+		resetBlocks,
+		__unstableMarkNextChangeAsNotPersistent,
+	} = useDispatch('core/block-editor');
 	const editorDispatch = useDispatch('core/editor');
 	const editPostDispatch = useDispatch('core/edit-post');
 	const { editPost } = editorDispatch;
@@ -70,24 +73,17 @@ export default function UpdateEditor() {
 	/**
 	 * Add default block to post if doesn't exist.
 	 */
-	const blocksRestoreBusy = useRef(false);
 	useEffect(() => {
-		if (blocksRestoreBusy.current) {
-			return;
-		}
-
 		const isValidList =
 			blocks.length === 1 &&
 			blocks[0] &&
 			blocks[0].name === 'lzb-block-builder/main';
 
 		if (!isValidList) {
-			blocksRestoreBusy.current = true;
-			resetBlocks([]);
-			insertBlocks(createBlock('lzb-block-builder/main'));
-			blocksRestoreBusy.current = false;
+			__unstableMarkNextChangeAsNotPersistent();
+			resetBlocks([createBlock('lzb-block-builder/main')]);
 		}
-	}, [blocks, blocksRestoreBusy, resetBlocks, insertBlocks]);
+	}, [blocks, resetBlocks, __unstableMarkNextChangeAsNotPersistent]);
 
 	/**
 	 * Always select block.
