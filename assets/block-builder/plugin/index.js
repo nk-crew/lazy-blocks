@@ -18,13 +18,17 @@ export default function UpdateEditor() {
 		editorSettings,
 		editorMode,
 		blocks,
+		editorBlocks,
 		postId,
+		postType,
 		blockData,
 	} = useSelect((select) => {
 		const {
 			isSavingPost: checkIsSavingPost,
 			isAutosavingPost: checkIsAutosavingPost,
 			getCurrentPostId,
+			getCurrentPostType,
+			getEditorBlocks,
 			getEditorSettings,
 		} = select('core/editor');
 
@@ -44,13 +48,15 @@ export default function UpdateEditor() {
 			editorSettings: getEditorSettings(),
 			editorMode: getEditorMode(),
 			blocks: getBlocks(),
+			editorBlocks: getEditorBlocks(),
 			postId: getCurrentPostId(),
+			postType: getCurrentPostType(),
 			blockData: getBlockData(),
 		};
 	}, []);
 
-	const { selectBlock, insertBlocks, resetBlocks } =
-		useDispatch('core/block-editor');
+	const { selectBlock } = useDispatch('core/block-editor');
+	const { editEntityRecord } = useDispatch('core');
 	const editorDispatch = useDispatch('core/editor');
 	const editPostDispatch = useDispatch('core/edit-post');
 	const { editPost } = editorDispatch;
@@ -70,29 +76,28 @@ export default function UpdateEditor() {
 	/**
 	 * Add default block to post if doesn't exist.
 	 */
-	const blocksRestoreBusy = useRef(false);
+	const wasMainBlockSelected = useRef(false);
 	useEffect(() => {
-		if (blocksRestoreBusy.current) {
-			return;
-		}
-
 		const isValidList =
-			blocks.length === 1 &&
-			blocks[0] &&
-			blocks[0].name === 'lzb-block-builder/main';
+			editorBlocks.length === 1 &&
+			editorBlocks[0] &&
+			editorBlocks[0].name === 'lzb-block-builder/main';
 
 		if (!isValidList) {
-			blocksRestoreBusy.current = true;
-			resetBlocks([]);
-			insertBlocks(createBlock('lzb-block-builder/main'));
-			blocksRestoreBusy.current = false;
+			wasMainBlockSelected.current = false;
+			editEntityRecord(
+				'postType',
+				postType,
+				postId,
+				{ blocks: [createBlock('lzb-block-builder/main')] },
+				{ undoIgnore: true }
+			);
 		}
-	}, [blocks, blocksRestoreBusy, resetBlocks, insertBlocks]);
+	}, [editorBlocks, postType, postId, editEntityRecord]);
 
 	/**
 	 * Always select block.
 	 */
-	const wasMainBlockSelected = useRef(false);
 	useEffect(() => {
 		// if selected block, do nothing.
 		if (selectedBlock && selectedBlock.name === 'lzb-block-builder/main') {
@@ -138,7 +143,7 @@ export default function UpdateEditor() {
 		clearTimeout(editorRefreshTimeout.current);
 		editorRefreshTimeout.current = setTimeout(() => {
 			if (defaultBlockData.current !== JSON.stringify(blockData)) {
-				editPost({ edited: new Date() });
+				editPost({ edited: new Date() }, { undoIgnore: true });
 			}
 		}, 150);
 	}, [isSavingPost, isAutosavingPost, blockData, editPost]);
