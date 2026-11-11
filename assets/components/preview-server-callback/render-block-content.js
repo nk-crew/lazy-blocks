@@ -15,7 +15,10 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * External dependencies.
  */
-import HTMLReactParser, { domToReact } from 'html-react-parser';
+import HTMLReactParser, {
+	attributesToProps,
+	domToReact,
+} from 'html-react-parser';
 import json5 from 'json5';
 /**
  * WordPress dependencies.
@@ -111,22 +114,7 @@ function prepareAttributes(attrs) {
 
 			// Convert string style attribute to React style object.
 		} else if (name === 'style' && typeof newAttrs[name] === 'string') {
-			const styleObj = {};
-			newAttrs[name].split(';').forEach((declaration) => {
-				const [property, value] = declaration
-					.split(':')
-					.map((s) => s.trim());
-
-				if (property && value) {
-					// Convert kebab-case to camelCase
-					const camelProperty = property.replace(
-						/-([a-z])/g,
-						(match, letter) => letter.toUpperCase()
-					);
-					styleObj[camelProperty] = value;
-				}
-			});
-			newAttrs[name] = styleObj;
+			newAttrs[name] = attributesToProps({ style: newAttrs[name] }).style;
 		}
 	});
 
