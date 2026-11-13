@@ -185,4 +185,66 @@ test.describe('block builder unsaved changes', () => {
 				expect.not.stringMatching(`^${removedClientId}$`),
 			]);
 	});
+
+	test('a selection of a block that no longer exists moves back to the builder block', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		const blockID = await createBlock({
+			requestUtils,
+			title: 'Test Stale Selection Block',
+			slug: 'test-stale-selection-block',
+			code: '<p>Stale</p>',
+		});
+
+		await openBlockBuilder({ page, editor, admin, blockID });
+
+		await page.evaluate(() =>
+			window.wp.data
+				.dispatch('core/block-editor')
+				.selectBlock('replaced-builder-block')
+		);
+
+		await expect
+			.poll(() =>
+				page.evaluate(
+					() =>
+						window.wp.data
+							.select('core/block-editor')
+							.getSelectedBlock()?.name
+				)
+			)
+			.toBe('lzb-block-builder/main');
+	});
+
+	test('a cleared selection stays cleared', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		const blockID = await createBlock({
+			requestUtils,
+			title: 'Test Cleared Selection Block',
+			slug: 'test-cleared-selection-block',
+			code: '<p>Cleared</p>',
+		});
+
+		await openBlockBuilder({ page, editor, admin, blockID });
+
+		await page.evaluate(() =>
+			window.wp.data.dispatch('core/block-editor').clearSelectedBlock()
+		);
+		await page.waitForTimeout(500);
+
+		expect(
+			await page.evaluate(() =>
+				window.wp.data
+					.select('core/block-editor')
+					.getSelectedBlockClientId()
+			)
+		).toBeNull();
+	});
 });
