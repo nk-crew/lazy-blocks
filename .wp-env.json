@@ -10,6 +10,9 @@
 	},
 	"env": {
 		"tests": {
+			"config": {
+				"SCRIPT_DEBUG": true
+			},
 			"mappings": {
 				"wp-content/themes/empty-theme-php": "./tests/themes/empty-theme-php"
 			}
