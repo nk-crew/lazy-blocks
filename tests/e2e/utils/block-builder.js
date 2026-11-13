@@ -66,18 +66,39 @@ export async function openBlockBuilder({ page, editor, admin, blockID }) {
  * @param {Object} options.page Playwright page.
  */
 export async function saveBlockBuilder({ page }) {
-	const saveButton = page.locator('role=button[name="Save"i]');
+	await waitForBlockDataSave(page, async () => {
+		await page.locator('role=button[name="Save"i]').click();
+	});
+}
 
-	// Subscribe before the click, so a fast response cannot be missed.
+/**
+ * Publishes a new block from the block builder, and waits for its data to
+ * reach the database, for the same reason as `saveBlockBuilder()`.
+ *
+ * @param {Object} options      Options.
+ * @param {Object} options.page Playwright page.
+ */
+export async function publishBlockBuilder({ page }) {
+	await waitForBlockDataSave(page, async () => {
+		await page.locator('role=button[name="Publish"i]').click();
+		await page
+			.locator('role=region[name="Editor publish"]')
+			.locator('role=button[name="Publish"i]')
+			.click();
+	});
+}
+
+async function waitForBlockDataSave(page, save) {
+	// Subscribe before saving, so a fast response cannot be missed.
 	const blockDataSaved = page.waitForResponse(
 		(response) =>
 			response.url().includes('update-block-data') &&
 			response.request().method() === 'POST'
 	);
 
-	await saveButton.click();
+	await save();
 
-	await expect(saveButton).toBeDisabled();
+	await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
 
 	const response = await blockDataSaved;
 

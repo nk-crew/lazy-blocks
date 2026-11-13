@@ -3,6 +3,7 @@
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 import { removeReusableBlocks } from '../utils/remove-reusable-blocks';
 
@@ -15,6 +16,7 @@ test.describe('editor block rendering', () => {
 	// Since Gutenberg v16.3 our Save function stop working correctly, this is why we have to test it.
 	// @link https://github.com/nk-crew/lazy-blocks/issues/293
 	test('should render block inside core/group correctly', async ({
+		page,
 		editor,
 		admin,
 		requestUtils,
@@ -27,7 +29,7 @@ test.describe('editor block rendering', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'core/group',
@@ -58,7 +60,7 @@ test.describe('editor block rendering', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'core/group',
@@ -92,6 +94,7 @@ test.describe('editor block rendering', () => {
 	// We should ensure that block ID is unique after duplication.
 	// @link https://github.com/nk-crew/lazy-blocks/issues/32
 	test('should duplicate block correctly with unique ID', async ({
+		page,
 		editor,
 		admin,
 		pageUtils,
@@ -105,7 +108,7 @@ test.describe('editor block rendering', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',
