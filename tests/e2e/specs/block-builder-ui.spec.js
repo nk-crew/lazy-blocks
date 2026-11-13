@@ -381,4 +381,28 @@ test.describe('block builder interface', () => {
 			{ name: 'solid', label: '' },
 		]);
 	});
+
+	test('styles the code preview with the admin stylesheets', async ({
+		page,
+		editor,
+		admin,
+		requestUtils,
+	}) => {
+		const blockID = await createBlock({
+			requestUtils,
+			title: 'Test Preview Styles Block',
+			slug: 'test-preview-styles-block',
+			code: '<p>Preview paragraph</p>',
+		});
+
+		await openBlockBuilder({ page, editor, admin, blockID });
+
+		const paragraph = editor.canvas
+			.frameLocator('iframe[title="code-preview"]')
+			.getByText('Preview paragraph');
+		await expect(paragraph).toBeVisible();
+
+		// WordPress' common.css sets 13px, the browser default is 16px.
+		await expect(paragraph).toHaveCSS('font-size', '13px');
+	});
 });

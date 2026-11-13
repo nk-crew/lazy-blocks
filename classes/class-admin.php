@@ -124,6 +124,14 @@ class LazyBlocks_Admin {
 					'is_pro'              => lazyblocks()->is_pro(),
 					'pro_url'             => lazyblocks()->get_plugin_site_url( array( 'utm_medium' => 'block-builder' ) ),
 					'wp_content_dir'      => defined( 'WP_CONTENT_DIR' ) ? str_replace( ABSPATH, '', WP_CONTENT_DIR ) : 'wp-content',
+					'preview_styles'      => array_map(
+						function ( $handle ) {
+							$style = wp_styles()->registered[ $handle ];
+
+							return wp_styles()->_css_href( $style->src, $style->ver, $handle );
+						},
+						array( 'common', 'media', 'themes' )
+					),
 				)
 			);
 		}

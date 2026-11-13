@@ -33,7 +33,9 @@ export default function CodePreview(props) {
 
 	function setIframeContents() {
 		return `
-      <link rel="stylesheet" href="/wp-admin/load-styles.php?load[chunk_0]=common,media,themes" type="text/css" media="all" />
+      ${window.lazyblocksBlockBuilderData.preview_styles
+			.map((href) => `<link rel="stylesheet" href="${href}" />`)
+			.join('')}
       <style>
           html {
               height: auto;
