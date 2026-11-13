@@ -15,6 +15,7 @@ export default function UpdateEditor() {
 		isSavingPost,
 		isAutosavingPost,
 		selectedBlock,
+		selectedBlockClientId,
 		editorSettings,
 		editorMode,
 		blocks,
@@ -32,7 +33,8 @@ export default function UpdateEditor() {
 			getEditorSettings,
 		} = select('core/editor');
 
-		const { getSelectedBlock, getBlocks } = select('core/block-editor');
+		const { getSelectedBlock, getSelectedBlockClientId, getBlocks } =
+			select('core/block-editor');
 
 		// core/editor has getEditorMode since WP 6.5, core/edit-post keeps a deprecated copy.
 		const { getEditorMode } = select('core/editor').getEditorMode
@@ -45,6 +47,7 @@ export default function UpdateEditor() {
 			isSavingPost: checkIsSavingPost(),
 			isAutosavingPost: checkIsAutosavingPost(),
 			selectedBlock: getSelectedBlock(),
+			selectedBlockClientId: getSelectedBlockClientId(),
 			editorSettings: getEditorSettings(),
 			editorMode: getEditorMode(),
 			blocks: getBlocks(),
@@ -108,7 +111,7 @@ export default function UpdateEditor() {
 		// If the main block was previously selected and now nothing is selected,
 		// the user likely clicked on the post title or elsewhere.
 		// Don't auto-select in that case (iframe-safe, no DOM queries needed).
-		if (wasMainBlockSelected.current && !selectedBlock) {
+		if (wasMainBlockSelected.current && !selectedBlockClientId) {
 			return;
 		}
 
@@ -123,7 +126,7 @@ export default function UpdateEditor() {
 			selectBlock(selectBlockId);
 			wasMainBlockSelected.current = true;
 		}
-	}, [selectedBlock, blocks, selectBlock]);
+	}, [selectedBlock, selectedBlockClientId, blocks, selectBlock]);
 
 	/**
 	 * Check if post meta data edited and allow to update the post.
