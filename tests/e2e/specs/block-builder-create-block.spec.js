@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
+import { publishBlockBuilder } from '../utils/block-builder';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('block builder create block', () => {
@@ -29,7 +31,9 @@ test.describe('block builder create block', () => {
 		editor,
 		admin,
 	}) => {
-		await admin.createNewPost({
+		await createNewPost({
+			admin,
+			page,
 			postType: 'lazyblocks',
 			title: '',
 			status: 'publish',
@@ -45,14 +49,7 @@ test.describe('block builder create block', () => {
 
 		await editor.canvas.getByRole('button', { name: 'Finish' }).click();
 
-		// Publish post.
-		await page.locator('role=button[name="Publish"i]').click();
-		await page
-			.locator('role=region[name="Editor publish"]')
-			.locator('role=button[name="Publish"i]')
-			.click();
-
-		await expect(page.locator('role=button[name="Save"i]')).toBeDisabled();
+		await publishBlockBuilder({ page });
 
 		let postID = await page.locator('input[name="post_ID"]').inputValue();
 		postID = typeof postID === 'string' ? parseInt(postID, 10) : null;

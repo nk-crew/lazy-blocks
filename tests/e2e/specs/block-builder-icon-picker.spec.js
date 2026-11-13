@@ -4,6 +4,7 @@
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { openBlockBuilder } from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('block builder icon picker', () => {
@@ -78,7 +79,7 @@ test.describe('block builder icon picker', () => {
 			code: '<p>Icon</p>',
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		// Render the picker the way third-party controls do.
 		await page.evaluate(() => {

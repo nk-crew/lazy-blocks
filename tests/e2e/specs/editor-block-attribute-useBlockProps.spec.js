@@ -3,6 +3,7 @@
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block attribute useBlockProps', () => {
@@ -25,7 +26,7 @@ test.describe('editor block attribute useBlockProps', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',
@@ -79,7 +80,7 @@ test.describe('editor block attribute useBlockProps', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',
@@ -136,7 +137,7 @@ test.describe('editor block attribute useBlockProps', () => {
 		const expectSelector =
 			'figure.wp-block-lazyblock-test.test-custom-class[data-test="hello"]';
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',
@@ -188,6 +189,7 @@ test.describe('editor block attribute useBlockProps', () => {
 	});
 
 	test('should keep colons and semicolons inside custom style values', async ({
+		page,
 		editor,
 		admin,
 		requestUtils,
@@ -200,7 +202,7 @@ test.describe('editor block attribute useBlockProps', () => {
 			codeSingleOutput: true,
 		});
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',

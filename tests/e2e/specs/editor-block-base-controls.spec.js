@@ -10,6 +10,7 @@ import {
 } from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block with Base control', () => {
@@ -106,7 +107,7 @@ test.describe('editor block with Base control', () => {
 	}) => {
 		await manuallyAddBaseBlock(page, editor, admin, requestUtils);
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await insertLazyBlock({
 			page,

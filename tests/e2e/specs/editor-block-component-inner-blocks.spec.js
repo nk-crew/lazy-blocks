@@ -3,6 +3,7 @@
  */
 import { expect, test } from '@wordpress/e2e-test-utils-playwright';
 import { createBlock } from '../utils/create-block';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block component <InnerBlocks />', () => {
@@ -26,10 +27,11 @@ test.describe('editor block component <InnerBlocks />', () => {
 	});
 
 	test('should render block template correctly', async ({
+		page,
 		editor,
 		admin,
 	}) => {
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',
@@ -44,7 +46,7 @@ test.describe('editor block component <InnerBlocks />', () => {
 		editor,
 		admin,
 	}) => {
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',
@@ -67,10 +69,11 @@ test.describe('editor block component <InnerBlocks />', () => {
 	});
 
 	test('nested inner blocks should keep hidden appender if parent block is selected', async ({
+		page,
 		editor,
 		admin,
 	}) => {
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await editor.insertBlock({
 			name: 'lazyblock/test',

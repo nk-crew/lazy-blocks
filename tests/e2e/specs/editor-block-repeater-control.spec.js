@@ -10,6 +10,7 @@ import {
 } from '../utils/block-builder';
 import { createBlock } from '../utils/create-block';
 import { createControl } from '../utils/create-control';
+import { createNewPost } from '../utils/create-new-post';
 import { removeAllBlocks } from '../utils/remove-all-blocks';
 
 test.describe('editor block with Repeater control', () => {
@@ -94,7 +95,7 @@ test.describe('editor block with Repeater control', () => {
 	}) => {
 		await manuallyAddRepeaterBlock(page, editor, admin, requestUtils);
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await insertLazyBlock({
 			page,
@@ -140,7 +141,7 @@ test.describe('editor block with Repeater control', () => {
 	}) => {
 		await manuallyAddRepeaterBlock(page, editor, admin, requestUtils);
 
-		await admin.createNewPost();
+		await createNewPost({ admin, page });
 
 		await insertLazyBlock({
 			page,
