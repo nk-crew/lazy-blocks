@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 4.5.1\n"
+"Project-Id-Version: Lazy Blocks 4.5.2\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26T17:15:24+00:00\n"
+"POT-Creation-Date: 2026-11-17T16:08:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: lazy-blocks.php
 #: classes/class-abilities.php:54
-#: classes/class-admin.php:232
+#: classes/class-admin.php:240
 #: classes/class-blocks.php:334
 #: classes/class-blocks.php:1716
 msgid "Lazy Blocks"
@@ -124,7 +124,7 @@ msgstr ""
 msgid "Go Pro"
 msgstr ""
 
-#: classes/class-admin.php:266
+#: classes/class-admin.php:274
 msgid "and"
 msgstr ""
 
@@ -593,12 +593,12 @@ msgstr ""
 msgid "Block Builder"
 msgstr ""
 
-#: assets/block-builder/boxes/code-preview/index.js:131
+#: assets/block-builder/boxes/code-preview/index.js:133
 #: assets/components/preview-error-boundary/index.js:24
 msgid "Error: Could not generate the preview."
 msgstr ""
 
-#: assets/block-builder/boxes/code-preview/index.js:195
+#: assets/block-builder/boxes/code-preview/index.js:197
 msgid "Preview"
 msgstr ""
 
@@ -1294,7 +1294,7 @@ msgstr ""
 msgid "Alert"
 msgstr ""
 
-#: assets/block-builder/plugin/index.js:183
+#: assets/block-builder/plugin/index.js:191
 msgid "Block settings could not be saved."
 msgstr ""
 
@@ -1353,7 +1353,7 @@ msgid "Error loading block preview: %s"
 msgstr ""
 
 #. Translators: %s - block slug.
-#: assets/components/preview-server-callback/render-block-content.js:203
+#: assets/components/preview-server-callback/render-block-content.js:191
 #, js-format
 msgid "Only a single <InnerBlocks /> component can be used per block. Multiple <InnerBlocks /> found inside block \"%s\"."
 msgstr ""
