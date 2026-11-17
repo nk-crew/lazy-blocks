@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.5.2 - Nov 17, 2026 =
+
+* added a Live Preview button on the WordPress.org plugin page, with a sample Hero block to try
+* fixed a fatal error with WPML when a block has a Repeater inside another Repeater with translatable controls
+* fixed inline styles with a colon or semicolon inside a value, such as a background image URL, being cut in the editor when the block output uses `useBlockProps`
+* fixed the block builder marking a block as changed and offering Undo as soon as it opens
+* fixed the block builder sidebar staying empty after creating a block on sites with `SCRIPT_DEBUG` enabled
+* **Pro:**
+* fixed Undo in the block builder making a block look saved while a collection change stayed unsaved
+
 = 4.5.1 - Oct 26, 2026 =
 
 * fixed style variations in the block builder ignoring typing in the Name and Label fields and staying in the list after removal

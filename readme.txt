@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.2
 * Requires PHP: 8.3
-* Stable tag: 4.5.1
+* Stable tag: 4.5.2
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,16 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.5.2 - Nov 17, 2026 =
+
+* added a Live Preview button on the WordPress.org plugin page, with a sample Hero block to try
+* fixed a fatal error with WPML when a block has a Repeater inside another Repeater with translatable controls
+* fixed inline styles with a colon or semicolon inside a value, such as a background image URL, being cut in the editor when the block output uses `useBlockProps`
+* fixed the block builder marking a block as changed and offering Undo as soon as it opens
+* fixed the block builder sidebar staying empty after creating a block on sites with `SCRIPT_DEBUG` enabled
+* **Pro:**
+* fixed Undo in the block builder making a block look saved while a collection change stayed unsaved
 
 = 4.5.1 - Oct 26, 2026 =
 
