@@ -16,16 +16,9 @@ async function addBlock(page, blockName) {
 
 	const searchBox = page.getByPlaceholder('Search');
 
-	// Clear the input.
-	await searchBox.evaluate((node) => {
-		if (node.value) {
-			node.value = '';
-		}
-	});
-
-	await searchBox.type(blockName);
-
-	await page.click(`role=option`);
+	await searchBox.fill(blockName);
+	await expect(page.getByRole('option')).toHaveCount(1);
+	await page.getByRole('option').click();
 
 	// Wait for the lazy block to be added and rendered in the widgets editor.
 	await page.locator(`[data-type="${blockName}"]`).waitFor();

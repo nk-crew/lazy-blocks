@@ -100,9 +100,15 @@
 			<property name="prefixes" type="array">
 				<element value="lazy_blocks"/>
 				<element value="lazyblocks"/>
-				<element value="lzb"/>
+				<element value="lzb_"/>
+				<element value="lzb/"/>
 			</property>
 		</properties>
+	</rule>
+
+	<!-- WPCS treats hook prefixes as PHP identifiers. Remove this exception when it accepts hook delimiters. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.InvalidPrefixPassed">
+		<severity>0</severity>
 	</rule>
 
 	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
