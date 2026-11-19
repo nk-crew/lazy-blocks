@@ -1,3 +1,4 @@
+# GitHub limits version-update PRs separately from security-update PRs.
 version: 2
 updates:
   - package-ecosystem: npm
