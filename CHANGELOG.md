@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.6.0 - Nov 23, 2026 =
+
+* patched security vulnerabilities in build dependencies
+* **Pro:**
+* added a license screen with your license status, expiry date, and steps to find your key, clarified update messages in the Plugins list, and hid license notices in copies embedded in a theme or plugin
+
 = 4.5.2 - Nov 17, 2026 =
 
 * added a Live Preview button on the WordPress.org plugin page, with a sample Hero block to try
