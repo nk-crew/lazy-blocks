@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.2
 * Requires PHP: 8.3
-* Stable tag: 4.5.2
+* Stable tag: 4.6.0
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,12 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.6.0 - Nov 23, 2026 =
+
+* patched security vulnerabilities in build dependencies
+* **Pro:**
+* added a license screen with your license status, expiry date, and steps to find your key, clarified update messages in the Plugins list, and hid license notices in copies embedded in a theme or plugin
 
 = 4.5.2 - Nov 17, 2026 =
 
