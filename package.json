@@ -58,7 +58,7 @@
 		"react-select": "^5.8.0",
 		"shorthash": "0.0.2",
 		"slugify": "^1.6.6",
-		"uuid": "^9.0.1"
+		"uuid": "^14.0.0"
 	},
 	"devDependencies": {
 		"@babel/node": "^7.23.9",
