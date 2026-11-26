@@ -310,25 +310,34 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function update_block_data( $request ) {
-		$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
-		$data    = isset( $request['data'] ) ? $request['data'] : false;
-		$meta    = array();
+		$post_id  = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+		$data     = isset( $request['data'] ) ? $request['data'] : false;
+		$response = array();
 
 		if ( 0 < $post_id && $data ) {
 			$meta_prefix = 'lazyblocks_';
+			$submitted   = array();
 
 			// add 'lazyblocks_' prefix.
 			foreach ( $data as $k => $val ) {
-				$meta[ $meta_prefix . $k ] = $val;
+				$submitted[ $meta_prefix . $k ] = $val;
 			}
 
-			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta, 'rest' );
+			$blocks   = lazyblocks()->blocks();
+			$filtered = $blocks->save_meta_boxes( $post_id, $submitted, 'rest' );
+			$defaults = $blocks->get_block_defaults();
+
+			foreach ( array_keys( array_intersect_key( $filtered, $defaults ) ) as $key ) {
+				$stored           = get_post_meta( $post_id, $key, true );
+				$is_boolean       = in_array( $defaults[ $key ], array( true, false, 'true', 'false' ), true );
+				$response[ $key ] = $is_boolean && in_array( $stored, array( 'true', 'false' ), true ) ? 'true' === $stored : $stored;
+			}
 
 			// Clear blocks cache after updating block data.
-			lazyblocks()->blocks()->clear_blocks_cache();
+			$blocks->clear_blocks_cache();
 		}
 
-		return $this->success( $meta );
+		return $this->success( $response );
 	}
 
 	/**

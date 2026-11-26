@@ -857,19 +857,15 @@ class LazyBlocks_Tools {
 				}
 			}
 
-			$changes = array();
-			$rows    = array();
+			$rows = array();
 			if ( has_filter( 'lzb/block_data_before_write' ) ) {
-				list( $changes, $rows ) = $this->filter_duplicate_block_meta( $new_post_id, $block_id, $meta_keys );
-				$meta_keys              = array_unique( array_merge( $meta_keys, array_keys( $changes ) ) );
+				$rows      = $this->filter_duplicate_block_meta( $new_post_id, $block_id, $meta_keys );
+				$meta_keys = array_unique( array_merge( $meta_keys, array_keys( $rows ) ) );
 			}
 
 			foreach ( $meta_keys as $meta_key ) {
-				if ( array_key_exists( $meta_key, $changes ) ) {
-					if ( null !== $changes[ $meta_key ] ) {
-						delete_post_meta( $new_post_id, $meta_key );
-						add_post_meta( $new_post_id, $meta_key, $changes[ $meta_key ] );
-					}
+				$filtered = isset( $rows[ $meta_key ] );
+				if ( $filtered && ! $rows[ $meta_key ] ) {
 					continue;
 				}
 
@@ -879,13 +875,12 @@ class LazyBlocks_Tools {
 				delete_post_meta( $new_post_id, $meta_key );
 
 				foreach ( $meta_values as $meta_value ) {
-					$meta_value = maybe_unserialize( $meta_value );
-
-					if ( 'lazyblocks_slug' === $meta_key && ! isset( $rows[ $meta_key ] ) ) {
-						$meta_value = get_post( $new_post_id )->post_name;
+					if ( ! $filtered ) {
+						$meta_value = 'lazyblocks_slug' === $meta_key ? get_post( $new_post_id )->post_name : maybe_unserialize( $meta_value );
+						$meta_value = wp_slash( $meta_value );
 					}
 
-					add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
+					add_post_meta( $new_post_id, $meta_key, $meta_value );
 				}
 			}
 
@@ -906,40 +901,42 @@ class LazyBlocks_Tools {
 	}
 
 	/**
-	 * Get the filter's changes and the original rows it saw.
+	 * Filter every proposed row of known block meta.
 	 *
 	 * @param int   $post_id   Destination post ID.
 	 * @param int   $source_id Source post ID.
 	 * @param array $meta_keys Meta keys eligible for the copy.
-	 * @return array The changed values (slashed, or null to skip) and the original rows.
+	 * @return array Slashed values by key, with an empty list for keys skipped by the filter.
 	 */
 	private function filter_duplicate_block_meta( $post_id, $source_id, $meta_keys ) {
-		$blocks   = lazyblocks()->blocks();
-		$defaults = $blocks->get_block_defaults();
-		$data     = array();
-		$rows     = array();
+		$blocks    = lazyblocks()->blocks();
+		$defaults  = $blocks->get_block_defaults();
+		$proposals = array( array() );
+		$rows      = array();
 
 		foreach ( array_intersect( $meta_keys, array_keys( $defaults ) ) as $key ) {
 			$values = get_post_custom_values( $key, $source_id );
-			if ( $values ) {
-				if ( 'lazyblocks_slug' === $key ) {
-					$values = array_fill( 0, count( $values ), get_post( $post_id )->post_name );
+			foreach ( $values ?? array() as $index => $value ) {
+				$proposals[ $index ][ $key ] = 'lazyblocks_slug' === $key ? get_post( $post_id )->post_name : maybe_unserialize( $value );
+				$rows[ $key ]                = array();
+			}
+		}
+
+		foreach ( $proposals as $index => $data ) {
+			$proposal    = array_replace( $proposals[0], $data );
+			$row_indexes = array_fill_keys( array_keys( $data ), $index );
+			$filtered    = $blocks->filter_block_data_before_write( $post_id, $proposal, 'duplicate', $row_indexes );
+			foreach ( array_intersect_key( $filtered, 0 === $index ? $defaults : $data ) as $key => $value ) {
+				$prepared = array_key_exists( $key, $data ) && $data[ $key ] === $value
+					? wp_slash( $value )
+					: $blocks->prepare_block_meta_value( $post_id, $key, $value );
+				if ( null !== $prepared ) {
+					$rows[ $key ][] = $prepared;
 				}
-				$rows[ $key ] = $values;
-				$data[ $key ] = maybe_unserialize( $values[0] );
 			}
 		}
 
-		$filtered = array_intersect_key( $blocks->filter_block_data_before_write( $post_id, $data, 'duplicate' ), $defaults );
-		$changes  = array_fill_keys( array_keys( array_diff_key( $data, $filtered ) ), null );
-
-		foreach ( $filtered as $key => $value ) {
-			if ( ! array_key_exists( $key, $data ) || $data[ $key ] !== $value ) {
-				$changes[ $key ] = $blocks->prepare_block_meta_value( $post_id, $key, $value );
-			}
-		}
-
-		return array( $changes, $rows );
+		return $rows;
 	}
 
 	/**
