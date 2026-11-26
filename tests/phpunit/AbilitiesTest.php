@@ -435,6 +435,50 @@ class AbilitiesTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_filtered_update_preserves_stored_markup_for_restricted_user() {
+		wp_set_current_user( $this->admin_user );
+		$stored_control = array(
+			'type'         => 'message',
+			'name'         => 'notice',
+			'message_text' => '<svg><circle></circle></svg>',
+		);
+		update_post_meta( $this->block_id, 'lazyblocks_controls', array( 'notice' => $stored_control ) );
+		wp_set_current_user( $this->create_user_without_unfiltered_html()->ID );
+		$this->assertFalse( current_user_can( 'unfiltered_html' ) );
+
+		$filter = static function ( $data, $stored ) {
+			$data['lazyblocks_controls']['notice'] = $stored['lazyblocks_controls']['notice'];
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 2 );
+		try {
+			$result = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'   => $this->block_id,
+					'data' => array(
+						'controls' => array(
+							'notice' => array(
+								'type'         => 'message',
+								'message_text' => 'Submitted replacement',
+							),
+							'text'   => array(
+								'type'  => 'text',
+								'label' => '<svg></svg><strong>Free label</strong>',
+							),
+						),
+					),
+				)
+			);
+			$this->assertNotWPError( $result );
+			$controls = get_post_meta( $this->block_id, 'lazyblocks_controls', true );
+			$this->assertSame( '<strong>Free label</strong>', $controls['text']['label'] );
+			$this->assertSame( $stored_control, $controls['notice'] );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
+		}
+	}
+
 	public function test_filtered_update_keeps_meta_written_during_title_save() {
 		wp_set_current_user( $this->admin_user );
 		$refresh_meta = static function ( $post_id ) {
@@ -504,6 +548,45 @@ class AbilitiesTest extends WP_UnitTestCase {
 			$this->assertSame( 'target-block', get_post_meta( $target['id'], 'lazyblocks_slug', true ) );
 		} finally {
 			remove_filter( 'lzb/block_data_before_write', $filter );
+		}
+	}
+
+	public function test_slug_collision_is_checked_after_the_write_filter() {
+		wp_set_current_user( $this->admin_user );
+		$target = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Target block' ) );
+		$this->assertNotWPError( $target );
+
+		$filter = static function ( $data, $stored ) {
+			$data['lazyblocks_slug'] = $stored['lazyblocks_slug'] ?? 'available-block';
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 2 );
+		try {
+			$updated = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'   => $target['id'],
+					'data' => array(
+						'slug'        => 'existing-block',
+						'description' => 'Updated alongside the stored slug',
+					),
+				)
+			);
+			$this->assertNotWPError( $updated );
+			$this->assertSame( 'target-block', get_post_meta( $target['id'], 'lazyblocks_slug', true ) );
+			$this->assertSame( 'Updated alongside the stored slug', get_post_meta( $target['id'], 'lazyblocks_description', true ) );
+
+			$created = $this->run_ability(
+				'lazy-blocks/create-block',
+				array(
+					'title' => 'New block',
+					'data'  => array( 'slug' => 'existing-block' ),
+				)
+			);
+			$this->assertNotWPError( $created );
+			$this->assertSame( 'available-block', get_post_meta( $created['id'], 'lazyblocks_slug', true ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
 		}
 	}
 
