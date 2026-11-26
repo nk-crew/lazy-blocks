@@ -62,6 +62,10 @@ class AbilitiesTest extends WP_UnitTestCase {
 	 * Drop the registry, so the next lookup fires wp_abilities_api_init again with the current option.
 	 */
 	private function reset_abilities_registry() {
+		if ( ! class_exists( 'WP_Abilities_Registry' ) ) {
+			return;
+		}
+
 		$instance = new ReflectionProperty( WP_Abilities_Registry::class, 'instance' );
 		$instance->setValue( null, null );
 	}
@@ -519,6 +523,11 @@ class AbilitiesTest extends WP_UnitTestCase {
 		$this->assertTrue( wp_has_ability( 'lazy-blocks/get-block' ) );
 		$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ) );
 		$this->assertFalse( wp_has_ability( 'lazy-blocks/update-block' ) );
+
+		// WP-CLI stores the value as typed, without the setting's sanitizer.
+		update_option( LazyBlocks_Abilities::WRITE_OPTION, 'false' );
+		$this->reset_abilities_registry();
+		$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ) );
 
 		$response = $this->run_ability_rest( 'lazy-blocks/create-block', array( 'title' => 'Not Registered' ) );
 		$this->assertSame( 404, $response->get_status() );

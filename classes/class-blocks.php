@@ -22,6 +22,17 @@ class LazyBlocks_Blocks {
 	const BLOCKS_CACHE_KEY_PREFIX = 'lzb_blocks_cache_';
 
 	/**
+	 * Block code meta keys that save_meta_boxes() writes only for users allowed to post unfiltered HTML.
+	 *
+	 * @var array
+	 */
+	const UNFILTERED_BLOCK_META_KEYS = array(
+		'lazyblocks_code_editor_html',
+		'lazyblocks_code_frontend_html',
+		'lazyblocks_script_view',
+	);
+
+	/**
 	 * Default block icon cache.
 	 *
 	 * @var string|null
@@ -900,14 +911,7 @@ class LazyBlocks_Blocks {
 	 * @return array
 	 */
 	public function get_unfiltered_block_meta_keys() {
-		return apply_filters(
-			'lzb/unfiltered_block_meta_keys',
-			array(
-				'lazyblocks_code_editor_html',
-				'lazyblocks_code_frontend_html',
-				'lazyblocks_script_view',
-			)
-		);
+		return apply_filters( 'lzb/unfiltered_block_meta_keys', self::UNFILTERED_BLOCK_META_KEYS );
 	}
 
 	/**

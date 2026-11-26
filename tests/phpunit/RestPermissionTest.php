@@ -362,6 +362,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 
 	public function test_duplicate_copies_block() {
 		wp_set_current_user( $this->admin_user );
+		update_post_meta( $this->block_id, LazyBlocks_Abilities::CREATED_META, array( 'user_id' => $this->admin_user ) );
 		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
 
 		$location = $this->catch_redirect(
@@ -374,6 +375,11 @@ class RestPermissionTest extends WP_UnitTestCase {
 
 		$this->assertStringContainsString( 'lazyblocks_duplicate_complete=', $location );
 		$this->assertSame( 2, count( get_posts( array( 'post_type' => 'lazyblocks', 'post_status' => 'any' ) ) ) );
+
+		// A copy made by a person is not a block an ability created.
+		$copy_id = (int) wp_parse_args( wp_parse_url( $location, PHP_URL_QUERY ) )['lazyblocks_duplicate_complete'];
+		$this->assertSame( '', get_post_meta( $copy_id, LazyBlocks_Abilities::CREATED_META, true ) );
+		$this->assertNotEmpty( get_post_meta( $this->block_id, LazyBlocks_Abilities::CREATED_META, true ) );
 	}
 
 	public function test_update_block_data_builds_empty_slug_from_title() {

@@ -47,6 +47,7 @@ test.describe('abilities write opt-in', () => {
 			},
 		};
 
+		await setWriteAbilities({ admin, page }, false);
 		await expect(runCreateBlock(requestUtils, input)).rejects.toMatchObject(
 			{ code: 'rest_ability_not_found' }
 		);

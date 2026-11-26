@@ -837,6 +837,7 @@ class LazyBlocks_Tools {
 					'_dp_has_rewrite_republish_copy',
 					'_dp_has_been_republished',
 					'_dp_creation_date_gmt',
+					LazyBlocks_Abilities::CREATED_META,
 				);
 
 				$meta_exclude_list_string = '(' . implode( ')|(', $meta_exclude_list ) . ')';

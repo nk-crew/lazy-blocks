@@ -75,7 +75,7 @@ class LazyBlocks_Abilities {
 	 * @return bool
 	 */
 	public static function is_write_enabled() {
-		return (bool) get_option( self::WRITE_OPTION, false );
+		return rest_sanitize_boolean( get_option( self::WRITE_OPTION, false ) );
 	}
 
 	/**
@@ -504,10 +504,12 @@ class LazyBlocks_Abilities {
 		update_post_meta(
 			$post_id,
 			self::CREATED_META,
-			array(
-				'user_id'  => get_current_user_id(),
-				'date_gmt' => current_time( 'mysql', true ),
-				'client'   => $this->get_client_name(),
+			wp_slash(
+				array(
+					'user_id'  => get_current_user_id(),
+					'date_gmt' => current_time( 'mysql', true ),
+					'client'   => $this->get_client_name(),
+				)
 			)
 		);
 
@@ -665,7 +667,10 @@ class LazyBlocks_Abilities {
 
 		$refused = array();
 
-		foreach ( $blocks->get_unfiltered_block_meta_keys() as $meta_key ) {
+		// save_meta_boxes() skips the built-in keys even when a site filters them out of the list.
+		$meta_keys = array_unique( array_merge( LazyBlocks_Blocks::UNFILTERED_BLOCK_META_KEYS, $blocks->get_unfiltered_block_meta_keys() ) );
+
+		foreach ( $meta_keys as $meta_key ) {
 			if ( ! str_starts_with( $meta_key, self::META_PREFIX ) ) {
 				continue;
 			}
