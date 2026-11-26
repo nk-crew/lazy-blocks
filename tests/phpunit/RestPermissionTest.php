@@ -435,9 +435,12 @@ class RestPermissionTest extends WP_UnitTestCase {
 	public function test_rest_returns_the_description_restored_by_the_filter() {
 		wp_set_current_user( $this->admin_user );
 		update_post_meta( $this->block_id, 'lazyblocks_description', wp_slash( 'Existing C:\\example' ) );
+		update_post_meta( $this->block_id, 'lazyblocks_supports_inserter', 'false' );
+		update_post_meta( $this->block_id, 'lazyblocks_category', 'design' );
 		$filter = static function ( $data, $stored, $context ) {
 			if ( 'rest' === $context['source'] ) {
-				$data['lazyblocks_description'] = $stored['lazyblocks_description'];
+				$data['lazyblocks_description']       = $stored['lazyblocks_description'];
+				$data['lazyblocks_supports_inserter'] = $stored['lazyblocks_supports_inserter'];
 			}
 			return $data;
 		};
@@ -452,7 +455,8 @@ class RestPermissionTest extends WP_UnitTestCase {
 						'slug'              => 'Updated-Block',
 						'description'       => 'Changed description',
 						'keywords'          => 'true',
-						'supports_inserter' => false,
+						'supports_inserter' => true,
+						'category'          => '',
 					),
 				)
 			);
@@ -462,7 +466,10 @@ class RestPermissionTest extends WP_UnitTestCase {
 			$this->assertSame( 'Existing C:\\example', $response->get_data()['response']['lazyblocks_description'] );
 			$this->assertSame( 'updated-block', $response->get_data()['response']['lazyblocks_slug'] );
 			$this->assertSame( 'true', $response->get_data()['response']['lazyblocks_keywords'] );
+			$this->assertSame( 'false', get_post_meta( $this->block_id, 'lazyblocks_supports_inserter', true ) );
 			$this->assertFalse( $response->get_data()['response']['lazyblocks_supports_inserter'] );
+			$this->assertFalse( metadata_exists( 'post', $this->block_id, 'lazyblocks_category' ) );
+			$this->assertSame( '', $response->get_data()['response']['lazyblocks_category'] );
 		} finally {
 			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
 		}

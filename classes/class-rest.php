@@ -310,32 +310,33 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function update_block_data( $request ) {
-		$post_id = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
-		$data    = isset( $request['data'] ) ? $request['data'] : false;
-		$meta    = array();
+		$post_id  = isset( $request['post_id'] ) ? intval( $request['post_id'] ) : 0;
+		$data     = isset( $request['data'] ) ? $request['data'] : false;
+		$response = array();
 
 		if ( 0 < $post_id && $data ) {
 			$meta_prefix = 'lazyblocks_';
+			$submitted   = array();
 
 			// add 'lazyblocks_' prefix.
 			foreach ( $data as $k => $val ) {
-				$meta[ $meta_prefix . $k ] = $val;
+				$submitted[ $meta_prefix . $k ] = $val;
 			}
 
-			$blocks = lazyblocks()->blocks();
-			$meta   = $blocks->save_meta_boxes( $post_id, $meta, 'rest' );
-			$meta   = array_intersect_key( $meta, $blocks->get_block_defaults() );
+			$blocks   = lazyblocks()->blocks();
+			$filtered = $blocks->save_meta_boxes( $post_id, $submitted, 'rest' );
 
-			foreach ( $meta as $key => $value ) {
-				$stored       = get_post_meta( $post_id, $key, true );
-				$meta[ $key ] = is_bool( $value ) && in_array( $stored, array( 'true', 'false' ), true ) ? 'true' === $stored : $stored;
+			foreach ( array_intersect_key( $filtered, $blocks->get_block_defaults() ) as $key => $value ) {
+				$stored           = get_post_meta( $post_id, $key, true );
+				$is_boolean       = is_bool( $submitted[ $key ] ?? $value );
+				$response[ $key ] = $is_boolean && in_array( $stored, array( 'true', 'false' ), true ) ? 'true' === $stored : $stored;
 			}
 
 			// Clear blocks cache after updating block data.
 			$blocks->clear_blocks_cache();
 		}
 
-		return $this->success( $meta );
+		return $this->success( $response );
 	}
 
 	/**
