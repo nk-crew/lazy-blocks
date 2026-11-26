@@ -263,6 +263,36 @@ class RestPermissionTest extends WP_UnitTestCase {
 		$this->assertSame( 'lazy_block_cannot_execute_php', $response->get_data()['code'] );
 	}
 
+	public function test_editor_preview_returns_handlebars_template_error() {
+		wp_set_current_user( $this->editor_user );
+		lazyblocks()->add_block(
+			array(
+				'slug' => 'lazyblock/invalid-template',
+				'code' => array(
+					'editor_html' => '{{#if a}}A{{else if b}}B{{else}}C{{/if}}',
+				),
+			)
+		);
+
+		try {
+			$response = $this->post(
+				'block-render',
+				array(
+					'name'            => 'lazyblock/invalid-template',
+					'post_id'         => $this->post_id,
+					'attributes'      => array( 'a' => true ),
+					'render_location' => 'editor',
+				)
+			);
+		} finally {
+			lazyblocks()->blocks()->remove_block( 'lazyblock/invalid-template' );
+		}
+
+		$this->assertSame( 401, $response->get_status() );
+		$this->assertSame( 'lazy_block_render_failed', $response->get_data()['error_code'] );
+		$this->assertSame( 'Variable name is invalid: "else if b"', $response->get_data()['message'] );
+	}
+
 	public function test_block_builder_preview_trace_follows_wp_debug() {
 		wp_set_current_user( $this->admin_user );
 
