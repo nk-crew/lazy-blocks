@@ -6,7 +6,7 @@
 * Requires at least: 6.2
 * Tested up to: 7.2
 * Requires PHP: 8.3
-* Stable tag: 4.6.0
+* Stable tag: 4.6.1
 * License: GPLv2 or later
 * License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -138,6 +138,10 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 3. Available block controls
 
 ## Changelog
+
+= 4.6.1 - Nov 26, 2026 =
+
+* fixed invalid Handlebars templates breaking the page and the editor preview
 
 = 4.6.0 - Nov 23, 2026 =
 

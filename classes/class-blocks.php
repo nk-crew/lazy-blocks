@@ -2017,15 +2017,16 @@ class LazyBlocks_Blocks {
 	/**
 	 * Render block custom frontend HTML.
 	 *
-	 * @param array  $attributes - The block attributes.
-	 * @param array  $context - Data containing the block's context.
-	 * @param string $content - The block content.
-	 * @param string $render_location - block context [frontend, editor].
-	 * @param array  $block - Data containing the block's specifications (mostly used for live block preview in the block builder).
+	 * @param array         $attributes - The block attributes.
+	 * @param array         $context - Data containing the block's context.
+	 * @param string        $content - The block content.
+	 * @param string        $render_location - block context [frontend, editor].
+	 * @param array         $block - Data containing the block's specifications (mostly used for live block preview in the block builder).
+	 * @param callable|null $handlebars_error_handler - Handles Handlebars exceptions for previews.
 	 *
-	 * @return string Returns the post content with latest posts added.
+	 * @return string|null|WP_Error Rendered block content or an error.
 	 */
-	public function render_callback( $attributes, $context = null, $content = null, $render_location = 'frontend', $block = null ) {
+	public function render_callback( $attributes, $context = null, $content = null, $render_location = 'frontend', $block = null, $handlebars_error_handler = null ) {
 		if ( ! $block && ( ! isset( $attributes['lazyblock'] ) || ! isset( $attributes['lazyblock']['slug'] ) ) ) {
 			return null;
 		}
@@ -2135,8 +2136,22 @@ class LazyBlocks_Blocks {
 
 					// Handlebars.
 				} else {
-					$data   = is_array( $context ) && ! empty( $context ) ? array_merge( $attributes, $context ) : $attributes;
-					$result = lazyblocks()->handlebars()->object->render( $code[ $custom_render_name ], $data );
+					$data = is_array( $context ) && ! empty( $context ) ? array_merge( $attributes, $context ) : $attributes;
+
+					try {
+						$result = lazyblocks()->handlebars()->object->render( $code[ $custom_render_name ], $data );
+					} catch ( Throwable $e ) {
+						if ( null !== $handlebars_error_handler ) {
+							return $handlebars_error_handler( $e );
+						}
+
+						if ( WP_DEBUG ) {
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+							error_log( sprintf( 'Lazy Blocks: Could not render %s: %s', $block['slug'], $e->getMessage() ) );
+						}
+
+						return current_user_can( 'edit_lazyblocks' ) ? esc_html( $e->getMessage() ) : null;
+					}
 				}
 			}
 		}

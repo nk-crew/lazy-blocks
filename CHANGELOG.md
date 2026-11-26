@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+= 4.6.1 - Nov 26, 2026 =
+
+* fixed invalid Handlebars templates breaking the page and the editor preview
+
 = 4.6.0 - Nov 23, 2026 =
 
 * patched security vulnerabilities in build dependencies
