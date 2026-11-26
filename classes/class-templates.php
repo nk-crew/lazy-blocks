@@ -54,7 +54,7 @@ class LazyBlocks_Templates {
 	 * @param array $data - block data.
 	 */
 	public function add_template( $data ) {
-		LazyBlocks_Deprecations::log_template_deprecation( 'lazyblocks()->add_template() is deprecated since 5.0.0. Use register_post_type_args to set template and template_lock.' );
+		LazyBlocks_Deprecations::log_deprecation( 'lazyblocks()->add_template() is deprecated since 5.0.0. Use register_post_type_args to set template and template_lock.' );
 
 		if ( null === $this->user_templates ) {
 			$this->user_templates = array();

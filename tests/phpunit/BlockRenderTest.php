@@ -39,6 +39,131 @@ class BlockRenderTest extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
+	/**
+	 * @dataProvider legacy_wrapper_hooks
+	 */
+	public function test_legacy_wrapper_filter_preserves_multiple_roots( $hook ) {
+		$this->add_test_block( array( 'code' => array( 'frontend_html' => '<p>First</p><p>Second</p>' ) ) );
+		$this->setExpectedDeprecated( $hook );
+		add_filter( $hook, '__return_false' );
+
+		try {
+			$this->assertSame( '<p>First</p><p>Second</p>', do_blocks( '<!-- wp:lazyblock/test /-->' ) );
+		} finally {
+			remove_filter( $hook, '__return_false' );
+		}
+	}
+
+	public static function legacy_wrapper_hooks() {
+		return array(
+			array( 'lzb/block_render/allow_wrapper' ),
+			array( 'lazyblock/test/frontend_allow_wrapper' ),
+			array( 'lazyblock/test/allow_wrapper' ),
+		);
+	}
+
+	/**
+	 * @dataProvider handlebars_registration_hooks
+	 */
+	public function test_published_block_renders_a_helper_registered_by_a_theme( $hook ) {
+		$register = static function ( $handlebars ) {
+			$handlebars->registerHelper( 'test_caption', static function () {
+				return 'Theme caption';
+			} );
+		};
+		$handlebars = lazyblocks()->handlebars();
+		$original   = $handlebars->object;
+		add_action( $hook, $register );
+
+		try {
+			$handlebars->prepare();
+			$this->add_test_block( array( 'code' => array( 'frontend_html' => '<p>{{test_caption}}</p>' ) ) );
+			$this->assertSame(
+				'<div class="wp-block-lazyblock-test"><p>Theme caption</p></div>',
+				do_blocks( '<!-- wp:lazyblock/test /-->' )
+			);
+		} finally {
+			remove_action( $hook, $register );
+			$handlebars->object = $original;
+		}
+	}
+
+	public static function handlebars_registration_hooks() {
+		return array(
+			array( 'lzb_handlebars_object' ),
+			array( 'lzb/handlebars/object' ),
+		);
+	}
+
+	/**
+	 * @dataProvider php_template_hook_versions
+	 */
+	public function test_php_template_uses_editor_file_then_falls_back( $legacy ) {
+		$frontend = wp_tempnam( 'lazy-blocks-deprecations-block.php' );
+		$editor   = wp_tempnam( 'lazy-blocks-deprecations-editor.php' );
+		file_put_contents( $frontend, '<p>Shared template</p>' );
+		file_put_contents( $editor, '<p>Editor template</p>' );
+
+		$resolve = static function ( $filename ) use ( $frontend, $editor ) {
+			if ( 'editor.php' === basename( $filename ) ) {
+				return $editor;
+			}
+
+			return $frontend;
+		};
+		$exists = static function ( $path, $filename ) use ( $resolve ) {
+			return $resolve( $filename );
+		};
+		$prefix = $legacy ? 'lzb/' : 'lzb/block_render/';
+		if ( $legacy ) {
+			$this->setExpectedDeprecated( 'lzb/template_exists' );
+			$this->setExpectedDeprecated( 'lzb/include_template' );
+			$include = $exists;
+		} else {
+			$include = static function ( $path, $attributes, $block, $location ) use ( $resolve ) {
+				$editor_path = $resolve( 'editor.php' );
+
+				return 'editor' === $location && is_file( $editor_path ) ? $editor_path : $resolve( 'block.php' );
+			};
+		}
+
+		add_filter( $prefix . 'template_exists', $exists, 10, 2 );
+		add_filter( $prefix . 'include_template', $include, 10, 4 );
+
+		try {
+			$this->add_test_block( array( 'code' => array( 'output_method' => 'template' ) ) );
+			$blocks = lazyblocks()->blocks();
+			$block  = $blocks->get_block( 'lazyblock/test' );
+
+			$this->assertSame(
+				'<div class="wp-block-lazyblock-test"><p>Shared template</p></div>',
+				do_blocks( '<!-- wp:lazyblock/test /-->' )
+			);
+			$this->assertSame(
+				'<div useBlockProps><p>Editor template</p></div>',
+				$blocks->render_callback( array(), array(), '', 'editor', $block )
+			);
+
+			wp_delete_file( $editor );
+			$this->assertSame(
+				'<div useBlockProps><p>Shared template</p></div>',
+				$blocks->render_callback( array(), array(), '', 'editor', $block )
+			);
+		} finally {
+			remove_filter( $prefix . 'template_exists', $exists, 10 );
+			remove_filter( $prefix . 'include_template', $include, 10 );
+			wp_delete_file( $editor );
+			wp_delete_file( $frontend );
+		}
+	}
+
+	public static function php_template_hook_versions() {
+		return array(
+			'legacy hooks'  => array( true ),
+			'current hooks' => array( false ),
+		);
+	}
+
 	public function test_simple_block_render() {
 		$this->add_test_block( array(
 			'code' => array(

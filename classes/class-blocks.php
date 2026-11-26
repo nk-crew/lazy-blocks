@@ -453,11 +453,18 @@ class LazyBlocks_Blocks {
 	/**
 	 * Add Roles
 	 *
-	 * @deprecated Use sync_role_caps().
+	 * @deprecated 5.0.0 Use sync_role_caps().
 	 *
 	 * @return void
 	 */
 	public function add_role_caps() {
+		LazyBlocks_Deprecations::with_logged_deprecation(
+			'function',
+			__METHOD__,
+			static function () {
+				_deprecated_function( self::class . '::add_role_caps', '5.0.0', 'lazyblocks()->blocks()->sync_role_caps()' );
+			}
+		);
 		$this->sync_role_caps();
 	}
 
@@ -2442,8 +2449,18 @@ class LazyBlocks_Blocks {
 		// phpcs:ignore
 		$template = apply_filters( $args['block']['slug'] . '/template_exists', $template, $template_name, $args['attributes'], $args['block'], $args['render_location'], $args['context'] );
 
-		// DEPRECATED.
-		$template = apply_filters( 'lzb/template_exists', $template, $template_name, $args );
+		$template = LazyBlocks_Deprecations::with_logged_deprecation(
+			'hook',
+			'lzb/template_exists',
+			static function () use ( $template, $template_name, $args ) {
+				return apply_filters_deprecated(
+					'lzb/template_exists',
+					array( $template, $template_name, $args ),
+					'5.0.0',
+					'lzb/block_render/template_exists'
+				);
+			}
+		);
 
 		return file_exists( $template );
 	}
@@ -2470,8 +2487,18 @@ class LazyBlocks_Blocks {
 		// phpcs:ignore
 		$template = apply_filters( $args['block']['slug'] . '/include_template', $template, $args['attributes'], $args['block'], $args['render_location'], $args['context'] );
 
-		// DEPRECATED.
-		$template = apply_filters( 'lzb/include_template', $template, $template_name, $args );
+		$template = LazyBlocks_Deprecations::with_logged_deprecation(
+			'hook',
+			'lzb/include_template',
+			static function () use ( $template, $template_name, $args ) {
+				return apply_filters_deprecated(
+					'lzb/include_template',
+					array( $template, $template_name, $args ),
+					'5.0.0',
+					'lzb/block_render/include_template'
+				);
+			}
+		);
 
 		if ( file_exists( $template ) ) {
 			include $template;

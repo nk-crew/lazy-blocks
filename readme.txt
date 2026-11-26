@@ -87,6 +87,8 @@ Lazy Blocks built by developers, for developers and gives you unlimited freedom 
 
 Every UI part should be intuitive for simple custom blocks, but if you want to create something more complex, you may be required to [read our extensive documentation](https://www.lazyblocks.com/docs/overview/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=developers).
 
+See the [Lazy Blocks 5.0 integration upgrade guide](https://github.com/nk-crew/lazy-blocks/blob/master/docs/upgrade-5.0.md) for legacy hooks and block exports.
+
 ### 🔥 Lazy Blocks Pro
 
 > The Lazy Blocks plugin is also available in a professional version which includes more controls and features! [**Learn more about Lazy Blocks Pro**](https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=pro)

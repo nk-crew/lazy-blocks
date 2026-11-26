@@ -7,8 +7,9 @@ import apiFetch from '@wordpress/api-fetch';
 import { Spinner } from '@wordpress/components';
 import { usePrevious } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
+import deprecated from '@wordpress/deprecated';
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { applyFilters, doAction } from '@wordpress/hooks';
+import { actions, applyFilters, doAction } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 import { isEqual } from 'lodash';
 import PreviewErrorBoundary from '../../components/preview-error-boundary';
@@ -16,6 +17,27 @@ import PreviewErrorBoundary from '../../components/preview-error-boundary';
  * Internal dependencies.
  */
 import RenderBlockContent from './render-block-content';
+
+const catchAllHandlers = new WeakSet();
+
+function dispatchPreviewAction(event, props) {
+	const action = `lzb.components.PreviewServerCallback.${event}`;
+	const legacyAction = `lazyblocks.components.PreviewServerCallback.${event}`;
+
+	doAction(action, props);
+	// WordPress debug scripts copy all handlers into each dispatched action.
+	actions.all?.handlers.forEach((handler) => {
+		catchAllHandlers.add(handler);
+	});
+	if (
+		actions[legacyAction]?.handlers.some(
+			(handler) => !catchAllHandlers.has(handler)
+		)
+	) {
+		deprecated(legacyAction, { since: '5.0.0', alternative: action });
+	}
+	doAction(legacyAction, props);
+}
 
 /**
  * Block Editor custom PHP preview.
@@ -91,14 +113,7 @@ export default function PreviewServerCallback(props) {
 
 				if (fetchRequest === currentFetchRequest.current) {
 					onBeforeChange();
-					doAction(
-						'lzb.components.PreviewServerCallback.onBeforeChange',
-						props
-					);
-					doAction(
-						'lazyblocks.components.PreviewServerCallback.onBeforeChange',
-						props
-					);
+					dispatchPreviewAction('onBeforeChange', props);
 
 					if (res && res.success) {
 						updateResponse(res.response);
@@ -123,14 +138,7 @@ export default function PreviewServerCallback(props) {
 
 				if (fetchRequest === currentFetchRequest.current) {
 					onBeforeChange();
-					doAction(
-						'lzb.components.PreviewServerCallback.onBeforeChange',
-						props
-					);
-					doAction(
-						'lazyblocks.components.PreviewServerCallback.onBeforeChange',
-						props
-					);
+					dispatchPreviewAction('onBeforeChange', props);
 
 					updateResponse({
 						error: true,
@@ -221,8 +229,7 @@ export default function PreviewServerCallback(props) {
 		}
 
 		onChange();
-		doAction('lzb.components.PreviewServerCallback.onChange', props);
-		doAction('lazyblocks.components.PreviewServerCallback.onChange', props);
+		dispatchPreviewAction('onChange', props);
 	}, [onChange, onChanged, props]);
 
 	let result = '';

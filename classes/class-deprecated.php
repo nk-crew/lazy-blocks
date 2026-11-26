@@ -45,15 +45,58 @@ class LazyBlocks_Deprecations {
 	}
 
 	/**
-	 * Log a template deprecation without writing to the response.
+	 * Log a deprecation without writing to the response.
 	 *
 	 * @internal
 	 * @param string $message Deprecation message.
 	 */
-	public static function log_template_deprecation( $message ) {
+	public static function log_deprecation( $message ) {
 		if ( WP_DEBUG ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( 'Lazy Blocks: ' . $message );
+		}
+	}
+
+	/**
+	 * Route WordPress deprecations to the log during a legacy API call.
+	 *
+	 * @internal
+	 * @param string   $type Hook or function.
+	 * @param string   $name Name of the deprecated API.
+	 * @param callable $call Legacy API call.
+	 * @return mixed Result of the call.
+	 */
+	public static function with_logged_deprecation( $type, $name, $call ) {
+		if ( ! WP_DEBUG ) {
+			return $call();
+		}
+
+		$pending = array();
+		$observe = static function ( $deprecated_name, $replacement, $version ) use ( $name, &$pending ) {
+			$pending[] = $deprecated_name === $name ? array( $replacement, $version ) : null;
+		};
+		$log     = static function ( $trigger ) use ( $name, &$pending ) {
+			$deprecation = array_pop( $pending );
+			if ( null === $deprecation ) {
+				return $trigger;
+			}
+
+			if ( $trigger ) {
+				list( $replacement, $version ) = $deprecation;
+				self::log_deprecation( sprintf( '%s is deprecated since %s. Use %s instead.', $name, $version, $replacement ) );
+			}
+
+			return false;
+		};
+
+		add_action( "deprecated_{$type}_run", $observe, PHP_INT_MAX, 3 );
+		add_filter( "deprecated_{$type}_trigger_error", $log, PHP_INT_MAX );
+
+		try {
+			return $call();
+		} finally {
+			remove_action( "deprecated_{$type}_run", $observe, PHP_INT_MAX );
+			remove_filter( "deprecated_{$type}_trigger_error", $log, PHP_INT_MAX );
 		}
 	}
 
@@ -66,7 +109,7 @@ class LazyBlocks_Deprecations {
 	 */
 	public function v2_5_0_convert_user_template( $data ) {
 		if ( isset( $data['data'] ) ) {
-			self::log_template_deprecation( 'The post template data wrapper is deprecated since 5.0.0. Use post_types, template_lock, and blocks at the top level.' );
+			self::log_deprecation( 'The post template data wrapper is deprecated since 5.0.0. Use post_types, template_lock, and blocks at the top level.' );
 			$data['post_types']    = array( $data['data']['post_type'] );
 			$data['template_lock'] = $data['data']['template_lock'];
 			$data['blocks']        = array();
@@ -109,7 +152,12 @@ class LazyBlocks_Deprecations {
 	 * @return array
 	 */
 	public function v2_1_0_convert_user_block( $data ) {
-		// Fix deprecated 'use_php' and new 'output_method' code data.
+		if ( WP_DEBUG && isset( $data['code']['use_php'] ) ) {
+			$slug = isset( $data['slug'] ) && is_string( $data['slug'] ) ? sanitize_text_field( $data['slug'] ) : '';
+			self::log_deprecation(
+				( $slug ? $slug . ': ' : '' ) . 'The code.use_php export key is deprecated since 5.0.0. Use code.output_method instead.'
+			);
+		}
 		if ( isset( $data['code'] ) && ! isset( $data['code']['output_method'] ) ) {
 			if ( isset( $data['code']['use_php'] ) && $data['code']['use_php'] ) {
 				$data['code']['output_method'] = 'php';
