@@ -53,6 +53,7 @@ class LazyBlocks_Deprecations {
 	 */
 	public function v2_5_0_convert_user_template( $data ) {
 		if ( isset( $data['data'] ) ) {
+			_deprecated_argument( 'Lazy Blocks post template data', '5.0.0', 'Use post_types, template_lock, and blocks at the top level.' );
 			$data['post_types']    = array( $data['data']['post_type'] );
 			$data['template_lock'] = $data['data']['template_lock'];
 			$data['blocks']        = array();

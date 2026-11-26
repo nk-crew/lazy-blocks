@@ -22,6 +22,8 @@ class LazyBlocks_Templates {
 		// add template to posts.
 		add_filter( 'register_post_type_args', array( $this, 'register_post_type_args' ), 20, 2 );
 
+		add_action( 'admin_notices', array( $this, 'templates_deprecation_notice' ) );
+
 		// enqueue Gutenberg on templates screen.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'templates_editor_enqueue_scripts' ) );
 
@@ -52,6 +54,8 @@ class LazyBlocks_Templates {
 	 * @param array $data - block data.
 	 */
 	public function add_template( $data ) {
+		_deprecated_function( 'lazyblocks()->add_template()', '5.0.0', 'register_post_type_args' );
+
 		if ( null === $this->user_templates ) {
 			$this->user_templates = array();
 		}
@@ -161,6 +165,21 @@ class LazyBlocks_Templates {
 
 		wp_reset_postdata();
 
+		$capabilities = array(
+			'edit_post'          => 'edit_lazyblock',
+			'edit_posts'         => 'edit_lazyblocks',
+			'edit_others_posts'  => 'edit_other_lazyblocks',
+			'publish_posts'      => 'publish_lazyblocks',
+			'read_post'          => 'read_lazyblock',
+			'read_private_posts' => 'read_private_lazyblocks',
+			'delete_posts'       => 'delete_lazyblocks',
+			'delete_post'        => 'delete_lazyblock',
+		);
+
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			$capabilities['create_posts'] = 'do_not_allow';
+		}
+
 		register_post_type(
 			'lazyblocks_templates',
 			array(
@@ -173,16 +192,7 @@ class LazyBlocks_Templates {
 				'show_ui'      => true,
 				'show_in_menu' => $templates_exist ? 'edit.php?post_type=lazyblocks' : false,
 				'show_in_rest' => true,
-				'capabilities' => array(
-					'edit_post'          => 'edit_lazyblock',
-					'edit_posts'         => 'edit_lazyblocks',
-					'edit_others_posts'  => 'edit_other_lazyblocks',
-					'publish_posts'      => 'publish_lazyblocks',
-					'read_post'          => 'read_lazyblock',
-					'read_private_posts' => 'read_private_lazyblocks',
-					'delete_posts'       => 'delete_lazyblocks',
-					'delete_post'        => 'delete_lazyblock',
-				),
+				'capabilities' => $capabilities,
 				'rewrite'      => true,
 				'supports'     => array(
 					'title',
@@ -248,6 +258,25 @@ class LazyBlocks_Templates {
 				'auth_callback'  => array( __CLASS__, 'rest_auth' ),
 			)
 		);
+	}
+
+	/**
+	 * Show the migration link on the legacy templates list.
+	 */
+	public function templates_deprecation_notice() {
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'edit-lazyblocks_templates' !== $screen->id ) {
+			return;
+		}
+		?>
+		<div class="notice notice-warning">
+			<p>
+				<?php esc_html_e( 'Lazy Blocks post templates are deprecated. You can still edit and export your saved templates.', 'lazy-blocks' ); ?>
+				<a href="https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/"><?php esc_html_e( 'Learn about WordPress post type templates', 'lazy-blocks' ); ?></a>
+			</p>
+		</div>
+		<?php
 	}
 
 	/**

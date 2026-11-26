@@ -21,7 +21,7 @@ Easily create custom blocks and custom meta fields for Gutenberg without hard co
 
 [Official Site](https://www.lazyblocks.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) | [Documentation](https://www.lazyblocks.com/docs/overview/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) | [GitHub](https://github.com/nk-crew/lazy-blocks)
 
-Create custom blocks visually, add controls to your blocks using drag & drop, write blocks output using HTML or PHP code. You can create custom blocks as well as custom meta fields for specific post types. Furthermore, you are able to create post templates with predefined blocks for any post type.
+Create custom blocks visually, add controls to your blocks using drag & drop, write blocks output using HTML or PHP code. You can create custom blocks as well as custom meta fields for specific post types.
 
 ### 🚀 Easy To Start
 
@@ -136,6 +136,12 @@ The manual installation method involves downloading our Lazy Blocks plugin and u
 1. Custom block example in Block Builder UI
 2. Custom block example in WordPress editor
 3. Available block controls
+
+## Migrating legacy block definitions and post templates
+
+To migrate the legacy Inner Blocks control, keep the block slug and add `<InnerBlocks />` to the PHP, Handlebars, or theme template where the children should appear. Then remove the old control. Move any logic that reads the old PHP attribute or passes its value to a Handlebars helper by hand. Carry over any label and wrapper CSS you need. WordPress stores the nested blocks in the post, so you can keep the existing post content.
+
+For the initial blocks of new posts, export the legacy template and use its `blocks` as the WordPress `template` argument. Keep `template_lock` and any required `custom-fields` support. Set these arguments through `register_post_type_args` for an existing post type or in your own `register_post_type()` call. Copy the exported blocks in order, including their attributes and nesting. On a staging site, disable the legacy definition and check the initial blocks and editing restrictions on a new post before updating the live site. For a page layout in a block theme, use the Site Editor.
 
 ## Changelog
 

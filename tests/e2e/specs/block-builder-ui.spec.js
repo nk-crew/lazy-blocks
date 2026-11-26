@@ -57,6 +57,11 @@ test.describe('block builder interface', () => {
 			name: 'Search control types',
 		});
 		await expect(search).toBeFocused();
+		await expect(
+			page.getByRole('button', { name: 'Inner Blocks', exact: true })
+		).toHaveCount(0);
+		await search.fill('inner_blocks');
+		await expect(page.getByText('No control types found.')).toBeVisible();
 		await search.fill('gal');
 		await page.keyboard.press('Enter');
 
@@ -218,9 +223,12 @@ test.describe('block builder interface', () => {
 
 		// The type changes from the header.
 		await header.getByRole('button', { name: /Change type/ }).click();
-		await page
-			.getByRole('searchbox', { name: 'Search control types' })
-			.fill('Text Area');
+		const typeSearch = page.getByRole('searchbox', {
+			name: 'Search control types',
+		});
+		await typeSearch.fill('Inner Blocks');
+		await expect(page.getByText('No control types found.')).toBeVisible();
+		await typeSearch.fill('Text Area');
 		await page
 			.getByRole('button', { name: 'Text Area', exact: true })
 			.click();

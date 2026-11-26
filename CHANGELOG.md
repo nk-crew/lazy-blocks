@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+= 5.0.0 =
+
+* hid the legacy Inner Blocks control from the picker. Existing blocks still work. To migrate a definition, keep its slug, replace the old control output with `<InnerBlocks />`, then remove the control.
+* removed Add New from the legacy Templates screens. Existing templates can still be edited, imported, exported, and registered in PHP. To migrate to WordPress post type templates, use the exported `blocks` as `template` and keep `template_lock`.
+
 = 4.6.0 - Nov 23, 2026 =
 
 * patched security vulnerabilities in build dependencies

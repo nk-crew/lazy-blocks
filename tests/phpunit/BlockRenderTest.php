@@ -288,18 +288,28 @@ class BlockRenderTest extends WP_UnitTestCase {
 			),
 		) );
 
-		$this->assertEquals(
-			'<div class="wp-block-lazyblock-test">' .
-				'<p>Test</p>' .
-				'<p>Inner</p>' .
-			'</div>',
-			$this->normalize_block_html(
-				do_blocks(
-					'<!-- wp:lazyblock/test -->' .
-						'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
-					'<!-- /wp:lazyblock/test -->'
+		$filter = static function ( $attributes ) {
+			$attributes['inner-content'] .= '<p>Filtered child content</p>';
+			return $attributes;
+		};
+		add_filter( 'lzb/block_render/attributes', $filter, 20 );
+
+		try {
+			$this->assertEquals(
+				'<div class="wp-block-lazyblock-test">' .
+					'<p>Test</p>' .
+					'<p>Inner</p><p>Filtered child content</p>' .
+				'</div>',
+				$this->normalize_block_html(
+					do_blocks(
+						'<!-- wp:lazyblock/test -->' .
+							'<!-- wp:paragraph --><p>Inner</p><!-- /wp:paragraph -->' .
+						'<!-- /wp:lazyblock/test -->'
+					)
 				)
-			)
-		);
+			);
+		} finally {
+			remove_filter( 'lzb/block_render/attributes', $filter, 20 );
+		}
 	}
 }
