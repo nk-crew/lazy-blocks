@@ -74,7 +74,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 			WP_Block_Supports::$block_to_render = null;
 		}
 
-		unset( $_GET['lazyblocks_activate_complete'], $_GET['lazyblocks_activation_type'], $_GET['lazyblocks_block_id'], $_GET['lazyblocks_duplicate_complete'] );
+		unset( $_GET['lazyblocks_duplicate_block_nonce'], $_GET['lazyblocks_activate_complete'], $_GET['lazyblocks_activation_type'], $_GET['lazyblocks_block_id'], $_GET['lazyblocks_duplicate_complete'] );
 
 		remove_all_filters( 'wp_redirect' );
 		remove_all_filters( 'lzb/block_render/callback' );
@@ -362,6 +362,10 @@ class RestPermissionTest extends WP_UnitTestCase {
 
 	public function test_duplicate_copies_block() {
 		wp_set_current_user( $this->admin_user );
+		add_post_meta( $this->block_id, 'lazyblocks_slug', 'original-block' );
+		add_post_meta( $this->block_id, 'lazyblocks_description', 'First value' );
+		add_post_meta( $this->block_id, 'lazyblocks_description', 'Second value' );
+		add_post_meta( $this->block_id, 'custom_meta', wp_slash( array( 'path' => 'C:\\example' ) ) );
 		update_post_meta( $this->block_id, LazyBlocks_Abilities::CREATED_META, array( 'user_id' => $this->admin_user ) );
 		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
 
@@ -378,8 +382,115 @@ class RestPermissionTest extends WP_UnitTestCase {
 
 		// A copy made by a person is not a block an ability created.
 		$copy_id = (int) wp_parse_args( wp_parse_url( $location, PHP_URL_QUERY ) )['lazyblocks_duplicate_complete'];
+		$this->assertSame( get_post( $copy_id )->post_name, get_post_meta( $copy_id, 'lazyblocks_slug', true ) );
+		$this->assertSame( array( 'First value', 'Second value' ), get_post_meta( $copy_id, 'lazyblocks_description' ) );
+		$this->assertSame( array( 'path' => 'C:\\example' ), get_post_meta( $copy_id, 'custom_meta', true ) );
 		$this->assertSame( '', get_post_meta( $copy_id, LazyBlocks_Abilities::CREATED_META, true ) );
 		$this->assertNotEmpty( get_post_meta( $this->block_id, LazyBlocks_Abilities::CREATED_META, true ) );
+	}
+
+	public function test_import_writes_nested_block_data() {
+		wp_set_current_user( $this->admin_user );
+		$post_id = lazyblocks()->tools()->import_block(
+			array(
+				'title'    => 'Imported block',
+				'slug'     => 'lazyblock/imported-block',
+				'keywords' => array( 'first', 'second' ),
+				'controls' => array( 'field' => array( 'name' => 'field' ) ),
+				'code'     => array( 'frontend_html' => '<p>Imported</p>' ),
+			)
+		);
+
+		$this->assertSame( 'imported-block', get_post_meta( $post_id, 'lazyblocks_slug', true ) );
+		$this->assertSame( 'first,second', get_post_meta( $post_id, 'lazyblocks_keywords', true ) );
+		$this->assertSame( 'text', get_post_meta( $post_id, 'lazyblocks_controls', true )['field']['type'] );
+		$this->assertSame( '<p>Imported</p>', get_post_meta( $post_id, 'lazyblocks_code_frontend_html', true ) );
+	}
+
+	public function test_rest_filter_keeps_stored_description() {
+		wp_set_current_user( $this->admin_user );
+		update_post_meta( $this->block_id, 'lazyblocks_description', wp_slash( 'Existing C:\\example' ) );
+		$filter = static function ( $data, $stored, $context ) {
+			if ( 'rest' === $context['source'] ) {
+				$data['lazyblocks_description'] = $stored['lazyblocks_description'];
+			}
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 3 );
+
+		try {
+			$response = $this->post(
+				'update-block-data',
+				array(
+					'post_id' => $this->block_id,
+					'data'    => array(
+						'slug'        => 'updated-block',
+						'description' => 'Changed description',
+					),
+				)
+			);
+			$this->assertSame( 200, $response->get_status() );
+			$this->assertSame( 'Existing C:\\example', get_post_meta( $this->block_id, 'lazyblocks_description', true ) );
+			$this->assertSame( 'updated-block', get_post_meta( $this->block_id, 'lazyblocks_slug', true ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
+		}
+	}
+
+	public function test_import_filter_can_remove_controls_from_a_new_block() {
+		wp_set_current_user( $this->admin_user );
+		$filter = static function ( $data, $stored, $context ) {
+			if ( 'import' === $context['source'] && array() === $stored ) {
+				unset( $data['lazyblocks_controls'] );
+			}
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 3 );
+
+		try {
+			$post_id = lazyblocks()->tools()->import_block(
+				array(
+					'title'    => 'Imported block',
+					'slug'     => 'lazyblock/imported-block',
+					'controls' => array( 'field' => array( 'name' => 'field' ) ),
+				)
+			);
+			$this->assertSame( 'imported-block', get_post_meta( $post_id, 'lazyblocks_slug', true ) );
+			$this->assertFalse( metadata_exists( 'post', $post_id, 'lazyblocks_controls' ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
+		}
+	}
+
+	public function test_duplicate_filter_limits_the_copy_without_touching_the_source() {
+		wp_set_current_user( $this->admin_user );
+		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
+		add_post_meta( $this->block_id, 'lazyblocks_controls', array( 'field' => array( 'type' => 'text' ) ) );
+		add_post_meta( $this->block_id, 'lazyblocks_controls', array( 'other' => array( 'type' => 'text' ) ) );
+		add_post_meta( $this->block_id, 'lazyblocks_description', 'First value' );
+		add_post_meta( $this->block_id, 'lazyblocks_description', 'Second value' );
+
+		$filter = function ( $data, $stored, $context ) {
+			if ( 'duplicate' === $context['source'] && array() === $stored && $this->block_id !== $context['post_id'] ) {
+				unset( $data['lazyblocks_controls'] );
+			}
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 3 );
+
+		try {
+			$location = $this->catch_redirect(
+				function () {
+					lazyblocks()->tools()->duplicate_block( $this->block_id );
+				}
+			);
+			$copy_id = (int) wp_parse_args( wp_parse_url( $location, PHP_URL_QUERY ) )['lazyblocks_duplicate_complete'];
+			$this->assertSame( array( 'First value', 'Second value' ), get_post_meta( $copy_id, 'lazyblocks_description' ) );
+			$this->assertFalse( metadata_exists( 'post', $copy_id, 'lazyblocks_controls' ) );
+			$this->assertCount( 2, get_post_meta( $this->block_id, 'lazyblocks_controls' ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
+		}
 	}
 
 	public function test_update_block_data_builds_empty_slug_from_title() {

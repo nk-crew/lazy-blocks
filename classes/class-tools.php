@@ -682,7 +682,7 @@ class LazyBlocks_Tools {
 				}
 			}
 
-			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta, 'import' );
 
 			do_action( 'lzb/import/block', $post_id, $data );
 
@@ -826,6 +826,7 @@ class LazyBlocks_Tools {
 			}
 
 			// Duplicate all post meta.
+			$copy_meta      = array();
 			$post_meta_keys = get_post_custom_keys( $block_id );
 			if ( ! empty( $post_meta_keys ) ) {
 				// Default meta field names to be filtered out.
@@ -856,22 +857,24 @@ class LazyBlocks_Tools {
 				}
 
 				foreach ( $meta_keys as $meta_key ) {
-					$meta_values = get_post_custom_values( $meta_key, $post->ID );
+					$copy_meta[ $meta_key ] = array_map( 'maybe_unserialize', get_post_custom_values( $meta_key, $post->ID ) );
 
-					// Clear existing meta data so that add_post_meta() works properly with non-unique keys.
-					delete_post_meta( $new_post_id, $meta_key );
-
-					foreach ( $meta_values as $meta_value ) {
-						$meta_value = maybe_unserialize( $meta_value );
-
-						if ( 'lazyblocks_slug' === $meta_key ) {
-							// Copy new post slug to meta.
-							$new_post   = get_post( $new_post_id );
-							$meta_value = $new_post->post_name;
-						}
-
-						add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
+					if ( 'lazyblocks_slug' === $meta_key ) {
+						$copy_meta[ $meta_key ] = array_fill( 0, count( $copy_meta[ $meta_key ] ), get_post( $new_post_id )->post_name );
 					}
+				}
+			}
+
+			if ( has_filter( 'lzb/block_data_before_write' ) ) {
+				$copy_meta = $this->filter_duplicate_block_meta( $new_post_id, $copy_meta );
+			}
+
+			foreach ( $copy_meta as $meta_key => $meta_values ) {
+				// Clear existing meta data so that add_post_meta() works properly with non-unique keys.
+				delete_post_meta( $new_post_id, $meta_key );
+
+				foreach ( $meta_values as $meta_value ) {
+					add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
 				}
 			}
 
@@ -889,6 +892,37 @@ class LazyBlocks_Tools {
 
 			exit;
 		}
+	}
+
+	/**
+	 * Apply the block-data filter while keeping all rows for unchanged meta.
+	 *
+	 * @param int   $post_id   Destination post ID.
+	 * @param array $copy_meta Meta keys mapped to lists of values.
+	 * @return array
+	 */
+	private function filter_duplicate_block_meta( $post_id, $copy_meta ) {
+		$blocks   = lazyblocks()->blocks();
+		$defaults = $blocks->get_block_defaults();
+		$data     = array();
+
+		foreach ( array_intersect_key( $copy_meta, $defaults ) as $key => $values ) {
+			$data[ $key ] = $values[0];
+		}
+
+		$filtered = array_intersect_key( $blocks->filter_block_data_before_write( $post_id, $data, 'duplicate' ), $defaults );
+
+		foreach ( array_diff_key( $data, $filtered ) as $key => $value ) {
+			unset( $copy_meta[ $key ] );
+		}
+
+		foreach ( $filtered as $key => $value ) {
+			if ( ! array_key_exists( $key, $data ) || $data[ $key ] !== $value ) {
+				$copy_meta[ $key ] = array( $value );
+			}
+		}
+
+		return $copy_meta;
 	}
 
 	/**

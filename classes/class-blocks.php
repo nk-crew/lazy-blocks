@@ -947,12 +947,52 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Filter block meta before a write.
+	 *
+	 * @param int    $post_id Destination post ID.
+	 * @param array  $data    Proposed block meta.
+	 * @param string $source  Source of the write.
+	 * @return array
+	 */
+	public function filter_block_data_before_write( $post_id, $data, $source ) {
+		if ( ! has_filter( 'lzb/block_data_before_write' ) ) {
+			return $data;
+		}
+
+		$stored = array();
+		foreach ( array_intersect_key( get_post_meta( $post_id ), $this->get_block_defaults() ) as $key => $values ) {
+			$stored[ $key ] = maybe_unserialize( $values[0] );
+		}
+
+		/**
+		 * Filters the proposed block meta before it is stored.
+		 *
+		 * @since 5.0.0
+		 *
+		 * @param array $data    Proposed block meta with prefixed keys and unslashed values.
+		 * @param array $stored  Existing destination block meta in the same format.
+		 * @param array $context Write source and destination post ID.
+		 */
+		return apply_filters(
+			'lzb/block_data_before_write',
+			$data,
+			$stored,
+			array(
+				'source'  => $source,
+				'post_id' => $post_id,
+			)
+		);
+	}
+
+	/**
 	 * Save Format metabox
 	 *
-	 * @param int   $post_id The post ID.
-	 * @param array $data Metaboxes data for save.
+	 * @param int    $post_id The post ID.
+	 * @param array  $data    Metaboxes data for save.
+	 * @param string $source Source of the write.
 	 */
-	public function save_meta_boxes( $post_id, $data ) {
+	public function save_meta_boxes( $post_id, $data, $source = 'direct' ) {
+		$data     = $this->filter_block_data_before_write( $post_id, $data, $source );
 		$defaults = $this->get_block_defaults();
 
 		foreach ( $defaults as $meta => $default ) {

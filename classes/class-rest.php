@@ -322,7 +322,7 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 				$meta[ $meta_prefix . $k ] = $val;
 			}
 
-			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta, 'rest' );
 
 			// Clear blocks cache after updating block data.
 			lazyblocks()->blocks()->clear_blocks_cache();

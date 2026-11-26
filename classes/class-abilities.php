@@ -500,7 +500,7 @@ class LazyBlocks_Abilities {
 			return $post_id;
 		}
 
-		$this->save_data( $post_id, $data );
+		$this->save_data( $post_id, $data, 'ability_create' );
 
 		update_post_meta(
 			$post_id,
@@ -568,7 +568,7 @@ class LazyBlocks_Abilities {
 			// save_meta_boxes() resets every key it is not given, so start from the stored data.
 			$data = array_merge( $this->get_data( $post->ID ), $input['data'] );
 
-			$this->save_data( $post->ID, $data );
+			$this->save_data( $post->ID, $data, 'ability_update' );
 		}
 
 		return $this->prepare_block( get_post( $post->ID ) );
@@ -759,17 +759,18 @@ class LazyBlocks_Abilities {
 	/**
 	 * Save block data through the same writer as the builder's update-block-data route.
 	 *
-	 * @param int   $post_id Post ID.
-	 * @param array $data    Block data without the meta prefix.
+	 * @param int    $post_id Post ID.
+	 * @param array  $data    Block data without the meta prefix.
+	 * @param string $source Source of the write.
 	 */
-	private function save_data( $post_id, $data ) {
+	private function save_data( $post_id, $data, $source ) {
 		$meta = array();
 
 		foreach ( $data as $key => $val ) {
 			$meta[ self::META_PREFIX . $key ] = $val;
 		}
 
-		lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+		lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta, $source );
 		lazyblocks()->blocks()->clear_blocks_cache();
 	}
 

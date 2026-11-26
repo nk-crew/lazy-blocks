@@ -412,6 +412,47 @@ class AbilitiesTest extends WP_UnitTestCase {
 		$this->assertSame( $expected, $after );
 	}
 
+	public function test_write_abilities_apply_filter_to_create_and_update() {
+		wp_set_current_user( $this->admin_user );
+		$filter = static function ( $data, $stored, $context ) {
+			if ( 'ability_create' === $context['source'] && array() === $stored ) {
+				$data['lazyblocks_description'] = 'Allowed on creation';
+			} elseif ( 'ability_update' === $context['source'] ) {
+				$data['lazyblocks_description'] = $stored['lazyblocks_description'];
+			}
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 3 );
+
+		try {
+			$created = $this->run_ability(
+				'lazy-blocks/create-block',
+				array(
+					'title' => 'Filtered block',
+					'data'  => array( 'description' => 'Proposed on creation' ),
+				)
+			);
+			$this->assertNotWPError( $created );
+			$this->assertSame( 'Allowed on creation', get_post_meta( $created['id'], 'lazyblocks_description', true ) );
+
+			$updated = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'   => $created['id'],
+					'data' => array(
+						'description' => 'Proposed on update',
+						'category'    => 'design',
+					),
+				)
+			);
+			$this->assertNotWPError( $updated );
+			$this->assertSame( 'Allowed on creation', get_post_meta( $created['id'], 'lazyblocks_description', true ) );
+			$this->assertSame( 'design', get_post_meta( $created['id'], 'lazyblocks_category', true ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
+		}
+	}
+
 	public function test_rest_update_round_trips_typed_builder_data() {
 		wp_set_current_user( $this->admin_user );
 
