@@ -17,9 +17,6 @@ class AbilitiesTest extends WP_UnitTestCase {
 
 		lazyblocks()->blocks()->register_post_type();
 
-		update_option( LazyBlocks_Abilities::WRITE_OPTION, true );
-		$this->reset_abilities_registry();
-
 		$admin_role = get_role( 'administrator' );
 		$admin_role->add_cap( 'edit_lazyblocks' );
 		$admin_role->add_cap( 'edit_lazyblock' );
@@ -52,22 +49,7 @@ class AbilitiesTest extends WP_UnitTestCase {
 	public function tear_down() {
 		wp_set_current_user( 0 );
 
-		delete_option( LazyBlocks_Abilities::WRITE_OPTION );
-		$this->reset_abilities_registry();
-
 		parent::tear_down();
-	}
-
-	/**
-	 * Drop the registry, so the next lookup fires wp_abilities_api_init again with the current option.
-	 */
-	private function reset_abilities_registry() {
-		if ( ! class_exists( 'WP_Abilities_Registry' ) ) {
-			return;
-		}
-
-		$instance = new ReflectionProperty( WP_Abilities_Registry::class, 'instance' );
-		$instance->setValue( null, null );
 	}
 
 	private function create_user_without_unfiltered_html() {
@@ -93,7 +75,7 @@ class AbilitiesTest extends WP_UnitTestCase {
 		return rest_do_request( $request );
 	}
 
-	public function test_abilities_are_registered_for_rest() {
+	public function test_abilities_are_registered_for_rest_without_an_option() {
 		foreach ( array( 'list-blocks', 'get-block', 'create-block', 'update-block' ) as $name ) {
 			$ability = wp_get_ability( 'lazy-blocks/' . $name );
 
@@ -625,28 +607,6 @@ class AbilitiesTest extends WP_UnitTestCase {
 			$this->assertSame( 'ability_invalid_input', $response->get_data()['code'] );
 		}
 		$this->assertSame( $before, get_post_meta( $this->block_id, 'lazyblocks_controls', true ) );
-	}
-
-	public function test_write_abilities_are_not_registered_without_the_option() {
-		delete_option( LazyBlocks_Abilities::WRITE_OPTION );
-		$this->reset_abilities_registry();
-		wp_set_current_user( $this->admin_user );
-
-		$this->assertTrue( wp_has_ability( 'lazy-blocks/list-blocks' ) );
-		$this->assertTrue( wp_has_ability( 'lazy-blocks/get-block' ) );
-		$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ) );
-		$this->assertFalse( wp_has_ability( 'lazy-blocks/update-block' ) );
-
-		// WP-CLI stores the value as typed, without the setting's sanitizer.
-		foreach ( array( 'false', 'off', 'no', 'enabled' ) as $value ) {
-			update_option( LazyBlocks_Abilities::WRITE_OPTION, $value );
-			$this->reset_abilities_registry();
-			$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ), $value );
-		}
-
-		$response = $this->run_ability_rest( 'lazy-blocks/create-block', array( 'title' => 'Not Registered' ) );
-		$this->assertSame( 404, $response->get_status() );
-		$this->assertSame( 'rest_ability_not_found', $response->get_data()['code'] );
 	}
 
 	public function test_create_with_code_without_unfiltered_html_is_refused() {
