@@ -437,10 +437,19 @@ class RestPermissionTest extends WP_UnitTestCase {
 		update_post_meta( $this->block_id, 'lazyblocks_description', wp_slash( 'Existing C:\\example' ) );
 		update_post_meta( $this->block_id, 'lazyblocks_supports_inserter', 'false' );
 		update_post_meta( $this->block_id, 'lazyblocks_category', 'design' );
+		update_post_meta( $this->block_id, 'lazyblocks_keywords', 'true' );
+		$request = new WP_REST_Request( 'GET', '/lazy-blocks/v1/get-block-data' );
+		$request->set_query_params( array( 'post_id' => $this->block_id ) );
+		$read = rest_do_request( $request );
+		$this->assertSame( 200, $read->get_status() );
+		$editor_data = $read->get_data()['response'];
+
 		$filter = static function ( $data, $stored, $context ) {
 			if ( 'rest' === $context['source'] ) {
 				$data['lazyblocks_description']       = $stored['lazyblocks_description'];
 				$data['lazyblocks_supports_inserter'] = $stored['lazyblocks_supports_inserter'];
+				$data['lazyblocks_supports_multiple'] = true;
+				$data['lazyblocks_keywords']          = $stored['lazyblocks_keywords'];
 			}
 			return $data;
 		};
@@ -454,8 +463,9 @@ class RestPermissionTest extends WP_UnitTestCase {
 					'data'    => array(
 						'slug'              => 'Updated-Block',
 						'description'       => 'Changed description',
-						'keywords'          => 'true',
+						'keywords'          => $editor_data['keywords'],
 						'supports_inserter' => true,
+						'supports_multiple' => 'false',
 						'category'          => '',
 					),
 				)
@@ -468,6 +478,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 			$this->assertSame( 'true', $response->get_data()['response']['lazyblocks_keywords'] );
 			$this->assertSame( 'false', get_post_meta( $this->block_id, 'lazyblocks_supports_inserter', true ) );
 			$this->assertFalse( $response->get_data()['response']['lazyblocks_supports_inserter'] );
+			$this->assertTrue( $response->get_data()['response']['lazyblocks_supports_multiple'] );
 			$this->assertFalse( metadata_exists( 'post', $this->block_id, 'lazyblocks_category' ) );
 			$this->assertSame( '', $response->get_data()['response']['lazyblocks_category'] );
 		} finally {

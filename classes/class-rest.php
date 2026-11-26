@@ -325,10 +325,11 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 
 			$blocks   = lazyblocks()->blocks();
 			$filtered = $blocks->save_meta_boxes( $post_id, $submitted, 'rest' );
+			$defaults = $blocks->get_block_defaults();
 
-			foreach ( array_intersect_key( $filtered, $blocks->get_block_defaults() ) as $key => $value ) {
+			foreach ( array_keys( array_intersect_key( $filtered, $defaults ) ) as $key ) {
 				$stored           = get_post_meta( $post_id, $key, true );
-				$is_boolean       = is_bool( $submitted[ $key ] ?? $value );
+				$is_boolean       = in_array( $defaults[ $key ], array( true, false, 'true', 'false' ), true );
 				$response[ $key ] = $is_boolean && in_array( $stored, array( 'true', 'false' ), true ) ? 'true' === $stored : $stored;
 			}
 
