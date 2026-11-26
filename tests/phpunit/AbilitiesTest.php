@@ -60,6 +60,14 @@ class AbilitiesTest extends WP_UnitTestCase {
 		return $ability->execute( $input );
 	}
 
+	private function run_ability_rest( $name, $input ) {
+		$request = new WP_REST_Request( 'POST', '/wp-abilities/v1/abilities/' . $name . '/run' );
+		$request->set_header( 'Content-Type', 'application/json' );
+		$request->set_body( wp_json_encode( array( 'input' => $input ) ) );
+
+		return rest_do_request( $request );
+	}
+
 	public function test_abilities_are_registered_for_rest() {
 		foreach ( array( 'list-blocks', 'get-block', 'create-block', 'update-block' ) as $name ) {
 			$ability = wp_get_ability( 'lazy-blocks/' . $name );
@@ -377,5 +385,107 @@ class AbilitiesTest extends WP_UnitTestCase {
 		$expected                        = $before;
 		$expected['data']['description'] = 'Updated description';
 		$this->assertSame( $expected, $after );
+	}
+
+	public function test_rest_update_round_trips_typed_builder_data() {
+		wp_set_current_user( $this->admin_user );
+
+		$controls = array(
+			'control_repeater' => array(
+				'type'    => 'repeater',
+				'name'    => 'rows',
+				'default' => array( array( 'amount' => 2.75, 'enabled' => false ) ),
+			),
+			'control_amount'   => array(
+				'type'     => 'number',
+				'name'     => 'amount',
+				'child_of' => 'control_repeater',
+				'default'  => 2.75,
+			),
+		);
+		$before   = $this->run_ability( 'lazy-blocks/get-block', array( 'id' => $this->block_id ) );
+		$input    = array(
+			'id'    => $this->block_id,
+			'title' => 'Updated Block',
+			'data'  => array_replace(
+				$before['data'],
+				array(
+					'controls'        => $controls,
+					'supports_border' => array( 'color' => true, 'radius' => false ),
+				)
+			),
+		);
+
+		$response = $this->run_ability_rest( 'lazy-blocks/update-block', $input );
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertSame( $controls, get_post_meta( $this->block_id, 'lazyblocks_controls', true ) );
+
+		$request = new WP_REST_Request( 'GET', '/wp-abilities/v1/abilities/lazy-blocks/get-block/run' );
+		$request->set_query_params( array( 'input' => array( 'id' => (string) $this->block_id ) ) );
+		$read = rest_do_request( $request );
+		$this->assertSame( 200, $read->get_status() );
+		$this->assertSame( wp_json_encode( $response->get_data() ), wp_json_encode( $read->get_data() ) );
+
+		delete_post_meta( $this->block_id, 'lazyblocks_controls' );
+		$direct = $this->run_ability( 'lazy-blocks/update-block', $input );
+		$this->assertNotWPError( $direct );
+		$this->assertSame( $controls, get_post_meta( $this->block_id, 'lazyblocks_controls', true ) );
+		$this->assertSame( $direct, json_decode( wp_json_encode( $response->get_data() ), true ) );
+	}
+
+	public function test_create_rest_accepts_json_controls() {
+		wp_set_current_user( $this->admin_user );
+
+		$controls = array(
+			array( 'type' => 'number', 'name' => 'amount', 'default' => 2.75 ),
+		);
+		$response = $this->run_ability_rest(
+			'lazy-blocks/create-block',
+			array(
+				'title' => 'Created over REST',
+				'data'  => array( 'controls' => $controls ),
+			)
+		);
+
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertSame( $controls, get_post_meta( $response->get_data()['id'], 'lazyblocks_controls', true ) );
+	}
+
+	public function test_rest_create_rejects_scalar_controls() {
+		wp_set_current_user( $this->admin_user );
+
+		foreach ( array( 'invalid', '', false, true, 2, 2.75, null ) as $value ) {
+			$response = $this->run_ability_rest(
+				'lazy-blocks/create-block',
+				array(
+					'title' => 'Invalid Controls',
+					'data'  => array( 'controls' => $value ),
+				)
+			);
+
+			$this->assertSame( 400, $response->get_status() );
+			$this->assertSame( 'ability_invalid_input', $response->get_data()['code'] );
+		}
+	}
+
+	public function test_update_rejects_scalar_controls() {
+		wp_set_current_user( $this->admin_user );
+
+		$before = get_post_meta( $this->block_id, 'lazyblocks_controls', true );
+		foreach ( array( 'invalid', '', false, true, 2, 2.75, null ) as $value ) {
+			$input = array(
+				'id'   => $this->block_id,
+				'data' => array( 'controls' => $value ),
+			);
+
+			$direct = $this->run_ability( 'lazy-blocks/update-block', $input );
+			$this->assertWPError( $direct );
+			$this->assertSame( 'ability_invalid_input', $direct->get_error_code() );
+
+			$response = $this->run_ability_rest( 'lazy-blocks/update-block', $input );
+			$this->assertSame( 400, $response->get_status() );
+			$this->assertSame( 'ability_invalid_input', $response->get_data()['code'] );
+		}
+		$this->assertSame( $before, get_post_meta( $this->block_id, 'lazyblocks_controls', true ) );
 	}
 }

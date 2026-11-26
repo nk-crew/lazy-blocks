@@ -61,6 +61,8 @@ class LazyBlocks_Abilities {
 	 * Register abilities.
 	 */
 	public function register_abilities() {
+		require_once __DIR__ . '/class-ability-with-controls.php';
+
 		$block_schema = $this->get_block_schema();
 
 		wp_register_ability(
@@ -125,6 +127,7 @@ class LazyBlocks_Abilities {
 		wp_register_ability(
 			'lazy-blocks/create-block',
 			array(
+				'ability_class'       => LazyBlocks_Ability_With_Controls::class,
 				'label'               => __( 'Create Lazy Block', 'lazy-blocks' ),
 				'description'         => __( 'Creates and publishes a new Lazy Blocks block. Data keys not given take the builder defaults.', 'lazy-blocks' ),
 				'category'            => self::CATEGORY,
@@ -151,6 +154,7 @@ class LazyBlocks_Abilities {
 		wp_register_ability(
 			'lazy-blocks/update-block',
 			array(
+				'ability_class'       => LazyBlocks_Ability_With_Controls::class,
 				'label'               => __( 'Update Lazy Block', 'lazy-blocks' ),
 				'description'         => __( 'Updates the title or builder data of a Lazy Blocks block. Only the given top-level data keys change, and each given key is replaced whole: a given controls or supports object replaces the stored one instead of merging into it.', 'lazy-blocks' ),
 				'category'            => self::CATEGORY,
@@ -175,7 +179,7 @@ class LazyBlocks_Abilities {
 				'output_schema'       => $block_schema,
 				'execute_callback'    => array( $this, 'update_block' ),
 				'permission_callback' => array( $this, 'update_permission' ),
-				'meta'                => $this->get_meta( false, true, true ),
+				'meta'                => $this->get_meta( false, true, false ),
 			)
 		);
 	}
