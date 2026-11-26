@@ -33,6 +33,37 @@ class ExportedBlockTest extends WP_UnitTestCase {
 		$this->assertSame( 20, has_action( 'init', array( lazyblocks()->blocks(), 'register_block_render' ) ) );
 	}
 
+	/**
+	 * @dataProvider output_method_cases
+	 */
+	public function test_export_uses_the_same_output_method_for_posts_and_previews( $export_code, $expected_method, $expected_html ) {
+		$export_code['single_output'] = true;
+		lazyblocks()->add_block( array( 'slug' => 'lazyblock/exported', 'code' => $export_code ) );
+		lazyblocks()->blocks()->register_block_render();
+
+		$block = lazyblocks()->blocks()->get_block( 'lazyblock/exported' );
+		$this->assertSame( $expected_method, $block['code']['output_method'] );
+		$this->assertSame(
+			'<div class="wp-block-lazyblock-exported">' . $expected_html . '</div>',
+			do_blocks( '<!-- wp:lazyblock/exported /-->' )
+		);
+		$this->assertSame(
+			'<div useBlockProps>' . $expected_html . '</div>',
+			lazyblocks()->blocks()->render_callback( array(), array(), '', 'editor', $block )
+		);
+	}
+
+	public static function output_method_cases() {
+		$php = '<p><?php echo "PHP output"; ?></p>';
+
+		return array(
+			'legacy PHP'      => array( array( 'use_php' => true, 'frontend_html' => $php ), 'php', '<p>PHP output</p>' ),
+			'legacy HTML'     => array( array( 'use_php' => false, 'frontend_html' => '<p>HTML output</p>' ), 'html', '<p>HTML output</p>' ),
+			'explicit method' => array( array( 'use_php' => false, 'output_method' => 'php', 'frontend_html' => $php ), 'php', '<p>PHP output</p>' ),
+			'modern PHP'      => array( array( 'output_method' => 'php', 'frontend_html' => $php ), 'php', '<p>PHP output</p>' ),
+		);
+	}
+
 	public function test_exported_block_registers_and_renders_from_php() {
 		$post_id = self::factory()->post->create(
 			array(

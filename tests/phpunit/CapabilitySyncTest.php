@@ -199,6 +199,15 @@ class CapabilitySyncTest extends WP_UnitTestCase {
 	/**
 	 * Fresh installs should receive capabilities during plugin activation.
 	 */
+	public function test_deprecated_role_capability_alias_still_syncs_capabilities() {
+		$this->remove_lazyblocks_capabilities();
+		$this->setExpectedDeprecated( 'LazyBlocks_Blocks::add_role_caps' );
+
+		lazyblocks()->blocks()->add_role_caps();
+
+		$this->assert_lazyblocks_capability_matrix_applied();
+	}
+
 	public function test_activation_hook_syncs_role_caps_for_fresh_installs() {
 		$this->remove_lazyblocks_capabilities();
 

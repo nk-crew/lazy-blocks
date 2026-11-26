@@ -238,4 +238,131 @@ test.describe('editor block rendering', () => {
 		expect(uniqueBlockIds.length).toBe(allBlockIds.length);
 		expect(uniqueBlockIds.length).toBe(6);
 	});
+
+	for (const legacy of [false, true]) {
+		test(`dispatches preview actions on success and failure ${legacy ? 'with legacy subscribers' : 'with only current subscribers'}`, async ({
+			admin,
+			editor,
+			page,
+			requestUtils,
+		}) => {
+			await createBlock({
+				requestUtils,
+				title: 'Preview Events',
+				slug: 'preview-events',
+				code: '<p>Preview loaded</p>',
+				codeSingleOutput: true,
+			});
+			await createNewPost({ admin, page });
+
+			const warnings = [];
+			page.on('console', (message) => {
+				if (
+					message.type() === 'warning' &&
+					message
+						.text()
+						.startsWith(
+							'lazyblocks.components.PreviewServerCallback.'
+						)
+				) {
+					warnings.push(message.text());
+				}
+			});
+
+			await page.evaluate((observeLegacy) => {
+				const { addAction, addFilter } = window.wp.hooks;
+				const observed = [];
+				window.lazyBlocksPreviewEvents = observed;
+				addFilter(
+					'lzb.components.PreviewServerCallback.allowFetch',
+					'lazyblocks-tests/allow-fetch',
+					() => true,
+					100
+				);
+				if (!observeLegacy) {
+					addAction('all', 'lazyblocks-tests/catch-all', () => {});
+				}
+				const prefixes = observeLegacy
+					? ['lzb', 'lazyblocks']
+					: ['lzb'];
+				for (const prefix of prefixes) {
+					for (const event of ['onBeforeChange', 'onChange']) {
+						addAction(
+							`${prefix}.components.PreviewServerCallback.${event}`,
+							'lazyblocks-tests/preview-events',
+							(props) =>
+								observed.push([
+									props.clientId,
+									prefix,
+									event,
+									props.block,
+								])
+						);
+					}
+				}
+			}, legacy);
+
+			const block = 'lazyblock/preview-events';
+			const events = ['lzb', ...(legacy ? ['lazyblocks'] : [])];
+			const expected = ['onBeforeChange', 'onChange'].flatMap((event) =>
+				events.map((prefix) => [prefix, event, block])
+			);
+			const expectEvents = async () => {
+				const clientId = await page.evaluate(() =>
+					window.wp.data
+						.select('core/block-editor')
+						.getSelectedBlockClientId()
+				);
+				await expect
+					.poll(() =>
+						page
+							.evaluate(
+								(id) =>
+									window.lazyBlocksPreviewEvents
+										.filter(([clientId]) => clientId === id)
+										.map(([, ...event]) => event),
+								clientId
+							)
+							.then((observed) =>
+								observed.slice(0, expected.length)
+							)
+					)
+					.toEqual(expected);
+			};
+
+			await editor.insertBlock({ name: block });
+			await expect(
+				editor.canvas.getByText('Preview loaded')
+			).toBeVisible();
+			await expectEvents();
+
+			await page.route(
+				/lazy-blocks(?:\/|%2F)v1(?:\/|%2F)block-render/i,
+				(route) =>
+					route.request().postDataJSON()?.render_location === 'editor'
+						? route.fulfill({
+								status: 500,
+								json: {
+									code: 'preview_failed',
+									message: 'Preview test failure.',
+								},
+							})
+						: route.continue()
+			);
+			await editor.insertBlock({ name: block });
+			await expect(
+				editor.canvas.getByText(/Preview test failure/)
+			).toBeVisible();
+			await expectEvents();
+
+			expect(warnings).toEqual(
+				legacy
+					? ['onBeforeChange', 'onChange'].map(
+							(event) =>
+								`lazyblocks.components.PreviewServerCallback.${event} is deprecated since version 5.0.0. Please use lzb.components.PreviewServerCallback.${event} instead.`
+						)
+					: []
+			);
+		});
+	}
 });
