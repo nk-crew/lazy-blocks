@@ -29,6 +29,7 @@ class BlockRegistrationTest extends WP_UnitTestCase {
 		} finally {
 			remove_filter( 'block_categories_all', $add_category );
 			$GLOBALS['post'] = $previous_post;
+			wp_delete_post( $block->ID, true );
 		}
 	}
 
