@@ -462,9 +462,10 @@ class AbilitiesTest extends WP_UnitTestCase {
 								'type'         => 'message',
 								'message_text' => 'Submitted replacement',
 							),
-							'text'   => array(
-								'type'  => 'text',
-								'label' => '<svg></svg><strong>Free label</strong>',
+							'number' => array(
+								'type'    => 'number',
+								'label'   => '<svg></svg><strong>Free label</strong>',
+								'default' => 2.75,
 							),
 						),
 					),
@@ -472,7 +473,8 @@ class AbilitiesTest extends WP_UnitTestCase {
 			);
 			$this->assertNotWPError( $result );
 			$controls = get_post_meta( $this->block_id, 'lazyblocks_controls', true );
-			$this->assertSame( '<strong>Free label</strong>', $controls['text']['label'] );
+			$this->assertSame( '<strong>Free label</strong>', $controls['number']['label'] );
+			$this->assertSame( 2.75, $controls['number']['default'] );
 			$this->assertSame( $stored_control, $controls['notice'] );
 		} finally {
 			remove_filter( 'lzb/block_data_before_write', $filter, 10 );

@@ -959,11 +959,8 @@ class LazyBlocks_Blocks {
 
 		$data = array_diff_key( $data, array_flip( self::UNFILTERED_BLOCK_META_KEYS ) );
 		foreach ( $data as $key => $value ) {
-			if (
-				isset( $value ) && ! is_bool( $value ) &&
-				! in_array( $key, array( 'lazyblocks_icon', 'lazyblocks_style_editor', 'lazyblocks_style_block' ), true )
-			) {
-				$data[ $key ] = wp_kses_post_deep( $value );
+			if ( ! in_array( $key, array( 'lazyblocks_icon', 'lazyblocks_style_editor', 'lazyblocks_style_block' ), true ) ) {
+				$data[ $key ] = map_deep( $value, static fn ( $item ) => is_string( $item ) ? wp_kses_post( $item ) : $item );
 			}
 		}
 
@@ -976,10 +973,10 @@ class LazyBlocks_Blocks {
 	 * @param int    $post_id Destination post ID.
 	 * @param array  $data    Proposed block meta.
 	 * @param string $source  Source of the write.
-	 * @param int    $row     Meta value index when duplicating multiple rows.
+	 * @param array  $row_indexes Meta value indexes by key when duplicating multiple rows.
 	 * @return array
 	 */
-	public function filter_block_data_before_write( $post_id, $data, $source, $row = 0 ) {
+	public function filter_block_data_before_write( $post_id, $data, $source, $row_indexes = array() ) {
 		if ( ! has_filter( 'lzb/block_data_before_write' ) ) {
 			return $data;
 		}
@@ -987,6 +984,7 @@ class LazyBlocks_Blocks {
 		$stored = array();
 		if ( $post_id ) {
 			foreach ( array_intersect_key( get_post_meta( $post_id ), $this->get_block_defaults() ) as $key => $values ) {
+				$row = $row_indexes[ $key ] ?? 0;
 				if ( isset( $values[ $row ] ) ) {
 					$stored[ $key ] = maybe_unserialize( $values[ $row ] );
 				}

@@ -923,7 +923,9 @@ class LazyBlocks_Tools {
 		}
 
 		foreach ( $proposals as $index => $data ) {
-			$filtered = $blocks->filter_block_data_before_write( $post_id, $data, 'duplicate', $index );
+			$proposal    = array_replace( $proposals[0], $data );
+			$row_indexes = array_fill_keys( array_keys( $data ), $index );
+			$filtered    = $blocks->filter_block_data_before_write( $post_id, $proposal, 'duplicate', $row_indexes );
 			foreach ( array_intersect_key( $filtered, 0 === $index ? $defaults : $data ) as $key => $value ) {
 				$prepared = array_key_exists( $key, $data ) && $data[ $key ] === $value
 					? wp_slash( $value )

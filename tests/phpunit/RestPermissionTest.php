@@ -449,8 +449,10 @@ class RestPermissionTest extends WP_UnitTestCase {
 				array(
 					'post_id' => $this->block_id,
 					'data'    => array(
-						'slug'        => 'Updated-Block',
-						'description' => 'Changed description',
+						'slug'              => 'Updated-Block',
+						'description'       => 'Changed description',
+						'keywords'          => 'true',
+						'supports_inserter' => false,
 					),
 				)
 			);
@@ -459,6 +461,8 @@ class RestPermissionTest extends WP_UnitTestCase {
 			$this->assertSame( 'updated-block', get_post_meta( $this->block_id, 'lazyblocks_slug', true ) );
 			$this->assertSame( 'Existing C:\\example', $response->get_data()['response']['lazyblocks_description'] );
 			$this->assertSame( 'updated-block', $response->get_data()['response']['lazyblocks_slug'] );
+			$this->assertSame( 'true', $response->get_data()['response']['lazyblocks_keywords'] );
+			$this->assertFalse( $response->get_data()['response']['lazyblocks_supports_inserter'] );
 		} finally {
 			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
 		}
@@ -525,23 +529,29 @@ class RestPermissionTest extends WP_UnitTestCase {
 		$free   = array( 'free' => array( 'type' => 'text' ) );
 		$source = array( 'notice' => array( 'type' => 'message', 'message_text' => 'Source message' ) );
 		$stored = array( 'notice' => array( 'type' => 'message', 'message_text' => 'Destination message' ) );
+		add_post_meta( $this->block_id, 'lazyblocks_slug', 'original-block' );
 		add_post_meta( $this->block_id, 'lazyblocks_controls', $free );
 		add_post_meta( $this->block_id, 'lazyblocks_controls', $source );
 
 		$seed_destination = static function ( $post_id, $post, $update ) use ( $free, $stored ) {
 			if ( ! $update ) {
+				add_post_meta( $post_id, 'lazyblocks_slug', 'destination-context' );
 				add_post_meta( $post_id, 'lazyblocks_controls', $free );
 				add_post_meta( $post_id, 'lazyblocks_controls', $stored );
 			}
 		};
-		$filter           = static function ( $data, $stored ) {
-			if ( isset( $data['lazyblocks_controls']['notice'] ) ) {
+		$filter           = static function ( $data, $stored, $context ) {
+			if (
+				isset( $data['lazyblocks_controls']['notice'] ) &&
+				get_post( $context['post_id'] )->post_name === ( $data['lazyblocks_slug'] ?? null ) &&
+				'destination-context' === ( $stored['lazyblocks_slug'] ?? null )
+			) {
 				$data['lazyblocks_controls'] = $stored['lazyblocks_controls'];
 			}
 			return $data;
 		};
 		add_action( 'save_post_lazyblocks', $seed_destination, 10, 3 );
-		add_filter( 'lzb/block_data_before_write', $filter, 10, 2 );
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 3 );
 		try {
 			$location = $this->catch_redirect(
 				function () {

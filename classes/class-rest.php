@@ -324,7 +324,12 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 
 			$blocks = lazyblocks()->blocks();
 			$meta   = $blocks->save_meta_boxes( $post_id, $meta, 'rest' );
-			$meta   = array_intersect_key( $blocks->get_meta_boxes( $post_id ), $meta );
+			$meta   = array_intersect_key( $meta, $blocks->get_block_defaults() );
+
+			foreach ( $meta as $key => $value ) {
+				$stored       = get_post_meta( $post_id, $key, true );
+				$meta[ $key ] = is_bool( $value ) && in_array( $stored, array( 'true', 'false' ), true ) ? 'true' === $stored : $stored;
+			}
 
 			// Clear blocks cache after updating block data.
 			$blocks->clear_blocks_cache();
