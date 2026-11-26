@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 * hid the legacy Inner Blocks control from the picker. Existing blocks still work. To migrate a definition, keep its slug, replace the old control output with `<InnerBlocks />`, then remove the control.
 * removed Add New from the legacy Templates screens. Existing templates can still be edited, imported, exported, and registered in PHP. To migrate to WordPress post type templates, use the exported `blocks` as `template` and keep `template_lock`.
+* changed the `lazy-blocks/create-block` and `lazy-blocks/update-block` abilities to be off by default. To keep using them, turn on Lazy Blocks > Settings > Allow AI agents to create and edit blocks. Block code fields from users without the `unfiltered_html` capability now return an error instead of being dropped, and blocks created through an ability are marked in the blocks list.
 
 = 4.6.0 - Nov 23, 2026 =
 

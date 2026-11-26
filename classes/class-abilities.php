@@ -32,6 +32,27 @@ class LazyBlocks_Abilities {
 	const META_PREFIX = 'lazyblocks_';
 
 	/**
+	 * Option that registers the abilities which write blocks. Off unless an administrator turns it on.
+	 *
+	 * @var string
+	 */
+	const WRITE_OPTION = 'lazyblocks_ai_write_abilities';
+
+	/**
+	 * Settings page slug and option group.
+	 *
+	 * @var string
+	 */
+	const SETTINGS_PAGE = 'lazyblocks_settings';
+
+	/**
+	 * Post meta that records who created a block through an ability.
+	 *
+	 * @var string
+	 */
+	const CREATED_META = '_lazyblocks_ability_created';
+
+	/**
 	 * LazyBlocks_Abilities constructor.
 	 */
 	public function __construct() {
@@ -42,6 +63,101 @@ class LazyBlocks_Abilities {
 
 		add_action( 'wp_abilities_api_categories_init', array( $this, 'register_category' ) );
 		add_action( 'wp_abilities_api_init', array( $this, 'register_abilities' ) );
+
+		add_action( 'admin_init', array( $this, 'register_setting' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 11, 2 );
+	}
+
+	/**
+	 * Whether the abilities that write blocks are turned on.
+	 *
+	 * @return bool
+	 */
+	public static function is_write_enabled() {
+		return (bool) get_option( self::WRITE_OPTION, false );
+	}
+
+	/**
+	 * Register the setting that turns the write abilities on.
+	 */
+	public function register_setting() {
+		register_setting(
+			self::SETTINGS_PAGE,
+			self::WRITE_OPTION,
+			array(
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => 'rest_sanitize_boolean',
+			)
+		);
+	}
+
+	/**
+	 * Add the settings page.
+	 */
+	public function admin_menu() {
+		add_submenu_page(
+			'edit.php?post_type=lazyblocks',
+			esc_html__( 'Settings', 'lazy-blocks' ),
+			esc_html__( 'Settings', 'lazy-blocks' ),
+			'manage_options',
+			self::SETTINGS_PAGE,
+			array( $this, 'render_settings_page' )
+		);
+	}
+
+	/**
+	 * Render the settings page.
+	 */
+	public function render_settings_page() {
+		?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Settings', 'lazy-blocks' ); ?></h1>
+			<?php settings_errors(); ?>
+			<form method="post" action="options.php">
+				<?php settings_fields( self::SETTINGS_PAGE ); ?>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><?php esc_html_e( 'AI agents', 'lazy-blocks' ); ?></th>
+						<td>
+							<label for="<?php echo esc_attr( self::WRITE_OPTION ); ?>">
+								<input type="checkbox" id="<?php echo esc_attr( self::WRITE_OPTION ); ?>" name="<?php echo esc_attr( self::WRITE_OPTION ); ?>" value="1" aria-describedby="<?php echo esc_attr( self::WRITE_OPTION ); ?>-description" <?php checked( self::is_write_enabled() ); ?> />
+								<?php esc_html_e( 'Allow AI agents to create and edit blocks', 'lazy-blocks' ); ?>
+							</label>
+							<p class="description" id="<?php echo esc_attr( self::WRITE_OPTION ); ?>-description">
+								<?php
+								printf(
+									/* translators: 1: create-block ability name, 2: update-block ability name. */
+									esc_html__( 'Turns on the %1$s and %2$s abilities for MCP clients and other Abilities API callers.', 'lazy-blocks' ),
+									'<code>lazy-blocks/create-block</code>',
+									'<code>lazy-blocks/update-block</code>'
+								);
+								?>
+							</p>
+						</td>
+					</tr>
+				</table>
+				<?php submit_button(); ?>
+			</form>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Mark blocks created through an ability in the list of blocks.
+	 *
+	 * @param array   $post_states Post states.
+	 * @param WP_Post $post        Post.
+	 *
+	 * @return array
+	 */
+	public function display_post_states( $post_states, $post ) {
+		if ( 'lazyblocks' === $post->post_type && get_post_meta( $post->ID, self::CREATED_META, true ) ) {
+			$post_states['lazyblocks-ability-created'] = __( 'Created by AI agent', 'lazy-blocks' );
+		}
+
+		return $post_states;
 	}
 
 	/**
@@ -123,6 +239,10 @@ class LazyBlocks_Abilities {
 				'meta'                => $this->get_meta( true, false, true ),
 			)
 		);
+
+		if ( ! self::is_write_enabled() ) {
+			return;
+		}
 
 		wp_register_ability(
 			'lazy-blocks/create-block',
@@ -360,6 +480,12 @@ class LazyBlocks_Abilities {
 
 		$data['slug'] = $slug;
 
+		$allowed = $this->check_code_fields( $data, array() );
+
+		if ( is_wp_error( $allowed ) ) {
+			return $allowed;
+		}
+
 		$post_id = wp_insert_post(
 			array(
 				'post_title'  => wp_strip_all_tags( $input['title'] ),
@@ -374,6 +500,16 @@ class LazyBlocks_Abilities {
 		}
 
 		$this->save_data( $post_id, $data );
+
+		update_post_meta(
+			$post_id,
+			self::CREATED_META,
+			array(
+				'user_id'  => get_current_user_id(),
+				'date_gmt' => current_time( 'mysql', true ),
+				'client'   => $this->get_client_name(),
+			)
+		);
 
 		return $this->prepare_block( get_post( $post_id ) );
 	}
@@ -390,6 +526,14 @@ class LazyBlocks_Abilities {
 
 		if ( is_wp_error( $post ) ) {
 			return $post;
+		}
+
+		if ( isset( $input['data'] ) ) {
+			$allowed = $this->check_code_fields( $input['data'], $this->prepare_block( $post )['data'] );
+
+			if ( is_wp_error( $allowed ) ) {
+				return $allowed;
+			}
 		}
 
 		if ( isset( $input['data']['slug'] ) ) {
@@ -501,6 +645,71 @@ class LazyBlocks_Abilities {
 		}
 
 		return $slug;
+	}
+
+	/**
+	 * Refuse code fields from a user who may not post unfiltered HTML. save_meta_boxes() would
+	 * drop them silently, and the caller would not learn that its code was not saved.
+	 *
+	 * @param array $data   Block data to save.
+	 * @param array $stored Block data saved now, as get-block returns it. Empty for a new block.
+	 *
+	 * @return true|WP_Error
+	 */
+	private function check_code_fields( $data, $stored ) {
+		$blocks = lazyblocks()->blocks();
+
+		if ( $blocks->is_allowed_unfiltered_html() ) {
+			return true;
+		}
+
+		$refused = array();
+
+		foreach ( $blocks->get_unfiltered_block_meta_keys() as $meta_key ) {
+			if ( ! str_starts_with( $meta_key, self::META_PREFIX ) ) {
+				continue;
+			}
+
+			$key   = substr( $meta_key, strlen( self::META_PREFIX ) );
+			$saved = (string) ( $stored[ $key ] ?? '' );
+
+			// A value equal to the saved one changes nothing, so get-block output can be sent back.
+			if ( array_key_exists( $key, $data ) && (string) $data[ $key ] !== $saved ) {
+				$refused[] = $key;
+			}
+		}
+
+		if ( ! $refused ) {
+			return true;
+		}
+
+		return new WP_Error(
+			'lazy_blocks_unfiltered_html_required',
+			sprintf(
+				/* translators: %s: comma-separated list of data keys. */
+				__( 'Only users allowed to post unfiltered HTML can change the block code: %s. Remove these keys from data, or run the ability as a user with the unfiltered_html capability.', 'lazy-blocks' ),
+				implode( ', ', $refused )
+			),
+			array( 'status' => 403 )
+		);
+	}
+
+	/**
+	 * Name of the application password the request authenticated with, which MCP clients
+	 * connect through. The MCP Adapter passes no client name to abilities.
+	 *
+	 * @return string
+	 */
+	private function get_client_name() {
+		$uuid = rest_get_authenticated_app_password();
+
+		if ( ! $uuid ) {
+			return '';
+		}
+
+		$password = WP_Application_Passwords::get_user_application_password( get_current_user_id(), $uuid );
+
+		return $password ? $password['name'] : '';
 	}
 
 	/**
