@@ -183,18 +183,19 @@ class LazyBlocks_Templates {
 		register_post_type(
 			'lazyblocks_templates',
 			array(
-				'labels'       => array(
+				'labels'            => array(
 					'name'          => __( 'Templates', 'lazy-blocks' ),
 					'singular_name' => __( 'Template', 'lazy-blocks' ),
 				),
-				'public'       => false,
-				'has_archive'  => false,
-				'show_ui'      => true,
-				'show_in_menu' => $templates_exist ? 'edit.php?post_type=lazyblocks' : false,
-				'show_in_rest' => true,
-				'capabilities' => $capabilities,
-				'rewrite'      => true,
-				'supports'     => array(
+				'public'            => false,
+				'has_archive'       => false,
+				'show_ui'           => true,
+				'show_in_menu'      => $templates_exist ? 'edit.php?post_type=lazyblocks' : false,
+				'show_in_admin_bar' => false,
+				'show_in_rest'      => true,
+				'capabilities'      => $capabilities,
+				'rewrite'           => true,
+				'supports'          => array(
 					'title',
 					'editor',
 					'revisions',

@@ -71,6 +71,12 @@ test('keeps existing templates editable and hides admin creation', async ({
 				)
 			)
 			.toBe('all');
+
+		await page.goto('/');
+		await expect(page.locator('#wp-admin-bar-new-content')).toBeAttached();
+		await expect(
+			page.locator('#wp-admin-bar-new-lazyblocks_templates')
+		).toHaveCount(0);
 	} finally {
 		await requestUtils.rest({
 			path: `${path}/${template.id}`,
