@@ -45,6 +45,19 @@ class LazyBlocks_Deprecations {
 	}
 
 	/**
+	 * Log a template deprecation without writing to the response.
+	 *
+	 * @internal
+	 * @param string $message Deprecation message.
+	 */
+	public static function log_template_deprecation( $message ) {
+		if ( WP_DEBUG ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'Lazy Blocks: ' . $message );
+		}
+	}
+
+	/**
 	 * Convert old template data to new when registering user template.
 	 *
 	 * @param array $data - template data.
@@ -53,6 +66,7 @@ class LazyBlocks_Deprecations {
 	 */
 	public function v2_5_0_convert_user_template( $data ) {
 		if ( isset( $data['data'] ) ) {
+			self::log_template_deprecation( 'The post template data wrapper is deprecated since 5.0.0. Use post_types, template_lock, and blocks at the top level.' );
 			$data['post_types']    = array( $data['data']['post_type'] );
 			$data['template_lock'] = $data['data']['template_lock'];
 			$data['blocks']        = array();

@@ -24,6 +24,7 @@ class LazyBlocks_Control_InnerBlocks extends LazyBlocks_Control {
 		$this->category     = 'deprecated';
 		$this->restrictions = array(
 			'once'                  => true,
+			'hidden_from_select'    => true,
 			'as_child'              => false,
 			'default_settings'      => false,
 			'required_settings'     => false,

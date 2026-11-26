@@ -97,3 +97,65 @@ test.describe('editor block component <InnerBlocks />', () => {
 		await expect($innerAppender).toBeVisible();
 	});
 });
+
+test('keeps saved children of a legacy Inner Blocks control editable and visible', async ({
+	admin,
+	editor,
+	page,
+	requestUtils,
+}) => {
+	const blockID = await createBlock({
+		requestUtils,
+		title: 'Legacy nested block',
+		slug: 'legacy-nested',
+		code: '<div class="legacy-children">{{{children}}}</div>',
+		codeSingleOutput: true,
+		controls: {
+			children: {
+				type: 'inner_blocks',
+				name: 'children',
+				label: 'Children',
+				placement: 'content',
+			},
+		},
+	});
+
+	try {
+		const post = await requestUtils.createPost({
+			title: 'Legacy nested block fixture',
+			status: 'publish',
+			content:
+				'<!-- wp:lazyblock/legacy-nested -->' +
+				'<!-- wp:paragraph --><p>Saved child</p><!-- /wp:paragraph -->' +
+				'<!-- /wp:lazyblock/legacy-nested -->',
+		});
+
+		try {
+			await admin.visitAdminPage(
+				'post.php',
+				`post=${post.id}&action=edit`
+			);
+			await expect(
+				editor.canvas
+					.locator('.lazyblock-inner-blocks')
+					.getByText('Saved child')
+			).toBeEditable();
+			await page.goto(post.link);
+			await expect(page.locator('.legacy-children')).toHaveText(
+				'Saved child'
+			);
+		} finally {
+			await requestUtils.rest({
+				path: `/wp/v2/posts/${post.id}`,
+				method: 'DELETE',
+				params: { force: true },
+			});
+		}
+	} finally {
+		await requestUtils.rest({
+			path: `/wp/v2/lazyblocks/${blockID}`,
+			method: 'DELETE',
+			params: { force: true },
+		});
+	}
+});
