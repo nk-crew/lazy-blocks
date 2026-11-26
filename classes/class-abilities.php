@@ -32,20 +32,6 @@ class LazyBlocks_Abilities {
 	const META_PREFIX = 'lazyblocks_';
 
 	/**
-	 * Option that registers the abilities which write blocks. Off unless an administrator turns it on.
-	 *
-	 * @var string
-	 */
-	const WRITE_OPTION = 'lazyblocks_ai_write_abilities';
-
-	/**
-	 * Settings page slug and option group.
-	 *
-	 * @var string
-	 */
-	const SETTINGS_PAGE = 'lazyblocks_settings';
-
-	/**
 	 * Post meta that records who created a block through an ability.
 	 *
 	 * @var string
@@ -64,85 +50,7 @@ class LazyBlocks_Abilities {
 		add_action( 'wp_abilities_api_categories_init', array( $this, 'register_category' ) );
 		add_action( 'wp_abilities_api_init', array( $this, 'register_abilities' ) );
 
-		add_action( 'admin_init', array( $this, 'register_setting' ) );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 11, 2 );
-	}
-
-	/**
-	 * Whether the abilities that write blocks are turned on.
-	 *
-	 * @return bool
-	 */
-	public static function is_write_enabled() {
-		// WP-CLI stores the value as typed, so any word but an explicit yes keeps writes off.
-		return true === filter_var( get_option( self::WRITE_OPTION, false ), FILTER_VALIDATE_BOOLEAN );
-	}
-
-	/**
-	 * Register the setting that turns the write abilities on.
-	 */
-	public function register_setting() {
-		register_setting(
-			self::SETTINGS_PAGE,
-			self::WRITE_OPTION,
-			array(
-				'type'              => 'boolean',
-				'default'           => false,
-				'sanitize_callback' => 'rest_sanitize_boolean',
-			)
-		);
-	}
-
-	/**
-	 * Add the settings page.
-	 */
-	public function admin_menu() {
-		add_submenu_page(
-			'edit.php?post_type=lazyblocks',
-			esc_html__( 'Settings', 'lazy-blocks' ),
-			esc_html__( 'Settings', 'lazy-blocks' ),
-			'manage_options',
-			self::SETTINGS_PAGE,
-			array( $this, 'render_settings_page' )
-		);
-	}
-
-	/**
-	 * Render the settings page.
-	 */
-	public function render_settings_page() {
-		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Settings', 'lazy-blocks' ); ?></h1>
-			<?php settings_errors(); ?>
-			<form method="post" action="options.php">
-				<?php settings_fields( self::SETTINGS_PAGE ); ?>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'AI agents', 'lazy-blocks' ); ?></th>
-						<td>
-							<label for="<?php echo esc_attr( self::WRITE_OPTION ); ?>">
-								<input type="checkbox" id="<?php echo esc_attr( self::WRITE_OPTION ); ?>" name="<?php echo esc_attr( self::WRITE_OPTION ); ?>" value="1" aria-describedby="<?php echo esc_attr( self::WRITE_OPTION ); ?>-description" <?php checked( self::is_write_enabled() ); ?> />
-								<?php esc_html_e( 'Allow AI agents to create and edit blocks', 'lazy-blocks' ); ?>
-							</label>
-							<p class="description" id="<?php echo esc_attr( self::WRITE_OPTION ); ?>-description">
-								<?php
-								printf(
-									/* translators: 1: create-block ability name, 2: update-block ability name. */
-									esc_html__( 'Turns on the %1$s and %2$s abilities for MCP clients and other Abilities API callers.', 'lazy-blocks' ),
-									'<code>lazy-blocks/create-block</code>',
-									'<code>lazy-blocks/update-block</code>'
-								);
-								?>
-							</p>
-						</td>
-					</tr>
-				</table>
-				<?php submit_button(); ?>
-			</form>
-		</div>
-		<?php
 	}
 
 	/**
@@ -240,10 +148,6 @@ class LazyBlocks_Abilities {
 				'meta'                => $this->get_meta( true, false, true ),
 			)
 		);
-
-		if ( ! self::is_write_enabled() ) {
-			return;
-		}
 
 		wp_register_ability(
 			'lazy-blocks/create-block',
