@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Lazy Blocks 4.6.0\n"
+"Project-Id-Version: Lazy Blocks 4.6.1\n"
 "Report-Msgid-Bugs-To: https://github.com/nk-crew/lazyblocks/issues\n"
 "Last-Translator: Lazy Blocks Team\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-22T21:18:26+00:00\n"
+"POT-Creation-Date: 2026-11-26T10:24:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lazy-blocks\n"
@@ -225,7 +225,7 @@ msgstr ""
 msgid "Clear Cache"
 msgstr ""
 
-#: classes/class-blocks.php:2132
+#: classes/class-blocks.php:2133
 #: classes/class-rest.php:235
 msgid "Not allowed to execute PHP code."
 msgstr ""
@@ -310,8 +310,8 @@ msgstr ""
 msgid "Invalid block."
 msgstr ""
 
-#: classes/class-rest.php:288
-#: classes/class-rest.php:441
+#: classes/class-rest.php:301
+#: classes/class-rest.php:463
 msgid "Render callback is not specified."
 msgstr ""
 
