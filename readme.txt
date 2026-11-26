@@ -89,6 +89,8 @@ Every UI part should be intuitive for simple custom blocks, but if you want to c
 
 See the [Lazy Blocks 5.0 integration upgrade guide](https://github.com/nk-crew/lazy-blocks/blob/master/docs/upgrade-5.0.md) for legacy hooks and block exports.
 
+**Lazy Blocks 5.0:** Use the WordPress `block_categories_all` filter to add or rename categories in the Lazy Blocks list.
+
 ### 🔥 Lazy Blocks Pro
 
 > The Lazy Blocks plugin is also available in a professional version which includes more controls and features! [**Learn more about Lazy Blocks Pro**](https://www.lazyblocks.com/pro/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=pro)

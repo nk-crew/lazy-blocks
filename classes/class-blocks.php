@@ -698,12 +698,7 @@ class LazyBlocks_Blocks {
 		if ( 'lazyblocks_post_category' === $column_name ) {
 			$category = $this->get_meta_value_by_id( 'lazyblocks_category' );
 			if ( $category ) {
-				$gutenberg_categories = array();
-				if ( function_exists( 'get_block_categories' ) ) {
-					$gutenberg_categories = get_block_categories( $post );
-				} elseif ( function_exists( 'gutenberg_get_block_categories' ) ) {
-					$gutenberg_categories = gutenberg_get_block_categories( $post );
-				}
+				$gutenberg_categories = get_block_categories( $post );
 
 				foreach ( $gutenberg_categories as $cat ) {
 					if ( $cat['slug'] === $category ) {

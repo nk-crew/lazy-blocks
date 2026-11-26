@@ -1,5 +1,38 @@
 <?php
 class BlockRegistrationTest extends WP_UnitTestCase {
+	public function test_category_column_displays_core_and_custom_category_titles() {
+		$add_category = static function ( $categories ) {
+			$categories[] = array(
+				'slug'  => 'category-fallback-test',
+				'title' => 'Custom & Featured',
+			);
+			return $categories;
+		};
+
+		$block = self::factory()->post->create_and_get( array( 'post_type' => 'lazyblocks' ) );
+		$previous_post = $GLOBALS['post'] ?? null;
+		$GLOBALS['post'] = $block;
+		add_filter( 'block_categories_all', $add_category );
+
+		try {
+			$titles = array();
+			foreach ( array( 'text', 'category-fallback-test' ) as $slug ) {
+				update_post_meta( $block->ID, 'lazyblocks_category', $slug );
+				ob_start();
+				try {
+					do_action( 'manage_lazyblocks_posts_custom_column', 'lazyblocks_post_category', $block->ID );
+				} finally {
+					$titles[] = ob_get_clean();
+				}
+			}
+			$this->assertSame( array( 'Text', 'Custom &amp; Featured' ), $titles );
+		} finally {
+			remove_filter( 'block_categories_all', $add_category );
+			$GLOBALS['post'] = $previous_post;
+			wp_delete_post( $block->ID, true );
+		}
+	}
+
 	// Test if the latest registered block is test block.
 	public function test_block_registered() {
 		$block_slug = 'lazyblock/test';
