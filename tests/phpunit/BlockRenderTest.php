@@ -66,6 +66,49 @@ class BlockRenderTest extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_broken_handlebars_template_keeps_surrounding_content_visible() {
+		wp_set_current_user( 0 );
+		$this->add_test_block( array(
+			'controls' => array(
+				'condition' => array(
+					'name' => 'a',
+					'type' => 'toggle',
+				),
+			),
+			'code' => array(
+				'frontend_html' => '{{#if a}}A{{else if b}}B{{else}}C{{/if}}',
+			),
+		) );
+
+		$this->assertSame(
+			'<p>Before</p><p>After</p>',
+			do_blocks( '<p>Before</p><!-- wp:lazyblock/test {"a":true} /--><p>After</p>' )
+		);
+	}
+
+	public function test_broken_handlebars_template_shows_error_to_lazy_block_editors() {
+		$editor = self::factory()->user->create_and_get( array( 'role' => 'editor' ) );
+		$editor->add_cap( 'edit_lazyblocks' );
+		wp_set_current_user( $editor->ID );
+
+		$this->add_test_block( array(
+			'controls' => array(
+				'condition' => array(
+					'name' => 'a',
+					'type' => 'toggle',
+				),
+			),
+			'code' => array(
+				'frontend_html' => '{{#if a}}A{{else if b}}B{{else}}C{{/if}}',
+			),
+		) );
+
+		$this->assertSame(
+			'Variable name is invalid: &quot;else if b&quot;',
+			do_blocks( '<!-- wp:lazyblock/test {"a":true} /-->' )
+		);
+	}
+
 	public function test_block_render_attributes() {
 		$this->add_test_block( array(
 			'supports' => array(

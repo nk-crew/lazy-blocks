@@ -280,7 +280,20 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 			return $this->error( 'lazy_block_invalid', esc_html__( 'Invalid block.', 'lazy-blocks' ) );
 		}
 
-		$block_result = lazyblocks()->blocks()->render_callback( $block_attributes, $context, null, $render_location, $block );
+		$block_result = lazyblocks()->blocks()->render_callback(
+			$block_attributes,
+			$context,
+			null,
+			$render_location,
+			$block,
+			static function ( Throwable $e ) {
+				return new WP_Error( 'lazy_block_render_failed', $e->getMessage() );
+			}
+		);
+
+		if ( is_wp_error( $block_result ) && 'lazy_block_render_failed' === $block_result->get_error_code() ) {
+			return $this->error( $block_result->get_error_code(), $block_result->get_error_message() );
+		}
 
 		if ( isset( $block_result ) && null !== $block_result ) {
 			return $this->success( $block_result );
@@ -424,7 +437,16 @@ class LazyBlocks_Rest extends WP_REST_Controller {
 		}
 
 		try {
-			$block_result = lazyblocks()->blocks()->render_callback( $attributes, null, null, $context, $block_data );
+			$block_result = lazyblocks()->blocks()->render_callback(
+				$attributes,
+				null,
+				null,
+				$context,
+				$block_data,
+				static function ( Throwable $e ) {
+					throw $e;
+				}
+			);
 		} catch ( Throwable $e ) {
 			$message = $e->getMessage();
 
