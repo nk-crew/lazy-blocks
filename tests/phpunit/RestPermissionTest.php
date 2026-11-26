@@ -449,7 +449,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 				array(
 					'post_id' => $this->block_id,
 					'data'    => array(
-						'slug'        => 'updated-block',
+						'slug'        => 'Updated-Block',
 						'description' => 'Changed description',
 					),
 				)
@@ -458,6 +458,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 			$this->assertSame( 'Existing C:\\example', get_post_meta( $this->block_id, 'lazyblocks_description', true ) );
 			$this->assertSame( 'updated-block', get_post_meta( $this->block_id, 'lazyblocks_slug', true ) );
 			$this->assertSame( 'Existing C:\\example', $response->get_data()['response']['lazyblocks_description'] );
+			$this->assertSame( 'updated-block', $response->get_data()['response']['lazyblocks_slug'] );
 		} finally {
 			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
 		}

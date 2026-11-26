@@ -376,8 +376,9 @@ class LazyBlocks_Abilities {
 	 * @return array|WP_Error
 	 */
 	public function create_block( $input ) {
-		$data = isset( $input['data'] ) ? $input['data'] : array();
-		$slug = $this->resolve_slug( isset( $data['slug'] ) ? $data['slug'] : '', $input['title'], 0 );
+		$data       = $input['data'] ?? array();
+		$has_filter = has_filter( 'lzb/block_data_before_write' );
+		$slug       = $this->resolve_slug( $data['slug'] ?? '', $input['title'], 0, ! $has_filter );
 
 		if ( is_wp_error( $slug ) ) {
 			return $slug;
@@ -391,7 +392,8 @@ class LazyBlocks_Abilities {
 			return $allowed;
 		}
 
-		$meta = $this->filter_write_meta( 0, $this->prefix_block_data( $data ), 'ability_create', $input['title'] );
+		$submitted = lazyblocks()->blocks()->sanitize_submitted_block_data( $this->prefix_block_data( $data ) );
+		$meta      = $this->filter_write_meta( 0, $submitted, 'ability_create', $input['title'], $has_filter );
 		if ( is_wp_error( $meta ) ) {
 			return $meta;
 		}
@@ -448,9 +450,11 @@ class LazyBlocks_Abilities {
 			}
 		}
 
-		if ( isset( $input['data']['slug'] ) ) {
-			$title = isset( $input['title'] ) ? $input['title'] : $post->post_title;
-			$slug  = $this->resolve_slug( $input['data']['slug'], $title, $post->ID );
+		$has_filter = has_filter( 'lzb/block_data_before_write' );
+		$has_slug   = isset( $input['data']['slug'] );
+		$title      = $input['title'] ?? $post->post_title;
+		if ( $has_slug ) {
+			$slug = $this->resolve_slug( $input['data']['slug'], $title, $post->ID, ! $has_filter );
 
 			if ( is_wp_error( $slug ) ) {
 				return $slug;
@@ -459,12 +463,12 @@ class LazyBlocks_Abilities {
 			$input['data']['slug'] = $slug;
 		}
 
-		$meta     = null;
-		$proposed = array();
-		if ( isset( $input['data'] ) && has_filter( 'lzb/block_data_before_write' ) ) {
-			$title    = $input['title'] ?? $post->post_title;
-			$proposed = $this->prefix_block_data( array_merge( $this->get_data( $post->ID ), $input['data'] ) );
-			$meta     = $this->filter_write_meta( $post->ID, $proposed, 'ability_update', $title );
+		$submitted = isset( $input['data'] ) ? lazyblocks()->blocks()->sanitize_submitted_block_data( $this->prefix_block_data( $input['data'] ) ) : array();
+		$meta      = null;
+		$proposed  = array();
+		if ( isset( $input['data'] ) && $has_filter ) {
+			$proposed = array_replace( $this->prefix_block_data( $this->get_data( $post->ID ) ), $submitted );
+			$meta     = $this->filter_write_meta( $post->ID, $proposed, 'ability_update', $title, $has_slug );
 			if ( is_wp_error( $meta ) ) {
 				return $meta;
 			}
@@ -486,7 +490,7 @@ class LazyBlocks_Abilities {
 
 		if ( isset( $input['data'] ) ) {
 			if ( null === $meta || isset( $input['title'] ) ) {
-				$current = $this->prefix_block_data( array_merge( $this->get_data( $post->ID ), $input['data'] ) );
+				$current = array_replace( $this->prefix_block_data( $this->get_data( $post->ID ) ), $submitted );
 
 				if ( null !== $meta ) {
 					foreach ( $meta as $key => $value ) {
@@ -513,10 +517,11 @@ class LazyBlocks_Abilities {
 	 * @param string $slug    Requested slug. Empty derives it from the title, as the builder does.
 	 * @param string $title   Block title.
 	 * @param int    $post_id ID of the block being saved, 0 for a new one.
+	 * @param bool   $check_collision Whether to check for a slug collision.
 	 *
 	 * @return string|WP_Error
 	 */
-	private function resolve_slug( $slug, $title, $post_id ) {
+	private function resolve_slug( $slug, $title, $post_id, $check_collision = true ) {
 		$blocks = lazyblocks()->blocks();
 
 		if ( '' === $slug ) {
@@ -536,7 +541,7 @@ class LazyBlocks_Abilities {
 			);
 		}
 
-		if ( $post_id && get_post_meta( $post_id, self::META_PREFIX . 'slug', true ) === $slug ) {
+		if ( ! $check_collision || ( $post_id && get_post_meta( $post_id, self::META_PREFIX . 'slug', true ) === $slug ) ) {
 			return $slug;
 		}
 
@@ -711,13 +716,14 @@ class LazyBlocks_Abilities {
 	 * @param array  $meta    Proposed metadata with the storage prefix.
 	 * @param string $source  Write source.
 	 * @param string $title   Proposed block title.
+	 * @param bool   $check_slug Whether collision checking was deferred until after filtering.
 	 * @return array|WP_Error
 	 */
-	private function filter_write_meta( $post_id, $meta, $source, $title ) {
+	private function filter_write_meta( $post_id, $meta, $source, $title, $check_slug ) {
 		$filtered = lazyblocks()->blocks()->filter_block_data_before_write( $post_id, $meta, $source );
 		$slug_key = self::META_PREFIX . 'slug';
 
-		if ( ( $filtered[ $slug_key ] ?? '' ) !== ( $meta[ $slug_key ] ?? '' ) ) {
+		if ( $check_slug || ( $filtered[ $slug_key ] ?? '' ) !== ( $meta[ $slug_key ] ?? '' ) ) {
 			$slug = $this->resolve_slug( $filtered[ $slug_key ] ?? '', $title, $post_id );
 			if ( is_wp_error( $slug ) ) {
 				return $slug;

@@ -947,14 +947,39 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Sanitize submitted metadata before combining it with stored values.
+	 *
+	 * @param array $data Unslashed submitted block meta.
+	 * @return array
+	 */
+	public function sanitize_submitted_block_data( $data ) {
+		if ( $this->is_allowed_unfiltered_html() ) {
+			return $data;
+		}
+
+		$data = array_diff_key( $data, array_flip( self::UNFILTERED_BLOCK_META_KEYS ) );
+		foreach ( $data as $key => $value ) {
+			if (
+				isset( $value ) && ! is_bool( $value ) &&
+				! in_array( $key, array( 'lazyblocks_icon', 'lazyblocks_style_editor', 'lazyblocks_style_block' ), true )
+			) {
+				$data[ $key ] = wp_kses_post_deep( $value );
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Filter block meta before a write.
 	 *
 	 * @param int    $post_id Destination post ID.
 	 * @param array  $data    Proposed block meta.
 	 * @param string $source  Source of the write.
+	 * @param int    $row     Meta value index when duplicating multiple rows.
 	 * @return array
 	 */
-	public function filter_block_data_before_write( $post_id, $data, $source ) {
+	public function filter_block_data_before_write( $post_id, $data, $source, $row = 0 ) {
 		if ( ! has_filter( 'lzb/block_data_before_write' ) ) {
 			return $data;
 		}
@@ -962,7 +987,9 @@ class LazyBlocks_Blocks {
 		$stored = array();
 		if ( $post_id ) {
 			foreach ( array_intersect_key( get_post_meta( $post_id ), $this->get_block_defaults() ) as $key => $values ) {
-				$stored[ $key ] = maybe_unserialize( $values[0] );
+				if ( isset( $values[ $row ] ) ) {
+					$stored[ $key ] = maybe_unserialize( $values[ $row ] );
+				}
 			}
 		}
 
@@ -992,10 +1019,11 @@ class LazyBlocks_Blocks {
 	 * @param int         $post_id The post ID.
 	 * @param array       $data    Metaboxes data for save.
 	 * @param string|null $source  Write source, or null if the data was already filtered.
+	 * @return array The filtered proposal.
 	 */
 	public function save_meta_boxes( $post_id, $data, $source = 'direct' ) {
 		if ( null !== $source ) {
-			$data = $this->filter_block_data_before_write( $post_id, $data, $source );
+			$data = $this->filter_block_data_before_write( $post_id, $this->sanitize_submitted_block_data( $data ), $source );
 		}
 		$defaults = $this->get_block_defaults();
 
@@ -1031,6 +1059,8 @@ class LazyBlocks_Blocks {
 				delete_post_meta( $post_id, $meta, $meta_value );
 			}
 		}
+
+		return $data;
 	}
 
 	/**
@@ -1042,44 +1072,14 @@ class LazyBlocks_Blocks {
 	 * @return mixed|null Slashed value, or null if the write is disallowed.
 	 */
 	public function prepare_block_meta_value( $post_id, $meta, $value ) {
-		$new_meta_value = '';
-
-		if ( isset( $value ) ) {
-			// convert boolean to string.
-			if ( is_bool( $value ) ) {
-				$value = $value ? 'true' : 'false';
-			}
-
-			// icon and editors.
-			if (
-				'lazyblocks_icon' === $meta ||
-				'lazyblocks_code_editor_html' === $meta ||
-				'lazyblocks_code_frontend_html' === $meta ||
-				'lazyblocks_style_editor' === $meta ||
-				'lazyblocks_style_block' === $meta ||
-				'lazyblocks_script_view' === $meta
-			) {
-				// Disallow unfiltered code fields for users without unfiltered_html capability.
-				if (
-					(
-						'lazyblocks_code_editor_html' === $meta ||
-						'lazyblocks_code_frontend_html' === $meta ||
-						'lazyblocks_script_view' === $meta
-					) &&
-					! $this->is_allowed_unfiltered_html()
-				) {
-					return null;
-				}
-				$new_meta_value = wp_slash( $value );
-			} else {
-				$new_meta_value = wp_slash( $value );
-
-				// Filter $_POST data for users without the 'unfiltered_html' capability.
-				if ( ! $this->is_allowed_unfiltered_html() ) {
-					$new_meta_value = wp_kses_post_deep( $new_meta_value );
-				}
-			}
+		if ( in_array( $meta, self::UNFILTERED_BLOCK_META_KEYS, true ) && ! $this->is_allowed_unfiltered_html() ) {
+			return null;
 		}
+
+		if ( is_bool( $value ) ) {
+			$value = $value ? 'true' : 'false';
+		}
+		$new_meta_value = wp_slash( $value ?? '' );
 
 		// keep only alpha and numbers in slug.
 		if ( 'lazyblocks_slug' === $meta ) {
