@@ -108,3 +108,18 @@ already defines `code.output_method`, keep that value and remove `code.use_php`.
 Use `lazyblocks()->blocks()->sync_role_caps()` instead of
 `lazyblocks()->blocks()->add_role_caps()`. Both calls apply the same capabilities
 in 5.0.
+
+## Abilities that write blocks
+
+`lazy-blocks/create-block` and `lazy-blocks/update-block` are registered only
+when an administrator turns on Lazy Blocks > Settings > Allow AI agents to
+create and edit blocks. The option is off after the update, so a caller of
+these abilities gets `rest_ability_not_found` until it is turned on. On the
+command line, run `wp option update lazyblocks_ai_write_abilities 1`.
+`lazy-blocks/list-blocks` and `lazy-blocks/get-block` stay registered.
+
+Run the abilities as a user who can post unfiltered HTML when the input sets
+`code_frontend_html`, `code_editor_html`, or `script_view`. For other users
+the ability returns `lazy_blocks_unfiltered_html_required` and saves nothing.
+Sending back the saved value of a code field, as `lazy-blocks/get-block`
+returns it, is allowed.

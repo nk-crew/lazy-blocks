@@ -17,6 +17,9 @@ class AbilitiesTest extends WP_UnitTestCase {
 
 		lazyblocks()->blocks()->register_post_type();
 
+		update_option( LazyBlocks_Abilities::WRITE_OPTION, true );
+		$this->reset_abilities_registry();
+
 		$admin_role = get_role( 'administrator' );
 		$admin_role->add_cap( 'edit_lazyblocks' );
 		$admin_role->add_cap( 'edit_lazyblock' );
@@ -49,7 +52,29 @@ class AbilitiesTest extends WP_UnitTestCase {
 	public function tear_down() {
 		wp_set_current_user( 0 );
 
+		delete_option( LazyBlocks_Abilities::WRITE_OPTION );
+		$this->reset_abilities_registry();
+
 		parent::tear_down();
+	}
+
+	/**
+	 * Drop the registry, so the next lookup fires wp_abilities_api_init again with the current option.
+	 */
+	private function reset_abilities_registry() {
+		if ( ! class_exists( 'WP_Abilities_Registry' ) ) {
+			return;
+		}
+
+		$instance = new ReflectionProperty( WP_Abilities_Registry::class, 'instance' );
+		$instance->setValue( null, null );
+	}
+
+	private function create_user_without_unfiltered_html() {
+		$user = self::factory()->user->create_and_get( array( 'role' => 'administrator' ) );
+		$user->add_cap( 'unfiltered_html', false );
+
+		return $user;
 	}
 
 	private function run_ability( $name, $input = null ) {
@@ -487,5 +512,136 @@ class AbilitiesTest extends WP_UnitTestCase {
 			$this->assertSame( 'ability_invalid_input', $response->get_data()['code'] );
 		}
 		$this->assertSame( $before, get_post_meta( $this->block_id, 'lazyblocks_controls', true ) );
+	}
+
+	public function test_write_abilities_are_not_registered_without_the_option() {
+		delete_option( LazyBlocks_Abilities::WRITE_OPTION );
+		$this->reset_abilities_registry();
+		wp_set_current_user( $this->admin_user );
+
+		$this->assertTrue( wp_has_ability( 'lazy-blocks/list-blocks' ) );
+		$this->assertTrue( wp_has_ability( 'lazy-blocks/get-block' ) );
+		$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ) );
+		$this->assertFalse( wp_has_ability( 'lazy-blocks/update-block' ) );
+
+		// WP-CLI stores the value as typed, without the setting's sanitizer.
+		foreach ( array( 'false', 'off', 'no', 'enabled' ) as $value ) {
+			update_option( LazyBlocks_Abilities::WRITE_OPTION, $value );
+			$this->reset_abilities_registry();
+			$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ), $value );
+		}
+
+		$response = $this->run_ability_rest( 'lazy-blocks/create-block', array( 'title' => 'Not Registered' ) );
+		$this->assertSame( 404, $response->get_status() );
+		$this->assertSame( 'rest_ability_not_found', $response->get_data()['code'] );
+	}
+
+	public function test_create_with_code_without_unfiltered_html_is_refused() {
+		wp_set_current_user( $this->create_user_without_unfiltered_html()->ID );
+
+		$count_before = (int) wp_count_posts( 'lazyblocks' )->publish;
+
+		$result = $this->run_ability(
+			'lazy-blocks/create-block',
+			array(
+				'title' => 'Code Block',
+				'data'  => array(
+					'code_frontend_html' => '<p>Code</p>',
+					'script_view'        => 'alert(1)',
+				),
+			)
+		);
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_unfiltered_html_required', $result->get_error_code() );
+		$this->assertStringContainsString( 'code_frontend_html, script_view', $result->get_error_message() );
+		wp_cache_flush();
+		$this->assertSame( $count_before, (int) wp_count_posts( 'lazyblocks' )->publish );
+
+		$created = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Block Without Code' ) );
+		$this->assertNotWPError( $created );
+
+		// save_meta_boxes() still skips a built-in key that a site filters out of the list.
+		add_filter(
+			'lzb/unfiltered_block_meta_keys',
+			static function ( $keys ) {
+				return array_diff( $keys, array( 'lazyblocks_code_frontend_html' ) );
+			}
+		);
+
+		$result = $this->run_ability(
+			'lazy-blocks/create-block',
+			array(
+				'title' => 'Filtered Code Block',
+				'data'  => array( 'code_frontend_html' => '<p>Code</p>' ),
+			)
+		);
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_unfiltered_html_required', $result->get_error_code() );
+	}
+
+	public function test_update_code_without_unfiltered_html_is_refused() {
+		wp_set_current_user( $this->create_user_without_unfiltered_html()->ID );
+
+		$result = $this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $this->block_id,
+				'data' => array(
+					'description'      => 'Changed',
+					'code_editor_html' => '<p>Editor</p>',
+				),
+			)
+		);
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_unfiltered_html_required', $result->get_error_code() );
+		$this->assertSame( 'Existing description', get_post_meta( $this->block_id, 'lazyblocks_description', true ) );
+		$this->assertSame( '', get_post_meta( $this->block_id, 'lazyblocks_code_editor_html', true ) );
+
+		// Data read with get-block sends the saved code back unchanged, which is allowed.
+		$block                        = $this->run_ability( 'lazy-blocks/get-block', array( 'id' => $this->block_id ) );
+		$block['data']['description'] = 'Changed';
+
+		$updated = $this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $this->block_id,
+				'data' => $block['data'],
+			)
+		);
+
+		$this->assertNotWPError( $updated );
+		$this->assertSame( 'Changed', $updated['data']['description'] );
+		$this->assertSame( '<p useBlockProps>Existing</p>', $updated['data']['code_frontend_html'] );
+	}
+
+	public function test_create_records_who_created_the_block() {
+		wp_set_current_user( $this->admin_user );
+
+		$password = WP_Application_Passwords::create_new_application_password( $this->admin_user, array( 'name' => wp_slash( 'Claude\\Desktop' ) ) );
+
+		$GLOBALS['wp_rest_application_password_uuid'] = $password[1]['uuid'];
+		$created = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Agent Block' ) );
+		unset( $GLOBALS['wp_rest_application_password_uuid'] );
+
+		$record = get_post_meta( $created['id'], LazyBlocks_Abilities::CREATED_META, true );
+		$this->assertSame( $this->admin_user, $record['user_id'] );
+		$this->assertSame( 'Claude\\Desktop', $record['client'] );
+		$this->assertEqualsWithDelta( time(), strtotime( $record['date_gmt'] . ' UTC' ), 60 );
+
+		$states = apply_filters( 'display_post_states', array(), get_post( $created['id'] ) );
+		$this->assertSame( 'Created by AI agent', $states['lazyblocks-ability-created'] );
+
+		$this->run_ability(
+			'lazy-blocks/update-block',
+			array(
+				'id'   => $this->block_id,
+				'data' => array( 'description' => 'Changed' ),
+			)
+		);
+		$this->assertSame( '', get_post_meta( $this->block_id, LazyBlocks_Abilities::CREATED_META, true ) );
+		$this->assertArrayNotHasKey( 'lazyblocks-ability-created', apply_filters( 'display_post_states', array(), get_post( $this->block_id ) ) );
 	}
 }

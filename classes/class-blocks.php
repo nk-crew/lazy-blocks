@@ -22,6 +22,17 @@ class LazyBlocks_Blocks {
 	const BLOCKS_CACHE_KEY_PREFIX = 'lzb_blocks_cache_';
 
 	/**
+	 * Block code meta keys that save_meta_boxes() writes only for users allowed to post unfiltered HTML.
+	 *
+	 * @var array
+	 */
+	const UNFILTERED_BLOCK_META_KEYS = array(
+		'lazyblocks_code_editor_html',
+		'lazyblocks_code_frontend_html',
+		'lazyblocks_script_view',
+	);
+
+	/**
 	 * Default block icon cache.
 	 *
 	 * @var string|null
@@ -895,6 +906,15 @@ class LazyBlocks_Blocks {
 	}
 
 	/**
+	 * Block meta keys that only users allowed to post unfiltered HTML may write.
+	 *
+	 * @return array
+	 */
+	public function get_unfiltered_block_meta_keys() {
+		return apply_filters( 'lzb/unfiltered_block_meta_keys', self::UNFILTERED_BLOCK_META_KEYS );
+	}
+
+	/**
 	 * Prevent unsafe block code fields from being written outside save_meta_boxes().
 	 *
 	 * WordPress XML-RPC and custom fields can write post meta directly, bypassing
@@ -911,16 +931,7 @@ class LazyBlocks_Blocks {
 	public function guard_unfiltered_block_meta( $check, $object_id, $meta_key, $_meta_value, $_meta_arg ) {
 		unset( $_meta_value, $_meta_arg );
 
-		$unsafe_meta_keys = apply_filters(
-			'lzb/unfiltered_block_meta_keys',
-			array(
-				'lazyblocks_code_editor_html',
-				'lazyblocks_code_frontend_html',
-				'lazyblocks_script_view',
-			)
-		);
-
-		if ( ! in_array( $meta_key, $unsafe_meta_keys, true ) ) {
+		if ( ! in_array( $meta_key, $this->get_unfiltered_block_meta_keys(), true ) ) {
 			return $check;
 		}
 
