@@ -75,7 +75,8 @@ class LazyBlocks_Abilities {
 	 * @return bool
 	 */
 	public static function is_write_enabled() {
-		return rest_sanitize_boolean( get_option( self::WRITE_OPTION, false ) );
+		// WP-CLI stores the value as typed, so any word but an explicit yes keeps writes off.
+		return true === filter_var( get_option( self::WRITE_OPTION, false ), FILTER_VALIDATE_BOOLEAN );
 	}
 
 	/**

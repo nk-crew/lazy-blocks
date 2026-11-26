@@ -525,9 +525,11 @@ class AbilitiesTest extends WP_UnitTestCase {
 		$this->assertFalse( wp_has_ability( 'lazy-blocks/update-block' ) );
 
 		// WP-CLI stores the value as typed, without the setting's sanitizer.
-		update_option( LazyBlocks_Abilities::WRITE_OPTION, 'false' );
-		$this->reset_abilities_registry();
-		$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ) );
+		foreach ( array( 'false', 'off', 'no', 'enabled' ) as $value ) {
+			update_option( LazyBlocks_Abilities::WRITE_OPTION, $value );
+			$this->reset_abilities_registry();
+			$this->assertFalse( wp_has_ability( 'lazy-blocks/create-block' ), $value );
+		}
 
 		$response = $this->run_ability_rest( 'lazy-blocks/create-block', array( 'title' => 'Not Registered' ) );
 		$this->assertSame( 404, $response->get_status() );
@@ -558,6 +560,25 @@ class AbilitiesTest extends WP_UnitTestCase {
 
 		$created = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Block Without Code' ) );
 		$this->assertNotWPError( $created );
+
+		// save_meta_boxes() still skips a built-in key that a site filters out of the list.
+		add_filter(
+			'lzb/unfiltered_block_meta_keys',
+			static function ( $keys ) {
+				return array_diff( $keys, array( 'lazyblocks_code_frontend_html' ) );
+			}
+		);
+
+		$result = $this->run_ability(
+			'lazy-blocks/create-block',
+			array(
+				'title' => 'Filtered Code Block',
+				'data'  => array( 'code_frontend_html' => '<p>Code</p>' ),
+			)
+		);
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'lazy_blocks_unfiltered_html_required', $result->get_error_code() );
 	}
 
 	public function test_update_code_without_unfiltered_html_is_refused() {
@@ -599,7 +620,7 @@ class AbilitiesTest extends WP_UnitTestCase {
 	public function test_create_records_who_created_the_block() {
 		wp_set_current_user( $this->admin_user );
 
-		$password = WP_Application_Passwords::create_new_application_password( $this->admin_user, array( 'name' => 'Claude Desktop' ) );
+		$password = WP_Application_Passwords::create_new_application_password( $this->admin_user, array( 'name' => wp_slash( 'Claude\\Desktop' ) ) );
 
 		$GLOBALS['wp_rest_application_password_uuid'] = $password[1]['uuid'];
 		$created = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Agent Block' ) );
@@ -607,7 +628,7 @@ class AbilitiesTest extends WP_UnitTestCase {
 
 		$record = get_post_meta( $created['id'], LazyBlocks_Abilities::CREATED_META, true );
 		$this->assertSame( $this->admin_user, $record['user_id'] );
-		$this->assertSame( 'Claude Desktop', $record['client'] );
+		$this->assertSame( 'Claude\\Desktop', $record['client'] );
 		$this->assertEqualsWithDelta( time(), strtotime( $record['date_gmt'] . ' UTC' ), 60 );
 
 		$states = apply_filters( 'display_post_states', array(), get_post( $created['id'] ) );
