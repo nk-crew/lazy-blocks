@@ -140,7 +140,11 @@ The source is `rest` for the builder and the update-block-data endpoint,
 imports, `duplicate` for copies, or `direct` for other callers of the shared
 writer. For `ability_create`, the filter runs before the post is inserted,
 so `post_id` is `0` and the stored array is empty. Abilities validate changes to
-the slug from the filter before writing.
+the slug from the filter before writing. On `ability_update`, the filter runs
+before any requested title update. Register the callback before that phase.
+When an update also changes the title, changes made by the filter take precedence
+over metadata written by WordPress title-save callbacks. Other fields keep
+those callbacks' values unless the ability input explicitly sets them.
 
 Return the fields to write. For example, assign a stored field to the same key
 in the proposed array to keep its value. For duplicates, removing a key

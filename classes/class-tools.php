@@ -858,9 +858,10 @@ class LazyBlocks_Tools {
 			}
 
 			$changes = array();
+			$rows    = array();
 			if ( has_filter( 'lzb/block_data_before_write' ) ) {
-				$changes   = $this->filter_duplicate_block_meta( $new_post_id, $block_id, $meta_keys );
-				$meta_keys = array_unique( array_merge( $meta_keys, array_keys( $changes ) ) );
+				list( $changes, $rows ) = $this->filter_duplicate_block_meta( $new_post_id, $block_id, $meta_keys );
+				$meta_keys              = array_unique( array_merge( $meta_keys, array_keys( $changes ) ) );
 			}
 
 			foreach ( $meta_keys as $meta_key ) {
@@ -872,7 +873,7 @@ class LazyBlocks_Tools {
 					continue;
 				}
 
-				$meta_values = get_post_custom_values( $meta_key, $post->ID );
+				$meta_values = $rows[ $meta_key ] ?? get_post_custom_values( $meta_key, $post->ID );
 
 				// Clear existing meta data so that add_post_meta() works properly with non-unique keys.
 				delete_post_meta( $new_post_id, $meta_key );
@@ -880,7 +881,7 @@ class LazyBlocks_Tools {
 				foreach ( $meta_values as $meta_value ) {
 					$meta_value = maybe_unserialize( $meta_value );
 
-					if ( 'lazyblocks_slug' === $meta_key ) {
+					if ( 'lazyblocks_slug' === $meta_key && ! isset( $rows[ $meta_key ] ) ) {
 						$meta_value = get_post( $new_post_id )->post_name;
 					}
 
@@ -905,22 +906,27 @@ class LazyBlocks_Tools {
 	}
 
 	/**
-	 * Get the changed or omitted values from the duplicate's block-data filter.
+	 * Get the filter's changes and the original rows it saw.
 	 *
 	 * @param int   $post_id   Destination post ID.
 	 * @param int   $source_id Source post ID.
 	 * @param array $meta_keys Meta keys eligible for the copy.
-	 * @return array Keys mapped to slashed values, or null to skip a key.
+	 * @return array The changed values (slashed, or null to skip) and the original rows.
 	 */
 	private function filter_duplicate_block_meta( $post_id, $source_id, $meta_keys ) {
 		$blocks   = lazyblocks()->blocks();
 		$defaults = $blocks->get_block_defaults();
 		$data     = array();
+		$rows     = array();
 
 		foreach ( array_intersect( $meta_keys, array_keys( $defaults ) ) as $key ) {
 			$values = get_post_custom_values( $key, $source_id );
 			if ( $values ) {
-				$data[ $key ] = 'lazyblocks_slug' === $key ? get_post( $post_id )->post_name : maybe_unserialize( $values[0] );
+				if ( 'lazyblocks_slug' === $key ) {
+					$values = array_fill( 0, count( $values ), get_post( $post_id )->post_name );
+				}
+				$rows[ $key ] = $values;
+				$data[ $key ] = maybe_unserialize( $values[0] );
 			}
 		}
 
@@ -933,7 +939,7 @@ class LazyBlocks_Tools {
 			}
 		}
 
-		return $changes;
+		return array( $changes, $rows );
 	}
 
 	/**

@@ -487,7 +487,7 @@ class LazyBlocks_Abilities {
 			return $allowed;
 		}
 
-		$meta = $this->filter_write_meta( 0, $data, 'ability_create', $input['title'] );
+		$meta = $this->filter_write_meta( 0, $this->prefix_block_data( $data ), 'ability_create', $input['title'] );
 		if ( is_wp_error( $meta ) ) {
 			return $meta;
 		}
@@ -555,11 +555,12 @@ class LazyBlocks_Abilities {
 			$input['data']['slug'] = $slug;
 		}
 
-		$meta = null;
+		$meta     = null;
+		$proposed = array();
 		if ( isset( $input['data'] ) && has_filter( 'lzb/block_data_before_write' ) ) {
-			$title = $input['title'] ?? $post->post_title;
-			$data  = array_merge( $this->get_data( $post->ID ), $input['data'] );
-			$meta  = $this->filter_write_meta( $post->ID, $data, 'ability_update', $title );
+			$title    = $input['title'] ?? $post->post_title;
+			$proposed = $this->prefix_block_data( array_merge( $this->get_data( $post->ID ), $input['data'] ) );
+			$meta     = $this->filter_write_meta( $post->ID, $proposed, 'ability_update', $title );
 			if ( is_wp_error( $meta ) ) {
 				return $meta;
 			}
@@ -580,9 +581,19 @@ class LazyBlocks_Abilities {
 		}
 
 		if ( isset( $input['data'] ) ) {
-			if ( null === $meta ) {
-				$data = array_merge( $this->get_data( $post->ID ), $input['data'] );
-				$meta = $this->prefix_block_data( $data );
+			if ( null === $meta || isset( $input['title'] ) ) {
+				$current = $this->prefix_block_data( array_merge( $this->get_data( $post->ID ), $input['data'] ) );
+
+				if ( null !== $meta ) {
+					foreach ( $meta as $key => $value ) {
+						if ( ! array_key_exists( $key, $proposed ) || $proposed[ $key ] !== $value ) {
+							$current[ $key ] = $value;
+						}
+					}
+					$current = array_diff_key( $current, array_diff_key( $proposed, $meta ) );
+				}
+
+				$meta = $current;
 			}
 
 			$this->save_data( $post->ID, $meta );
@@ -793,13 +804,12 @@ class LazyBlocks_Abilities {
 	 * Filter proposed metadata and validate any change to the ability's slug.
 	 *
 	 * @param int    $post_id Destination post ID, or 0 before creation.
-	 * @param array  $data    Proposed ability block data.
+	 * @param array  $meta    Proposed metadata with the storage prefix.
 	 * @param string $source  Write source.
 	 * @param string $title   Proposed block title.
 	 * @return array|WP_Error
 	 */
-	private function filter_write_meta( $post_id, $data, $source, $title ) {
-		$meta     = $this->prefix_block_data( $data );
+	private function filter_write_meta( $post_id, $meta, $source, $title ) {
 		$filtered = lazyblocks()->blocks()->filter_block_data_before_write( $post_id, $meta, $source );
 		$slug_key = self::META_PREFIX . 'slug';
 

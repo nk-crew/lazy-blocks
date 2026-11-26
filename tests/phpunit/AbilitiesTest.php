@@ -453,6 +453,38 @@ class AbilitiesTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_filtered_update_keeps_meta_written_during_title_save() {
+		wp_set_current_user( $this->admin_user );
+		$refresh_meta = static function ( $post_id ) {
+			update_post_meta( $post_id, 'lazyblocks_description', 'Refreshed during title save' );
+			update_post_meta( $post_id, 'lazyblocks_keywords', 'Title keywords' );
+		};
+		$filter = static function ( $data ) {
+			$data['lazyblocks_keywords'] = 'Filtered keywords';
+			return $data;
+		};
+		add_action( 'save_post_lazyblocks', $refresh_meta );
+		add_filter( 'lzb/block_data_before_write', $filter );
+		try {
+			$updated = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'    => $this->block_id,
+					'title' => 'Updated title',
+					'data'  => array( 'category' => 'design' ),
+				)
+			);
+			$this->assertNotWPError( $updated );
+			$this->assertSame( 'Updated title', $updated['title'] );
+			$this->assertSame( 'design', $updated['data']['category'] );
+			$this->assertSame( 'Refreshed during title save', $updated['data']['description'] );
+			$this->assertSame( 'Filtered keywords', $updated['data']['keywords'] );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter );
+			remove_action( 'save_post_lazyblocks', $refresh_meta );
+		}
+	}
+
 	public function test_filtered_slug_cannot_collide_on_create_or_update() {
 		wp_set_current_user( $this->admin_user );
 		$target = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Target block' ) );

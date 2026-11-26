@@ -487,6 +487,36 @@ class RestPermissionTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_duplicate_writes_the_meta_rows_seen_by_the_filter() {
+		wp_set_current_user( $this->admin_user );
+		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
+		add_post_meta( $this->block_id, 'custom_meta', 'Custom value' );
+		add_post_meta( $this->block_id, 'lazyblocks_description', 'First value' );
+		add_post_meta( $this->block_id, 'lazyblocks_description', 'Second value' );
+
+		$refresh_source = function ( $meta_id, $post_id, $meta_key ) {
+			if ( $this->block_id !== $post_id && 'custom_meta' === $meta_key ) {
+				update_post_meta( $this->block_id, 'lazyblocks_description', 'Refreshed value' );
+			}
+		};
+		$filter = static fn ( $data ) => $data;
+		add_action( 'added_post_meta', $refresh_source, 10, 3 );
+		add_filter( 'lzb/block_data_before_write', $filter );
+		try {
+			$location = $this->catch_redirect(
+				function () {
+					lazyblocks()->tools()->duplicate_block( $this->block_id );
+				}
+			);
+			$copy_id = (int) wp_parse_args( wp_parse_url( $location, PHP_URL_QUERY ) )['lazyblocks_duplicate_complete'];
+			$this->assertSame( array( 'First value', 'Second value' ), get_post_meta( $copy_id, 'lazyblocks_description' ) );
+			$this->assertSame( 'Refreshed value', get_post_meta( $this->block_id, 'lazyblocks_description', true ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter );
+			remove_action( 'added_post_meta', $refresh_source, 10 );
+		}
+	}
+
 	public function test_duplicate_filter_limits_the_copy_without_touching_the_source() {
 		wp_set_current_user( $this->admin_user );
 		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
