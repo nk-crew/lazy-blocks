@@ -130,13 +130,17 @@ Use `lzb/block_data_before_write` to filter a block definition before Lazy Block
 writes its metadata. The three callback arguments are the proposed metadata,
 the stored metadata of the destination block, and a context with `source` and
 `post_id`. Both metadata arrays use keys like `lazyblocks_controls` and unslashed
-values. The stored array contains only saved fields, with the first stored value
-per key. For a new block this array is normally empty.
+values. Proposed values keep the write source's PHP types. For example, an
+ability update can contain a boolean where the stored value is a string. The
+stored array contains only saved fields, with the first stored value per key.
+For a new block this array is normally empty.
 
 The source is `rest` for the builder and the update-block-data endpoint,
 `ability_create` or `ability_update` for the write abilities, `import` for block
 imports, `duplicate` for copies, or `direct` for other callers of the shared
-writer. The destination post already exists when the filter runs.
+writer. For `ability_create`, the filter runs before the post is inserted,
+so `post_id` is `0` and the stored array is empty. Abilities validate changes to
+the slug from the filter before writing.
 
 Return the fields to write. For example, assign a stored field to the same key
 in the proposed array to keep its value. For duplicates, removing a key

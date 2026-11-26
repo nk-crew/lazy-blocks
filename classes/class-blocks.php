@@ -960,8 +960,10 @@ class LazyBlocks_Blocks {
 		}
 
 		$stored = array();
-		foreach ( array_intersect_key( get_post_meta( $post_id ), $this->get_block_defaults() ) as $key => $values ) {
-			$stored[ $key ] = maybe_unserialize( $values[0] );
+		if ( $post_id ) {
+			foreach ( array_intersect_key( get_post_meta( $post_id ), $this->get_block_defaults() ) as $key => $values ) {
+				$stored[ $key ] = maybe_unserialize( $values[0] );
+			}
 		}
 
 		/**
@@ -970,8 +972,8 @@ class LazyBlocks_Blocks {
 		 * @since 5.0.0
 		 *
 		 * @param array $data    Proposed block meta with prefixed keys and unslashed values.
-		 * @param array $stored  Existing destination block meta in the same format.
-		 * @param array $context Write source and destination post ID.
+		 * @param array $stored  Stored destination block meta with prefixed keys and unslashed values.
+		 * @param array $context Write source and destination post ID, or 0 before creation.
 		 */
 		return apply_filters(
 			'lzb/block_data_before_write',
@@ -987,68 +989,20 @@ class LazyBlocks_Blocks {
 	/**
 	 * Save Format metabox
 	 *
-	 * @param int    $post_id The post ID.
-	 * @param array  $data    Metaboxes data for save.
-	 * @param string $source Source of the write.
+	 * @param int         $post_id The post ID.
+	 * @param array       $data    Metaboxes data for save.
+	 * @param string|null $source  Write source, or null if the data was already filtered.
 	 */
 	public function save_meta_boxes( $post_id, $data, $source = 'direct' ) {
-		$data     = $this->filter_block_data_before_write( $post_id, $data, $source );
+		if ( null !== $source ) {
+			$data = $this->filter_block_data_before_write( $post_id, $data, $source );
+		}
 		$defaults = $this->get_block_defaults();
 
 		foreach ( $defaults as $meta => $default ) {
-			$new_meta_value = '';
-
-			if ( isset( $data[ $meta ] ) ) {
-				// convert boolean to string.
-				if ( is_bool( $data[ $meta ] ) ) {
-					$data[ $meta ] = $data[ $meta ] ? 'true' : 'false';
-				}
-
-				// icon and editors.
-				if (
-					'lazyblocks_icon' === $meta ||
-					'lazyblocks_code_editor_html' === $meta ||
-					'lazyblocks_code_frontend_html' === $meta ||
-					'lazyblocks_style_editor' === $meta ||
-					'lazyblocks_style_block' === $meta ||
-					'lazyblocks_script_view' === $meta
-				) {
-					// Disallow unfiltered code fields for users without unfiltered_html capability.
-					if (
-						(
-							'lazyblocks_code_editor_html' === $meta ||
-							'lazyblocks_code_frontend_html' === $meta ||
-							'lazyblocks_script_view' === $meta
-						) &&
-						! $this->is_allowed_unfiltered_html()
-					) {
-						continue;
-					}
-					$new_meta_value = wp_slash( $data[ $meta ] );
-				} else {
-					$new_meta_value = wp_slash( $data[ $meta ] );
-
-					// Filter $_POST data for users without the 'unfiltered_html' capability.
-					if ( ! $this->is_allowed_unfiltered_html() ) {
-						$new_meta_value = wp_kses_post_deep( $new_meta_value );
-					}
-				}
-			}
-
-			// keep only alpha and numbers in slug.
-			if ( 'lazyblocks_slug' === $meta ) {
-				$new_meta_value = $this->sanitize_slug( $new_meta_value );
-
-				// generate slug from title.
-				if ( ! $new_meta_value ) {
-					$new_meta_value = get_the_title( $post_id );
-					$new_meta_value = $this->sanitize_slug( $new_meta_value );
-				}
-
-				// if no slug available.
-				if ( ! $new_meta_value ) {
-					$new_meta_value = 'no-slug';
-				}
+			$new_meta_value = $this->prepare_block_meta_value( $post_id, $meta, $data[ $meta ] ?? null );
+			if ( null === $new_meta_value ) {
+				continue;
 			}
 
 			/* Get the meta value of the custom field key. */
@@ -1077,6 +1031,73 @@ class LazyBlocks_Blocks {
 				delete_post_meta( $post_id, $meta, $meta_value );
 			}
 		}
+	}
+
+	/**
+	 * Prepare a slashed block meta value for storage.
+	 *
+	 * @param int    $post_id Destination post ID.
+	 * @param string $meta    Block meta key.
+	 * @param mixed  $value   Unslashed value.
+	 * @return mixed|null Slashed value, or null if the write is disallowed.
+	 */
+	public function prepare_block_meta_value( $post_id, $meta, $value ) {
+		$new_meta_value = '';
+
+		if ( isset( $value ) ) {
+			// convert boolean to string.
+			if ( is_bool( $value ) ) {
+				$value = $value ? 'true' : 'false';
+			}
+
+			// icon and editors.
+			if (
+				'lazyblocks_icon' === $meta ||
+				'lazyblocks_code_editor_html' === $meta ||
+				'lazyblocks_code_frontend_html' === $meta ||
+				'lazyblocks_style_editor' === $meta ||
+				'lazyblocks_style_block' === $meta ||
+				'lazyblocks_script_view' === $meta
+			) {
+				// Disallow unfiltered code fields for users without unfiltered_html capability.
+				if (
+					(
+						'lazyblocks_code_editor_html' === $meta ||
+						'lazyblocks_code_frontend_html' === $meta ||
+						'lazyblocks_script_view' === $meta
+					) &&
+					! $this->is_allowed_unfiltered_html()
+				) {
+					return null;
+				}
+				$new_meta_value = wp_slash( $value );
+			} else {
+				$new_meta_value = wp_slash( $value );
+
+				// Filter $_POST data for users without the 'unfiltered_html' capability.
+				if ( ! $this->is_allowed_unfiltered_html() ) {
+					$new_meta_value = wp_kses_post_deep( $new_meta_value );
+				}
+			}
+		}
+
+		// keep only alpha and numbers in slug.
+		if ( 'lazyblocks_slug' === $meta ) {
+			$new_meta_value = $this->sanitize_slug( $new_meta_value );
+
+			// generate slug from title.
+			if ( ! $new_meta_value ) {
+				$new_meta_value = get_the_title( $post_id );
+				$new_meta_value = $this->sanitize_slug( $new_meta_value );
+			}
+
+			// if no slug available.
+			if ( ! $new_meta_value ) {
+				$new_meta_value = 'no-slug';
+			}
+		}
+
+		return $new_meta_value;
 	}
 
 	/**

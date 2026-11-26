@@ -389,6 +389,31 @@ class RestPermissionTest extends WP_UnitTestCase {
 		$this->assertNotEmpty( get_post_meta( $this->block_id, LazyBlocks_Abilities::CREATED_META, true ) );
 	}
 
+	public function test_duplicate_reads_each_meta_key_when_it_copies_it() {
+		wp_set_current_user( $this->admin_user );
+		$_GET['lazyblocks_duplicate_block_nonce'] = wp_create_nonce( 'lzb-duplicate-block-nonce' );
+		add_post_meta( $this->block_id, 'first_meta', 'First value' );
+		add_post_meta( $this->block_id, 'second_meta', 'Initial value' );
+
+		$sync_source = function ( $meta_id, $post_id, $meta_key ) {
+			if ( $this->block_id !== $post_id && 'first_meta' === $meta_key ) {
+				update_post_meta( $this->block_id, 'second_meta', 'Refreshed value' );
+			}
+		};
+		add_action( 'added_post_meta', $sync_source, 10, 3 );
+		try {
+			$location = $this->catch_redirect(
+				function () {
+					lazyblocks()->tools()->duplicate_block( $this->block_id );
+				}
+			);
+			$copy_id = (int) wp_parse_args( wp_parse_url( $location, PHP_URL_QUERY ) )['lazyblocks_duplicate_complete'];
+			$this->assertSame( 'Refreshed value', get_post_meta( $copy_id, 'second_meta', true ) );
+		} finally {
+			remove_action( 'added_post_meta', $sync_source, 10 );
+		}
+	}
+
 	public function test_import_writes_nested_block_data() {
 		wp_set_current_user( $this->admin_user );
 		$post_id = lazyblocks()->tools()->import_block(
@@ -473,6 +498,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 		$filter = function ( $data, $stored, $context ) {
 			if ( 'duplicate' === $context['source'] && array() === $stored && $this->block_id !== $context['post_id'] ) {
 				unset( $data['lazyblocks_controls'] );
+				$data['lazyblocks_supports_inserter'] = false;
 			}
 			return $data;
 		};
@@ -487,6 +513,7 @@ class RestPermissionTest extends WP_UnitTestCase {
 			$copy_id = (int) wp_parse_args( wp_parse_url( $location, PHP_URL_QUERY ) )['lazyblocks_duplicate_complete'];
 			$this->assertSame( array( 'First value', 'Second value' ), get_post_meta( $copy_id, 'lazyblocks_description' ) );
 			$this->assertFalse( metadata_exists( 'post', $copy_id, 'lazyblocks_controls' ) );
+			$this->assertSame( 'false', get_post_meta( $copy_id, 'lazyblocks_supports_inserter', true ) );
 			$this->assertCount( 2, get_post_meta( $this->block_id, 'lazyblocks_controls' ) );
 		} finally {
 			remove_filter( 'lzb/block_data_before_write', $filter, 10 );

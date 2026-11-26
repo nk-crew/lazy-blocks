@@ -826,7 +826,7 @@ class LazyBlocks_Tools {
 			}
 
 			// Duplicate all post meta.
-			$copy_meta      = array();
+			$meta_keys      = array();
 			$post_meta_keys = get_post_custom_keys( $block_id );
 			if ( ! empty( $post_meta_keys ) ) {
 				// Default meta field names to be filtered out.
@@ -855,25 +855,35 @@ class LazyBlocks_Tools {
 				} else {
 					$meta_keys = array_diff( $post_meta_keys, $meta_exclude_list );
 				}
-
-				foreach ( $meta_keys as $meta_key ) {
-					$copy_meta[ $meta_key ] = array_map( 'maybe_unserialize', get_post_custom_values( $meta_key, $post->ID ) );
-
-					if ( 'lazyblocks_slug' === $meta_key ) {
-						$copy_meta[ $meta_key ] = array_fill( 0, count( $copy_meta[ $meta_key ] ), get_post( $new_post_id )->post_name );
-					}
-				}
 			}
 
+			$changes = array();
 			if ( has_filter( 'lzb/block_data_before_write' ) ) {
-				$copy_meta = $this->filter_duplicate_block_meta( $new_post_id, $copy_meta );
+				$changes   = $this->filter_duplicate_block_meta( $new_post_id, $block_id, $meta_keys );
+				$meta_keys = array_unique( array_merge( $meta_keys, array_keys( $changes ) ) );
 			}
 
-			foreach ( $copy_meta as $meta_key => $meta_values ) {
+			foreach ( $meta_keys as $meta_key ) {
+				if ( array_key_exists( $meta_key, $changes ) ) {
+					if ( null !== $changes[ $meta_key ] ) {
+						delete_post_meta( $new_post_id, $meta_key );
+						add_post_meta( $new_post_id, $meta_key, $changes[ $meta_key ] );
+					}
+					continue;
+				}
+
+				$meta_values = get_post_custom_values( $meta_key, $post->ID );
+
 				// Clear existing meta data so that add_post_meta() works properly with non-unique keys.
 				delete_post_meta( $new_post_id, $meta_key );
 
 				foreach ( $meta_values as $meta_value ) {
+					$meta_value = maybe_unserialize( $meta_value );
+
+					if ( 'lazyblocks_slug' === $meta_key ) {
+						$meta_value = get_post( $new_post_id )->post_name;
+					}
+
 					add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
 				}
 			}
@@ -895,34 +905,35 @@ class LazyBlocks_Tools {
 	}
 
 	/**
-	 * Apply the block-data filter while keeping all rows for unchanged meta.
+	 * Get the changed or omitted values from the duplicate's block-data filter.
 	 *
 	 * @param int   $post_id   Destination post ID.
-	 * @param array $copy_meta Meta keys mapped to lists of values.
-	 * @return array
+	 * @param int   $source_id Source post ID.
+	 * @param array $meta_keys Meta keys eligible for the copy.
+	 * @return array Keys mapped to slashed values, or null to skip a key.
 	 */
-	private function filter_duplicate_block_meta( $post_id, $copy_meta ) {
+	private function filter_duplicate_block_meta( $post_id, $source_id, $meta_keys ) {
 		$blocks   = lazyblocks()->blocks();
 		$defaults = $blocks->get_block_defaults();
 		$data     = array();
 
-		foreach ( array_intersect_key( $copy_meta, $defaults ) as $key => $values ) {
-			$data[ $key ] = $values[0];
-		}
-
-		$filtered = array_intersect_key( $blocks->filter_block_data_before_write( $post_id, $data, 'duplicate' ), $defaults );
-
-		foreach ( array_diff_key( $data, $filtered ) as $key => $value ) {
-			unset( $copy_meta[ $key ] );
-		}
-
-		foreach ( $filtered as $key => $value ) {
-			if ( ! array_key_exists( $key, $data ) || $data[ $key ] !== $value ) {
-				$copy_meta[ $key ] = array( $value );
+		foreach ( array_intersect( $meta_keys, array_keys( $defaults ) ) as $key ) {
+			$values = get_post_custom_values( $key, $source_id );
+			if ( $values ) {
+				$data[ $key ] = 'lazyblocks_slug' === $key ? get_post( $post_id )->post_name : maybe_unserialize( $values[0] );
 			}
 		}
 
-		return $copy_meta;
+		$filtered = array_intersect_key( $blocks->filter_block_data_before_write( $post_id, $data, 'duplicate' ), $defaults );
+		$changes  = array_fill_keys( array_keys( array_diff_key( $data, $filtered ) ), null );
+
+		foreach ( $filtered as $key => $value ) {
+			if ( ! array_key_exists( $key, $data ) || $data[ $key ] !== $value ) {
+				$changes[ $key ] = $blocks->prepare_block_meta_value( $post_id, $key, $value );
+			}
+		}
+
+		return $changes;
 	}
 
 	/**
