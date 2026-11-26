@@ -487,6 +487,11 @@ class LazyBlocks_Abilities {
 			return $allowed;
 		}
 
+		$meta = $this->filter_write_meta( 0, $this->prefix_block_data( $data ), 'ability_create', $input['title'] );
+		if ( is_wp_error( $meta ) ) {
+			return $meta;
+		}
+
 		$post_id = wp_insert_post(
 			array(
 				'post_title'  => wp_strip_all_tags( $input['title'] ),
@@ -500,7 +505,7 @@ class LazyBlocks_Abilities {
 			return $post_id;
 		}
 
-		$this->save_data( $post_id, $data );
+		$this->save_data( $post_id, $meta );
 
 		update_post_meta(
 			$post_id,
@@ -550,6 +555,17 @@ class LazyBlocks_Abilities {
 			$input['data']['slug'] = $slug;
 		}
 
+		$meta     = null;
+		$proposed = array();
+		if ( isset( $input['data'] ) && has_filter( 'lzb/block_data_before_write' ) ) {
+			$title    = $input['title'] ?? $post->post_title;
+			$proposed = $this->prefix_block_data( array_merge( $this->get_data( $post->ID ), $input['data'] ) );
+			$meta     = $this->filter_write_meta( $post->ID, $proposed, 'ability_update', $title );
+			if ( is_wp_error( $meta ) ) {
+				return $meta;
+			}
+		}
+
 		if ( isset( $input['title'] ) ) {
 			$result = wp_update_post(
 				array(
@@ -565,10 +581,22 @@ class LazyBlocks_Abilities {
 		}
 
 		if ( isset( $input['data'] ) ) {
-			// save_meta_boxes() resets every key it is not given, so start from the stored data.
-			$data = array_merge( $this->get_data( $post->ID ), $input['data'] );
+			if ( null === $meta || isset( $input['title'] ) ) {
+				$current = $this->prefix_block_data( array_merge( $this->get_data( $post->ID ), $input['data'] ) );
 
-			$this->save_data( $post->ID, $data );
+				if ( null !== $meta ) {
+					foreach ( $meta as $key => $value ) {
+						if ( ! array_key_exists( $key, $proposed ) || $proposed[ $key ] !== $value ) {
+							$current[ $key ] = $value;
+						}
+					}
+					$current = array_diff_key( $current, array_diff_key( $proposed, $meta ) );
+				}
+
+				$meta = $current;
+			}
+
+			$this->save_data( $post->ID, $meta );
 		}
 
 		return $this->prepare_block( get_post( $post->ID ) );
@@ -757,19 +785,53 @@ class LazyBlocks_Abilities {
 	}
 
 	/**
-	 * Save block data through the same writer as the builder's update-block-data route.
+	 * Add the storage prefix to ability block keys.
 	 *
-	 * @param int   $post_id Post ID.
-	 * @param array $data    Block data without the meta prefix.
+	 * @param array $data Ability block data.
+	 * @return array
 	 */
-	private function save_data( $post_id, $data ) {
+	private function prefix_block_data( $data ) {
 		$meta = array();
 
 		foreach ( $data as $key => $val ) {
 			$meta[ self::META_PREFIX . $key ] = $val;
 		}
 
-		lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+		return $meta;
+	}
+
+	/**
+	 * Filter proposed metadata and validate any change to the ability's slug.
+	 *
+	 * @param int    $post_id Destination post ID, or 0 before creation.
+	 * @param array  $meta    Proposed metadata with the storage prefix.
+	 * @param string $source  Write source.
+	 * @param string $title   Proposed block title.
+	 * @return array|WP_Error
+	 */
+	private function filter_write_meta( $post_id, $meta, $source, $title ) {
+		$filtered = lazyblocks()->blocks()->filter_block_data_before_write( $post_id, $meta, $source );
+		$slug_key = self::META_PREFIX . 'slug';
+
+		if ( ( $filtered[ $slug_key ] ?? '' ) !== ( $meta[ $slug_key ] ?? '' ) ) {
+			$slug = $this->resolve_slug( $filtered[ $slug_key ] ?? '', $title, $post_id );
+			if ( is_wp_error( $slug ) ) {
+				return $slug;
+			}
+			$filtered[ $slug_key ] = $slug;
+		}
+
+		return $filtered;
+	}
+
+	/**
+	 * Store filtered block metadata using the shared writer.
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $meta    Filtered block metadata.
+	 */
+	private function save_data( $post_id, $meta ) {
+		lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta, null );
 		lazyblocks()->blocks()->clear_blocks_cache();
 	}
 

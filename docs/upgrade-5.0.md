@@ -123,3 +123,32 @@ Run the abilities as a user who can post unfiltered HTML when the input sets
 the ability returns `lazy_blocks_unfiltered_html_required` and saves nothing.
 Sending back the saved value of a code field, as `lazy-blocks/get-block`
 returns it, is allowed.
+
+## Filter block data before saving
+
+Use `lzb/block_data_before_write` to filter a block definition before Lazy Blocks
+writes its metadata. The three callback arguments are the proposed metadata,
+the stored metadata of the destination block, and a context with `source` and
+`post_id`. Both metadata arrays use keys like `lazyblocks_controls` and unslashed
+values. Proposed values keep the write source's PHP types. For example, an
+ability update can contain a boolean where the stored value is a string. The
+stored array contains only saved fields, with the first stored value per key.
+For a new block this array is normally empty.
+
+The source is `rest` for the builder and the update-block-data endpoint,
+`ability_create` or `ability_update` for the write abilities, `import` for block
+imports, `duplicate` for copies, or `direct` for other callers of the shared
+writer. For `ability_create`, the filter runs before the post is inserted,
+so `post_id` is `0` and the stored array is empty. Abilities validate changes to
+the slug from the filter before writing. On `ability_update`, the filter runs
+before any requested title update. Register the callback before that phase.
+When an update also changes the title, changes made by the filter take precedence
+over metadata written by WordPress title-save callbacks. Other fields keep
+those callbacks' values unless the ability input explicitly sets them.
+
+Return the fields to write. For example, assign a stored field to the same key
+in the proposed array to keep its value. For duplicates, removing a key
+prevents copying it. An unchanged key keeps all its metadata rows, and a
+changed key supplies a single replacement value. The filter works on block
+fields registered through the block defaults. Other metadata is copied as
+usual.

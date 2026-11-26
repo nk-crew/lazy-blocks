@@ -682,7 +682,7 @@ class LazyBlocks_Tools {
 				}
 			}
 
-			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta );
+			lazyblocks()->blocks()->save_meta_boxes( $post_id, $meta, 'import' );
 
 			do_action( 'lzb/import/block', $post_id, $data );
 
@@ -826,6 +826,7 @@ class LazyBlocks_Tools {
 			}
 
 			// Duplicate all post meta.
+			$meta_keys      = array();
 			$post_meta_keys = get_post_custom_keys( $block_id );
 			if ( ! empty( $post_meta_keys ) ) {
 				// Default meta field names to be filtered out.
@@ -854,24 +855,37 @@ class LazyBlocks_Tools {
 				} else {
 					$meta_keys = array_diff( $post_meta_keys, $meta_exclude_list );
 				}
+			}
 
-				foreach ( $meta_keys as $meta_key ) {
-					$meta_values = get_post_custom_values( $meta_key, $post->ID );
+			$changes = array();
+			$rows    = array();
+			if ( has_filter( 'lzb/block_data_before_write' ) ) {
+				list( $changes, $rows ) = $this->filter_duplicate_block_meta( $new_post_id, $block_id, $meta_keys );
+				$meta_keys              = array_unique( array_merge( $meta_keys, array_keys( $changes ) ) );
+			}
 
-					// Clear existing meta data so that add_post_meta() works properly with non-unique keys.
-					delete_post_meta( $new_post_id, $meta_key );
-
-					foreach ( $meta_values as $meta_value ) {
-						$meta_value = maybe_unserialize( $meta_value );
-
-						if ( 'lazyblocks_slug' === $meta_key ) {
-							// Copy new post slug to meta.
-							$new_post   = get_post( $new_post_id );
-							$meta_value = $new_post->post_name;
-						}
-
-						add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
+			foreach ( $meta_keys as $meta_key ) {
+				if ( array_key_exists( $meta_key, $changes ) ) {
+					if ( null !== $changes[ $meta_key ] ) {
+						delete_post_meta( $new_post_id, $meta_key );
+						add_post_meta( $new_post_id, $meta_key, $changes[ $meta_key ] );
 					}
+					continue;
+				}
+
+				$meta_values = $rows[ $meta_key ] ?? get_post_custom_values( $meta_key, $post->ID );
+
+				// Clear existing meta data so that add_post_meta() works properly with non-unique keys.
+				delete_post_meta( $new_post_id, $meta_key );
+
+				foreach ( $meta_values as $meta_value ) {
+					$meta_value = maybe_unserialize( $meta_value );
+
+					if ( 'lazyblocks_slug' === $meta_key && ! isset( $rows[ $meta_key ] ) ) {
+						$meta_value = get_post( $new_post_id )->post_name;
+					}
+
+					add_post_meta( $new_post_id, $meta_key, wp_slash( $meta_value ) );
 				}
 			}
 
@@ -889,6 +903,43 @@ class LazyBlocks_Tools {
 
 			exit;
 		}
+	}
+
+	/**
+	 * Get the filter's changes and the original rows it saw.
+	 *
+	 * @param int   $post_id   Destination post ID.
+	 * @param int   $source_id Source post ID.
+	 * @param array $meta_keys Meta keys eligible for the copy.
+	 * @return array The changed values (slashed, or null to skip) and the original rows.
+	 */
+	private function filter_duplicate_block_meta( $post_id, $source_id, $meta_keys ) {
+		$blocks   = lazyblocks()->blocks();
+		$defaults = $blocks->get_block_defaults();
+		$data     = array();
+		$rows     = array();
+
+		foreach ( array_intersect( $meta_keys, array_keys( $defaults ) ) as $key ) {
+			$values = get_post_custom_values( $key, $source_id );
+			if ( $values ) {
+				if ( 'lazyblocks_slug' === $key ) {
+					$values = array_fill( 0, count( $values ), get_post( $post_id )->post_name );
+				}
+				$rows[ $key ] = $values;
+				$data[ $key ] = maybe_unserialize( $values[0] );
+			}
+		}
+
+		$filtered = array_intersect_key( $blocks->filter_block_data_before_write( $post_id, $data, 'duplicate' ), $defaults );
+		$changes  = array_fill_keys( array_keys( array_diff_key( $data, $filtered ) ), null );
+
+		foreach ( $filtered as $key => $value ) {
+			if ( ! array_key_exists( $key, $data ) || $data[ $key ] !== $value ) {
+				$changes[ $key ] = $blocks->prepare_block_meta_value( $post_id, $key, $value );
+			}
+		}
+
+		return array( $changes, $rows );
 	}
 
 	/**

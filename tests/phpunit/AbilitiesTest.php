@@ -412,6 +412,119 @@ class AbilitiesTest extends WP_UnitTestCase {
 		$this->assertSame( $expected, $after );
 	}
 
+	public function test_write_abilities_apply_filter_to_create_and_update() {
+		wp_set_current_user( $this->admin_user );
+		$filter = static function ( $data, $stored, $context ) {
+			if ( 'ability_create' === $context['source'] && array() === $stored ) {
+				$data['lazyblocks_description'] = 'Allowed on creation';
+			} elseif ( 'ability_update' === $context['source'] ) {
+				$data['lazyblocks_description'] = $stored['lazyblocks_description'];
+			}
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter, 10, 3 );
+
+		try {
+			$created = $this->run_ability(
+				'lazy-blocks/create-block',
+				array(
+					'title' => 'Filtered block',
+					'data'  => array( 'description' => 'Proposed on creation' ),
+				)
+			);
+			$this->assertNotWPError( $created );
+			$this->assertSame( 'Allowed on creation', get_post_meta( $created['id'], 'lazyblocks_description', true ) );
+
+			$updated = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'   => $created['id'],
+					'data' => array(
+						'description' => 'Proposed on update',
+						'category'    => 'design',
+					),
+				)
+			);
+			$this->assertNotWPError( $updated );
+			$this->assertSame( 'Allowed on creation', get_post_meta( $created['id'], 'lazyblocks_description', true ) );
+			$this->assertSame( 'design', get_post_meta( $created['id'], 'lazyblocks_category', true ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter, 10 );
+		}
+	}
+
+	public function test_filtered_update_keeps_meta_written_during_title_save() {
+		wp_set_current_user( $this->admin_user );
+		$refresh_meta = static function ( $post_id ) {
+			update_post_meta( $post_id, 'lazyblocks_description', 'Refreshed during title save' );
+			update_post_meta( $post_id, 'lazyblocks_keywords', 'Title keywords' );
+		};
+		$filter = static function ( $data ) {
+			$data['lazyblocks_keywords'] = 'Filtered keywords';
+			return $data;
+		};
+		add_action( 'save_post_lazyblocks', $refresh_meta );
+		add_filter( 'lzb/block_data_before_write', $filter );
+		try {
+			$updated = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'    => $this->block_id,
+					'title' => 'Updated title',
+					'data'  => array( 'category' => 'design' ),
+				)
+			);
+			$this->assertNotWPError( $updated );
+			$this->assertSame( 'Updated title', $updated['title'] );
+			$this->assertSame( 'design', $updated['data']['category'] );
+			$this->assertSame( 'Refreshed during title save', $updated['data']['description'] );
+			$this->assertSame( 'Filtered keywords', $updated['data']['keywords'] );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter );
+			remove_action( 'save_post_lazyblocks', $refresh_meta );
+		}
+	}
+
+	public function test_filtered_slug_cannot_collide_on_create_or_update() {
+		wp_set_current_user( $this->admin_user );
+		$target = $this->run_ability( 'lazy-blocks/create-block', array( 'title' => 'Target block' ) );
+		$this->assertNotWPError( $target );
+
+		$filter = static function ( $data ) {
+			$data['lazyblocks_slug'] = 'existing-block';
+			return $data;
+		};
+		add_filter( 'lzb/block_data_before_write', $filter );
+		try {
+			$count   = (int) wp_count_posts( 'lazyblocks' )->publish;
+			$created = $this->run_ability(
+				'lazy-blocks/create-block',
+				array(
+					'title' => 'Rejected block',
+					'data'  => array( 'slug' => 'newspace/existing-block' ),
+				)
+			);
+			$this->assertWPError( $created );
+			$this->assertSame( 'lazy_blocks_slug_taken', $created->get_error_code() );
+			$this->assertSame( $count, (int) wp_count_posts( 'lazyblocks' )->publish );
+
+			$updated = $this->run_ability(
+				'lazy-blocks/update-block',
+				array(
+					'id'    => $target['id'],
+					'title' => 'Rejected title',
+					'data'  => array( 'slug' => 'newspace/existing-block' ),
+				)
+			);
+			$this->assertWPError( $updated );
+			$this->assertSame( 'lazy_blocks_slug_taken', $updated->get_error_code() );
+			$this->assertSame( 'Target block', get_post( $target['id'] )->post_title );
+			$this->assertSame( 'target-block', get_post_meta( $target['id'], 'lazyblocks_slug', true ) );
+		} finally {
+			remove_filter( 'lzb/block_data_before_write', $filter );
+		}
+	}
+
 	public function test_rest_update_round_trips_typed_builder_data() {
 		wp_set_current_user( $this->admin_user );
 
