@@ -36,7 +36,7 @@
 		"format:php": "nk-wp-env run --env-cwd='wp-content/plugins/lazy-blocks' cli composer run-script format",
 		"make-pot": "composer wp -- i18n make-pot ./ ./languages/lazy-blocks.pot --exclude=vendor,vendors,node_modules,build,dist-zip --headers='{\"Last-Translator\":\"Lazy Blocks Team\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-crew/lazyblocks/issues\"}'",
 		"make-json": "po2json ./languages/lazy-blocks.pot ./languages/lazy-blocks.json --format=jed1.x --pretty --domain=lazy-blocks",
-		"prepare": "husky install",
+		"prepare": "husky",
 		"postinstall": "composer install",
 		"lint:ci": "biome ci"
 	},
@@ -52,13 +52,13 @@
 		"array-move": "^4.0.0",
 		"classnames": "^2.3.2",
 		"gutenberg-react-select-styles": "^0.1.0",
-		"html-react-parser": "^4.0.0",
+		"html-react-parser": "^6.1.10",
 		"json5": "^2.2.3",
 		"react-ace": "^14.0.1",
 		"react-select": "^5.8.0",
 		"shorthash": "0.0.2",
 		"slugify": "^1.6.6",
-		"uuid": "^11.1.1"
+		"uuid": "^14.0.3"
 	},
 	"devDependencies": {
 		"@babel/node": "^7.23.9",
@@ -82,8 +82,8 @@
 		"gulp": "^5.0.1",
 		"gulp-change-file-content": "^1.0.1",
 		"gulp-zip": "^5.1.0",
-		"husky": "^8.0.3",
-		"lint-staged": "^15.5.2",
+		"husky": "^9.1.7",
+		"lint-staged": "^17.6.3",
 		"md5": "^2.3.0",
 		"npm-run-all": "^4.1.5",
 		"parse-version-string": "^1.0.1",
@@ -95,14 +95,16 @@
 		"yargs": "^17.7.2"
 	},
 	"overrides": {
-		"stylelint": "$stylelint",
-		"stylelint-scss": "$stylelint-scss",
-		"@wordpress/stylelint-config": "$@wordpress/stylelint-config",
-		"copy-webpack-plugin": {
-			"serialize-javascript": "^7.1.4"
+		"po2json": {
+			"nomnom": {
+				"underscore": "^1.13.8"
+			}
 		},
-		"nomnom": {
-			"underscore": "^1.13.8"
+		"@wordpress/scripts": {
+			"markdownlint-cli": "0.50.1"
+		},
+		"@wordpress/env": {
+			"rimraf": "6.1.4"
 		},
 		"@wp-playground/storage": {
 			"isomorphic-git": "1.38.6"
@@ -110,14 +112,11 @@
 		"@wp-playground/cli": {
 			"express": "4.22.3"
 		},
-		"@wordpress/scripts": {
-			"markdownlint-cli": "0.50.1"
-		},
 		"micromark-extension-math": {
 			"katex": "0.18.2"
 		},
-		"@wordpress/env": {
-			"rimraf": "6.1.4"
+		"copy-webpack-plugin@10": {
+			"serialize-javascript": "^7.1.4"
 		}
 	},
 	"nkPluginToolkit": {
